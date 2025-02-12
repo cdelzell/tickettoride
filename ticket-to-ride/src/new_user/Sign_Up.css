@@ -24,6 +24,7 @@ body {
   height: 100vh; /* Ensures full height for the body */
   width: 100vw;
   overflow-x: hidden;
+  box-shadow: 0 0 10px 5px black;
   display: flex; /* Enables Flexbox */
   justify-content: center; /* Centers content horizontally */
   align-items: center;

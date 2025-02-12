@@ -12,85 +12,15 @@ import Link from "@mui/joy/Link";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 
-import "./App.css";
+import "/new_user/Sign_Up.css";
 
-// function App() {
-//   return (
-//     <>
-//       <div className="background">
-//         <img src={map} className="map" />
-//         <div className="welcome">
-//           <p>Welcome!</p>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default App;
-
-function App() {
-  return <Login className="Login" />;
+function Render_Page() {
+  return <Sign_In className="Login" />;
 }
-
-// function Login() {
-//   return (
-//     <main className="loginPage">
-//       <CssBaseline />
-//       <Sheet
-//         sx={{
-//           width: 400,
-//           mx: "auto", // margin left & right
-//           my: 4, // margin top & bottom
-//           py: 3, // padding top & bottom
-//           px: 2, // padding left & right
-//           display: "flex",
-//           flexDirection: "column",
-//           gap: 2,
-//           borderRadius: "sm",
-//           boxShadow: "md",
-//         }}
-//         variant="outlined"
-//       >
-//         <div>
-//           <Typography level="h4" component="h1">
-//             <b>Welcome!</b>
-//           </Typography>
-//           <Typography level="body-sm">Sign in to continue.</Typography>
-//         </div>
-//         <FormControl>
-//           <FormLabel>Email</FormLabel>
-//           <Input
-//             // html input attribute
-//             name="email"
-//             type="email"
-//             placeholder="johndoe@email.com"
-//           />
-//         </FormControl>
-//         <FormControl>
-//           <FormLabel>Password</FormLabel>
-//           <Input
-//             // html input attribute
-//             name="password"
-//             type="password"
-//             placeholder="password"
-//           />
-//         </FormControl>
-//         <Button sx={{ mt: 1 /* margin top */ }}>Log in</Button>
-//         <Typography
-//           endDecorator={<Link href="/sign-up">Sign up</Link>}
-//           sx={{ fontSize: "sm", alignSelf: "center" }}
-//         >
-//           Don&apos;t have an account?
-//         </Typography>
-//       </Sheet>
-//     </main>
-//   );
-// }
 
 import { useTheme, useMediaQuery } from "@mui/material";
 
-function Login() {
+function Sign_In() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -119,7 +49,7 @@ function Login() {
           <Typography level="h1" component="h1">
             <b>Welcome!</b>
           </Typography>
-          <Typography level="body-med">Sign in to continue.</Typography>
+          <Typography level="body-med">Sign up to continue.</Typography>
         </div>
         <FormControl>
           <FormLabel>Email</FormLabel>
@@ -139,7 +69,16 @@ function Login() {
             placeholder="password"
           />
         </FormControl>
-        <Button sx={{ mt: 1 /* margin top */ }}>Log in</Button>
+        <FormControl>
+          <FormLabel>Confirm Password</FormLabel>
+          <Input
+            // html input attribute
+            name="confirmed password"
+            type="confirmed password"
+            placeholder="confirmed password"
+          />
+        </FormControl>
+        <Button sx={{ mt: 1 /* margin top */ }}>Sign up</Button>
         <Typography
           endDecorator={<Link href="/sign-up">Sign up</Link>}
           sx={{ fontSize: "sm", alignSelf: "center" }}
@@ -151,4 +90,8 @@ function Login() {
   );
 }
 
-export default App;
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <Render_Page />
+  </StrictMode>
+);
