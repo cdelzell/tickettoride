@@ -6,10 +6,6 @@ import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Link from "@mui/joy/Link";
-import { createRoot } from "react-dom/client";
-import { StrictMode } from "react";
 
 import "./sign_up.css";
 
