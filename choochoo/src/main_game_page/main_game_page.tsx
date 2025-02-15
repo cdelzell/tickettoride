@@ -29,6 +29,10 @@ const cities: City[] = [
   { name: "Chicago", x: 500, y: 200, color: "#cf4c34" },
   { name: "Denver", x: 140, y: 120, color: "#cf4c34" },
   { name: "Los Angeles", x: 120, y: 150, color: "#cf4c34" },
+  { name: "Tyville", x: 120, y: 160, color: "#cf4c34" },
+  { name: "Clara City", x: 120, y: 170, color: "#cf4c34" },
+  { name: "Los Noah", x: 120, y: 180, color: "#cf4c34" },
+  { name: "Riddhi Rapids", x: 120, y: 190, color: "#cf4c34" },
 ];
 
 const routes: Route[] = [
@@ -77,7 +81,13 @@ function USMap({ width, height }: NetworkProps) {
               r={8}
               fill={node.color || "white"}
             />
-            <text x={node.x + 10} y={node.y} fill="white" fontSize="12px">
+            <text
+              x={node.x}
+              y={node.y - 15}
+              fill="black"
+              fontSize="15px"
+              textAnchor="middle"
+            >
               {node.name}
             </text>
           </g>
