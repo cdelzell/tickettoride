@@ -44,20 +44,28 @@ import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
+import { useNavigate } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 
 import "./sign_in.css";
+// import "./main_game_page.css";
 
-function App() {
-  return <Login className="Login" />;
-}
+// function App() {
+//   return <Login className="Login" />;
+// }
 
 function Login() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  // hook for react's navigation function
+  const navigate = useNavigate();
 
+  // just currently moves to game page after clicking button
+  const handleLogin = () => {
+    navigate("/main_game_page");
+  };
   return (
     <main className="loginPage">
       <CssBaseline />
@@ -102,7 +110,12 @@ function Login() {
             placeholder="password"
           />
         </FormControl>
-        <Button sx={{ mt: 1 /* margin top */ }}>Log in</Button>
+        <Button // changed to just handle logic on click
+          sx={{ mt: 1 }}
+          onClick={handleLogin}
+        >
+          Log in
+        </Button>
         <Typography
           endDecorator={<Link href="/sign_up">Sign up</Link>}
           sx={{ fontSize: "sm", alignSelf: "center" }}
@@ -114,4 +127,4 @@ function Login() {
   );
 }
 
-export default App;
+export default Login;
