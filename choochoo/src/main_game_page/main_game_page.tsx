@@ -25,8 +25,8 @@ interface Route {
 }
 
 const cities: City[] = [
-  { name: "New York", x: 660, y: 125, color: "#cf4c34" },
-  { name: "Chicago", x: 500, y: 200, color: "#cf4c34" },
+  { name: "New York", x: 140, y: 110, color: "#cf4c34" },
+  { name: "Chicago", x: 140, y: 100, color: "#cf4c34" },
   { name: "Denver", x: 140, y: 120, color: "#cf4c34" },
   { name: "Los Angeles", x: 120, y: 150, color: "#cf4c34" },
   { name: "Tyville", x: 120, y: 160, color: "#cf4c34" },
@@ -59,13 +59,15 @@ const MainGamePage = () => {
 
 function USMap({ width, height }: NetworkProps) {
   return width < 10 ? null : (
-    <svg width={width} height={height}>
+    <svg width={width * 0.7} height={height * 0.7}>
       {/* Background map */}
       <image
         href={monoMap}
+        x="0%"
+        y="0%"
         width="100%"
         height="100%"
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid meet"
       />
 
       {/* Graph of cities and routes */}
