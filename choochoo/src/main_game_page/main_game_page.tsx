@@ -25,7 +25,7 @@ interface Route {
 }
 
 const cities: City[] = [
-  { name: "New York", x: 350, y: 250, color: "#cf4c34" },
+  { name: "New York", x: 660, y: 125, color: "#cf4c34" },
   { name: "Chicago", x: 500, y: 200, color: "#cf4c34" },
   { name: "Denver", x: 140, y: 120, color: "#cf4c34" },
   { name: "Los Angeles", x: 120, y: 150, color: "#cf4c34" },
@@ -36,9 +36,9 @@ const cities: City[] = [
 ];
 
 const routes: Route[] = [
-  { source: cities[0], target: cities[1] },
-  { source: cities[1], target: cities[2] },
-  { source: cities[2], target: cities[3] },
+  // { source: cities[0], target: cities[1] },
+  // { source: cities[1], target: cities[2] },
+  // { source: cities[2], target: cities[3] },
 ];
 
 const graph = {
@@ -99,7 +99,7 @@ function USMap({ width, height }: NetworkProps) {
             x2={link.target.x}
             y2={link.target.y}
             strokeWidth={3}
-            stroke="red"
+            stroke="black"
             strokeOpacity={0.7}
             strokeDasharray={link.dashed ? "6,3" : undefined}
           />
