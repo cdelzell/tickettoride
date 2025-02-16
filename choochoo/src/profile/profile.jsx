@@ -101,32 +101,36 @@ function Profile() {
           <Grid2 size={12}>
             <span></span>
           </Grid2>
-          {/* <Grid2 size={3}>
-            <Button className="button">Join Game</Button>
-          </Grid2> */}
+          <Grid2 size={12}>
+            <span></span>
+          </Grid2>
           <Grid2
             size={12}
             display={"flex"}
             justifyContent={"space-between"}
             marginX={"1vw"}
           >
+            <Button className="button">Noah!</Button>
             <Button className="button">Join Game</Button>
             <Button className="button">Edit Profile</Button>
           </Grid2>
-          {/* <Grid2 size={1}>
-            <span></span>
+          {/* <Grid2 size={6}>
+            <p>Trains are fun!</p>
           </Grid2>
-          <Grid2 size={3}>
+          <Grid2 size={6} display={"flex"} justifyContent={"right"}>
+            <Button className="button">Join Game</Button>
+          </Grid2>
+          <Grid2 size={6}>
+            <p>Trains are fun!</p>
+          </Grid2>
+          <Grid2 size={6} display={"flex"} justifyContent={"right"}>
             <Button className="button">Edit Profile</Button>
-          </Grid2> */}
-          <Grid2 size={12} display={"flex"} justifyContent={"center"}>
-            <Button className="button">Whatever noah wanted!</Button>
           </Grid2>
-          {/* <Grid2 size={4.5}>
-            <span></span>
+          <Grid2 size={6}>
+            <p>Trains are fun!</p>
           </Grid2>
-          <Grid2 size={3}>
-            <Button className="button">Whatever noah wanted!</Button>
+          <Grid2 size={6} display={"flex"} justifyContent={"right"}>
+            <Button className="button">Noah!</Button>
           </Grid2> */}
         </Grid2>
       </Box>

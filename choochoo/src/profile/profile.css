@@ -68,7 +68,7 @@ body {
   .button {
     width: 10vw;
     height: 5vw;
-    font-size: clamp(10px, 1.5vw, 14px) !important;
+    font-size: clamp(8px, 1.2vw, 9px) !important;
   }
 }
 
