@@ -28,10 +28,10 @@ function Profile() {
       <CssBaseline />
       <Box
         sx={{
-          width: isSmallScreen ? "40vw" : isMediumScreen ? "60vw" : 500,
-          height: isSmallScreen ? "40vw" : isMediumScreen ? "60vw" : 500,
+          width: isSmallScreen ? "40vw" : isMediumScreen ? "55vw" : 500,
+          height: isSmallScreen ? "50vw" : isMediumScreen ? "60vw" : 550,
           backgroundColor: "white",
-          maxHeight: 500,
+          maxHeight: 700,
           maxWidth: 500,
           mx: "auto", // margin left & right
           my: 4, // margin top & bottom
@@ -42,6 +42,7 @@ function Profile() {
           gap: 2,
           borderRadius: "sm",
           boxShadow: "md",
+          overflowY: "scroll",
           minHeight: 50,
         }}
       >
@@ -51,8 +52,8 @@ function Profile() {
               alt="thomas"
               src="./src/assets/trains/thomas_train.jpg"
               sx={{
-                width: isSmallScreen ? "13vw" : isMediumScreen ? "18vw" : 150,
-                height: isSmallScreen ? "13vw" : isMediumScreen ? "18vw" : 150,
+                width: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,
+                height: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,
                 ml: "2vw",
               }}
             />
@@ -100,30 +101,33 @@ function Profile() {
           <Grid2 size={12}>
             <span></span>
           </Grid2>
-          <Grid2 size={12}>
-            <span></span>
-          </Grid2>
-          <Grid2 size={2}>
-            <span></span>
-          </Grid2>
-          <Grid2 size={3}>
+          {/* <Grid2 size={3}>
             <Button className="button">Join Game</Button>
+          </Grid2> */}
+          <Grid2
+            size={12}
+            display={"flex"}
+            justifyContent={"space-between"}
+            marginX={"1vw"}
+          >
+            <Button className="button">Join Game</Button>
+            <Button className="button">Edit Profile</Button>
           </Grid2>
-          <Grid2 size={2}>
+          {/* <Grid2 size={1}>
             <span></span>
           </Grid2>
           <Grid2 size={3}>
             <Button className="button">Edit Profile</Button>
+          </Grid2> */}
+          <Grid2 size={12} display={"flex"} justifyContent={"center"}>
+            <Button className="button">Whatever noah wanted!</Button>
           </Grid2>
-          <Grid2 size={2}>
-            <span></span>
-          </Grid2>
-          <Grid2 size={4.5}>
+          {/* <Grid2 size={4.5}>
             <span></span>
           </Grid2>
           <Grid2 size={3}>
             <Button className="button">Whatever noah wanted!</Button>
-          </Grid2>
+          </Grid2> */}
         </Grid2>
       </Box>
     </main>
