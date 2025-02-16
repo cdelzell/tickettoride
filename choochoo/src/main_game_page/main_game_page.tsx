@@ -11,6 +11,30 @@ export type NetworkProps = {
   height: number;
 };
 
+const players = [
+  {
+    username: "c-bear",
+    trainCount: 1700,
+    profilePic: "https://via.placeholder.com/40",
+  },
+  {
+    username: "t-dawg",
+    trainCount: 0,
+    profilePic: "https://via.placeholder.com/40",
+  },
+  {
+    username: "ridster",
+    trainCount: 2,
+    profilePic: "https://via.placeholder.com/40",
+  },
+];
+
+const main_player = {
+  username: "noah-rama",
+  trainCount: 2,
+  profilePic: "https://via.placeholder.com/40",
+};
+
 interface City {
   name: string;
   x: number;
@@ -51,15 +75,57 @@ const MainGamePage = () => {
 
   return (
     <main className="main_game_page">
+      {/* player cards */}
+      <div className="player-cards">
+        {players.map((player, index) => (
+          <PlayerCard
+            key={index}
+            username={player.username}
+            trainCount={player.trainCount}
+            profilePic={player.profilePic}
+          />
+        ))}
+      </div>
+
+      {/* main player */}
+      <div className="main-player-card">
+        <PlayerCard
+          username={main_player.username}
+          trainCount={main_player.trainCount}
+          profilePic={main_player.profilePic}
+        />
+      </div>
+
+      {/* map */}
       <USMap width={width} height={height} />
     </main>
   );
 };
 
+function PlayerCard({
+  username,
+  trainCount,
+  profilePic,
+}: {
+  username: string;
+  trainCount: number;
+  profilePic: string;
+}) {
+  return (
+    <div className="player-card">
+      <img className="profile-pic" src={profilePic} alt="Profile" />
+      <div className="player-info">
+        <span className="username">{username}</span>
+        <span className="train-count">{trainCount} Trains</span>
+      </div>
+    </div>
+  );
+}
+
 function USMap({ width, height }: NetworkProps) {
   return width < 10 ? null : (
-    <svg width={width * 0.7} height={height * 0.7}>
-      {/* Background map */}
+    <svg width={width * 0.75} height={height * 0.75}>
+      {/* background map */}
       <image
         href={monoMap}
         x="0%"
@@ -69,19 +135,14 @@ function USMap({ width, height }: NetworkProps) {
         preserveAspectRatio="xMidYMid meet"
       />
 
-      {/* Graph of cities and routes */}
+      {/* graph of cities and routes */}
       <Graph<Route, City>
         graph={graph}
         top={0}
         left={0}
         nodeComponent={({ node }) => (
           <g>
-            <circle
-              cx={node.x}
-              cy={node.y}
-              r={8}
-              fill={node.color || "pink"}
-            />
+            <circle cx={node.x} cy={node.y} r={8} fill={node.color || "pink"} />
             <text
               x={node.x}
               y={node.y - 15}
