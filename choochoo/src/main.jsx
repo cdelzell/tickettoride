@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sign_In from "/src/sign_in/sign_in.jsx";
 import Sign_Up from "/src/sign_up/sign_up.jsx";
+import Profile from "/src/profile/profile.jsx";
 import "./index.css";
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Sign_In />} />
         <Route path="Sign_Up" element={<Sign_Up />} />
+        <Route path="Profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
@@ -19,9 +21,3 @@ export default function App() {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
-
-// createRoot(document.getElementById("root")).render(
-//   <StrictMode>
-//     <App />
-//   </StrictMode>
-// );
