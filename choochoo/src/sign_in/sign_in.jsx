@@ -52,7 +52,7 @@ function Login() {
             // html input attribute
             name="email"
             type="email"
-            placeholder="johndoe@email.com"
+            placeholder="thomasthetrain@email.com"
           />
         </FormControl>
         <FormControl>
