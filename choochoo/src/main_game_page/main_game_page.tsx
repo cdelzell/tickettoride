@@ -140,7 +140,7 @@ function PlayerCard({
 
 function USMap({ width, height }: NetworkProps) {
   return width < 10 ? null : (
-    <svg width={width * 0.7} height={height * 0.7}>
+    <svg width={width * 0.70} height={height * 0.70}>
       {/* background map */}
       <image
         href={monoMap}
@@ -159,6 +159,20 @@ function USMap({ width, height }: NetworkProps) {
         nodeComponent={({ node }) => (
           <g>
             <circle cx={node.x} cy={node.y} r={8} fill={node.color || "pink"} />
+
+            {/* rectangle for text */}
+            <rect
+              x={node.x - 60}
+              y={node.y - 30}
+              width={120}
+              height={20}
+              fill="white"
+              stroke="black"
+              strokeWidth={0.5}
+              rx={5} 
+              ry={5}
+              opacity={0.8} 
+            />
             <text
               x={node.x}
               y={node.y - 15}
@@ -172,10 +186,10 @@ function USMap({ width, height }: NetworkProps) {
         )}
         linkComponent={({ link }) => (
           <line
-            x1={link.source.x * 2}
-            y1={link.source.y * 2}
-            x2={link.target.x * 2}
-            y2={link.target.y * 2}
+            x1={link.source.x * 2.0}
+            y1={link.source.y * 2.0}
+            x2={link.target.x * 2.0}
+            y2={link.target.y * 2.0}
             strokeWidth={9}
             stroke="black"
             strokeOpacity={0.5}
