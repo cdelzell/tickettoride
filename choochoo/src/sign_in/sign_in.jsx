@@ -64,7 +64,19 @@ function Login() {
             placeholder="password"
           />
         </FormControl>
-        <Button sx={{ mt: 1 /* margin top */ }}>Log in</Button>
+        <Button
+          component="a"
+          href="/profile"
+          sx={{
+            mt: 1,
+            "&:hover": {
+              backgroundColor: "primary.dark", // Darkens background only
+              color: "white",
+            },
+          }}
+        >
+          Log in
+        </Button>
         <Typography
           endDecorator={<Link href="/sign_up">Sign up</Link>}
           sx={{ fontSize: "sm", alignSelf: "center" }}
