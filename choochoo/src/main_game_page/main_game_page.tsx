@@ -61,21 +61,21 @@ const cities: City[] = [
 ];
 
 const routes: Route[] = [
-  { source: cities[0], target: cities[1], dashed: true}, 
-  { source: cities[1], target: cities[6], dashed: true}, 
-  { source: cities[1], target: cities[5], dashed: true}, 
-  { source: cities[0], target: cities[6], dashed: true}, 
-  { source: cities[1], target: cities[8], dashed: true}, 
-  { source: cities[5], target: cities[8], dashed: true}, 
-  { source: cities[7], target: cities[3], dashed: true}, // riddhi rapids to LA
-  { source: cities[7], target: cities[4], dashed: true}, // riddhi rapids to tyville
-  { source: cities[4], target: cities[5], dashed: true}, // ty ville to clara city
-  { source: cities[2], target: cities[5], dashed: true}, // denver to clara city
-  { source: cities[3], target: cities[2], dashed: true}, // LA to denver
-  { source: cities[4], target: cities[2], dashed: true}, // tyville to denver
-  { source: cities[3], target: cities[8], dashed: true}, // LA to firestone rouge
-  { source: cities[2], target: cities[8], dashed: true}, // denver to firestone rouge
-  { source: cities[6], target: cities[8], dashed: true}, // palo noah to firestone rouge
+  { source: cities[0], target: cities[1], dashed: true },
+  { source: cities[1], target: cities[6], dashed: true },
+  { source: cities[1], target: cities[5], dashed: true },
+  { source: cities[0], target: cities[6], dashed: true },
+  { source: cities[1], target: cities[8], dashed: true },
+  { source: cities[5], target: cities[8], dashed: true },
+  { source: cities[7], target: cities[3], dashed: true }, // riddhi rapids to LA
+  { source: cities[7], target: cities[4], dashed: true }, // riddhi rapids to tyville
+  { source: cities[4], target: cities[5], dashed: true }, // ty ville to clara city
+  { source: cities[2], target: cities[5], dashed: true }, // denver to clara city
+  { source: cities[3], target: cities[2], dashed: true }, // LA to denver
+  { source: cities[4], target: cities[2], dashed: true }, // tyville to denver
+  { source: cities[3], target: cities[8], dashed: true }, // LA to firestone rouge
+  { source: cities[2], target: cities[8], dashed: true }, // denver to firestone rouge
+  { source: cities[6], target: cities[8], dashed: true }, // palo noah to firestone rouge
 ];
 
 export const background = "#d3d3d3";
@@ -140,7 +140,7 @@ function PlayerCard({
 
 function USMap({ width, height }: NetworkProps) {
   return width < 10 ? null : (
-    <svg width={width * 0.70} height={height * 0.70}>
+    <svg width={width * 0.7} height={height * 0.7}>
       {/* background map */}
       <image
         href={monoMap}
@@ -172,17 +172,17 @@ function USMap({ width, height }: NetworkProps) {
         )}
         linkComponent={({ link }) => (
           <line
-            x1={link.source.x * (2)}
-            y1={link.source.y * (2)}
-            x2={link.target.x * (2)}
-            y2={link.target.y * (2)}
+            x1={link.source.x * 2}
+            y1={link.source.y * 2}
+            x2={link.target.x * 2}
+            y2={link.target.y * 2}
             strokeWidth={9}
             stroke="black"
             strokeOpacity={0.5}
             strokeDasharray={link.dashed ? "12,6" : undefined}
           />
         )}
-        />
+      />
     </svg>
   );
 }
