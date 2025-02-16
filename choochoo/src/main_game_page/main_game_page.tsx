@@ -25,21 +25,20 @@ interface Route {
 }
 
 const cities: City[] = [
-  { name: "New York", x: 140, y: 110, color: "#cf4c34" },
-  { name: "Chicago", x: 140, y: 100, color: "#cf4c34" },
-  { name: "Denver", x: 140, y: 120, color: "#cf4c34" },
-  { name: "Los Angeles", x: 120, y: 150, color: "#cf4c34" },
-  { name: "Tyville", x: 120, y: 160, color: "#cf4c34" },
-  { name: "Clara City", x: 120, y: 170, color: "#cf4c34" },
-  { name: "Los Noah", x: 120, y: 180, color: "#cf4c34" },
-  { name: "Riddhi Rapids", x: 120, y: 190, color: "#cf4c34" },
+  { name: "New York", x: 415, y: 109, color: "#cf4c34" },
+  { name: "Chicago", x: 330, y: 100, color: "#cf4c34" },
+  { name: "Denver", x: 220, y: 120, color: "#cf4c34" },
+  { name: "Los Angeles", x: 120, y: 160, color: "#cf4c34" },
+  { name: "Tyville", x: 180, y: 80, color: "#cf4c34" },
+  { name: "Clara City", x: 270, y: 70, color: "#cf4c34" },
+  { name: "Palo Noah", x: 375, y: 180, color: "#cf4c34" },
+  { name: "Riddhi Rapids", x: 100, y: 75, color: "#cf4c34" },
+  { name: "Firestone Rouge", x: 250, y: 190, color: "#cf4c34" },
 ];
 
-const routes: Route[] = [
-  // { source: cities[0], target: cities[1] },
-  // { source: cities[1], target: cities[2] },
-  // { source: cities[2], target: cities[3] },
-];
+const routes: Route[] = [];
+
+export const background = "#d3d3d3";
 
 const graph = {
   nodes: cities,
@@ -81,7 +80,7 @@ function USMap({ width, height }: NetworkProps) {
               cx={node.x}
               cy={node.y}
               r={8}
-              fill={node.color || "white"}
+              fill={node.color || "pink"}
             />
             <text
               x={node.x}
