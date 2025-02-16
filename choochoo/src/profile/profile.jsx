@@ -1,17 +1,9 @@
 import { Avatar } from "@mui/material";
-import { useState } from "react";
-import Sheet from "@mui/joy/Sheet";
 import Box from "@mui/joy/Box";
 import CssBaseline from "@mui/joy/CssBaseline";
 import { useTheme, useMediaQuery } from "@mui/material";
-import Typography from "@mui/joy/Typography";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import { Grid2 } from "@mui/material";
-import Link from "@mui/joy/Link";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import "./profile.css";
 
 function App() {
@@ -114,24 +106,6 @@ function Profile() {
             <Button className="button">Join Game</Button>
             <Button className="button">Edit Profile</Button>
           </Grid2>
-          {/* <Grid2 size={6}>
-            <p>Trains are fun!</p>
-          </Grid2>
-          <Grid2 size={6} display={"flex"} justifyContent={"right"}>
-            <Button className="button">Join Game</Button>
-          </Grid2>
-          <Grid2 size={6}>
-            <p>Trains are fun!</p>
-          </Grid2>
-          <Grid2 size={6} display={"flex"} justifyContent={"right"}>
-            <Button className="button">Edit Profile</Button>
-          </Grid2>
-          <Grid2 size={6}>
-            <p>Trains are fun!</p>
-          </Grid2>
-          <Grid2 size={6} display={"flex"} justifyContent={"right"}>
-            <Button className="button">Noah!</Button>
-          </Grid2> */}
         </Grid2>
       </Box>
     </main>
