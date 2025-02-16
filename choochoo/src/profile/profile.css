@@ -38,8 +38,10 @@ body {
 
 .profile_name p {
   font-size: inherit;
+  text-align: right;
 }
 
 .profile_name h3 {
   font-size: inherit;
+  text-align: right;
 }

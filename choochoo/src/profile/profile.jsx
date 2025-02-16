@@ -9,6 +9,8 @@ import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
+import { Grid2 } from "@mui/material";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import "./profile.css";
 
 function App() {
@@ -42,7 +44,93 @@ function Profile() {
           minHeight: 50,
         }}
       >
-        <div className="info">
+        <Grid2 container spacing={2} rowSpacing={"3vw"}>
+          <Grid2 size={5}>
+            <Avatar
+              alt="thomas"
+              src="/Users/claradelzell/Documents/GitHub/tickettoride/choochoo/src/assets/trains/thomas_train.jpg"
+              sx={{
+                width: isSmallScreen ? "10vw" : isMediumScreen ? "15vw" : 125,
+                height: isSmallScreen ? "10vw" : isMediumScreen ? "15vw" : 125,
+                ml: "1vw",
+              }}
+            />
+          </Grid2>
+          <Grid2 size={7}>
+            <div className="profile_name">
+              <h3
+                style={{
+                  fontSize: isSmallScreen
+                    ? "3vw"
+                    : isMediumScreen
+                    ? "clamp(20px, 5vw, 24px"
+                    : "clamp(30px, 1.5vw, 32px",
+                }}
+              >
+                Profile name
+              </h3>
+              <p
+                style={{
+                  fontSize: isSmallScreen
+                    ? "1.5vw"
+                    : isMediumScreen
+                    ? "clamp(10px, 3vw, 12px"
+                    : "clamp(15px, 1vw, 23px",
+                }}
+              >
+                Total wins:
+              </p>
+              <p
+                style={{
+                  fontSize: isSmallScreen
+                    ? "1.5vw"
+                    : isMediumScreen
+                    ? "clamp(10px, 3vw, 12px"
+                    : "clamp(15px, 1vw, 23px",
+                }}
+              >
+                Highest score:
+              </p>
+            </div>
+          </Grid2>
+          <Grid2 size={12}>
+            <span></span>
+          </Grid2>
+          {/* <Grid2 size={2}>
+            <span></span>
+          </Grid2>
+          <Grid2 size={3} justifyContent={"center"}>
+            <Button fullWidth="true">Join Game</Button>
+          </Grid2>
+          <Grid2 size={2}>
+            <span></span>
+          </Grid2>
+          <Grid2 size={3} justifyContent={"center"}>
+            <Button fullWidth="true" disableFocusRipple="true">
+              Edit Profile
+            </Button>
+          </Grid2>
+          <Grid2 size={2}>
+            <span></span>
+          </Grid2>
+          <Grid2 size={4.5}>
+            <span></span>
+          </Grid2>
+          <Grid2 size={3} justifyContent={"center"}>
+            <Button fullWidth="true">Whatever noah wanted!</Button>
+          </Grid2> */}
+          <Grid2 size={3}>
+            <span></span>
+          </Grid2>
+          <Grid2 size={6} justifyContent={"center"}>
+            <ButtonGroup variant="text" sx={{ gap: "2vw" }}>
+              <Button>Join Game</Button>
+              <Button>Edit Profile</Button>
+              <Button>Noah's button</Button>
+            </ButtonGroup>
+          </Grid2>
+        </Grid2>
+        {/* <div className="info">
           <Avatar
             alt="thomas"
             src="/Users/claradelzell/Documents/GitHub/tickettoride/choochoo/src/assets/trains/thomas_train.jpg"
@@ -66,7 +154,7 @@ function Profile() {
             <p>Total wins:</p>
             <p>Highest score:</p>
           </div>
-        </div>
+        </div> */}
       </Box>
     </main>
   );
