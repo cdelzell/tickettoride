@@ -18,8 +18,8 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 // Setting path to user data
-const userDataRefLocation = database.ref("users/1");
-const gameDataRefLocation = database.ref("activeGames/1");
+const userDataPath = database.ref("users/1");
+const gameDataPath = database.ref("activeGames/1");
 
 // Example user data to write
 const userData = {
@@ -60,18 +60,18 @@ const gameData = {
 
 }
 
-userDataRefLocation.set(userData)
-  .then(() => {
-    console.log("Data written successfully!");
-  })
-  .catch((error) => {
-    console.error("Error writing data: ", error);
-  });
-
-  gameDataRefLocation.set(gameData)
-  .then(() => {
-    console.log("Data written successfully!");
-  })
-  .catch((error) => {
-    console.error("Error writing data: ", error);
-  });
+/**
+ * Function to write data to Firebase Database
+ * @param {string} path - Path where the data should be written in the database. IE userDataPath & gameDataPath
+ * @param {Object} data - The data to be written to the given path. IE userData & gameData
+ */
+const writeDataToDatabase = (path, data) => {
+  const ref = database.ref(path);
+  ref.set(data)
+    .then(() => {
+      console.log(`Data written successfully to ${path}`);
+    })
+    .catch((error) => {
+      console.error(`Error writing data to ${path}:`, error);
+    });
+};
