@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["dom", "esnext"], // Add relevant libraries
-    "allowJs": true, // Allow JavaScript files
-    "jsx": "react-jsx", // Required for JSX in React 17+
+    "lib": ["dom", "esnext"], 
+    "allowJs": false, 
+    "jsx": "react-jsx", 
     "moduleResolution": "node", // Use Node resolution strategy
     "module": "esnext", // Use ES Modules
     "esModuleInterop": true, // Enable interop between CommonJS and ES modules

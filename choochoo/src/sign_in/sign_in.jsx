@@ -22,13 +22,14 @@ function Login() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  // hook for react's navigation function
-  const navigate = useNavigate();
+  // // hook for react's navigation function
+  // const navigate = useNavigate();
 
-  // just currently moves to game page after clicking button
-  const handleLogin = () => {
-    navigate("/main_game_page");
-  };
+  // // just currently moves to game page after clicking button
+  // const handleLogin = () => {
+  //   navigate("/main_game_page");
+  // };
+
   return (
     <main className="loginPage">
       <CssBaseline />
