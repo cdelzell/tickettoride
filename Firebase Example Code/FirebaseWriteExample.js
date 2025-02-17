@@ -60,7 +60,7 @@ const gameData = {
 
 }
 
-userRef.set(userData)
+userDataRefLocation.set(userData)
   .then(() => {
     console.log("Data written successfully!");
   })
@@ -68,7 +68,7 @@ userRef.set(userData)
     console.error("Error writing data: ", error);
   });
 
-  userRef.set(gameData)
+  gameDataRefLocation.set(gameData)
   .then(() => {
     console.log("Data written successfully!");
   })
