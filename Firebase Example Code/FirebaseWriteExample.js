@@ -34,20 +34,20 @@ const userData = {
 };
 
 const mapStatus = {
-  trains_claimed: "SDASD", // Likely be a list object of train objeccts of some sort
-  train_price: "dSADASD", // Likely be a list object of some sort
-  trains_open: "SDADASD" // Likely be a list object of some sort
+  trains_claimed: "SDASD", // List of object
+  train_price: "dSADASD", // List of object
+  trains_open: "SDADASD" // List of object
 }
 
 const playerHand = {
-  card_count: "SDASD", // Likely be a list object of train objeccts of some sort
-  route_cards: "dSADASD", // Likely be a list of objects of some sort
-  score: "SDADASD" // Likely be a list of objects of some sort
+  card_count: "SDASD", // List of objects
+  route_cards: "dSADASD", // List of objects
+  score: "SDADASD" // Numerical Value
 }
 
 const drawableCards = {
-  train_cards: "SDASD", // Likely be a list of objects of some sort
-  route_cards: "dSADASD", // Likely be a list of objects of some sort 
+  train_cards: "SDASD", // List of objects
+  route_cards: "dSADASD", // List of objects
 }
 
 const gameData = {
