@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["dom", "esnext"], // Add relevant libraries
+    "allowJs": true, // Allow JavaScript files
+    "jsx": "react-jsx", // Required for JSX in React 17+
+    "moduleResolution": "node", // Use Node resolution strategy
+    "module": "esnext", // Use ES Modules
+    "esModuleInterop": true, // Enable interop between CommonJS and ES modules
+    "strict": true, // Enable all strict type-checking options
+    "skipLibCheck": true, // Skip checking library files for faster compilation
+    "forceConsistentCasingInFileNames": true // Ensure file name case consistency
+  },
+  "include": ["src/**/*"]
+}
+// basic typescript config json file
