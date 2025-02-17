@@ -11,8 +11,6 @@
     "skipLibCheck": true, // Skip checking library files for faster compilation
     "forceConsistentCasingInFileNames": true // Ensure file name case consistency
   },
-  "include": [
-    "src/**/*" // Include all files in the src directory
-  ]
+  "include": ["src/**/*"]
 }
 // basic typescript config json file

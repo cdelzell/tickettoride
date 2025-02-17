@@ -73,16 +73,16 @@ function Login() {
             placeholder="password"
           />
         </FormControl>
-        <Button // changed to just handle logic on click
-          sx={{ mt: 1 }}
-          onClick={handleLogin}
+        <Button sx={{ mt: 1 }} onClick={handleLogin}>
+          Log in
+        </Button>
         <Button
           component="a"
           href="/profile"
           sx={{
             mt: 1,
             "&:hover": {
-              backgroundColor: "primary.dark", // Darkens background only
+              backgroundColor: "primary.dark",
               color: "white",
             },
           }}
