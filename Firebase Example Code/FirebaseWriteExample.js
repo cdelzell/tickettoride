@@ -67,3 +67,11 @@ userRef.set(userData)
   .catch((error) => {
     console.error("Error writing data: ", error);
   });
+
+  userRef.set(gameData)
+  .then(() => {
+    console.log("Data written successfully!");
+  })
+  .catch((error) => {
+    console.error("Error writing data: ", error);
+  });
