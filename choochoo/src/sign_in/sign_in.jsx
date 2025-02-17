@@ -73,9 +73,6 @@ function Login() {
             placeholder="password"
           />
         </FormControl>
-        {/* <Button sx={{ mt: 1 }} onClick={handleLogin}> // OG log in button to see game page
-          Log in
-        </Button> */}
         <Button
           component="a"
           href="/profile"

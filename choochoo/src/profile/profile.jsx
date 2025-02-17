@@ -102,7 +102,19 @@ function Profile() {
             justifyContent={"space-between"}
             marginX={"1vw"}
           >
-            <Button className="button">Make Game</Button>
+            <Button
+              className="button"
+              component="a"
+              href="/main_game_page"
+              sx={{
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                  color: "white",
+                },
+              }}
+            >
+              Make Game
+            </Button>
             <Button className="button">Join Game</Button>
             <Button className="button">Edit Profile</Button>
           </Grid2>
