@@ -33,7 +33,31 @@ const userData = {
   status: true
 };
 
+const mapStatus = {
+  trains_claimed: "SDASD", // Likely be a list object of train objeccts of some sort
+  train_price: "dSADASD", // Likely be a list object of some sort
+  trains_open: "SDADASD" // Likely be a list object of some sort
+}
+
+const playerHand = {
+  card_count: "SDASD", // Likely be a list object of train objeccts of some sort
+  route_cards: "dSADASD", // Likely be a list of objects of some sort
+  score: "SDADASD" // Likely be a list of objects of some sort
+}
+
+const drawableCards = {
+  train_cards: "SDASD", // Likely be a list of objects of some sort
+  route_cards: "dSADASD", // Likely be a list of objects of some sort 
+}
+
 const gameData = {
+  map_status: mapStatus,
+  player_hand_1: playerHand,
+  player_hand_2: playerHand,
+  player_hand_3: playerHand,
+  player_hand_4: playerHand,
+  draw_cards: drawableCards
+
 }
 
 userRef.set(userData)
