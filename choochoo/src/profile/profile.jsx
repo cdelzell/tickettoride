@@ -34,7 +34,7 @@ function Profile() {
           gap: 2,
           borderRadius: "sm",
           boxShadow: "md",
-          overflowY: "scroll",
+          // overflowY: "scroll",
           minHeight: 50,
         }}
       >
