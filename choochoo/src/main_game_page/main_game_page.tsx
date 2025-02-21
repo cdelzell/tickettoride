@@ -35,6 +35,24 @@ const main_player = {
   profilePic: "./src/assets/trains/thomas_train.jpg",
 };
 
+const train_cards = [
+  { color: "./src/assets/cards/red.png" },
+  { color: "./src/assets/cards/yellow.png" },
+  { color: "./src/assets/cards/black.png" },
+  { color: "./src/assets/cards/green.png" },
+  { color: "./src/assets/cards/purple.png" },
+  { color: "./src/assets/cards/blue.png" },
+  { color: "./src/assets/cards/brown.png" },
+  { color: "./src/assets/cards/white.png" },
+];
+
+const train_counts = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const train_cards_and_counts = train_cards.map((card, i) => ({
+  ...card,
+  count: train_counts[i],
+}));
+
 interface City {
   name: string;
   x: number;
@@ -103,13 +121,25 @@ const MainGamePage = () => {
         ))}
       </div>
 
-      {/* main player */}
-      <div className="main-player-card">
-        <PlayerCard
-          username={main_player.username}
-          trainCount={main_player.trainCount}
-          profilePic={main_player.profilePic}
-        />
+      <div className="player_actions">
+        {/* train cards */}
+        <div className="train_cards">
+          {train_cards_and_counts.map((train_card, index) => (
+            <TrainCard
+              key={index}
+              color={train_card.color}
+              count={train_card.count}
+            />
+          ))}
+        </div>
+        {/* main player */}
+        <div className="main-player-card">
+          <PlayerCard
+            username={main_player.username}
+            trainCount={main_player.trainCount}
+            profilePic={main_player.profilePic}
+          />
+        </div>
       </div>
 
       {/* map */}
@@ -134,6 +164,15 @@ function PlayerCard({
         <span className="username">{username}</span>
         <span className="train-count">{trainCount} Trains</span>
       </div>
+    </div>
+  );
+}
+
+function TrainCard({ color, count }: { color: string; count: number }) {
+  return (
+    <div className="card_with_count">
+      <img className="train_card" src={color} alt={color} />
+      <div className="circle">{count}</div>
     </div>
   );
 }
