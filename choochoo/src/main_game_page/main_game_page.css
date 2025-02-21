@@ -10,14 +10,16 @@
 
 .player-cards {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 1vw;
+  left: 2vw;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 0.5vw;
 }
 
 .player-card {
+  width: 10vw;
+  height: 5vw;
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.8);
@@ -25,6 +27,35 @@
   padding: 1vw;
   border-radius: 10px;
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-card .profile-pic {
+  border-radius: 50%;
+  width: 2vw;
+  height: 2vw;
+  margin-right: 10%;
+  padding: 0;
+}
+
+.player-card .player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-card .username {
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1vw;
+}
+
+.player-card .train-count {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.5vw;
+  color: #555;
 }
 
 .player_actions {
@@ -41,6 +72,7 @@
   display: flex;
   flex-direction: row;
   gap: 0.5vw;
+  margin-right: 2vw;
 }
 
 .train_card {
@@ -79,33 +111,32 @@
   align-items: center;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgb(255, 204, 0);
+  box-shadow: 0 0.1vw 0.5vw rgb(255, 204, 0);
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-left: 3vw;
 }
 
-.profile-pic {
+.main-player-card .profile-pic {
   border-radius: 50%;
   width: 5vw;
   height: 5vw;
+  margin-left: 10%;
   margin-right: 10%;
-  padding: 0;
 }
 
-.player-info {
+.main-player-card .player-info {
   display: flex;
   flex-direction: column;
 }
 
-.username {
+.main-player-card .username {
   font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 2vw;
 }
 
-.train-count {
+.main-player-card .train-count {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 1vw;

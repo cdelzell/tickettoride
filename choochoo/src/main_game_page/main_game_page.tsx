@@ -117,6 +117,7 @@ const MainGamePage = () => {
             username={player.username}
             trainCount={player.trainCount}
             profilePic={player.profilePic}
+            main_player={false}
           />
         ))}
       </div>
@@ -138,6 +139,7 @@ const MainGamePage = () => {
             username={main_player.username}
             trainCount={main_player.trainCount}
             profilePic={main_player.profilePic}
+            main_player={true}
           />
         </div>
       </div>
@@ -152,13 +154,15 @@ function PlayerCard({
   username,
   trainCount,
   profilePic,
+  main_player,
 }: {
   username: string;
   trainCount: number;
   profilePic: string;
+  main_player: boolean;
 }) {
   return (
-    <div className="player-card">
+    <div className={main_player ? "main-player-card" : "player-card"}>
       <img className="profile-pic" src={profilePic} alt="Profile" />
       <div className="player-info">
         <span className="username">{username}</span>
