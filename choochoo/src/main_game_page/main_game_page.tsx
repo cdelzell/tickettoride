@@ -3,7 +3,7 @@ import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
 
-// this works with typescript so hand to change file
+// this works with typescript so had to change file
 
 // let's go airbnb
 export type NetworkProps = {
@@ -15,24 +15,24 @@ const players = [
   {
     username: "c-bear",
     trainCount: 1700,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: "./src/assets/trains/percy_train.webp",
   },
   {
     username: "t-dawg",
     trainCount: 0,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: "./src/assets/trains/gordon_train.webp",
   },
   {
     username: "ridster",
     trainCount: 2,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: "./src/assets/trains/james_train.webp",
   },
 ];
 
 const main_player = {
   username: "noah-rama",
   trainCount: 2,
-  profilePic: "https://via.placeholder.com/40",
+  profilePic: "./src/assets/trains/thomas_train.jpg",
 };
 
 interface City {
@@ -140,7 +140,7 @@ function PlayerCard({
 
 function USMap({ width, height }: NetworkProps) {
   return width < 10 ? null : (
-    <svg width={width * 0.70} height={height * 0.70}>
+    <svg width={width * 0.7} height={height * 0.7}>
       {/* background map */}
       <image
         href={monoMap}
@@ -169,9 +169,9 @@ function USMap({ width, height }: NetworkProps) {
               fill="white"
               stroke="black"
               strokeWidth={0.5}
-              rx={5} 
+              rx={5}
               ry={5}
-              opacity={0.8} 
+              opacity={0.8}
             />
             <text
               x={node.x}
