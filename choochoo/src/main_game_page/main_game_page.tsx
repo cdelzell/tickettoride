@@ -44,14 +44,17 @@ const train_cards = [
   { color: "./src/assets/cards/blue.png" },
   { color: "./src/assets/cards/brown.png" },
   { color: "./src/assets/cards/white.png" },
+  { color: "./src/assets/cards/wild.jpg" },
 ];
 
-const train_counts = [1, 2, 3, 4, 5, 6, 7, 8];
+const train_counts = [1, 2, 3, 4, 5, 6, 7, 8, 20];
 
 const train_cards_and_counts = train_cards.map((card, i) => ({
   ...card,
   count: train_counts[i],
 }));
+
+const action_box_status = 2;
 
 interface City {
   name: string;
@@ -123,6 +126,10 @@ const MainGamePage = () => {
       </div>
 
       <div className="player_actions">
+        <ActionBox action={action_box_status}></ActionBox>
+
+        <DestinationCards></DestinationCards>
+
         {/* train cards */}
         <div className="train_cards">
           {train_cards_and_counts.map((train_card, index) => (
@@ -133,6 +140,7 @@ const MainGamePage = () => {
             />
           ))}
         </div>
+
         {/* main player */}
         <div className="main-player-card">
           <PlayerCard
@@ -172,12 +180,81 @@ function PlayerCard({
   );
 }
 
+function ActionBox({ action }: { action: number }) {
+  return (
+    <div className="box">
+      {action == 0 ? (
+        <HomeBox></HomeBox>
+      ) : action == 1 ? (
+        <DrawTrains></DrawTrains>
+      ) : action == 2 ? (
+        <PlayTrains></PlayTrains>
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
+}
+
+function HomeBox() {
+  return (
+    <div className="home">
+      <button>Draw Trains</button>
+      <button>Play Trains</button>
+      <button>Draw Destination</button>
+    </div>
+  );
+}
+
+function DrawTrains() {
+  return (
+    <div className="draw_trains">
+      <div className="draw_train_rules">
+        <p>You may:</p>
+        <p>a) draw a random train</p>
+        <p>b) draw a train from the face-up cards</p>
+        <p>c) a combination of both</p>
+      </div>
+
+      <DrawPile></DrawPile>
+    </div>
+  );
+}
+
+function PlayTrains() {
+  return (
+    <div className="claim_route">
+      <p>Please claim a route on the board.</p>
+    </div>
+  );
+}
+
 function TrainCard({ color, count }: { color: string; count: number }) {
   return (
     <div className="card_with_count">
       <img className="train_card" src={color} alt={color} />
       <div className="circle">{count}</div>
     </div>
+  );
+}
+
+function DrawPile() {
+  return (
+    <img
+      className="draw_pile"
+      src="./src/assets/draw_pile.jpg"
+      alt="draw pile"
+    />
+  );
+}
+
+function DestinationCards() {
+  return (
+    <img
+      className="destination_cards"
+      src="./src/assets/destination_brown.jpg"
+      alt="draw pile"
+    />
   );
 }
 
