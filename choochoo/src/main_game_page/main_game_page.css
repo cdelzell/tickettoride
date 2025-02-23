@@ -58,6 +58,20 @@
   color: #555;
 }
 
+.holder {
+  position: absolute;
+  top: 1vw;
+  right: 2vw;
+  width: 40vw;
+  height: 8vw;
+  background-color: white;
+  border-radius: 1vw;
+  gap: 2vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .box {
   width: 18vw;
   height: 11vw;
@@ -125,6 +139,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #555;
 }
 
 .draw_trains p {

@@ -44,7 +44,7 @@ const train_cards = [
   { color: "./src/assets/cards/blue.png" },
   { color: "./src/assets/cards/brown.png" },
   { color: "./src/assets/cards/white.png" },
-  { color: "./src/assets/cards/wild.jpg" },
+  { color: "./src/assets/cards/wild.png" },
 ];
 
 const train_counts = [1, 2, 3, 4, 5, 6, 7, 8, 20];
@@ -54,7 +54,15 @@ const train_cards_and_counts = train_cards.map((card, i) => ({
   count: train_counts[i],
 }));
 
-const action_box_status = 2;
+const face_up_cards = [
+  { color: "red" },
+  { color: "wild" },
+  { color: "blue" },
+  { color: "purple" },
+  { color: "white" },
+];
+
+const action_box_status = 1;
 
 interface City {
   name: string;
@@ -125,6 +133,8 @@ const MainGamePage = () => {
         ))}
       </div>
 
+      <FaceUpCards></FaceUpCards>
+
       <div className="player_actions">
         <ActionBox action={action_box_status}></ActionBox>
 
@@ -176,6 +186,28 @@ function PlayerCard({
         <span className="username">{username}</span>
         <span className="train-count">{trainCount} Trains</span>
       </div>
+    </div>
+  );
+}
+
+function FaceUpCards() {
+  return (
+    <div className="holder">
+      {face_up_cards.map((face_up_card) => (
+        <FaceUpCard color={face_up_card.color} />
+      ))}
+    </div>
+  );
+}
+
+function FaceUpCard({ color }: { color: string }) {
+  return (
+    <div>
+      <img
+        className="train_card"
+        src={"./src/assets/cards/" + color + ".png"}
+        alt={color}
+      />
     </div>
   );
 }
