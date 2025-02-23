@@ -253,7 +253,7 @@ function DestinationCards() {
     <img
       className="destination_cards"
       src="./src/assets/destination_brown.jpg"
-      alt="draw pile"
+      alt="destination cards"
     />
   );
 }
