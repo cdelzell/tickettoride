@@ -75,26 +75,26 @@ interface Route {
   source: City;
   target: City;
   dashed?: boolean;
-  color?: string
+  color?: string;
 }
 
 const cities: City[] = [
-  { name: "New York", x: 560, y: 110}, // 0
-  { name: "Chicago", x: 423, y: 143}, // 1
-  { name: "Denver", x: 275, y: 175}, // 2
-  { name: "Los Angeles", x: 144, y: 220}, // 3
-  { name: "Tyville", x: 230, y: 120}, // 4
-  { name: "Clara City", x: 360, y: 80}, // 5
-  { name: "Palo Noah", x: 480, y: 245}, // 6
-  { name: "Riddhi Rapids", x: 120, y: 125}, // 7
-  { name: "Firestone Rouge", x: 380, y: 185}, // 8
-  { name: "Seattle", x: 152, y: 60}, // 9
-  { name: "Miami", x: 515, y: 320}, // 10
-  { name: "Phoenix", x: 210, y: 245}, // 11
+  { name: "New York", x: 560, y: 110 }, // 0
+  { name: "Chicago", x: 423, y: 143 }, // 1
+  { name: "Denver", x: 275, y: 175 }, // 2
+  { name: "Los Angeles", x: 144, y: 220 }, // 3
+  { name: "Tyville", x: 230, y: 120 }, // 4
+  { name: "Clara City", x: 360, y: 80 }, // 5
+  { name: "Palo Noah", x: 480, y: 245 }, // 6
+  { name: "Riddhi Rapids", x: 120, y: 125 }, // 7
+  { name: "Firestone Rouge", x: 380, y: 185 }, // 8
+  { name: "Seattle", x: 152, y: 60 }, // 9
+  { name: "Miami", x: 515, y: 320 }, // 10
+  { name: "Phoenix", x: 210, y: 245 }, // 11
   { name: "Houston", x: 360, y: 290 }, // 12
-  { name: "Washington", x: 523, y: 162}, // 13
-  { name: "Oklahoma City", x: 344, y: 223}, // 14
-  { name: "Albuquerque", x: 260, y: 232}, // 15
+  { name: "Washington", x: 523, y: 162 }, // 13
+  { name: "Oklahoma City", x: 344, y: 223 }, // 14
+  { name: "Albuquerque", x: 260, y: 232 }, // 15
 ];
 
 const routes: Route[] = [
@@ -119,7 +119,7 @@ const routes: Route[] = [
   { source: cities[11], target: cities[15], dashed: true, color: "#2E5077" }, // phoenix to ALB
   { source: cities[8], target: cities[14], dashed: true, color: "#FFA630" }, // fr to oc
   { source: cities[7], target: cities[9], dashed: true, color: "#B9314F" }, // rr to seattle
-  { source: cities[5], target: cities[9], dashed: true, color: "#4DA1A9"}, // cc to seattle
+  { source: cities[5], target: cities[9], dashed: true, color: "#4DA1A9" }, // cc to seattle
   { source: cities[6], target: cities[10], dashed: true, color: "#FFA630" }, // cc to seattle
   { source: cities[1], target: cities[13], dashed: true, color: "#419D78" }, //chicago to washington
   { source: cities[6], target: cities[13], dashed: true, color: "#B9314F" }, //palo noah to washington
@@ -313,8 +313,12 @@ function DestinationCards() {
 }
 
 function USMap({ width, height }: NetworkProps) {
+  const mapWidth = width * 0.9;
+  const mapHeight = height * 0.9;
+  const scaleX = (x: number) => (x / 600) * mapWidth;
+  const scaleY = (y: number) => (y / 350) * mapHeight;
   return width < 10 ? null : (
-    <svg width={width * 0.9} height={height * 0.9}>
+    <svg width={mapWidth} height={mapHeight}>
       {/* background map */}
       <image
         href={monoMap}
@@ -332,7 +336,13 @@ function USMap({ width, height }: NetworkProps) {
         left={0}
         nodeComponent={({ node }) => (
           <g>
-            <circle cx={node.x} cy={node.y} r={8} fill={node.color || "black"} opacity = {0.68}/>
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={8}
+              fill={node.color || "black"}
+              opacity={0.68}
+            />
 
             {/* rectangle for text */}
             <rect
