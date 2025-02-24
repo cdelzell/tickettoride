@@ -75,36 +75,58 @@ interface Route {
   source: City;
   target: City;
   dashed?: boolean;
+  color?: string;
 }
 
 const cities: City[] = [
-  { name: "New York", x: 415, y: 109, color: "#cf4c34" }, // 0
-  { name: "Chicago", x: 330, y: 100, color: "#cf4c34" }, // 1
-  { name: "Denver", x: 220, y: 120, color: "#cf4c34" }, // 2
-  { name: "Los Angeles", x: 120, y: 160, color: "#cf4c34" }, // 3
-  { name: "Tyville", x: 180, y: 80, color: "#cf4c34" }, // 4
-  { name: "Clara City", x: 270, y: 70, color: "#cf4c34" }, // 5
-  { name: "Palo Noah", x: 375, y: 180, color: "#cf4c34" }, // 6
-  { name: "Riddhi Rapids", x: 100, y: 75, color: "#cf4c34" }, // 7
-  { name: "Firestone Rouge", x: 250, y: 190, color: "#cf4c34" }, // 8
+  { name: "New York", x: 560, y: 110 }, // 0
+  { name: "Chicago", x: 423, y: 143 }, // 1
+  { name: "Denver", x: 275, y: 175 }, // 2
+  { name: "Los Angeles", x: 144, y: 220 }, // 3
+  { name: "Tyville", x: 230, y: 120 }, // 4
+  { name: "Clara City", x: 360, y: 80 }, // 5
+  { name: "Palo Noah", x: 480, y: 245 }, // 6
+  { name: "Riddhi Rapids", x: 120, y: 125 }, // 7
+  { name: "Firestone Rouge", x: 380, y: 185 }, // 8
+  { name: "Seattle", x: 152, y: 60 }, // 9
+  { name: "Miami", x: 515, y: 320 }, // 10
+  { name: "Phoenix", x: 210, y: 245 }, // 11
+  { name: "Houston", x: 360, y: 290 }, // 12
+  { name: "Washington", x: 523, y: 162 }, // 13
+  { name: "Oklahoma City", x: 344, y: 223 }, // 14
+  { name: "Albuquerque", x: 260, y: 232 }, // 15
 ];
 
 const routes: Route[] = [
-  { source: cities[0], target: cities[1], dashed: true },
-  { source: cities[1], target: cities[6], dashed: true },
-  { source: cities[1], target: cities[5], dashed: true },
-  { source: cities[0], target: cities[6], dashed: true },
-  { source: cities[1], target: cities[8], dashed: true },
-  { source: cities[5], target: cities[8], dashed: true },
-  { source: cities[7], target: cities[3], dashed: true }, // riddhi rapids to LA
-  { source: cities[7], target: cities[4], dashed: true }, // riddhi rapids to tyville
-  { source: cities[4], target: cities[5], dashed: true }, // ty ville to clara city
-  { source: cities[2], target: cities[5], dashed: true }, // denver to clara city
-  { source: cities[3], target: cities[2], dashed: true }, // LA to denver
-  { source: cities[4], target: cities[2], dashed: true }, // tyville to denver
-  { source: cities[3], target: cities[8], dashed: true }, // LA to firestone rouge
-  { source: cities[2], target: cities[8], dashed: true }, // denver to firestone rouge
-  { source: cities[6], target: cities[8], dashed: true }, // palo noah to firestone rouge
+  { source: cities[0], target: cities[1], dashed: true, color: "#FFA630" },
+  { source: cities[1], target: cities[6], dashed: true, color: "#4DA1A9" },
+  { source: cities[1], target: cities[5], dashed: true, color: "#2E5077" },
+  { source: cities[0], target: cities[13], dashed: true, color: "#611C35" }, //new york to washington
+  { source: cities[1], target: cities[8], dashed: true, color: "#419D78" },
+  { source: cities[5], target: cities[8], dashed: true, color: "#B9314F" },
+  { source: cities[7], target: cities[3], dashed: true, color: "#FFA630" }, // riddhi rapids to LA
+  { source: cities[7], target: cities[4], dashed: true, color: "#B9314F" }, // riddhi rapids to tyville
+  { source: cities[4], target: cities[5], dashed: true, color: "#2E5077" }, // ty ville to clara city
+  { source: cities[2], target: cities[5], dashed: true, color: "#419D78" }, // denver to clara city
+  { source: cities[3], target: cities[2], dashed: true, color: "#611C35" }, // LA to denver
+  { source: cities[4], target: cities[2], dashed: true, color: "#4DA1A9" }, // tyville to denver
+  { source: cities[3], target: cities[8], dashed: true, color: "#FFA630" }, // LA to firestone rouge
+  { source: cities[2], target: cities[8], dashed: true, color: "#419D78" }, // denver to firestone rouge
+  { source: cities[6], target: cities[8], dashed: true, color: "#611C35" }, // palo noah to firestone rouge
+  { source: cities[14], target: cities[12], dashed: true, color: "#4DA1A9" }, // oc to houston
+  { source: cities[11], target: cities[12], dashed: true, color: "#FFA630" }, // phoenix to houston
+  { source: cities[11], target: cities[3], dashed: true, color: "#419D78" }, // phoenix to LA
+  { source: cities[11], target: cities[15], dashed: true, color: "#2E5077" }, // phoenix to ALB
+  { source: cities[8], target: cities[14], dashed: true, color: "#FFA630" }, // fr to oc
+  { source: cities[7], target: cities[9], dashed: true, color: "#B9314F" }, // rr to seattle
+  { source: cities[5], target: cities[9], dashed: true, color: "#4DA1A9" }, // cc to seattle
+  { source: cities[6], target: cities[10], dashed: true, color: "#FFA630" }, // cc to seattle
+  { source: cities[1], target: cities[13], dashed: true, color: "#419D78" }, //chicago to washington
+  { source: cities[6], target: cities[13], dashed: true, color: "#B9314F" }, //palo noah to washington
+  { source: cities[6], target: cities[12], dashed: true, color: "#2E5077" }, //palo noah to houston
+  { source: cities[15], target: cities[12], dashed: true, color: "#611C35" }, //ALB to houston
+  { source: cities[15], target: cities[14], dashed: true, color: "#611C35" }, //ALB to OC
+  { source: cities[6], target: cities[14], dashed: true, color: "#4DA1A9" }, //palo noah to oc
 ];
 
 export const background = "#d3d3d3";
@@ -293,13 +315,17 @@ function DestinationCards() {
 }
 
 function USMap({ width, height }: NetworkProps) {
+  const mapWidth = width * 0.9;
+  const mapHeight = height * 0.9;
+  const scaleX = (x: number) => (x / 600) * mapWidth;
+  const scaleY = (y: number) => (y / 350) * mapHeight;
   return width < 10 ? null : (
-    <svg width={width * 0.7} height={height * 0.7}>
+    <svg width={mapWidth} height={mapHeight}>
       {/* background map */}
       <image
         href={monoMap}
         x="0%"
-        y="0%"
+        y="5%"
         width="100%"
         height="100%"
         preserveAspectRatio="xMidYMid meet"
@@ -312,7 +338,13 @@ function USMap({ width, height }: NetworkProps) {
         left={0}
         nodeComponent={({ node }) => (
           <g>
-            <circle cx={node.x} cy={node.y} r={8} fill={node.color || "pink"} />
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={8}
+              fill={node.color || "black"}
+              opacity={0.68}
+            />
 
             {/* rectangle for text */}
             <rect
@@ -344,10 +376,10 @@ function USMap({ width, height }: NetworkProps) {
             y1={link.source.y * 2.0}
             x2={link.target.x * 2.0}
             y2={link.target.y * 2.0}
-            strokeWidth={9}
-            stroke="black"
-            strokeOpacity={0.5}
-            strokeDasharray={link.dashed ? "12,6" : undefined}
+            strokeWidth={10}
+            stroke={link.color || "black"} // Default to black if no color is assigned
+            strokeOpacity={0.8}
+            strokeDasharray={link.dashed ? "20,4" : undefined}
           />
         )}
       />
