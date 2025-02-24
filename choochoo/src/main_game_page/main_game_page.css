@@ -73,6 +73,11 @@
   justify-content: center;
 }
 
+.face_up_card {
+  padding: 0;
+  border-radius: 0;
+}
+
 .box {
   width: 18vw;
   height: 11vw;
