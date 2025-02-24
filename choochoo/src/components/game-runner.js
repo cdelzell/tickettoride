@@ -1,7 +1,7 @@
 import GameBoard from './game-board.js'
 import Player from './player.js'
 
-const START_TRAIN_CARD_NUM = 5;
+const START_TRAIN_CARD_NUM = 4;
 
 class GameRunner {
     constructor(users) {
@@ -10,6 +10,15 @@ class GameRunner {
         for (let i = 0; i < users.length; i++) {
             this.players.push(new Player(users[i], this.gameBoard.drawTrainCards(START_TRAIN_CARD_NUM)))
         }
+    }
+
+    claimRoute(route, player) {
+        if (player.checkIfCanClaimRoute(route)) {
+            let usedCards = player.claimRoute(route);
+            this.gameBoard.addDiscardsFromUsedTrainCards(usedCards);
+            return true;
+        }
+        return false;
     }
 }
 

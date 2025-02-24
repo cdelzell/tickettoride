@@ -6,6 +6,7 @@ class GameBoard {
         this.destinationCardDrawPile = this.#getStartDestinationCards();
         this.trainCardDiscardPile = [];
         this.faceUpTrainCards = this.#setStartFaceUpTrainCards();
+        this.boardGraph = null;
     }
 
     //Shuffles a given array, used here to shuffle decks
@@ -60,6 +61,12 @@ class GameBoard {
         this.trainCardDrawPile = this.trainCardDrawPile.concat(this.trainCardDiscardPile); //Instantiates new draw pile, which may be a problem??
         this.trainCardDiscardPile = [];
         this.trainCardDrawPile = this.#shuffleDeck(this.trainCardDrawPile)
+    }
+
+    addDiscardsFromUsedTrainCards(usedTrainCardColors) {
+        for (let i = 0; i < usedTrainCardColors.length; i++) {
+            this.trainCardDiscardPile.push(new TrainCard(usedTrainCardColors[i]));
+        }
     }
 
     //ALL BELOW HERE ARE CONSTRUCTOR FUNCTIONS
