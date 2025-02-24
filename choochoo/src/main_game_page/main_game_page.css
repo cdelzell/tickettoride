@@ -63,8 +63,8 @@
   position: absolute;
   top: 1vw;
   right: 2vw;
-  width: 40vw;
-  height: 7.5vw;
+  width: 30vw;
+  height: 6vw;
   background-color: white;
   border-radius: 1vw;
   gap: 2vw;
@@ -76,6 +76,12 @@
 .face_up_card {
   padding: 0;
   border-radius: 0;
+}
+
+.face_up_card .train_card {
+  width: 3.5vw;
+  height: 5vw;
+  display: block;
 }
 
 .box {
@@ -240,4 +246,13 @@
   text-overflow: ellipsis;
   font-size: 1vw;
   color: #555;
+}
+
+.map {
+  width: 100vw;
+  height: 40vw;
+  background-image: url("/src/assets/mono_map.jpg");
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 5vw;
 }
