@@ -3,7 +3,7 @@ import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
 
-// this works with typescript so hand to change file
+// this works with typescript so had to change file
 
 // let's go airbnb
 export type NetworkProps = {
@@ -15,25 +15,54 @@ const players = [
   {
     username: "c-bear",
     trainCount: 1700,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: "./src/assets/trains/percy_train.webp",
   },
   {
     username: "t-dawg",
     trainCount: 0,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: "./src/assets/trains/gordon_train.webp",
   },
   {
     username: "ridster",
     trainCount: 2,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: "./src/assets/trains/james_train.webp",
   },
 ];
 
 const main_player = {
   username: "noah-rama",
   trainCount: 2,
-  profilePic: "https://via.placeholder.com/40",
+  profilePic: "./src/assets/trains/thomas_train.jpg",
 };
+
+const train_cards = [
+  { color: "./src/assets/cards/red.png" },
+  { color: "./src/assets/cards/yellow.png" },
+  { color: "./src/assets/cards/black.png" },
+  { color: "./src/assets/cards/green.png" },
+  { color: "./src/assets/cards/purple.png" },
+  { color: "./src/assets/cards/blue.png" },
+  { color: "./src/assets/cards/brown.png" },
+  { color: "./src/assets/cards/white.png" },
+  { color: "./src/assets/cards/wild.png" },
+];
+
+const train_counts = [1, 2, 3, 4, 5, 6, 7, 8, 20];
+
+const train_cards_and_counts = train_cards.map((card, i) => ({
+  ...card,
+  count: train_counts[i],
+}));
+
+const face_up_cards = [
+  { color: "red" },
+  { color: "wild" },
+  { color: "blue" },
+  { color: "purple" },
+  { color: "white" },
+];
+
+const action_box_status = 1;
 
 interface City {
   name: string;
@@ -46,36 +75,58 @@ interface Route {
   source: City;
   target: City;
   dashed?: boolean;
+  color?: string;
 }
 
 const cities: City[] = [
-  { name: "New York", x: 415, y: 109, color: "#cf4c34" }, // 0
-  { name: "Chicago", x: 330, y: 100, color: "#cf4c34" }, // 1
-  { name: "Denver", x: 220, y: 120, color: "#cf4c34" }, // 2
-  { name: "Los Angeles", x: 120, y: 160, color: "#cf4c34" }, // 3
-  { name: "Tyville", x: 180, y: 80, color: "#cf4c34" }, // 4
-  { name: "Clara City", x: 270, y: 70, color: "#cf4c34" }, // 5
-  { name: "Palo Noah", x: 375, y: 180, color: "#cf4c34" }, // 6
-  { name: "Riddhi Rapids", x: 100, y: 75, color: "#cf4c34" }, // 7
-  { name: "Firestone Rouge", x: 250, y: 190, color: "#cf4c34" }, // 8
+  { name: "New York", x: 560, y: 110 }, // 0
+  { name: "Chicago", x: 423, y: 143 }, // 1
+  { name: "Denver", x: 275, y: 175 }, // 2
+  { name: "Los Angeles", x: 144, y: 220 }, // 3
+  { name: "Tyville", x: 230, y: 120 }, // 4
+  { name: "Clara City", x: 360, y: 80 }, // 5
+  { name: "Palo Noah", x: 480, y: 245 }, // 6
+  { name: "Riddhi Rapids", x: 120, y: 125 }, // 7
+  { name: "Firestone Rouge", x: 380, y: 185 }, // 8
+  { name: "Seattle", x: 152, y: 60 }, // 9
+  { name: "Miami", x: 515, y: 320 }, // 10
+  { name: "Phoenix", x: 210, y: 245 }, // 11
+  { name: "Houston", x: 360, y: 290 }, // 12
+  { name: "Washington", x: 523, y: 162 }, // 13
+  { name: "Oklahoma City", x: 344, y: 223 }, // 14
+  { name: "Albuquerque", x: 260, y: 232 }, // 15
 ];
 
 const routes: Route[] = [
-  { source: cities[0], target: cities[1], dashed: true },
-  { source: cities[1], target: cities[6], dashed: true },
-  { source: cities[1], target: cities[5], dashed: true },
-  { source: cities[0], target: cities[6], dashed: true },
-  { source: cities[1], target: cities[8], dashed: true },
-  { source: cities[5], target: cities[8], dashed: true },
-  { source: cities[7], target: cities[3], dashed: true }, // riddhi rapids to LA
-  { source: cities[7], target: cities[4], dashed: true }, // riddhi rapids to tyville
-  { source: cities[4], target: cities[5], dashed: true }, // ty ville to clara city
-  { source: cities[2], target: cities[5], dashed: true }, // denver to clara city
-  { source: cities[3], target: cities[2], dashed: true }, // LA to denver
-  { source: cities[4], target: cities[2], dashed: true }, // tyville to denver
-  { source: cities[3], target: cities[8], dashed: true }, // LA to firestone rouge
-  { source: cities[2], target: cities[8], dashed: true }, // denver to firestone rouge
-  { source: cities[6], target: cities[8], dashed: true }, // palo noah to firestone rouge
+  { source: cities[0], target: cities[1], dashed: true, color: "#FFA630" },
+  { source: cities[1], target: cities[6], dashed: true, color: "#4DA1A9" },
+  { source: cities[1], target: cities[5], dashed: true, color: "#2E5077" },
+  { source: cities[0], target: cities[13], dashed: true, color: "#611C35" }, //new york to washington
+  { source: cities[1], target: cities[8], dashed: true, color: "#419D78" },
+  { source: cities[5], target: cities[8], dashed: true, color: "#B9314F" },
+  { source: cities[7], target: cities[3], dashed: true, color: "#FFA630" }, // riddhi rapids to LA
+  { source: cities[7], target: cities[4], dashed: true, color: "#B9314F" }, // riddhi rapids to tyville
+  { source: cities[4], target: cities[5], dashed: true, color: "#2E5077" }, // ty ville to clara city
+  { source: cities[2], target: cities[5], dashed: true, color: "#419D78" }, // denver to clara city
+  { source: cities[3], target: cities[2], dashed: true, color: "#611C35" }, // LA to denver
+  { source: cities[4], target: cities[2], dashed: true, color: "#4DA1A9" }, // tyville to denver
+  { source: cities[3], target: cities[8], dashed: true, color: "#FFA630" }, // LA to firestone rouge
+  { source: cities[2], target: cities[8], dashed: true, color: "#419D78" }, // denver to firestone rouge
+  { source: cities[6], target: cities[8], dashed: true, color: "#611C35" }, // palo noah to firestone rouge
+  { source: cities[14], target: cities[12], dashed: true, color: "#4DA1A9" }, // oc to houston
+  { source: cities[11], target: cities[12], dashed: true, color: "#FFA630" }, // phoenix to houston
+  { source: cities[11], target: cities[3], dashed: true, color: "#419D78" }, // phoenix to LA
+  { source: cities[11], target: cities[15], dashed: true, color: "#2E5077" }, // phoenix to ALB
+  { source: cities[8], target: cities[14], dashed: true, color: "#FFA630" }, // fr to oc
+  { source: cities[7], target: cities[9], dashed: true, color: "#B9314F" }, // rr to seattle
+  { source: cities[5], target: cities[9], dashed: true, color: "#4DA1A9" }, // cc to seattle
+  { source: cities[6], target: cities[10], dashed: true, color: "#FFA630" }, // cc to seattle
+  { source: cities[1], target: cities[13], dashed: true, color: "#419D78" }, //chicago to washington
+  { source: cities[6], target: cities[13], dashed: true, color: "#B9314F" }, //palo noah to washington
+  { source: cities[6], target: cities[12], dashed: true, color: "#2E5077" }, //palo noah to houston
+  { source: cities[15], target: cities[12], dashed: true, color: "#611C35" }, //ALB to houston
+  { source: cities[15], target: cities[14], dashed: true, color: "#611C35" }, //ALB to OC
+  { source: cities[6], target: cities[14], dashed: true, color: "#4DA1A9" }, //palo noah to oc
 ];
 
 export const background = "#d3d3d3";
@@ -99,17 +150,38 @@ const MainGamePage = () => {
             username={player.username}
             trainCount={player.trainCount}
             profilePic={player.profilePic}
+            main_player={false}
           />
         ))}
       </div>
 
-      {/* main player */}
-      <div className="main-player-card">
-        <PlayerCard
-          username={main_player.username}
-          trainCount={main_player.trainCount}
-          profilePic={main_player.profilePic}
-        />
+      <FaceUpCards></FaceUpCards>
+
+      <div className="player_actions">
+        <ActionBox action={action_box_status}></ActionBox>
+
+        <DestinationCards></DestinationCards>
+
+        {/* train cards */}
+        <div className="train_cards">
+          {train_cards_and_counts.map((train_card, index) => (
+            <TrainCard
+              key={index}
+              color={train_card.color}
+              count={train_card.count}
+            />
+          ))}
+        </div>
+
+        {/* main player */}
+        <div className="main-player-card">
+          <PlayerCard
+            username={main_player.username}
+            trainCount={main_player.trainCount}
+            profilePic={main_player.profilePic}
+            main_player={true}
+          />
+        </div>
       </div>
 
       {/* map */}
@@ -122,13 +194,15 @@ function PlayerCard({
   username,
   trainCount,
   profilePic,
+  main_player,
 }: {
   username: string;
   trainCount: number;
   profilePic: string;
+  main_player: boolean;
 }) {
   return (
-    <div className="player-card">
+    <div className={main_player ? "main-player-card" : "player-card"}>
       <img className="profile-pic" src={profilePic} alt="Profile" />
       <div className="player-info">
         <span className="username">{username}</span>
@@ -138,14 +212,120 @@ function PlayerCard({
   );
 }
 
+function FaceUpCards() {
+  return (
+    <div className="holder">
+      {face_up_cards.map((face_up_card) => (
+        <FaceUpCard color={face_up_card.color} />
+      ))}
+    </div>
+  );
+}
+
+function FaceUpCard({ color }: { color: string }) {
+  return (
+    <div>
+      <button className="face_up_card">
+        <img
+          className="train_card"
+          src={"./src/assets/cards/" + color + ".png"}
+          alt={color}
+        />
+      </button>
+    </div>
+  );
+}
+
+function ActionBox({ action }: { action: number }) {
+  return (
+    <div className="box">
+      {action == 0 ? (
+        <HomeBox></HomeBox>
+      ) : action == 1 ? (
+        <DrawTrains></DrawTrains>
+      ) : action == 2 ? (
+        <PlayTrains></PlayTrains>
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
+}
+
+function HomeBox() {
+  return (
+    <div className="home">
+      <button>Draw Trains</button>
+      <button>Play Trains</button>
+      <button>Draw Destination</button>
+    </div>
+  );
+}
+
+function DrawTrains() {
+  return (
+    <div className="draw_trains">
+      <div className="draw_train_rules">
+        <p>You may:</p>
+        <p>a) draw a random train</p>
+        <p>b) draw a train from the face-up cards</p>
+        <p>c) a combination of both</p>
+      </div>
+
+      <DrawPile></DrawPile>
+    </div>
+  );
+}
+
+function PlayTrains() {
+  return (
+    <div className="claim_route">
+      <p>Please claim a route on the board.</p>
+    </div>
+  );
+}
+
+function TrainCard({ color, count }: { color: string; count: number }) {
+  return (
+    <div className="card_with_count">
+      <img className="train_card" src={color} alt={color} />
+      <div className="circle">{count}</div>
+    </div>
+  );
+}
+
+function DrawPile() {
+  return (
+    <img
+      className="draw_pile"
+      src="./src/assets/draw_pile.jpg"
+      alt="draw pile"
+    />
+  );
+}
+
+function DestinationCards() {
+  return (
+    <img
+      className="destination_cards"
+      src="./src/assets/destination_brown.jpg"
+      alt="destination cards"
+    />
+  );
+}
+
 function USMap({ width, height }: NetworkProps) {
+  const mapWidth = width * 0.9;
+  const mapHeight = height * 0.9;
+  const scaleX = (x: number) => (x / 600) * mapWidth;
+  const scaleY = (y: number) => (y / 350) * mapHeight;
   return width < 10 ? null : (
-    <svg width={width * 0.70} height={height * 0.70}>
+    <svg width={mapWidth} height={mapHeight}>
       {/* background map */}
       <image
         href={monoMap}
         x="0%"
-        y="0%"
+        y="5%"
         width="100%"
         height="100%"
         preserveAspectRatio="xMidYMid meet"
@@ -158,7 +338,13 @@ function USMap({ width, height }: NetworkProps) {
         left={0}
         nodeComponent={({ node }) => (
           <g>
-            <circle cx={node.x} cy={node.y} r={8} fill={node.color || "pink"} />
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={8}
+              fill={node.color || "black"}
+              opacity={0.68}
+            />
 
             {/* rectangle for text */}
             <rect
@@ -169,9 +355,9 @@ function USMap({ width, height }: NetworkProps) {
               fill="white"
               stroke="black"
               strokeWidth={0.5}
-              rx={5} 
+              rx={5}
               ry={5}
-              opacity={0.8} 
+              opacity={0.8}
             />
             <text
               x={node.x}
@@ -190,10 +376,10 @@ function USMap({ width, height }: NetworkProps) {
             y1={link.source.y * 2.0}
             x2={link.target.x * 2.0}
             y2={link.target.y * 2.0}
-            strokeWidth={9}
-            stroke="black"
-            strokeOpacity={0.5}
-            strokeDasharray={link.dashed ? "12,6" : undefined}
+            strokeWidth={10}
+            stroke={link.color || "black"} // Default to black if no color is assigned
+            strokeOpacity={0.8}
+            strokeDasharray={link.dashed ? "20,4" : undefined}
           />
         )}
       />
