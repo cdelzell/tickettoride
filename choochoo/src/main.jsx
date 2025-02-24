@@ -5,6 +5,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sign_In from "/src/sign_in/sign_in.jsx";
 import Sign_Up from "/src/sign_up/sign_up.jsx";
 import "./index.css";
+import GameRunner from "./components/game-runner.js";
+
+const gameRunner = new GameRunner(['Billy', 'Bob', 'Joe']);
+console.log("GameRunner Instance:", gameRunner);
+
 
 export default function App() {
   return (
