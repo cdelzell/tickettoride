@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/database";
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, get } from 'firebase/database';
 
 // Firebase Credentials, do not post or share, Ty likes not owing google money
 const firebaseConfig = {
@@ -13,14 +13,14 @@ const firebaseConfig = {
   measurementId: "G-VZ49VGKG0X"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 //Database location
-const database = firebase.database();
+const database = getDatabase(app);
 
 // Setting path to user data
-const userDataPath = database.ref("users");
-const gameDataPath = database.ref("activeGames");
+const userDataPath = ref(database, "users");
+const gameDataPath = ref(database, "activeGames");
 
 const userData = {
   username: "john_doe",
@@ -91,5 +91,4 @@ function findGameByGameID(gameID) {
   });
 }
 
-
-
+findUserByStatus(true);

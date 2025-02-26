@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, push } from 'firebase/database';
 
 // Firebase Credentials, do not post or share, Ty likes not owing google money
 const firebaseConfig = {
@@ -52,7 +52,7 @@ const drawableCards = {
 }
 
 const gameData = {
-  game_ID: "12345",
+  game_ID: "57322",
   map_status: mapStatus,
   player_hand_1: playerHand,
   player_hand_2: playerHand,
@@ -67,7 +67,7 @@ const gameData = {
  * @param {Object} data - The data to be written to the given path. IE userData & gameData
  */
 function writeDataToDatabase(ref, data){
-  set(ref, data)
+  push(ref, data)
     .then(() => {
       console.log(`Data written successfully to ${ref}`);
     })
@@ -77,3 +77,4 @@ function writeDataToDatabase(ref, data){
 };
 
 writeDataToDatabase(userDataPath, userData);
+writeDataToDatabase(gameDataPath, gameData);
