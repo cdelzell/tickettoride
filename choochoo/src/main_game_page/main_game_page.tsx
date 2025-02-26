@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
@@ -10,6 +10,35 @@ export type NetworkProps = {
   width: number;
   height: number;
 };
+
+// NOTE: STUFF FOR LATER
+// export type Player = {
+//   username: string;
+//   trainCount: number;
+//   profilePic: string;
+//   trainCards: { color: string; count: number }[];
+//   destinationCards: DestinationCard[];
+//   claimedRoutes: number[];
+//   score: number;
+// };
+
+
+// export type DestinationCard = {
+//   source: string;
+//   target: string;
+//   points: number;
+//   completed: boolean;
+// };
+
+// const routePoints = {
+//   1: 1,
+//   2: 2,
+//   3: 4,
+//   4: 7,
+//   5: 10,
+//   6: 15
+// };
+
 
 const players = [
   {
@@ -79,22 +108,22 @@ interface Route {
 }
 
 const cities: City[] = [
-  { name: "New York", x: 560, y: 110 }, // 0
-  { name: "Chicago", x: 423, y: 143 }, // 1
-  { name: "Denver", x: 275, y: 175 }, // 2
-  { name: "Los Angeles", x: 144, y: 220 }, // 3
-  { name: "Tyville", x: 230, y: 120 }, // 4
-  { name: "Clara City", x: 360, y: 80 }, // 5
-  { name: "Palo Noah", x: 480, y: 245 }, // 6
-  { name: "Riddhi Rapids", x: 120, y: 125 }, // 7
-  { name: "Firestone Rouge", x: 380, y: 185 }, // 8
-  { name: "Seattle", x: 152, y: 60 }, // 9
-  { name: "Miami", x: 515, y: 320 }, // 10
-  { name: "Phoenix", x: 210, y: 245 }, // 11
-  { name: "Houston", x: 360, y: 290 }, // 12
-  { name: "Washington", x: 523, y: 162 }, // 13
-  { name: "Oklahoma City", x: 344, y: 223 }, // 14
-  { name: "Albuquerque", x: 260, y: 232 }, // 15
+  { name: "New York", x: 504, y: 133 }, // 0
+  { name: "Chicago", x: 382, y: 130 }, // 1
+  { name: "Denver", x: 230, y: 165 }, // 2
+  { name: "Los Angeles", x: 89, y: 192 }, // 3
+  { name: "Tyville", x: 175, y: 100 }, // 4
+  { name: "Clara City", x: 270, y: 70 }, // 5
+  { name: "Palo Noah", x: 430, y: 230 }, // 6
+  { name: "Riddhi Rapids", x: 76, y: 100 }, // 7
+  { name: "Firestone Rouge", x: 340, y: 175 }, // 8
+  { name: "Seattle", x: 110, y: 35 }, // 9
+  { name: "Miami", x: 475, y: 305 }, // 10
+  { name: "Phoenix", x: 165, y: 220 }, // 11
+  { name: "Houston", x: 315, y: 280 }, // 12
+  { name: "Washington", x: 485, y: 172 }, // 13
+  { name: "Oklahoma City", x: 300, y: 213 }, // 14
+  { name: "Albuquerque", x: 220, y: 212 }, // 15
 ];
 
 const routes: Route[] = [
@@ -315,74 +344,106 @@ function DestinationCards() {
 }
 
 function USMap({ width, height }: NetworkProps) {
-  const mapWidth = width * 0.9;
-  const mapHeight = height * 0.9;
-  const scaleX = (x: number) => (x / 600) * mapWidth;
-  const scaleY = (y: number) => (y / 350) * mapHeight;
+  const MAP_WIDTH = 600;
+  const MAP_HEIGHT = 400;
+
+  const [dimensions, setDimensions] = useState({
+    width: width * 0.9,
+    height: height * 0.9,
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      const containerWidth = window.innerWidth * 0.9;
+      const containerHeight = window.innerHeight * 0.9;
+
+      const xScale = containerWidth / MAP_WIDTH;
+      const yScale = containerHeight / MAP_HEIGHT;
+      const scaleFactor = Math.min(xScale, yScale);
+
+      setDimensions({
+        width: MAP_WIDTH * scaleFactor,
+        height: MAP_HEIGHT * scaleFactor,
+      });
+    }
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const scaleFactor = dimensions.width / MAP_WIDTH;
+
   return width < 10 ? null : (
-    <svg width={mapWidth} height={mapHeight}>
+    <svg
+      width={dimensions.width}
+      height={dimensions.height}
+      viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+      preserveAspectRatio="xMidYMid meet"
+    >
       {/* background map */}
       <image
         href={monoMap}
-        x="0%"
-        y="5%"
-        width="100%"
-        height="100%"
+        x="0"
+        y="0"
+        width={MAP_WIDTH}
+        height={MAP_HEIGHT}
         preserveAspectRatio="xMidYMid meet"
       />
 
-      {/* graph of cities and routes */}
-      <Graph<Route, City>
-        graph={graph}
-        top={0}
-        left={0}
-        nodeComponent={({ node }) => (
-          <g>
-            <circle
-              cx={node.x}
-              cy={node.y}
-              r={8}
-              fill={node.color || "black"}
-              opacity={0.68}
-            />
+      {/*  routes  */}
+      {routes.map((route, index) => (
+        <line
+          key={`route-${index}`}
+          x1={route.source.x}
+          y1={route.source.y}
+          x2={route.target.x}
+          y2={route.target.y}
+          strokeWidth={6}
+          stroke={route.color || "black"}
+          strokeOpacity={0.8}
+          strokeDasharray={route.dashed ? "20,4" : undefined}
+        />
+      ))}
 
-            {/* rectangle for text */}
-            <rect
-              x={node.x - 60}
-              y={node.y - 30}
-              width={120}
-              height={20}
-              fill="white"
-              stroke="black"
-              strokeWidth={0.5}
-              rx={5}
-              ry={5}
-              opacity={0.8}
-            />
-            <text
-              x={node.x}
-              y={node.y - 15}
-              fill="black"
-              fontSize="15px"
-              textAnchor="middle"
-            >
-              {node.name}
-            </text>
-          </g>
-        )}
-        linkComponent={({ link }) => (
-          <line
-            x1={link.source.x * 2.0}
-            y1={link.source.y * 2.0}
-            x2={link.target.x * 2.0}
-            y2={link.target.y * 2.0}
-            strokeWidth={10}
-            stroke={link.color || "black"} // Default to black if no color is assigned
-            strokeOpacity={0.8}
-            strokeDasharray={link.dashed ? "20,4" : undefined}
+      {/*  city nodes  */}
+      {cities.map((city, index) => (
+        <g key={`city-${index}`}>
+          <circle
+            cx={city.x}
+            cy={city.y}
+            r={5}
+            fill={city.color || "black"}
+            opacity={0.68}
           />
-        )}
-      />
+
+          {/* rectangle for text */}
+          <rect
+            x={city.x - 31.5}
+            y={city.y - 20}
+            width={60}
+            height={13}
+            fill="white"
+            stroke="black"
+            strokeWidth={0.5}
+            rx={5}
+            ry={5}
+            opacity={0.8}
+          />
+          <text
+            x={city.x}
+            y={city.y - 11}
+            fill="black"
+            fontSize="6.5px"
+            textAnchor="middle"
+          >
+            {city.name}
+          </text>
+        </g>
+      ))}
     </svg>
   );
 }
