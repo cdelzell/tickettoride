@@ -1,25 +1,26 @@
-import firebase from "firebase/app";
-import "firebase/database";
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, set } from 'firebase/database';
 
 // Firebase Credentials, do not post or share, Ty likes not owing google money
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCno9yVTIHQUzvciQs5tnjvWSnX-JewSYQ",
+  authDomain: "the-conductors.firebaseapp.com",
+  databaseURL: "https://the-conductors-default-rtdb.firebaseio.com",
+  projectId: "the-conductors",
+  storageBucket: "the-conductors.firebasestorage.app",
+  messagingSenderId: "552591104221",
+  appId: "1:552591104221:web:12d6209a67fbb26caf2334",
+  measurementId: "G-VZ49VGKG0X"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 //Database location
-const database = firebase.database();
+const database = getDatabase(app);
 
 // Setting path to user data
-const userDataPath = database.ref("users/1");
-const gameDataPath = database.ref("activeGames/1");
+const userDataPath = ref(database, "users");
+const gameDataPath = ref(database, "activeGames");
 
 // Example user data to write
 const userData = {
@@ -27,7 +28,7 @@ const userData = {
   email: "john.doe@example.com",
   passowrd: "Password123",
   wins: 0,
-  loss: 0,
+  losses: 0,
   total_score: 0,
   profile_picture: "url/to/profile_pic.jpg",
   status: true
@@ -51,13 +52,13 @@ const drawableCards = {
 }
 
 const gameData = {
+  game_ID: "12345",
   map_status: mapStatus,
   player_hand_1: playerHand,
   player_hand_2: playerHand,
   player_hand_3: playerHand,
   player_hand_4: playerHand,
   draw_cards: drawableCards
-
 }
 
 /**
@@ -65,13 +66,14 @@ const gameData = {
  * @param {string} path - Path where the data should be written in the database. IE userDataPath & gameDataPath
  * @param {Object} data - The data to be written to the given path. IE userData & gameData
  */
-const writeDataToDatabase = (path, data) => {
-  const ref = database.ref(path);
-  ref.set(data)
+function writeDataToDatabase(ref, data){
+  set(ref, data)
     .then(() => {
-      console.log(`Data written successfully to ${path}`);
+      console.log(`Data written successfully to ${ref}`);
     })
     .catch((error) => {
-      console.error(`Error writing data to ${path}:`, error);
+      console.error(`Error writing data to ${ref}:`, error);
     });
 };
+
+writeDataToDatabase(userDataPath, userData);
