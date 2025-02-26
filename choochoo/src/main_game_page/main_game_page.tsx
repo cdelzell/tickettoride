@@ -11,6 +11,35 @@ export type NetworkProps = {
   height: number;
 };
 
+// NOTE: STUFF FOR LATER
+// export type Player = {
+//   username: string;
+//   trainCount: number;
+//   profilePic: string;
+//   trainCards: { color: string; count: number }[];
+//   destinationCards: DestinationCard[];
+//   claimedRoutes: number[];
+//   score: number;
+// };
+
+
+// export type DestinationCard = {
+//   source: string;
+//   target: string;
+//   points: number;
+//   completed: boolean;
+// };
+
+// const routePoints = {
+//   1: 1,
+//   2: 2,
+//   3: 4,
+//   4: 7,
+//   5: 10,
+//   6: 15
+// };
+
+
 const players = [
   {
     username: "c-bear",
@@ -371,7 +400,7 @@ function USMap({ width, height }: NetworkProps) {
           y1={route.source.y}
           x2={route.target.x}
           y2={route.target.y}
-          strokeWidth={6.7}
+          strokeWidth={6}
           stroke={route.color || "black"}
           strokeOpacity={0.8}
           strokeDasharray={route.dashed ? "20,4" : undefined}
