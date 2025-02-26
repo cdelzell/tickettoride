@@ -79,6 +79,7 @@ interface Route {
 }
 
 const cities: City[] = [
+<<<<<<< Updated upstream
   { name: "New York", x: 560, y: 110 }, // 0
   { name: "Chicago", x: 423, y: 143 }, // 1
   { name: "Denver", x: 275, y: 175 }, // 2
@@ -95,6 +96,24 @@ const cities: City[] = [
   { name: "Washington", x: 523, y: 162 }, // 13
   { name: "Oklahoma City", x: 344, y: 223 }, // 14
   { name: "Albuquerque", x: 260, y: 232 }, // 15
+=======
+  { name: "New York", x: 504, y: 133 }, // 0 
+  { name: "Chicago", x: 382, y: 130 }, // 1
+  { name: "Denver", x: 230, y: 165 }, // 2
+  { name: "Los Angeles", x: 89, y: 192 }, // 3
+  { name: "Tyville", x: 175, y: 100 }, // 4
+  { name: "Clara City", x: 270, y: 70 }, // 5
+  { name: "Palo Noah", x: 430, y: 230 }, // 6
+  { name: "Riddhi Rapids", x: 76, y: 100 }, // 7
+  { name: "Firestone Rouge", x: 340, y: 175 }, // 8
+  { name: "Seattle", x: 110, y: 35 }, // 9
+  { name: "Miami", x: 475, y: 305 }, // 10
+  { name: "Phoenix", x: 165, y: 220 }, // 11
+  { name: "Houston", x: 315, y: 280 }, // 12
+  { name: "Washington", x: 485, y: 172 }, // 13
+  { name: "Oklahoma City", x: 300, y: 213 }, // 14
+  { name: "Albuquerque", x: 220, y: 212 }, // 15
+>>>>>>> Stashed changes
 ];
 
 const routes: Route[] = [
@@ -104,13 +123,13 @@ const routes: Route[] = [
   { source: cities[0], target: cities[13], dashed: true, color: "#611C35" }, //new york to washington
   { source: cities[1], target: cities[8], dashed: true, color: "#419D78" },
   { source: cities[5], target: cities[8], dashed: true, color: "#B9314F" },
-  { source: cities[7], target: cities[3], dashed: true, color: "#FFA630" }, // riddhi rapids to LA
+  { source: cities[7], target: cities[3], dashed: true, color: "#FFA630" }, // riddhi rapids to LA (6)
   { source: cities[7], target: cities[4], dashed: true, color: "#B9314F" }, // riddhi rapids to tyville
   { source: cities[4], target: cities[5], dashed: true, color: "#2E5077" }, // ty ville to clara city
   { source: cities[2], target: cities[5], dashed: true, color: "#419D78" }, // denver to clara city
   { source: cities[3], target: cities[2], dashed: true, color: "#611C35" }, // LA to denver
   { source: cities[4], target: cities[2], dashed: true, color: "#4DA1A9" }, // tyville to denver
-  { source: cities[3], target: cities[8], dashed: true, color: "#FFA630" }, // LA to firestone rouge
+  { source: cities[3], target: cities[8], dashed: true, color: "#FFA630" }, // LA to firestone rouge (6)
   { source: cities[2], target: cities[8], dashed: true, color: "#419D78" }, // denver to firestone rouge
   { source: cities[6], target: cities[8], dashed: true, color: "#611C35" }, // palo noah to firestone rouge
   { source: cities[14], target: cities[12], dashed: true, color: "#4DA1A9" }, // oc to houston
@@ -314,167 +333,167 @@ function DestinationCards() {
   );
 }
 
-// function USMap({ width, height }: NetworkProps) {
-//   const mapWidth = width * 0.9;
-//   const mapHeight = height * 0.9;
-//   const scaleX = (x: number) => (x / 600) * mapWidth;
-//   const scaleY = (y: number) => (y / 350) * mapHeight;
-//   return width < 10 ? null : (
-//     <svg width={mapWidth} height={mapHeight}>
-//       {/* background map */}
-//       <image
-//         href={monoMap}
-//         x="0%"
-//         y="5%"
-//         width="100%"
-//         height="100%"
-//         preserveAspectRatio="xMidYMid meet"
-//       />
+function USMap({ width, height }: NetworkProps) {
+  const mapWidth = width * 0.9;
+  const mapHeight = height * 0.9;
+  const scaleX = (x: number) => (x / 600) * mapWidth;
+  const scaleY = (y: number) => (y / 350) * mapHeight;
+  return width < 10 ? null : (
+    <svg width={mapWidth} height={mapHeight}>
+      {/* background map */}
+      <image
+        href={monoMap}
+        x="0%"
+        y="5%"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid meet"
+      />
 
-//       {/* graph of cities and routes */}
-//       <Graph<Route, City>
-//         graph={graph}
-//         top={0}
-//         left={0}
-//         nodeComponent={({ node }) => (
-//           <g>
-//             <circle
-//               cx={node.x}
-//               cy={node.y}
-//               r={8}
-//               fill={node.color || "black"}
-//               opacity={0.68}
-//             />
+      {/* graph of cities and routes */}
+      <Graph<Route, City>
+        graph={graph}
+        top={0}
+        left={0}
+        nodeComponent={({ node }) => (
+          <g>
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r={8}
+              fill={node.color || "black"}
+              opacity={0.68}
+            />
 
-//             {/* rectangle for text */}
-//             <rect
-//               x={node.x - 60}
-//               y={node.y - 30}
-//               width={120}
-//               height={20}
-//               fill="white"
-//               stroke="black"
-//               strokeWidth={0.5}
-//               rx={5}
-//               ry={5}
-//               opacity={0.8}
-//             />
-//             <text
-//               x={node.x}
-//               y={node.y - 15}
-//               fill="black"
-//               fontSize="1vw"
-//               textAnchor="middle"
-//             >
-//               {node.name}
-//             </text>
-//           </g>
-//         )}
-//         linkComponent={({ link }) => (
-//           <line
-//             x1={link.source.x * 2.0}
-//             y1={link.source.y * 2.0}
-//             x2={link.target.x * 2.0}
-//             y2={link.target.y * 2.0}
-//             strokeWidth={10}
-//             stroke={link.color || "black"} // Default to black if no color is assigned
-//             strokeOpacity={0.8}
-//             strokeDasharray={link.dashed ? "20,4" : undefined}
-//           />
-//         )}
-//       />
-//     </svg>
-//   );
-// }
+            {/* rectangle for text */}
+            <rect
+              x={node.x - 60}
+              y={node.y - 30}
+              width={120}
+              height={20}
+              fill="white"
+              stroke="black"
+              strokeWidth={0.5}
+              rx={5}
+              ry={5}
+              opacity={0.8}
+            />
+            <text
+              x={node.x}
+              y={node.y - 15}
+              fill="black"
+              fontSize="1vw"
+              textAnchor="middle"
+            >
+              {node.name}
+            </text>
+          </g>
+        )}
+        linkComponent={({ link }) => (
+          <line
+            x1={link.source.x * 2.0}
+            y1={link.source.y * 2.0}
+            x2={link.target.x * 2.0}
+            y2={link.target.y * 2.0}
+            strokeWidth={10}
+            stroke={link.color || "black"} // Default to black if no color is assigned
+            strokeOpacity={0.8}
+            strokeDasharray={link.dashed ? "20,4" : undefined}
+          />
+        )}
+      />
+    </svg>
+  );
+}
 
-// import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-// function USMap() {
-//   const [size, setSize] = useState({
-//     width: window.innerWidth,
-//     height: window.innerHeight,
-//   });
+function USMap() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
-//   useEffect(() => {
-//     const handleResize = () => {
-//       setSize({ width: window.innerWidth, height: window.innerHeight });
-//     };
-//     window.addEventListener("resize", handleResize);
-//     return () => window.removeEventListener("resize", handleResize);
-//   }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-//   return <USMapInfo width={size.width} height={size.height} />;
-// }
+  return <USMapInfo width={size.width} height={size.height} />;
+}
 
-// function USMapInfo({ width, height }: { width: number; height: number }) {
-//   // Define the actual size of the map
-//   const mapWidth = 400;
-//   const mapHeight = 250;
+function USMapInfo({ width, height }: { width: number; height: number }) {
+  // Define the actual size of the map
+  const mapWidth = 400;
+  const mapHeight = 250;
 
-//   // Scale everything based on the image size
-//   const scaleX = (x: number) => (x / mapWidth) * mapWidth;
-//   const scaleY = (y: number) => (y / mapHeight) * mapHeight;
+  // Scale everything based on the image size
+  const scaleX = (x: number) => (x / mapWidth) * mapWidth;
+  const scaleY = (y: number) => (y / mapHeight) * mapHeight;
 
-//   return width < 10 ? null : (
-//     <svg className="map">
-//       {/* Graph of Cities and Routes */}
-//       <Graph<Route, City>
-//         graph={graph}
-//         top={0}
-//         left={0}
-//         nodeComponent={({ node }) => (
-//           <g>
-//             {/* Keep nodes inside boundaries */}
-//             <circle
-//               cx={scaleX(node.x)}
-//               cy={scaleY(node.y)}
-//               r={Math.max(2, Math.min(5, mapWidth * 0.01))} // Min 2, Max 5
-//               fill={node.color || "black"}
-//               opacity={0.7}
-//             />
+  return width < 10 ? null : (
+    <svg className="map">
+      {/* Graph of Cities and Routes */}
+      <Graph<Route, City>
+        graph={graph}
+        top={0}
+        left={0}
+        nodeComponent={({ node }) => (
+          <g>
+            {/* Keep nodes inside boundaries */}
+            <circle
+              cx={scaleX(node.x)}
+              cy={scaleY(node.y)}
+              r={Math.max(2, Math.min(5, mapWidth * 0.01))} // Min 2, Max 5
+              fill={node.color || "black"}
+              opacity={0.7}
+            />
 
-//             {/* Keep labels inside the map */}
-//             <rect
-//               x={Math.max(5, scaleX(node.x) - 30)} // Prevent from going too left
-//               y={Math.max(5, scaleY(node.y) - 15)}
-//               width={60}
-//               height={12}
-//               fill="white"
-//               stroke="black"
-//               strokeWidth={0.3}
-//               rx={4}
-//               ry={4}
-//               opacity={0.8}
-//             />
+            {/* Keep labels inside the map */}
+            <rect
+              x={Math.max(5, scaleX(node.x) - 30)} // Prevent from going too left
+              y={Math.max(5, scaleY(node.y) - 15)}
+              width={60}
+              height={12}
+              fill="white"
+              stroke="black"
+              strokeWidth={0.3}
+              rx={4}
+              ry={4}
+              opacity={0.8}
+            />
 
-//             {/* Ensure text stays within the map */}
-//             <text
-//               x={Math.max(10, scaleX(node.x))}
-//               y={Math.max(10, scaleY(node.y))}
-//               fill="black"
-//               fontSize={`${Math.max(5, Math.min(9, mapWidth * 0.02))}px`} // Min 5px, Max 9px
-//               textAnchor="middle"
-//             >
-//               {node.name}
-//             </text>
-//           </g>
-//         )}
-//         linkComponent={({ link }) => (
-//           <line
-//             x1={scaleX(link.source.x)}
-//             y1={scaleY(link.source.y)}
-//             x2={scaleX(link.target.x)}
-//             y2={scaleY(link.target.y)}
-//             strokeWidth={Math.max(0.5, Math.min(2, mapWidth * 0.005))} // Min 0.5, Max 2
-//             stroke={link.color || "black"}
-//             strokeOpacity={0.7}
-//             strokeDasharray={link.dashed ? "4,2" : undefined} // Smaller dashes
-//           />
-//         )}
-//       />
-//     </svg>
-//   );
-// }
+            {/* Ensure text stays within the map */}
+            <text
+              x={Math.max(10, scaleX(node.x))}
+              y={Math.max(10, scaleY(node.y))}
+              fill="black"
+              fontSize={`${Math.max(5, Math.min(9, mapWidth * 0.02))}px`} // Min 5px, Max 9px
+              textAnchor="middle"
+            >
+              {node.name}
+            </text>
+          </g>
+        )}
+        linkComponent={({ link }) => (
+          <line
+            x1={scaleX(link.source.x)}
+            y1={scaleY(link.source.y)}
+            x2={scaleX(link.target.x)}
+            y2={scaleY(link.target.y)}
+            strokeWidth={Math.max(0.5, Math.min(2, mapWidth * 0.005))} // Min 0.5, Max 2
+            stroke={link.color || "black"}
+            strokeOpacity={0.7}
+            strokeDasharray={link.dashed ? "4,2" : undefined} // Smaller dashes
+          />
+        )}
+      />
+    </svg>
+  );
+}
 function USMap({ width, height }: NetworkProps) {
   const mapWidth = width * 0.9;
   const mapHeight = height * 0.9;
