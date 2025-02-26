@@ -80,6 +80,7 @@ interface Route {
 
 const cities: City[] = [
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   { name: "New York", x: 560, y: 110 }, // 0
   { name: "Chicago", x: 423, y: 143 }, // 1
   { name: "Denver", x: 275, y: 175 }, // 2
@@ -97,6 +98,8 @@ const cities: City[] = [
   { name: "Oklahoma City", x: 344, y: 223 }, // 14
   { name: "Albuquerque", x: 260, y: 232 }, // 15
 =======
+=======
+>>>>>>> Stashed changes
   { name: "New York", x: 504, y: 133 }, // 0 
   { name: "Chicago", x: 382, y: 130 }, // 1
   { name: "Denver", x: 230, y: 165 }, // 2
