@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
+import { useState } from "react";
 import "./main_game_page.css";
 
 // this works with typescript so had to change file
@@ -91,8 +92,6 @@ const face_up_cards = [
   { color: "white" },
 ];
 
-const action_box_status = 1;
-
 interface City {
   name: string;
   x: number;
@@ -169,6 +168,12 @@ const MainGamePage = () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
+  const [action_box_status, setActionBoxStatus] = useState(0);
+
+  const updateStatus = (newStatus: React.SetStateAction<number>) => {
+    setActionBoxStatus(newStatus);
+  };
+
   return (
     <main className="main_game_page">
       {/* player cards */}
@@ -187,7 +192,10 @@ const MainGamePage = () => {
       <FaceUpCards></FaceUpCards>
 
       <div className="player_actions">
-        <ActionBox action={action_box_status}></ActionBox>
+        <ActionBox
+          action={action_box_status}
+          updateStatus={updateStatus}
+        ></ActionBox>
 
         <DestinationCards></DestinationCards>
 
@@ -265,11 +273,17 @@ function FaceUpCard({ color }: { color: string }) {
   );
 }
 
-function ActionBox({ action }: { action: number }) {
+function ActionBox({
+  action,
+  updateStatus,
+}: {
+  action: number;
+  updateStatus: (newStatus: number) => void;
+}) {
   return (
     <div className="box">
-      {action == 0 ? (
-        <HomeBox></HomeBox>
+      {action === 0 ? (
+        <HomeBox updateStatus={updateStatus} />
       ) : action == 1 ? (
         <DrawTrains></DrawTrains>
       ) : action == 2 ? (
@@ -281,11 +295,15 @@ function ActionBox({ action }: { action: number }) {
   );
 }
 
-function HomeBox() {
+function HomeBox({
+  updateStatus,
+}: {
+  updateStatus: (newStatus: number) => void;
+}) {
   return (
     <div className="home">
-      <button>Draw Trains</button>
-      <button>Play Trains</button>
+      <button onClick={() => updateStatus(1)}>Draw Trains</button>
+      <button onClick={() => updateStatus(2)}>Play Trains</button>
       <button>Draw Destination</button>
     </div>
   );
