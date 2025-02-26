@@ -1,5 +1,6 @@
 class Player {
-    constructor(user, trainCards) {
+    constructor(id, user, trainCards) {
+        this.id = id;
         this.user = user;
         this.trainCardHand = this.setStarterTrainCards(trainCards);
         this.destinationCardHand = [];
@@ -42,6 +43,7 @@ class Player {
                 usedTrainCardColors.push('Wild');
             }
         }
+        this.scoredPoints += route.getPointValue()
         return usedTrainCardColors;
     }
     
@@ -51,6 +53,10 @@ class Player {
             hand[trainCards[i].getColor()] += 1;
         }
         return hand;
+    }
+
+    getId() {
+        return this.id;
     }
 
 }

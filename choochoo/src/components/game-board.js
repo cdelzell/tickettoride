@@ -1,7 +1,9 @@
 import TrainCard from './train-card.js'
+import BoardGraph from './board-graph.js'
 
 class GameBoard {
     constructor() {
+        this.boardGraph = new BoardGraph()
         this.trainCardDrawPile = this.#getStartTrainCards();
         this.destinationCardDrawPile = this.#getStartDestinationCards();
         this.trainCardDiscardPile = [];

@@ -8,13 +8,14 @@ class GameRunner {
         this.gameBoard = new GameBoard;
         this.players = []
         for (let i = 0; i < users.length; i++) {
-            this.players.push(new Player(users[i], this.gameBoard.drawTrainCards(START_TRAIN_CARD_NUM)))
+            this.players.push(new Player(i, users[i], this.gameBoard.drawTrainCards(START_TRAIN_CARD_NUM)))
         }
     }
 
     claimRoute(route, player) {
         if (player.checkIfCanClaimRoute(route)) {
             let usedCards = player.claimRoute(route);
+            route.claimRoute(player.getId())
             this.gameBoard.addDiscardsFromUsedTrainCards(usedCards);
             return true;
         }
