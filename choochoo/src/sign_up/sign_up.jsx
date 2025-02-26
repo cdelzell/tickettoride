@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Sheet from "@mui/joy/Sheet";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Typography from "@mui/joy/Typography";
@@ -6,10 +5,6 @@ import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Link from "@mui/joy/Link";
-import { createRoot } from "react-dom/client";
-import { StrictMode } from "react";
 
 import "./sign_up.css";
 
@@ -31,10 +26,10 @@ function Sign_In() {
         sx={{
           width: isSmallScreen ? "60%" : isMediumScreen ? "60%" : 500,
           maxWidth: 500,
-          mx: "auto", // margin left & right
-          my: 4, // margin top & bottom
-          py: 3, // padding top & bottom
-          px: 2, // padding left & right
+          mx: "auto",
+          my: 4,
+          py: 3,
+          px: 2,
           display: "flex",
           flexDirection: "column",
           gap: 2,
@@ -51,12 +46,21 @@ function Sign_In() {
           <Typography level="body-med">Sign up to continue.</Typography>
         </div>
         <FormControl>
+          <FormLabel>Username</FormLabel>
+          <Input
+            // html input attribute
+            name="username"
+            type="username"
+            placeholder="Thomas-the-train"
+          />
+        </FormControl>
+        <FormControl>
           <FormLabel>Email</FormLabel>
           <Input
             // html input attribute
             name="email"
             type="email"
-            placeholder="johndoe@email.com"
+            placeholder="thomasthetrain@email.com"
           />
         </FormControl>
         <FormControl>
@@ -77,7 +81,19 @@ function Sign_In() {
             placeholder="confirm password"
           />
         </FormControl>
-        <Button sx={{ mt: 1 /* margin top */ }}>Sign up</Button>
+        <Button
+          component="a"
+          href="/profile"
+          sx={{
+            mt: 1,
+            "&:hover": {
+              backgroundColor: "primary.dark", // Darkens background only
+              color: "white",
+            },
+          }}
+        >
+          Sign up
+        </Button>
       </Sheet>
     </main>
   );
