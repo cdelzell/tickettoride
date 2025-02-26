@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
-import { useState } from "react";
 import "./main_game_page.css";
 
 // this works with typescript so had to change file
@@ -23,7 +22,6 @@ export type NetworkProps = {
 //   score: number;
 // };
 
-
 // export type DestinationCard = {
 //   source: string;
 //   target: string;
@@ -39,7 +37,6 @@ export type NetworkProps = {
 //   5: 10,
 //   6: 15
 // };
-
 
 const players = [
   {
