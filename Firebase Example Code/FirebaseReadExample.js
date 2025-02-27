@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, get } from 'firebase/database';
+import { getDatabase, ref, query, orderByChild, equalTo, get } from "firebase/database";
 
 // Firebase Credentials, do not post or share, Ty likes not owing google money
 const firebaseConfig = {
@@ -23,72 +23,242 @@ const userDataPath = ref(database, "users");
 const gameDataPath = ref(database, "activeGames");
 
 const userData = {
-  username: "john_doe",
-  email: "john.doe@example.com",
-  passowrd: "Password123",
-  wins: 0,
-  loss: 0,
-  total_score: 0,
-  profile_picture: "url/to/profile_pic.jpg",
-  status: true
+  username: "john_doe",                       //String
+  email: "john.doe@example.com",              //String
+  passowrd: "Password123",                    //String
+  wins: 0,                                    //Int
+  loss: 0,                                    //Int
+  total_score: 0,                             //Int
+  profile_picture: "url/to/profile_pic.jpg",  //String
+  status: true                                //Bool
 };
 
-function findUserByUsername(username){
-  findUserByField('username', username);
+
+
+/**
+ * Function to search for users in the Firebase database with a specified username
+ * @param {string} username - The username of the user that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+async function findUserByUsername(username, print) {
+  try {
+    const userData = await findUserByField('username', username);
+
+    if (userData) {
+      if (print) {
+        printUserQueryResults(userData);  // Print the user data if print is true
+      }
+      return userData;  // Return the resolved data (user data) if found
+    } else {
+      console.log(`No user found with username: ${username}`);
+      return null;  // Return null if no user data is found
+    }
+  } catch (error) {
+    console.error("Error handling user data:", error);
+    return null;  // Return null on error
+  }
 }
-function findUserByEmail(email){
-  findUserByField('email', email);
+
+/**
+ * Function to search for users in the Firebase database with a specified email
+ * @param {string} email - The email of the user that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+async function findUserByEmail(email, print) {
+  try {
+    const userData = await findUserByField('email', email);
+
+    if (userData) {
+      if (print) {
+        printUserQueryResults(userData);  // Print the user data if print is true
+      }
+      return userData;  // Return the resolved data (user data) if found
+    } else {
+      console.log(`No user found with email: ${email}`);
+      return null;  // Return null if no user data is found
+    }
+  } catch (error) {
+    console.error("Error handling user data:", error);
+    return null;  // Return null on error
+  }
 }
-// Should Probably not ever use this func or encrpyt to be not plain text
-function findUserByPassword(password){
-  findUserByField('password', password);
+
+/**
+ * Function to search for users in the Firebase database with a specified password
+ * @param {string} password - The password of the user that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+async function findUserByPassword(password, print) {
+  try {
+    const userData = await findUserByField('password', password);
+
+    if (userData) {
+      if (print) {
+        printUserQueryResults(userData);  // Print the user data if print is true
+      }
+      return userData;  // Return the resolved data (user data) if found
+    } else {
+      console.log(`No user found with password: ${password}`);
+      return null;  // Return null if no user data is found
+    }
+  } catch (error) {
+    console.error("Error handling user data:", error);
+    return null;  // Return null on error
+  }
 }
-function findUserByWins(wins){
-  findUserByField('wins', wins);
+
+/**
+ * Function to search for users in the Firebase database with a specified wins value
+ * @param {number} wins - The number of wins of the user that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+async function findUserByWins(wins, print) {
+  try {
+    const userData = await findUserByField('wins', wins);
+
+    if (userData) {
+      if (print) {
+        printUserQueryResults(userData);  // Print the user data if print is true
+      }
+      return userData;  // Return the resolved data (user data) if found
+    } else {
+      console.log(`No user found with wins: ${wins}`);
+      return null;  // Return null if no user data is found
+    }
+  } catch (error) {
+    console.error("Error handling user data:", error);
+    return null;  // Return null on error
+  }
 }
-function findUserByLosses(losses){
-  findUserByField('losses', losses);
+
+/**
+ * Function to search for users in the Firebase database with a specified losses value
+ * @param {number} losses - The number of losses of the user that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+async function findUserByLosses(losses, print) {
+  try {
+    const userData = await findUserByField('losses', losses);
+
+    if (userData) {
+      if (print) {
+        printUserQueryResults(userData);  // Print the user data if print is true
+      }
+      return userData;  // Return the resolved data (user data) if found
+    } else {
+      console.log(`No user found with losses: ${losses}`);
+      return null;  // Return null if no user data is found
+    }
+  } catch (error) {
+    console.error("Error handling user data:", error);
+    return null;  // Return null on error
+  }
 }
-function findUserByTotalScore(total_score){
-  findUserByField('total_score', total_score);
+
+/**
+ * Function to search for users in the Firebase database with a specified total score
+ * @param {number} total_score - The total score of the user that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+async function findUserByTotalScore(total_score, print) {
+  try {
+    const userData = await findUserByField('total_score', total_score);
+
+    if (userData) {
+      if (print) {
+        printUserQueryResults(userData);  // Print the user data if print is true
+      }
+      return userData;  // Return the resolved data (user data) if found
+    } else {
+      console.log(`No user found with total_score: ${total_score}`);
+      return null;  // Return null if no user data is found
+    }
+  } catch (error) {
+    console.error("Error handling user data:", error);
+    return null;  // Return null on error
+  }
 }
-function findUserByProfilePicture(profile_picture){
-  findUserByField('profile_picture', profile_picture);
+
+/**
+ * Function to search for users in the Firebase database with a specified profile picture
+ * @param {string} profile_picture - The profile picture URL of the user that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+async function findUserByProfilePicture(profile_picture, print) {
+  try {
+    const userData = await findUserByField('profile_picture', profile_picture);
+
+    if (userData) {
+      if (print) {
+        printUserQueryResults(userData);  // Print the user data if print is true
+      }
+      return userData;  // Return the resolved data (user data) if found
+    } else {
+      console.log(`No user found with profile_picture: ${profile_picture}`);
+      return null;  // Return null if no user data is found
+    }
+  } catch (error) {
+    console.error("Error handling user data:", error);
+    return null;  // Return null on error
+  }
 }
-function findUserByStatus(status){
-  findUserByField('status', status);
+
+/**
+ * Function to search for users in the Firebase database with a specified status
+ * @param {boolean} status - The status of users that you are looking for (true or false)
+ * @param {boolean} print - Variable to determine if the program print the data received to console (true prints, false does not)
+ */
+async function findUserByStatus(status, print) {
+  try {
+    // Await the result of findUserByStatus
+    const userData = await findUserByField('status',status);
+
+    // Print the user data if it exists
+    if (userData) {
+      if(print){
+        printUserQueryResults(userData);  // Pass resolved data to print
+      }
+      return userData;
+    } else {
+      console.log("No user found with status:", status);
+    }
+  } catch (error) {
+    console.error("Error retrieving user data by status:", error);
+  }
 }
 
 function findUserByField(field, value) {
-
-  // Query for the user by the given field and value
-  userDataPath.orderByChild(field).equalTo(value).once('value', snapshot => {
-    if (snapshot.exists()) {
-      const usersData = snapshot.val();
-      const userIds = Object.keys(usersData); // Get the keys (user IDs)
-
-      console.log(`Found ${userIds.length} user(s) with ${field}:`, value);
-      
-      // Loop through each matching user and log their data
-      userIds.forEach(userId => {
-        console.log(`User ID: ${userId}, Data:`, usersData[userId]);
-      });
-    } else {
-      console.log(`No user found with ${field}:`, value);
-    }
-  });
+  const userQuery = query(userDataPath, orderByChild(field), equalTo(value));
+  // Ensure that we return the Promise from the `get()` call
+  return get(userQuery)  // This is a Promise.
+    .then(snapshot => {
+      if (snapshot.exists()) {
+        return snapshot.val();  // Return the data from snapshot
+      } else {
+        console.log(`No user found with ${field}:`, value);
+        return null;  // Return null if no data is found
+      }
+    })
+    .catch(error => {
+      console.error("Error retrieving data:", error);
+      return null;  // Return null on error
+    });
 }
 
-function findGameByGameID(gameID) {
-  // Query for the user by the given field and value
-  gameDataPath.orderByChild('game_ID').equalTo(gameID).once('value', snapshot => {
-    if (snapshot.exists()) {
-      const gameData = snapshot.val();
-      console.log(`Game found with game_ID ${gameID}:`, gameData);
-    } else {
-      console.log(`No game found with game_ID: ${gameID}`);
+async function printUserQueryResults(obj, indent = '') {
+  if (typeof obj === 'object' && obj !== null) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          console.log(`${indent}${key}:`);
+          printUserQueryResults(obj[key], indent + '  ');
+        } else {
+          console.log(`${indent}${key}: ${obj[key]}`);
+        }
+      }
     }
-  });
+  }
 }
 
-findUserByStatus(true);
+// Call the function and handle the returned Promise correctly
+printUserQueryResults(findUserByLosses(0));

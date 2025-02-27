@@ -24,7 +24,7 @@ const gameDataPath = ref(database, "activeGames");
 
 // Example user data to write
 const userData = {
-  username: "john_doe",
+  username: "Nacy_Gren",
   email: "john.doe@example.com",
   passowrd: "Password123",
   wins: 0,
@@ -33,6 +33,13 @@ const userData = {
   profile_picture: "url/to/profile_pic.jpg",
   status: true
 };
+
+const player_IDs = {  //Will be firebase Keys
+  player1: "",
+  player2: "",
+  player3: "",
+  player4: ""
+}
 
 const mapStatus = {
   trains_claimed: "SDASD", // List of object
@@ -52,7 +59,8 @@ const drawableCards = {
 }
 
 const gameData = {
-  game_ID: "57322",
+  game_ID: "232222", // Use as game code for joinning?
+  player_IDs: player_IDs,
   map_status: mapStatus,
   player_hand_1: playerHand,
   player_hand_2: playerHand,
