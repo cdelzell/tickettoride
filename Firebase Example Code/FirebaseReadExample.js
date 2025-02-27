@@ -13,15 +13,17 @@ const firebaseConfig = {
   measurementId: "G-VZ49VGKG0X"
 };
 
+//get the app going
 const app = initializeApp(firebaseConfig);
 
 //Database location
 const database = getDatabase(app);
 
-// Setting path to user data
+// Setting path to data subsections
 const userDataPath = ref(database, "users");
 const gameDataPath = ref(database, "activeGames");
 
+//Template of what User enrty will contain
 const userData = {
   username: "john_doe",                       //String
   email: "john.doe@example.com",              //String
@@ -227,13 +229,24 @@ async function findUserByStatus(status, print) {
   }
 }
 
+/**
+ * Function to search for a user in the Firebase database by a specific field and value.
+ * It queries the "users" database and looks for entries where the specified field matches the given value.
+ * The function returns the user data if found, otherwise returns null.
+ * 
+ * @param {string} field - The field name in the user data to search by (e.g., "username", "email", "wins").
+ * @param {string|number|boolean} value - The value that the specified field should match. This can be a string (e.g., "john_doe"), 
+ *                                        a number (e.g., 5), or a boolean (e.g., true/false), depending on the field.
+ * @returns {Object|null} The user data matching the given field and value, or null if no matching user is found.
+ */
 function findUserByField(field, value) {
   const userQuery = query(userDataPath, orderByChild(field), equalTo(value));
-  // Ensure that we return the Promise from the `get()` call
-  return get(userQuery)  // This is a Promise.
+  
+  // Perform the query and return the result
+  return get(userQuery)  // This returns a Promise.
     .then(snapshot => {
       if (snapshot.exists()) {
-        return snapshot.val();  // Return the data from snapshot
+        return snapshot.val();  // Return the user data from the snapshot if found
       } else {
         console.log(`No user found with ${field}:`, value);
         return null;  // Return null if no data is found
@@ -245,20 +258,29 @@ function findUserByField(field, value) {
     });
 }
 
-async function printUserQueryResults(obj, indent = '') {
+/**
+ * Function to print the details of a given object (typically user data) to the console in a readable format.
+ * It recursively traverses the object, printing each key-value pair in a hierarchical structure.
+ * This is useful for inspecting deeply nested data or objects with multiple properties.
+ *
+ * @param {Object} obj - The object containing data to be printed (e.g., user data retrieved from Firebase).
+ * @param {string} [indent=''] - The indentation string used to format the printed output. It is used to represent the depth of the nested properties for better readability.
+ * It starts as an empty string and is added to as the recursion goes deeper.
+ */
+function printUserQueryResults(obj, indent = '') {
   if (typeof obj === 'object' && obj !== null) {
+    // Loop through each key in the object
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
+        // If the property is an object, call the function recursively with increased indentation
         if (typeof obj[key] === 'object' && obj[key] !== null) {
           console.log(`${indent}${key}:`);
-          printUserQueryResults(obj[key], indent + '  ');
+          printUserQueryResults(obj[key], indent + '  ');  // Recursively print nested properties
         } else {
+          // Otherwise, print the key-value pair
           console.log(`${indent}${key}: ${obj[key]}`);
         }
       }
     }
   }
 }
-
-// Call the function and handle the returned Promise correctly
-printUserQueryResults(findUserByLosses(0));
