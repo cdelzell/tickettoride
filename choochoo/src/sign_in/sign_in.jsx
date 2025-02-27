@@ -33,14 +33,16 @@ function Login() {
     setEmail(""); // Clear the email field
     setPassword(""); // Clear the password field
     console.log("Sent credentials to backend:", email, password); // Optionally log the credentials (be careful with production!)
+
+    window.location.href = "/profile";
   };
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   return (
     <main className="loginPage">
