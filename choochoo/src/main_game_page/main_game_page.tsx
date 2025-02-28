@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
+import { useWebSocket } from "../web_socket.jsx";
 import "./main_game_page.css";
 
 // this works with typescript so had to change file
@@ -339,12 +340,26 @@ function TrainCard({ color, count }: { color: string; count: number }) {
 }
 
 function DrawPile() {
+  const { message, setMessage, sendMessage, receivedMessage } = useWebSocket(
+    "ws://localhost:5173"
+  );
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    sendMessage({
+      type: "draw_card",
+    });
+
+    console.log("Sent info to backend:", card); // Optionally log the credentials (be careful with production!)
+  };
+
+  const [card, setCard] = useState("");
+
   return (
-    <img
-      className="draw_pile"
-      src="./src/assets/draw_pile.jpg"
-      alt="draw pile"
-    />
+    <button className="draw_pile" onClick={handleSubmit}>
+      <img src="./src/assets/draw_pile.jpg" alt="draw pile" />
+    </button>
   );
 }
 

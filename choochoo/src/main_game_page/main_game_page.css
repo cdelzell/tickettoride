@@ -106,6 +106,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #555;
 }
 
 .player_actions {
@@ -153,9 +154,15 @@
   margin-left: 1vw;
 }
 
+.draw_pile img {
+  width: 6vw;
+  height: 10vw;
+  display: block;
+}
+
 .draw_pile {
-  width: 60%;
-  height: 85%;
+  padding: 0;
+  border-radius: 0;
   margin-right: 1vw;
 }
 
