@@ -22,23 +22,12 @@ export type NetworkProps = {
 //   score: number;
 // };
 
-
 // export type DestinationCard = {
 //   source: string;
 //   target: string;
 //   points: number;
 //   completed: boolean;
 // };
-
-// const routePoints = {
-//   1: 1,
-//   2: 2,
-//   3: 4,
-//   4: 7,
-//   5: 10,
-//   6: 15
-// };
-
 
 const players = [
   {
@@ -105,6 +94,9 @@ interface Route {
   target: City;
   dashed?: boolean;
   color?: string;
+  weight: number;
+  claimedBy?: string;
+  claimedAvatarSrc?: string;
 }
 
 const cities: City[] = [
@@ -126,43 +118,226 @@ const cities: City[] = [
   { name: "Albuquerque", x: 220, y: 212 }, // 15
 ];
 
-const routes: Route[] = [
-  { source: cities[0], target: cities[1], dashed: true, color: "#FFA630" },
-  { source: cities[1], target: cities[6], dashed: true, color: "#4DA1A9" },
-  { source: cities[1], target: cities[5], dashed: true, color: "#2E5077" },
-  { source: cities[0], target: cities[13], dashed: true, color: "#611C35" }, //new york to washington
-  { source: cities[1], target: cities[8], dashed: true, color: "#419D78" },
-  { source: cities[5], target: cities[8], dashed: true, color: "#B9314F" },
-  { source: cities[7], target: cities[3], dashed: true, color: "#FFA630" }, // riddhi rapids to LA
-  { source: cities[7], target: cities[4], dashed: true, color: "#B9314F" }, // riddhi rapids to tyville
-  { source: cities[4], target: cities[5], dashed: true, color: "#2E5077" }, // ty ville to clara city
-  { source: cities[2], target: cities[5], dashed: true, color: "#419D78" }, // denver to clara city
-  { source: cities[3], target: cities[2], dashed: true, color: "#611C35" }, // LA to denver
-  { source: cities[4], target: cities[2], dashed: true, color: "#4DA1A9" }, // tyville to denver
-  { source: cities[3], target: cities[8], dashed: true, color: "#FFA630" }, // LA to firestone rouge
-  { source: cities[2], target: cities[8], dashed: true, color: "#419D78" }, // denver to firestone rouge
-  { source: cities[6], target: cities[8], dashed: true, color: "#611C35" }, // palo noah to firestone rouge
-  { source: cities[14], target: cities[12], dashed: true, color: "#4DA1A9" }, // oc to houston
-  { source: cities[11], target: cities[12], dashed: true, color: "#FFA630" }, // phoenix to houston
-  { source: cities[11], target: cities[3], dashed: true, color: "#419D78" }, // phoenix to LA
-  { source: cities[11], target: cities[15], dashed: true, color: "#2E5077" }, // phoenix to ALB
-  { source: cities[8], target: cities[14], dashed: true, color: "#FFA630" }, // fr to oc
-  { source: cities[7], target: cities[9], dashed: true, color: "#B9314F" }, // rr to seattle
-  { source: cities[5], target: cities[9], dashed: true, color: "#4DA1A9" }, // cc to seattle
-  { source: cities[6], target: cities[10], dashed: true, color: "#FFA630" }, // cc to seattle
-  { source: cities[1], target: cities[13], dashed: true, color: "#419D78" }, //chicago to washington
-  { source: cities[6], target: cities[13], dashed: true, color: "#B9314F" }, //palo noah to washington
-  { source: cities[6], target: cities[12], dashed: true, color: "#2E5077" }, //palo noah to houston
-  { source: cities[15], target: cities[12], dashed: true, color: "#611C35" }, //ALB to houston
-  { source: cities[15], target: cities[14], dashed: true, color: "#611C35" }, //ALB to OC
-  { source: cities[6], target: cities[14], dashed: true, color: "#4DA1A9" }, //palo noah to oc
+// const routePoints = {
+//   1: 1,
+//   2: 2,
+//   3: 4,
+//   4: 7,
+//   5: 10,
+//   6: 15
+// };
+
+const initialRoutes: Route[] = [
+  {
+    source: cities[0],
+    target: cities[1],
+    dashed: true,
+    color: "#FFA630",
+    weight: 7,
+  },
+  {
+    source: cities[1],
+    target: cities[6],
+    dashed: true,
+    color: "#4DA1A9",
+    weight: 4,
+  },
+  {
+    source: cities[1],
+    target: cities[5],
+    dashed: true,
+    color: "#2E5077",
+    weight: 4,
+  },
+  {
+    source: cities[0],
+    target: cities[13],
+    dashed: true,
+    color: "#611C35",
+    weight: 1,
+  }, //new york to washington
+  {
+    source: cities[1],
+    target: cities[8],
+    dashed: true,
+    color: "#419D78",
+    weight: 2,
+  },
+  {
+    source: cities[5],
+    target: cities[8],
+    dashed: true,
+    color: "#B9314F",
+    weight: 7,
+  },
+  {
+    source: cities[7],
+    target: cities[3],
+    dashed: true,
+    color: "#FFA630",
+    weight: 4,
+  }, // riddhi rapids to LA
+  {
+    source: cities[7],
+    target: cities[4],
+    dashed: true,
+    color: "#B9314F",
+    weight: 4,
+  }, // riddhi rapids to tyville
+  {
+    source: cities[4],
+    target: cities[5],
+    dashed: true,
+    color: "#2E5077",
+    weight: 4,
+  }, // ty ville to clara city
+  {
+    source: cities[2],
+    target: cities[5],
+    dashed: true,
+    color: "#419D78",
+    weight: 7,
+  }, // denver to clara city
+  {
+    source: cities[3],
+    target: cities[2],
+    dashed: true,
+    color: "#611C35",
+    weight: 10,
+  }, // LA to denver
+  {
+    source: cities[4],
+    target: cities[2],
+    dashed: true,
+    color: "#4DA1A9",
+    weight: 4,
+  }, // tyville to denver
+  {
+    source: cities[3],
+    target: cities[8],
+    dashed: true,
+    color: "#FFA630",
+    weight: 15,
+  }, // LA to firestone rouge
+  {
+    source: cities[2],
+    target: cities[8],
+    dashed: true,
+    color: "#419D78",
+    weight: 4,
+  }, // denver to firestone rouge
+  {
+    source: cities[6],
+    target: cities[8],
+    dashed: true,
+    color: "#611C35",
+    weight: 4,
+  }, // palo noah to firestone rouge
+  {
+    source: cities[14],
+    target: cities[12],
+    dashed: true,
+    color: "#4DA1A9",
+    weight: 2,
+  }, // oc to houston
+  {
+    source: cities[11],
+    target: cities[12],
+    dashed: true,
+    color: "#FFA630",
+    weight: 10,
+  }, // phoenix to houston
+  {
+    source: cities[11],
+    target: cities[3],
+    dashed: true,
+    color: "#419D78",
+    weight: 2,
+  }, // phoenix to LA
+  {
+    source: cities[11],
+    target: cities[15],
+    dashed: true,
+    color: "#2E5077",
+    weight: 1,
+  }, // phoenix to ALB
+  {
+    source: cities[8],
+    target: cities[14],
+    dashed: true,
+    color: "#FFA630",
+    weight: 1,
+  }, // fr to oc
+  {
+    source: cities[7],
+    target: cities[9],
+    dashed: true,
+    color: "#B9314F",
+    weight: 4,
+  }, // rr to seattle
+  {
+    source: cities[5],
+    target: cities[9],
+    dashed: true,
+    color: "#4DA1A9",
+    weight: 15,
+  }, // cc to seattle
+  {
+    source: cities[6],
+    target: cities[10],
+    dashed: true,
+    color: "#FFA630",
+    weight: 7,
+  }, // pn to miami
+  {
+    source: cities[1],
+    target: cities[13],
+    dashed: true,
+    color: "#419D78",
+    weight: 7,
+  }, //chicago to washington
+  {
+    source: cities[6],
+    target: cities[13],
+    dashed: true,
+    color: "#B9314F",
+    weight: 7,
+  }, //palo noah to washington
+  {
+    source: cities[6],
+    target: cities[12],
+    dashed: true,
+    color: "#2E5077",
+    weight: 10,
+  }, //palo noah to houston
+  {
+    source: cities[15],
+    target: cities[12],
+    dashed: true,
+    color: "#611C35",
+    weight: 10,
+  }, //ALB to houston
+  {
+    source: cities[15],
+    target: cities[14],
+    dashed: true,
+    color: "#611C35",
+    weight: 4,
+  }, //ALB to OC
+  {
+    source: cities[6],
+    target: cities[14],
+    dashed: true,
+    color: "#4DA1A9",
+    weight: 10,
+  }, //palo noah to oc
 ];
 
 export const background = "#d3d3d3";
 
 const graph = {
   nodes: cities,
-  links: routes,
+  links: initialRoutes,
 };
 
 const MainGamePage = () => {
@@ -241,11 +416,12 @@ function PlayerCard({
   );
 }
 
+// added index
 function FaceUpCards() {
   return (
     <div className="holder">
-      {face_up_cards.map((face_up_card) => (
-        <FaceUpCard color={face_up_card.color} />
+      {face_up_cards.map((face_up_card, index) => (
+        <FaceUpCard key={index} color={face_up_card.color} />
       ))}
     </div>
   );
@@ -345,6 +521,8 @@ function USMap({ width, height }: NetworkProps) {
   const MAP_WIDTH = 600;
   const MAP_HEIGHT = 400;
 
+  const [routes, setRoutes] = useState<Route[]>(initialRoutes);
+
   const [dimensions, setDimensions] = useState({
     width: width * 0.9,
     height: height * 0.9,
@@ -373,7 +551,26 @@ function USMap({ width, height }: NetworkProps) {
     };
   }, []);
 
+  const handleRouteClick = (routeIndex: number) => {
+    setRoutes((prevRoutes) => {
+      const newRoutes = [...prevRoutes];
+      newRoutes[routeIndex] = {
+        ...newRoutes[routeIndex],
+        dashed: false,
+        claimedBy: main_player.username,
+        claimedAvatarSrc: main_player.profilePic,
+      };
+      return newRoutes;
+    });
+  };
+
   const scaleFactor = dimensions.width / MAP_WIDTH;
+
+  const getMidpoint = (route: Route) => {
+    const midX = (route.source.x + route.target.x) / 2;
+    const midY = (route.source.y + route.target.y) / 2;
+    return { midX, midY };
+  };
 
   return width < 10 ? null : (
     <svg
@@ -392,20 +589,66 @@ function USMap({ width, height }: NetworkProps) {
         preserveAspectRatio="xMidYMid meet"
       />
 
-      {/*  routes  */}
-      {routes.map((route, index) => (
-        <line
-          key={`route-${index}`}
-          x1={route.source.x}
-          y1={route.source.y}
-          x2={route.target.x}
-          y2={route.target.y}
-          strokeWidth={6}
-          stroke={route.color || "black"}
-          strokeOpacity={0.8}
-          strokeDasharray={route.dashed ? "20,4" : undefined}
-        />
-      ))}
+      {/* routes */}
+      {routes.map((route, index) => {
+        const { midX, midY } = getMidpoint(route);
+        return (
+          <g key={`route-${index}`}>
+            {/* The actual route line */}
+            <line
+              x1={route.source.x}
+              y1={route.source.y}
+              x2={route.target.x}
+              y2={route.target.y}
+              strokeWidth={6}
+              stroke={route.color || "black"}
+              strokeOpacity={0.8}
+              strokeDasharray={route.dashed ? "20,4" : undefined}
+              onClick={() => handleRouteClick(index)}
+              style={{ cursor: "pointer" }}
+            />
+
+            {/* the routes show weight label or avatar if claimed */}
+            {route.claimedBy ? (
+              // if route has been claimed, show avatar
+              <image
+                href={route.claimedAvatarSrc}
+                x={midX - 10}
+                y={midY - 10}
+                width={20}
+                height={20}
+                preserveAspectRatio="xMidYMid meet"
+                style={{ borderRadius: "50%" }}
+              />
+            ) : (
+              <g>
+                <rect
+                  x={midX - 8}
+                  y={midY - 8}
+                  width={12}
+                  height={12}
+                  fill="white"
+                  stroke="blue"
+                  strokeWidth={0.5}
+                  rx={5}
+                  ry={5}
+                  opacity={0.9}
+                />
+                <text
+                  x={midX - 2}
+                  y={midY - 2}
+                  fill="blue"
+                  fontSize="7px"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                >
+                  {route.weight}
+                </text>
+              </g>
+            )}
+          </g>
+        );
+      })}
 
       {/*  city nodes  */}
       {cities.map((city, index) => (
