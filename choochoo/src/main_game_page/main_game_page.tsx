@@ -314,24 +314,24 @@ function TrainCard({ color, count }: { color: string; count: number }) {
 }
 
 function DrawPile() {
-  const { message, setMessage, sendMessage, receivedMessage } = useWebSocket(
-    "ws://localhost:5173"
-  );
+  // const { message, setMessage, sendMessage, receivedMessage } = useWebSocket(
+  //   "ws://localhost:5173"
+  // );
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  // const handleSubmit = (e: { preventDefault: () => void }) => {
+  //   e.preventDefault();
 
-    sendMessage({
-      type: "draw_card",
-    });
+  //   sendMessage({
+  //     type: "draw_card",
+  //   });
 
-    console.log("Sent info to backend:", card); // Optionally log the credentials (be careful with production!)
-  };
+  //   console.log("Sent info to backend:", card); // Optionally log the credentials (be careful with production!)
+  // };
 
-  const [card, setCard] = useState("");
+  // const [card, setCard] = useState("");
 
   return (
-    <button className="draw_pile" onClick={handleSubmit}>
+    <button className="draw_pile">
       <img src="./src/assets/draw_pile.jpg" alt="draw pile" />
     </button>
   );
