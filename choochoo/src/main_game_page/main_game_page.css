@@ -125,13 +125,6 @@
   gap: 0.5vw;
 }
 
-.destination_cards {
-  width: 11vw;
-  height: 8vw;
-  border-radius: 0.5vw;
-  display: block;
-}
-
 .image_carousel {
   display: flex;
   flex-direction: column;
@@ -139,10 +132,9 @@
 }
 
 .image_carousel img {
-  width: 11vw;
+  width: 12vw;
   height: 8vw;
   border-radius: 0.5vw;
-  object-fit: cover;
   display: block;
 }
 
@@ -150,7 +142,7 @@
   position: relative;
   bottom: 4.5vw;
   display: flex;
-  gap: 10vw;
+  gap: 10.5vw;
 }
 
 .carousel_button img {
