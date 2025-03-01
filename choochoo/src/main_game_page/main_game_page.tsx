@@ -104,6 +104,31 @@ interface Route {
   color?: string;
 }
 
+const destination_cards = [
+  { destination: "alb_miami" },
+  { destination: "alb_tyville" },
+  { destination: "chicago_miami" },
+  { destination: "chicago_phoenix" },
+  { destination: "clara_houston" },
+  { destination: "clara_la" },
+  { destination: "clara_ny" },
+  { destination: "denver_palo" },
+  { destination: "firestone_phoenix" },
+  { destination: "firestone_riddhi" },
+  { destination: "miami_riddhi" },
+  { destination: "ny_houston" },
+  { destination: "ny_oklahoma" },
+  { destination: "ny_tyville" },
+  { destination: "palo_la" },
+  { destination: "palo_phoenix" },
+  { destination: "seattle_alb" },
+  { destination: "seattle_houston" },
+  { destination: "tyville_palo" },
+  { destination: "tyville_phoenix" },
+  { destination: "tyville_wash" },
+  { destination: "wash_denver" },
+];
+
 const cities: City[] = [
   { name: "New York", x: 504, y: 133 }, // 0
   { name: "Chicago", x: 382, y: 130 }, // 1
@@ -195,7 +220,7 @@ const MainGamePage = () => {
           updateStatus={updateStatus}
         ></ActionBox>
 
-        <DestinationCards></DestinationCards>
+        <DestinationCardsCarousel></DestinationCardsCarousel>
 
         {/* train cards */}
         <div className="train_cards">
@@ -363,12 +388,41 @@ function DrawPile() {
   );
 }
 
-function DestinationCards() {
+function DestinationCardsCarousel() {
+  const [index, setIndex] = useState(0);
+
+  const nextImage = () => {
+    setIndex((prevIndex) => (prevIndex + 1) % destination_cards.length);
+  };
+
+  const prevImage = () => {
+    setIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + destination_cards.length) % destination_cards.length
+    );
+  };
+
+  return (
+    <div className="image_carousel">
+      <DestinationCard destination={destination_cards[index].destination} />
+      <div className="button_container">
+        <button onClick={prevImage} className="carousel_button">
+          <img src="./src/assets/arrows/left_arrow.png"></img>
+        </button>
+        <button onClick={nextImage} className="carousel_button">
+          <img src="./src/assets/arrows/right_arrow.png"></img>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function DestinationCard({ destination }: { destination: string }) {
   return (
     <img
-      className="destination_cards"
-      src="./src/assets/destination_brown.jpg"
-      alt="destination cards"
+      className="destination_card"
+      src={"./src/assets/destination_cards/" + destination + ".png"}
+      alt={destination}
     />
   );
 }

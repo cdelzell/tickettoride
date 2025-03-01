@@ -1,4 +1,4 @@
-import TrainCard from "./train-card.js";
+import TrainCard from "./train_card.js";
 
 class GameBoard {
   constructor() {
