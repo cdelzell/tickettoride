@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
-import { useWebSocket } from "../web_socket.jsx";
+// import { useWebSocket } from "../web_socket.jsx";
 import "./main_game_page.css";
 
 // this works with typescript so had to change file
