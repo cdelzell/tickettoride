@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
-import { useWebSocket } from "../web_socket.jsx";
+//import { useWebSocket } from "../web_socket.jsx";
 import "./main_game_page.css";
+import GameRunner from "../components/game-runner"
+import User from "../components/user"
 
 // this works with typescript so had to change file
 
@@ -163,6 +165,9 @@ const graph = {
 };
 
 const MainGamePage = () => {
+  const users: User[] = [new User()]
+  const gameRunner = new GameRunner(users);
+
   const width = window.innerWidth;
   const height = window.innerHeight;
 
@@ -340,16 +345,9 @@ function TrainCard({ color, count }: { color: string; count: number }) {
 }
 
 function DrawPile() {
-  const { message, setMessage, sendMessage, receivedMessage } = useWebSocket(
-    "ws://localhost:5173"
-  );
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
-    sendMessage({
-      type: "draw_card",
-    });
 
     console.log("Sent info to backend:", card); // Optionally log the credentials (be careful with production!)
   };

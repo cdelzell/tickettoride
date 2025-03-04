@@ -1,16 +1,22 @@
 //Relates length of a route to its point value
 //Key = length, value = point value
-const point_vals = {
-    1: 1,
-    2: 2,
-    3: 4,
-    4: 7,
-    5: 10,
-    6: 15
-}
+const point_vals = new Map<number, number>([
+  [1, 1],
+  [2, 2],
+  [3, 4],
+  [4, 7],
+  [5, 10],
+  [6, 15]
+]);
 
 class TrainRoute {
-    constructor(destination1, destination2, length, color) {
+    destination1: string;
+    destination2: string;
+    length: number;
+    color: string;
+    claimer: string | null;
+    
+    constructor(destination1: string, destination2: string, length: number, color: string) {
         //Store destination ids
         this.destination1 = destination1;
         this.destination2 = destination2; 
@@ -27,12 +33,12 @@ class TrainRoute {
         return this.color;
     }
 
-    claimRoute(playerId) {
+    claimRoute(playerId: string) {
         this.claimer = playerId;
     }
 
-    getPointValue() {
-        return point_vals[length]
+    getPointValue(): number {
+        return point_vals.get(this.length) ?? 0;
     }
 }
 export default TrainRoute;
