@@ -39,14 +39,6 @@ export type NetworkProps = {
 // };
 
 
-// const routePoints = {
-//   1: 1,
-//   2: 2,
-//   3: 4,
-//   4: 7,
-//   5: 10,
-//   6: 15
-// };
 const players = [
   {
     username: "c-bear",
@@ -447,71 +439,71 @@ const MainGamePage = () => {
       </div>
 
       {/* map */}
-      <Map width={width} height={height} routes={routes} cities={cities} />
+      <Map width={width} height={height} routes={initialRoutes} cities={cities} />
     </main>
   );
 };
 
-function PlayerCard({
-  username,
-  trainCount,
-  profilePic,
-  main_player,
-}: {
-  username: string;
-  trainCount: number;
-  profilePic: string;
-  main_player: boolean;
-}) {
-  return (
-    <div className={main_player ? "main-player-card" : "player-card"}>
-      <img className="profile-pic" src={profilePic} alt="Profile" />
-      <div className="player-info">
-        <span className="username">{username}</span>
-        <span className="train-count">{trainCount} Trains</span>
-      </div>
-    </div>
-  );
-}
+// function PlayerCard({
+//   username,
+//   trainCount,
+//   profilePic,
+//   main_player,
+// }: {
+//   username: string;
+//   trainCount: number;
+//   profilePic: string;
+//   main_player: boolean;
+// }) {
+//   return (
+//     <div className={main_player ? "main-player-card" : "player-card"}>
+//       <img className="profile-pic" src={profilePic} alt="Profile" />
+//       <div className="player-info">
+//         <span className="username">{username}</span>
+//         <span className="train-count">{trainCount} Trains</span>
+//       </div>
+//     </div>
+//   );
+// }
 
 // added index
-function FaceUpCards() {
-  return (
-    <div className="holder">
-      {face_up_cards.map((face_up_card, index) => (
-        <FaceUpCard key={index} color={face_up_card.color} />
-      ))}
-    </div>
-  );
-}
+// function FaceUpCards() {
+//   return (
+//     <div className="holder">
+//       {face_up_cards.map((face_up_card, index) => (
+//         <FaceUpCard key={index} color={face_up_card.color} />
+//       ))}
+//     </div>
+//   );
+// }
 
-function FaceUpCard({ color }: { color: string }) {
-  return (
-    <div>
-      <img
-        className="train_card"
-        src={"./src/assets/cards/" + color + ".png"}
-        alt={color}
-      />
-    </div>
-  );
-}
+// function FaceUpCard({ color }: { color: string }) {
+//   return (
+//     <div>
+//       <img
+//         className="train_card"
+//         src={"./src/assets/cards/" + color + ".png"}
+//         alt={color}
+//       />
+//     </div>
+//   );
+// }
 
-function ActionBox({ action }: { action: number }) {
-  return (
-    <div className="box">
-      {action == 0 ? (
-        <HomeBox></HomeBox>
-      ) : action == 1 ? (
-        <DrawTrains></DrawTrains>
-      ) : action == 2 ? (
-        <PlayTrains></PlayTrains>
-      ) : (
-        <div></div>
-      )}
-    </div>
-  );
-}
+// function ActionBox({ action }: { action: number }) {
+//   return (
+//     <div className="box">
+//       {action == 0 ? (
+//         <HomeBox></HomeBox>
+//       ) : action == 1 ? (
+//         <DrawTrains></DrawTrains>
+//       ) : action == 2 ? (
+//         <PlayTrains></PlayTrains>
+//       ) : (
+//         <div></div>
+//       )}
+//     </div>
+//   );
+// }
 
 function HomeBox() {
   return (
@@ -546,14 +538,14 @@ function PlayTrains() {
   );
 }
 
-function TrainCard({ color, count }: { color: string; count: number }) {
-  return (
-    <div className="card_with_count">
-      <img className="train_card" src={color} alt={color} />
-      <div className="circle">{count}</div>
-    </div>
-  );
-}
+// function TrainCard({ color, count }: { color: string; count: number }) {
+//   return (
+//     <div className="card_with_count">
+//       <img className="train_card" src={color} alt={color} />
+//       <div className="circle">{count}</div>
+//     </div>
+//   );
+// }
 
 function DrawPile() {
   return (
@@ -578,6 +570,15 @@ function DestinationCards() {
 function USMap({ width, height }: NetworkProps) {
   const MAP_WIDTH = 600;
   const MAP_HEIGHT = 400;
+
+  const routePoints = {
+    1: 1,
+    2: 2,
+    3: 4,
+    4: 7,
+    5: 10,
+    6: 15
+  };
 
   const [routes, setRoutes] = useState<Route[]>(initialRoutes);
 
@@ -612,12 +613,14 @@ function USMap({ width, height }: NetworkProps) {
   const handleRouteClick = (routeIndex: number) => {
     setRoutes((prevRoutes) => {
       const newRoutes = [...prevRoutes];
-      newRoutes[routeIndex] = {
-        ...newRoutes[routeIndex],
-        dashed: false,
-        claimedBy: main_player.username,
-        claimedAvatarSrc: main_player.profilePic,
-      };
+      if (!newRoutes[routeIndex].claimedBy) {
+        newRoutes[routeIndex] = {
+          ...newRoutes[routeIndex],
+          dashed: false,
+          claimedBy: main_player.username,
+          claimedAvatarSrc: main_player.profilePic,
+        };
+      }
       return newRoutes;
     });
   };
