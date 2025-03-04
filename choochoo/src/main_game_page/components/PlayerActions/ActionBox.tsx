@@ -26,7 +26,7 @@ function ActionBox({
       ) : action === 2 ? (
         <PlayTrains />
       ) : action === 3 ? (
-        <div />
+        <Submit />
       ) : (
         <div />
       )}
@@ -54,6 +54,10 @@ function PlayTrains() {
       <p>Please claim a route on the board.</p>
     </div>
   );
+}
+
+function Submit() {
+  return <button className="submit">Submit Destination Card Choices</button>;
 }
 
 export default ActionBox;

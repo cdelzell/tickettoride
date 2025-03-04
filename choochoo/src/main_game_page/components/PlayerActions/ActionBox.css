@@ -41,3 +41,10 @@
 .claim_route p {
   font-size: 1.5vw;
 }
+
+.submit {
+  width: 12vw;
+  height: 5vw;
+  font-size: 1vw;
+  background-color: rgb(194, 210, 211);
+}
