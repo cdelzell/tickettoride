@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
-import PlayerCard from "./components/ProfileCard";
+import PlayerCard from "./components/Profile/ProfileCard";
 import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
 import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
-// import { useWebSocket } from "../web_socket.jsx";
+import DestinationCardsCarousel from "./components/DestinationCard/DestinationCard";
+import DrawDestinationCard from "./components/DestinationCard/DrawDestinationCard";
+import ActionBox from "./components/PlayerActions/ActionBox";
+import TrainCard from "./components/TrainCard/TrainCard";
+import Map from "./components/Map";
 
 import "./main_game_page.css";
 
@@ -203,7 +207,7 @@ const MainGamePage = () => {
   return (
     <main className="main_game_page">
       {/* player cards */}
-      <div className="player-cards">
+      <div className="player_cards">
         {players.map((player, index) => (
           <PlayerCard
             key={index}
@@ -246,7 +250,7 @@ const MainGamePage = () => {
         </div>
 
         {/* main player */}
-        <div className="main-player-card">
+        <div className="main_player_card">
           <PlayerCard
             username={main_player.username}
             trainCount={main_player.trainCount}
@@ -257,296 +261,9 @@ const MainGamePage = () => {
       </div>
 
       {/* map */}
-      <USMap width={width} height={height} />
+      <Map width={width} height={height} routes={routes} cities={cities} />
     </main>
   );
 };
-
-function ActionBox({
-  action,
-  updateStatus,
-  updateDrawDest,
-}: {
-  action: number;
-  updateStatus: (newStatus: number) => void;
-  updateDrawDest: (newStatus: boolean) => void;
-}) {
-  useEffect(() => {
-    if (action === 3) {
-      updateDrawDest(true);
-    }
-  }, [action, updateDrawDest]); // Runs only when `action` changes
-
-  return (
-    <div className="box">
-      {action === 0 ? (
-        <HomeBox updateStatus={updateStatus} />
-      ) : action === 1 ? (
-        <DrawTrains />
-      ) : action === 2 ? (
-        <PlayTrains />
-      ) : action === 3 ? (
-        <div />
-      ) : (
-        <div />
-      )}
-    </div>
-  );
-}
-
-function HomeBox({
-  updateStatus,
-}: {
-  updateStatus: (newStatus: number) => void;
-}) {
-  return (
-    <div className="home">
-      <button onClick={() => updateStatus(1)}>Draw Trains</button>
-      <button onClick={() => updateStatus(2)}>Play Trains</button>
-      <button onClick={() => updateStatus(3)}>Draw Destination</button>
-    </div>
-  );
-}
-
-function DrawTrains() {
-  return (
-    <div className="draw_trains">
-      <div className="draw_train_rules">
-        <p>You may:</p>
-        <p>a) draw a random train</p>
-        <p>b) draw a train from the face-up cards</p>
-        <p>c) a combination of both</p>
-      </div>
-
-      <DrawPile></DrawPile>
-    </div>
-  );
-}
-
-function PlayTrains() {
-  return (
-    <div className="claim_route">
-      <p>Please claim a route on the board.</p>
-    </div>
-  );
-}
-
-function TrainCard({ color, count }: { color: string; count: number }) {
-  return (
-    <div className="card_with_count">
-      <img className="train_card" src={color} alt={color} />
-      <div className="circle">{count}</div>
-    </div>
-  );
-}
-
-function DrawPile() {
-  // const { message, setMessage, sendMessage, receivedMessage } = useWebSocket(
-  //   "ws://localhost:5173"
-  // );
-
-  // const handleSubmit = (e: { preventDefault: () => void }) => {
-  //   e.preventDefault();
-
-  //   sendMessage({
-  //     type: "draw_card",
-  //   });
-
-  //   console.log("Sent info to backend:", card); // Optionally log the credentials (be careful with production!)
-  // };
-
-  // const [card, setCard] = useState("");
-
-  return (
-    <button className="draw_pile">
-      <img src="./src/assets/draw_pile.jpg" alt="draw pile" />
-    </button>
-  );
-}
-
-function DestinationCardsCarousel({
-  destinations,
-}: {
-  destinations: string[];
-}) {
-  const [index, setIndex] = useState(0);
-
-  const nextImage = () => {
-    setIndex((prevIndex) => (prevIndex + 1) % destinations.length);
-  };
-
-  const prevImage = () => {
-    setIndex(
-      (prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length
-    );
-  };
-
-  return (
-    <div className="image_carousel">
-      <DestinationCard destination={destinations[index]} location="pile" />
-      <div className="button_container">
-        <button onClick={prevImage} className="carousel_button">
-          <img src="./src/assets/arrows/left_arrow.png"></img>
-        </button>
-        <button onClick={nextImage} className="carousel_button">
-          <img src="./src/assets/arrows/right_arrow.png"></img>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function DestinationCard({
-  destination,
-  location,
-}: {
-  destination: string;
-  location: string;
-}) {
-  let name = "destination_card";
-  if (location === "draw") {
-    name = "destination_card_draw";
-  } else if (location === "test") {
-    name = "test";
-  }
-
-  return (
-    <img
-      className={name}
-      src={"./src/assets/destination_cards/" + destination + ".png"}
-      alt={destination}
-    />
-  );
-}
-
-function DrawDestinationCard({ destinations }: { destinations: string[] }) {
-  return (
-    <div className="draw_destination">
-      <button className="destination_button">
-        <DestinationCard
-          destination={destinations[0]}
-          location="draw"
-        ></DestinationCard>
-      </button>
-      <button>
-        <DestinationCard
-          destination={destinations[1]}
-          location="draw"
-        ></DestinationCard>
-      </button>
-      <button>
-        <DestinationCard
-          destination={destinations[2]}
-          location="draw"
-        ></DestinationCard>
-      </button>
-    </div>
-  );
-}
-
-function USMap({ width, height }: NetworkProps) {
-  const MAP_WIDTH = 600;
-  const MAP_HEIGHT = 400;
-
-  const [dimensions, setDimensions] = useState({
-    width: width * 0.9,
-    height: height * 0.9,
-  });
-
-  useEffect(() => {
-    function handleResize() {
-      const containerWidth = window.innerWidth * 0.9;
-      const containerHeight = window.innerHeight * 0.9;
-
-      const xScale = containerWidth / MAP_WIDTH;
-      const yScale = containerHeight / MAP_HEIGHT;
-      const scaleFactor = Math.min(xScale, yScale);
-
-      setDimensions({
-        width: MAP_WIDTH * scaleFactor,
-        height: MAP_HEIGHT * scaleFactor,
-      });
-    }
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const scaleFactor = dimensions.width / MAP_WIDTH;
-
-  return width < 10 ? null : (
-    <svg
-      width={dimensions.width}
-      height={dimensions.height}
-      viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
-      preserveAspectRatio="xMidYMid meet"
-    >
-      {/* background map */}
-      <image
-        href={monoMap}
-        x="0"
-        y="0"
-        width={MAP_WIDTH}
-        height={MAP_HEIGHT}
-        preserveAspectRatio="xMidYMid meet"
-      />
-
-      {/*  routes  */}
-      {routes.map((route, index) => (
-        <line
-          key={`route-${index}`}
-          x1={route.source.x}
-          y1={route.source.y}
-          x2={route.target.x}
-          y2={route.target.y}
-          strokeWidth={6}
-          stroke={route.color || "black"}
-          strokeOpacity={0.8}
-          strokeDasharray={route.dashed ? "20,4" : undefined}
-        />
-      ))}
-
-      {/*  city nodes  */}
-      {cities.map((city, index) => (
-        <g key={`city-${index}`}>
-          <circle
-            cx={city.x}
-            cy={city.y}
-            r={5}
-            fill={city.color || "black"}
-            opacity={0.68}
-          />
-
-          {/* rectangle for text */}
-          <rect
-            x={city.x - 31.5}
-            y={city.y - 20}
-            width={60}
-            height={13}
-            fill="white"
-            stroke="black"
-            strokeWidth={0.5}
-            rx={5}
-            ry={5}
-            opacity={0.8}
-          />
-          <text
-            x={city.x}
-            y={city.y - 11}
-            fill="black"
-            fontSize="6.5px"
-            textAnchor="middle"
-          >
-            {city.name}
-          </text>
-        </g>
-      ))}
-    </svg>
-  );
-}
 
 export default MainGamePage;
