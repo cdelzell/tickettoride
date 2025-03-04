@@ -26,18 +26,18 @@ function Login() {
     // Send both email and password to the backend via WebSocket
     sendMessage({
       type: "login", // Custom message type for login
-      email: email,
+      username: username,
       password: password,
     });
 
-    setEmail(""); // Clear the email field
+    setUsername(""); // Clear the email field
     setPassword(""); // Clear the password field
-    console.log("Sent credentials to backend:", email, password); // Optionally log the credentials (be careful with production!)
+    console.log("Sent credentials to backend:", username, password); // Optionally log the credentials (be careful with production!)
 
     window.location.href = "/profile";
   };
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const theme = useTheme();
@@ -74,11 +74,11 @@ function Login() {
           <FormLabel>Email</FormLabel>
           <Input
             // html input attribute
-            name="email"
-            type="email"
-            placeholder="thomasthetrain@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="username"
+            type="username"
+            placeholder="thomasthetrain"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </FormControl>
         <FormControl>

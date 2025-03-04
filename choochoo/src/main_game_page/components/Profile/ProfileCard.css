@@ -1,0 +1,88 @@
+.player_cards {
+  position: absolute;
+  top: 1vw;
+  left: 2vw;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5vw;
+}
+
+.player_card {
+  width: 10vw;
+  height: 5vw;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #555;
+  padding: 0.3vw;
+  border-radius: 1vw;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player_card .profile_pic {
+  border-radius: 50%;
+  width: 3vw;
+  height: 3vw;
+  margin-right: 10%;
+  padding: 0;
+}
+
+.player_card .player_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.player_card .username {
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.3vw;
+}
+
+.player_card .train_count {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8vw;
+  color: #555;
+}
+
+.main_player_card {
+  width: 15vw;
+  height: 10vw;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 0.1vw 0.5vw rgb(255, 204, 0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main_player_card .profile_pic {
+  border-radius: 50%;
+  width: 5vw;
+  height: 5vw;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.main_player_card .player_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.main_player_card .username {
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 2vw;
+}
+
+.main_player_card .train_count {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1vw;
+  color: #555;
+}
