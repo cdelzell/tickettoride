@@ -105,28 +105,28 @@ interface Route {
 }
 
 const destination_cards = [
-  { destination: "alb_miami" },
-  { destination: "alb_tyville" },
-  { destination: "chicago_miami" },
-  { destination: "chicago_phoenix" },
-  { destination: "clara_houston" },
-  { destination: "clara_la" },
-  { destination: "clara_ny" },
-  { destination: "denver_palo" },
-  { destination: "firestone_phoenix" },
-  { destination: "firestone_riddhi" },
-  { destination: "miami_riddhi" },
-  { destination: "ny_houston" },
-  { destination: "ny_oklahoma" },
-  { destination: "ny_tyville" },
-  { destination: "palo_la" },
-  { destination: "palo_phoenix" },
-  { destination: "seattle_alb" },
-  { destination: "seattle_houston" },
-  { destination: "tyville_palo" },
-  { destination: "tyville_phoenix" },
-  { destination: "tyville_wash" },
-  { destination: "wash_denver" },
+  "alb_miami",
+  "alb_tyville",
+  "chicago_miami",
+  "chicago_phoenix",
+  "clara_houston",
+  "clara_la",
+  "clara_ny",
+  "denver_palo",
+  "firestone_phoenix",
+  "firestone_riddhi",
+  "miami_riddhi",
+  "ny_houston",
+  "ny_oklahoma",
+  "ny_tyville",
+  "palo_la",
+  "palo_phoenix",
+  "seattle_alb",
+  "seattle_houston",
+  "tyville_palo",
+  "tyville_phoenix",
+  "tyville_wash",
+  "wash_denver",
 ];
 
 const cities: City[] = [
@@ -192,6 +192,11 @@ const MainGamePage = () => {
   const height = window.innerHeight;
 
   const [action_box_status, setActionBoxStatus] = useState(0);
+  const [draw_dest_active, setDrawDestActive] = useState(false);
+
+  useEffect(() => {
+    setDrawDestActive(true); // ✅ Runs after render, preventing the error
+  }, []);
 
   const updateStatus = (newStatus: React.SetStateAction<number>) => {
     setActionBoxStatus(newStatus);
@@ -218,9 +223,18 @@ const MainGamePage = () => {
         <ActionBox
           action={action_box_status}
           updateStatus={updateStatus}
+          updateDrawDest={setDrawDestActive}
         ></ActionBox>
 
-        <DestinationCardsCarousel></DestinationCardsCarousel>
+        <DestinationCardsCarousel
+          destinations={destination_cards}
+        ></DestinationCardsCarousel>
+
+        {draw_dest_active && (
+          <DrawDestinationCard
+            destinations={["alb_miami", "alb_tyville", "chicago_miami"]}
+          ></DrawDestinationCard>
+        )}
 
         {/* train cards */}
         <div className="train_cards">
@@ -275,8 +289,8 @@ function PlayerCard({
 function FaceUpCards() {
   return (
     <div className="holder">
-      {face_up_cards.map((face_up_card) => (
-        <FaceUpCard color={face_up_card.color} />
+      {face_up_cards.map((face_up_card, index) => (
+        <FaceUpCard key={index} color={face_up_card.color} />
       ))}
     </div>
   );
@@ -299,20 +313,30 @@ function FaceUpCard({ color }: { color: string }) {
 function ActionBox({
   action,
   updateStatus,
+  updateDrawDest,
 }: {
   action: number;
   updateStatus: (newStatus: number) => void;
+  updateDrawDest: (newStatus: boolean) => void;
 }) {
+  useEffect(() => {
+    if (action === 3) {
+      updateDrawDest(true);
+    }
+  }, [action, updateDrawDest]); // Runs only when `action` changes
+
   return (
     <div className="box">
       {action === 0 ? (
         <HomeBox updateStatus={updateStatus} />
-      ) : action == 1 ? (
-        <DrawTrains></DrawTrains>
-      ) : action == 2 ? (
-        <PlayTrains></PlayTrains>
+      ) : action === 1 ? (
+        <DrawTrains />
+      ) : action === 2 ? (
+        <PlayTrains />
+      ) : action === 3 ? (
+        <div />
       ) : (
-        <div></div>
+        <div />
       )}
     </div>
   );
@@ -327,7 +351,7 @@ function HomeBox({
     <div className="home">
       <button onClick={() => updateStatus(1)}>Draw Trains</button>
       <button onClick={() => updateStatus(2)}>Play Trains</button>
-      <button>Draw Destination</button>
+      <button onClick={() => updateStatus(3)}>Draw Destination</button>
     </div>
   );
 }
@@ -388,23 +412,26 @@ function DrawPile() {
   );
 }
 
-function DestinationCardsCarousel() {
+function DestinationCardsCarousel({
+  destinations,
+}: {
+  destinations: string[];
+}) {
   const [index, setIndex] = useState(0);
 
   const nextImage = () => {
-    setIndex((prevIndex) => (prevIndex + 1) % destination_cards.length);
+    setIndex((prevIndex) => (prevIndex + 1) % destinations.length);
   };
 
   const prevImage = () => {
     setIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + destination_cards.length) % destination_cards.length
+      (prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length
     );
   };
 
   return (
     <div className="image_carousel">
-      <DestinationCard destination={destination_cards[index].destination} />
+      <DestinationCard destination={destinations[index]} location="pile" />
       <div className="button_container">
         <button onClick={prevImage} className="carousel_button">
           <img src="./src/assets/arrows/left_arrow.png"></img>
@@ -417,13 +444,51 @@ function DestinationCardsCarousel() {
   );
 }
 
-function DestinationCard({ destination }: { destination: string }) {
+function DestinationCard({
+  destination,
+  location,
+}: {
+  destination: string;
+  location: string;
+}) {
+  let name = "destination_card";
+  if (location === "draw") {
+    name = "destination_card_draw";
+  } else if (location === "test") {
+    name = "test";
+  }
+
   return (
     <img
-      className="destination_card"
+      className={name}
       src={"./src/assets/destination_cards/" + destination + ".png"}
       alt={destination}
     />
+  );
+}
+
+function DrawDestinationCard({ destinations }: { destinations: string[] }) {
+  return (
+    <div className="draw_destination">
+      <button className="destination_button">
+        <DestinationCard
+          destination={destinations[0]}
+          location="draw"
+        ></DestinationCard>
+      </button>
+      <button>
+        <DestinationCard
+          destination={destinations[1]}
+          location="draw"
+        ></DestinationCard>
+      </button>
+      <button>
+        <DestinationCard
+          destination={destinations[2]}
+          location="draw"
+        ></DestinationCard>
+      </button>
+    </div>
   );
 }
 
