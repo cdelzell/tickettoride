@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
+import PlayerCard from "./components/ProfileCard";
+import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
+import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
 // import { useWebSocket } from "../web_socket.jsx";
+
 import "./main_game_page.css";
 
 // this works with typescript so had to change file
@@ -82,13 +86,7 @@ const train_cards_and_counts = train_cards.map((card, i) => ({
   count: train_counts[i],
 }));
 
-const face_up_cards = [
-  { color: "red" },
-  { color: "wild" },
-  { color: "blue" },
-  { color: "purple" },
-  { color: "white" },
-];
+const face_up_cards = ["red", "wild", "blue", "purple", "white"];
 
 interface City {
   name: string;
@@ -217,7 +215,7 @@ const MainGamePage = () => {
         ))}
       </div>
 
-      <FaceUpCards></FaceUpCards>
+      <FaceUpCards face_up_cards={face_up_cards}></FaceUpCards>
 
       <div className="player_actions">
         <ActionBox
@@ -263,52 +261,6 @@ const MainGamePage = () => {
     </main>
   );
 };
-
-function PlayerCard({
-  username,
-  trainCount,
-  profilePic,
-  main_player,
-}: {
-  username: string;
-  trainCount: number;
-  profilePic: string;
-  main_player: boolean;
-}) {
-  return (
-    <div className={main_player ? "main-player-card" : "player-card"}>
-      <img className="profile-pic" src={profilePic} alt="Profile" />
-      <div className="player-info">
-        <span className="username">{username}</span>
-        <span className="train-count">{trainCount} Trains</span>
-      </div>
-    </div>
-  );
-}
-
-function FaceUpCards() {
-  return (
-    <div className="holder">
-      {face_up_cards.map((face_up_card, index) => (
-        <FaceUpCard key={index} color={face_up_card.color} />
-      ))}
-    </div>
-  );
-}
-
-function FaceUpCard({ color }: { color: string }) {
-  return (
-    <div>
-      <button className="face_up_card">
-        <img
-          className="train_card"
-          src={"./src/assets/cards/" + color + ".png"}
-          alt={color}
-        />
-      </button>
-    </div>
-  );
-}
 
 function ActionBox({
   action,

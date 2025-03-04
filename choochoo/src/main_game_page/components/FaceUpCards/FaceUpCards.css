@@ -1,0 +1,18 @@
+.holder {
+  position: absolute;
+  top: 1vw;
+  right: 2vw;
+  width: 40vw;
+  height: 7.5vw;
+  background-color: white;
+  border-radius: 1vw;
+  gap: 2vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.face_up_card {
+  padding: 0;
+  border-radius: 0;
+}
