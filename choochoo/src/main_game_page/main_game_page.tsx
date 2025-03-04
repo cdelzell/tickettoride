@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
+import PlayerCard from "./components/Profile/ProfileCard";
+import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
+import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
+import DestinationCardsCarousel from "./components/DestinationCard/DestinationCard";
+import DrawDestinationCard from "./components/DestinationCard/DrawDestinationCard";
+import ActionBox from "./components/PlayerActions/ActionBox";
+import TrainCard from "./components/TrainCard/TrainCard";
+import Map from "./components/Map";
+
 import "./main_game_page.css";
 
 // this works with typescript so had to change file
@@ -29,6 +38,15 @@ export type NetworkProps = {
 //   completed: boolean;
 // };
 
+
+// const routePoints = {
+//   1: 1,
+//   2: 2,
+//   3: 4,
+//   4: 7,
+//   5: 10,
+//   6: 15
+// };
 const players = [
   {
     username: "c-bear",
@@ -72,15 +90,7 @@ const train_cards_and_counts = train_cards.map((card, i) => ({
   count: train_counts[i],
 }));
 
-const face_up_cards = [
-  { color: "red" },
-  { color: "wild" },
-  { color: "blue" },
-  { color: "purple" },
-  { color: "white" },
-];
-
-const action_box_status = 1;
+const face_up_cards = ["red", "wild", "blue", "purple", "white"];
 
 interface City {
   name: string;
@@ -98,6 +108,31 @@ interface Route {
   claimedBy?: string;
   claimedAvatarSrc?: string;
 }
+
+const destination_cards = [
+  "alb_miami",
+  "alb_tyville",
+  "chicago_miami",
+  "chicago_phoenix",
+  "clara_houston",
+  "clara_la",
+  "clara_ny",
+  "denver_palo",
+  "firestone_phoenix",
+  "firestone_riddhi",
+  "miami_riddhi",
+  "ny_houston",
+  "ny_oklahoma",
+  "ny_tyville",
+  "palo_la",
+  "palo_phoenix",
+  "seattle_alb",
+  "seattle_houston",
+  "tyville_palo",
+  "tyville_phoenix",
+  "tyville_wash",
+  "wash_denver",
+];
 
 const cities: City[] = [
   { name: "New York", x: 504, y: 133 }, // 0
@@ -344,10 +379,21 @@ const MainGamePage = () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
+  const [action_box_status, setActionBoxStatus] = useState(0);
+  const [draw_dest_active, setDrawDestActive] = useState(false);
+
+  useEffect(() => {
+    setDrawDestActive(true); // ✅ Runs after render, preventing the error
+  }, []);
+
+  const updateStatus = (newStatus: React.SetStateAction<number>) => {
+    setActionBoxStatus(newStatus);
+  };
+
   return (
     <main className="main_game_page">
       {/* player cards */}
-      <div className="player-cards">
+      <div className="player_cards">
         {players.map((player, index) => (
           <PlayerCard
             key={index}
@@ -359,12 +405,24 @@ const MainGamePage = () => {
         ))}
       </div>
 
-      <FaceUpCards></FaceUpCards>
+      <FaceUpCards face_up_cards={face_up_cards}></FaceUpCards>
 
       <div className="player_actions">
-        <ActionBox action={action_box_status}></ActionBox>
+        <ActionBox
+          action={action_box_status}
+          updateStatus={updateStatus}
+          updateDrawDest={setDrawDestActive}
+        ></ActionBox>
 
-        <DestinationCards></DestinationCards>
+        <DestinationCardsCarousel
+          destinations={destination_cards}
+        ></DestinationCardsCarousel>
+
+        {draw_dest_active && (
+          <DrawDestinationCard
+            destinations={["alb_miami", "alb_tyville", "chicago_miami"]}
+          ></DrawDestinationCard>
+        )}
 
         {/* train cards */}
         <div className="train_cards">
@@ -378,7 +436,7 @@ const MainGamePage = () => {
         </div>
 
         {/* main player */}
-        <div className="main-player-card">
+        <div className="main_player_card">
           <PlayerCard
             username={main_player.username}
             trainCount={main_player.trainCount}
@@ -389,7 +447,7 @@ const MainGamePage = () => {
       </div>
 
       {/* map */}
-      <USMap width={width} height={height} />
+      <Map width={width} height={height} routes={routes} cities={cities} />
     </main>
   );
 };
@@ -688,5 +746,6 @@ function USMap({ width, height }: NetworkProps) {
     </svg>
   );
 }
+
 
 export default MainGamePage;
