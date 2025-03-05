@@ -48,3 +48,18 @@
   font-size: 1vw;
   background-color: rgb(194, 210, 211);
 }
+
+.return {
+  position: absolute;
+  left: 0.7vw;
+  top: 0.7vw;
+  padding: 0;
+  border-radius: 50%;
+  background-color: rgba(194, 210, 211, 0.507);
+}
+
+.return img {
+  width: 1vw;
+  height: 1vw;
+  display: block;
+}

@@ -10,33 +10,11 @@ import Link from "@mui/joy/Link";
 import { useNavigate } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
-import { useWebSocket } from "../web_socket";
 import { useState } from "react";
 
 import "./sign_in.css";
 
 function Login() {
-  const { message, setMessage, sendMessage, receivedMessage } = useWebSocket(
-    "ws://localhost:5173"
-  );
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Send both email and password to the backend via WebSocket
-    sendMessage({
-      type: "login", // Custom message type for login
-      username: username,
-      password: password,
-    });
-
-    setUsername(""); // Clear the email field
-    setPassword(""); // Clear the password field
-    console.log("Sent credentials to backend:", username, password); // Optionally log the credentials (be careful with production!)
-
-    window.location.href = "/profile";
-  };
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -78,7 +56,6 @@ function Login() {
             type="username"
             placeholder="thomasthetrain"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
           />
         </FormControl>
         <FormControl>
@@ -89,14 +66,12 @@ function Login() {
             type="password"
             placeholder="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
           />
         </FormControl>
         <Button
           component="a"
           href="/profile"
           type="submit"
-          onClick={handleSubmit}
           sx={{
             mt: 1,
             "&:hover": {

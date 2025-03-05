@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DrawTrains from "../DrawPile/DrawPile";
 import "./ActionBox.css";
 
@@ -11,14 +11,37 @@ function ActionBox({
   updateStatus: (newStatus: number) => void;
   updateDrawDest: (newStatus: boolean) => void;
 }) {
+  const [goBack, setGoBack] = useState(false);
+
   useEffect(() => {
-    if (action === 3) {
+    if (action === 0) {
+      setGoBack(false);
+    } else if (action === 1) {
+      setGoBack(true);
+    } else if (action === 2) {
+      setGoBack(true);
+    } else if (action === 3) {
+      setGoBack(true);
       updateDrawDest(true);
     }
   }, [action, updateDrawDest]); // Runs only when `action` changes
 
+  const handleReturn = () => {
+    if (action === 3) {
+      updateDrawDest(false);
+    }
+    updateStatus(0);
+  };
+
   return (
     <div className="box">
+      {goBack ? (
+        <button onClick={handleReturn} className="return">
+          <img src="./src/assets/arrows/left_arrow.png"></img>
+        </button>
+      ) : (
+        <></>
+      )}
       {action === 0 ? (
         <HomeBox updateStatus={updateStatus} />
       ) : action === 1 ? (

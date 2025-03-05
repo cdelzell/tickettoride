@@ -376,7 +376,7 @@ const MainGamePage = () => {
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
 
   const handleRouteClaim = (route: Route) => {
-    // testing - need to change to chekc if player has eough train cards
+    // testing - need to change to check if player has eough train cards
     const updatedRoutes = gameRoutes.map((r) =>
       r.source.name === route.source.name && r.target.name === route.target.name
         ? { ...r, claimer: main_player.username }
