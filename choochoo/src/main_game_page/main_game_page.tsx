@@ -92,18 +92,20 @@ const train_cards_and_counts = train_cards.map((card, i) => ({
 
 const face_up_cards = ["red", "wild", "blue", "purple", "white"];
 
-interface City {
+export interface City {
   name: string;
   x: number;
   y: number;
   color?: string;
 }
 
-interface Route {
+export interface Route {
   source: City;
   target: City;
   dashed?: boolean;
   color?: string;
+  points: number;
+  claimer?: string | null;
 }
 
 const destination_cards = [
@@ -150,36 +152,212 @@ const cities: City[] = [
   { name: "Albuquerque", x: 220, y: 212 }, // 15
 ];
 
+// 29 routes
+
 const routes: Route[] = [
-  { source: cities[0], target: cities[1], dashed: true, color: "#FFA630" },
-  { source: cities[1], target: cities[6], dashed: true, color: "#4DA1A9" },
-  { source: cities[1], target: cities[5], dashed: true, color: "#2E5077" },
-  { source: cities[0], target: cities[13], dashed: true, color: "#611C35" }, //new york to washington
-  { source: cities[1], target: cities[8], dashed: true, color: "#419D78" },
-  { source: cities[5], target: cities[8], dashed: true, color: "#B9314F" },
-  { source: cities[7], target: cities[3], dashed: true, color: "#FFA630" }, // riddhi rapids to LA
-  { source: cities[7], target: cities[4], dashed: true, color: "#B9314F" }, // riddhi rapids to tyville
-  { source: cities[4], target: cities[5], dashed: true, color: "#2E5077" }, // ty ville to clara city
-  { source: cities[2], target: cities[5], dashed: true, color: "#419D78" }, // denver to clara city
-  { source: cities[3], target: cities[2], dashed: true, color: "#611C35" }, // LA to denver
-  { source: cities[4], target: cities[2], dashed: true, color: "#4DA1A9" }, // tyville to denver
-  { source: cities[3], target: cities[8], dashed: true, color: "#FFA630" }, // LA to firestone rouge
-  { source: cities[2], target: cities[8], dashed: true, color: "#419D78" }, // denver to firestone rouge
-  { source: cities[6], target: cities[8], dashed: true, color: "#611C35" }, // palo noah to firestone rouge
-  { source: cities[14], target: cities[12], dashed: true, color: "#4DA1A9" }, // oc to houston
-  { source: cities[11], target: cities[12], dashed: true, color: "#FFA630" }, // phoenix to houston
-  { source: cities[11], target: cities[3], dashed: true, color: "#419D78" }, // phoenix to LA
-  { source: cities[11], target: cities[15], dashed: true, color: "#2E5077" }, // phoenix to ALB
-  { source: cities[8], target: cities[14], dashed: true, color: "#FFA630" }, // fr to oc
-  { source: cities[7], target: cities[9], dashed: true, color: "#B9314F" }, // rr to seattle
-  { source: cities[5], target: cities[9], dashed: true, color: "#4DA1A9" }, // cc to seattle
-  { source: cities[6], target: cities[10], dashed: true, color: "#FFA630" }, // cc to seattle
-  { source: cities[1], target: cities[13], dashed: true, color: "#419D78" }, //chicago to washington
-  { source: cities[6], target: cities[13], dashed: true, color: "#B9314F" }, //palo noah to washington
-  { source: cities[6], target: cities[12], dashed: true, color: "#2E5077" }, //palo noah to houston
-  { source: cities[15], target: cities[12], dashed: true, color: "#611C35" }, //ALB to houston
-  { source: cities[15], target: cities[14], dashed: true, color: "#611C35" }, //ALB to OC
-  { source: cities[6], target: cities[14], dashed: true, color: "#4DA1A9" }, //palo noah to oc
+  {
+    source: cities[0],
+    target: cities[1],
+    dashed: true,
+    color: "#b03517",
+    points: 7,
+  },
+  {
+    source: cities[1],
+    target: cities[6],
+    dashed: true,
+    color: "#e6c10e",
+    points: 4,
+  },
+  {
+    source: cities[1],
+    target: cities[5],
+    dashed: true,
+    color: "#1e1b1c",
+    points: 4,
+  },
+  {
+    source: cities[0],
+    target: cities[13],
+    dashed: true,
+    color: "#72922e",
+    points: 1,
+  }, //new york to washington
+  {
+    source: cities[1],
+    target: cities[8],
+    dashed: true,
+    color: "#a77daf",
+    points: 2,
+  },
+  {
+    source: cities[5],
+    target: cities[8],
+    dashed: true,
+    color: "#c1a5cd",
+    points: 7,
+  },
+  {
+    source: cities[7],
+    target: cities[3],
+    dashed: true,
+    color: "#862b0f",
+    points: 4,
+  }, // riddhi rapids to LA
+  {
+    source: cities[7],
+    target: cities[4],
+    dashed: true,
+    color: "#c18135",
+    points: 4,
+  }, // riddhi rapids to tyville
+  {
+    source: cities[4],
+    target: cities[5],
+    dashed: true,
+    color: "#e6e5e3", //white 8
+    points: 4,
+  }, // ty ville to clara city
+  {
+    source: cities[2],
+    target: cities[5],
+    dashed: true,
+    color: "#b03517",
+    points: 7,
+  }, // denver to clara city
+  {
+    source: cities[3],
+    target: cities[2],
+    dashed: true,
+    color: "#e6c10e",
+    points: 10,
+  }, // LA to denver
+  {
+    source: cities[4],
+    target: cities[2],
+    dashed: true,
+    color: "#1e1b1c",
+    points: 4,
+  }, // tyville to denver
+  {
+    source: cities[3],
+    target: cities[8],
+    dashed: true,
+    color: "#72922e",
+    points: 15,
+  }, // LA to firestone rouge
+  {
+    source: cities[2],
+    target: cities[8],
+    dashed: true,
+    color: "#a77daf",
+    points: 4,
+  }, // denver to firestone rouge
+  {
+    source: cities[6],
+    target: cities[8],
+    dashed: true,
+    color: "#c1a5cd",
+    points: 4,
+  }, // palo noah to firestone rouge
+  {
+    source: cities[14],
+    target: cities[12],
+    dashed: true,
+    color: "#c18135",
+    points: 2,
+  }, // oc to houston
+  {
+    source: cities[11],
+    target: cities[12],
+    dashed: true,
+    color: "#e6e5e3",
+    points: 10,
+  }, // phoenix to houston
+  {
+    source: cities[11],
+    target: cities[3],
+    dashed: true,
+    color: "#b03517",
+    points: 2,
+  }, // phoenix to LA
+  {
+    source: cities[11],
+    target: cities[15],
+    dashed: true,
+    color: "#e6c10e",
+    points: 1,
+  }, // phoenix to ALB
+  {
+    source: cities[8],
+    target: cities[14],
+    dashed: true,
+    color: "#1e1b1c",
+    points: 1,
+  }, // fr to oc
+  {
+    source: cities[7],
+    target: cities[9],
+    dashed: true,
+    color: "#72922e",
+    points: 4,
+  }, // rr to seattle
+  {
+    source: cities[5],
+    target: cities[9],
+    dashed: true,
+    color: "#a77daf",
+    points: 15,
+  }, // cc to seattle
+  {
+    source: cities[6],
+    target: cities[10],
+    dashed: true,
+    color: "#c1a5cd",
+    points: 7,
+  }, // pn to miami
+  {
+    source: cities[1],
+    target: cities[13],
+    dashed: true,
+    color: "#c18135",
+    points: 7,
+  }, //chicago to washington
+  {
+    source: cities[6],
+    target: cities[13],
+    dashed: true,
+    color: "#e6e5e3",
+    points: 7,
+  }, //palo noah to washington
+  {
+    source: cities[6],
+    target: cities[12],
+    dashed: true,
+    color: "#b03517",
+    points: 10,
+  }, //palo noah to houston
+  {
+    source: cities[15],
+    target: cities[12],
+    dashed: true,
+    color: "#e6c10e",
+    points: 10,
+  }, //ALB to houston
+  {
+    source: cities[15],
+    target: cities[14],
+    dashed: true,
+    color: "#1e1b1c",
+    points: 4,
+  }, //ALB to OC
+  {
+    source: cities[6],
+    target: cities[14],
+    dashed: true,
+    color: "#72922e",
+    points: 10,
+  }, //palo noah to oc
 ];
 
 export const background = "#d3d3d3";
@@ -195,6 +373,19 @@ const MainGamePage = () => {
 
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
+  const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
+
+  const handleRouteClaim = (route: Route) => {
+    // testing - need to change to chekc if player has eough train cards
+    const updatedRoutes = gameRoutes.map((r) =>
+      r.source.name === route.source.name && r.target.name === route.target.name
+        ? { ...r, claimer: main_player.username }
+        : r
+    );
+
+    setGameRoutes(updatedRoutes);
+    return true;
+  };
 
   const updateStatus = (newStatus: React.SetStateAction<number>) => {
     setActionBoxStatus(newStatus);
@@ -257,7 +448,14 @@ const MainGamePage = () => {
       </div>
 
       {/* map */}
-      <Map width={width} height={height} routes={routes} cities={cities} />
+      <Map
+        width={width}
+        height={height}
+        routes={gameRoutes}
+        cities={cities}
+        mainPlayer={main_player}
+        onRouteClaim={handleRouteClaim}
+      />
     </main>
   );
 };
