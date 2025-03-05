@@ -108,15 +108,32 @@ function Profile() {
               href="/main_game_page"
               sx={{
                 "&:hover": {
-                  backgroundColor: "primary.dark",
                   color: "white",
                 },
               }}
             >
               Make Game
             </Button>
-            <Button className="button">Join Game</Button>
-            <Button className="button">Edit Profile</Button>
+            <Button
+              className="button"
+              sx={{
+                "&:hover": {
+                  color: "white",
+                },
+              }}
+            >
+              Join Game
+            </Button>
+            <Button
+              className="button"
+              sx={{
+                "&:hover": {
+                  color: "white",
+                },
+              }}
+            >
+              Edit Profile
+            </Button>
           </Grid2>
         </Grid2>
       </Box>

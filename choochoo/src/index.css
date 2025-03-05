@@ -47,11 +47,14 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  opacity: 87.5%;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: none;
+}
+button:active {
+  opacity: 110%;
 }
 
 @media (prefers-color-scheme: light) {
