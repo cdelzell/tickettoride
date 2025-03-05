@@ -1,12 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, query, orderByChild, equalTo, get } from "firebase/database";
-import {firebaseConfig} from './FirebaseCredentials'
-
-//get the app going
-const app = initializeApp(firebaseConfig);
-
-//Database location
-const database = getDatabase(app);
+import { ref, query, orderByChild, equalTo, get } from "firebase/database";
+import { database } from './FirebaseCredentials'
 
 // Setting path to data subsections
 const userDataPath = ref(database, "users");
@@ -31,7 +24,7 @@ const userData = {
  * @param {string} username - The username of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByUsername(username, print) {
+async function findUserByUsername(username: string, print: boolean) {
   try {
     const userData = await findUserByField('username', username);
 
@@ -55,7 +48,7 @@ async function findUserByUsername(username, print) {
  * @param {string} email - The email of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByEmail(email, print) {
+async function findUserByEmail(email: string, print: boolean) {
   try {
     const userData = await findUserByField('email', email);
 
@@ -79,7 +72,7 @@ async function findUserByEmail(email, print) {
  * @param {string} password - The password of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByPassword(password, print) {
+async function findUserByPassword(password: string, print: boolean) {
   try {
     const userData = await findUserByField('password', password);
 
@@ -103,7 +96,7 @@ async function findUserByPassword(password, print) {
  * @param {number} wins - The number of wins of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByWins(wins, print) {
+async function findUserByWins(wins: number, print: boolean) {
   try {
     const userData = await findUserByField('wins', wins);
 
@@ -127,7 +120,7 @@ async function findUserByWins(wins, print) {
  * @param {number} losses - The number of losses of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByLosses(losses, print) {
+async function findUserByLosses(losses: number, print: boolean) {
   try {
     const userData = await findUserByField('losses', losses);
 
@@ -151,7 +144,7 @@ async function findUserByLosses(losses, print) {
  * @param {number} total_score - The total score of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByTotalScore(total_score, print) {
+async function findUserByTotalScore(total_score: number, print: boolean) {
   try {
     const userData = await findUserByField('total_score', total_score);
 
@@ -175,7 +168,7 @@ async function findUserByTotalScore(total_score, print) {
  * @param {string} profile_picture - The profile picture URL of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByProfilePicture(profile_picture, print) {
+async function findUserByProfilePicture(profile_picture: string, print: boolean) {
   try {
     const userData = await findUserByField('profile_picture', profile_picture);
 
@@ -199,14 +192,14 @@ async function findUserByProfilePicture(profile_picture, print) {
  * @param {boolean} status - The status of users that you are looking for (true or false)
  * @param {boolean} print - Variable to determine if the program print the data received to console (true prints, false does not)
  */
-async function findUserByStatus(status, print) {
+async function findUserByStatus(status: boolean, print: boolean) {
   try {
     // Await the result of findUserByStatus
-    const userData = await findUserByField('status',status);
+    const userData = await findUserByField('status', status);
 
     // Print the user data if it exists
     if (userData) {
-      if(print){
+      if (print) {
         printUserQueryResults(userData);  // Pass resolved data to print
       }
       return userData;
@@ -230,7 +223,7 @@ async function findUserByStatus(status, print) {
  */
 function findUserByField(field, value) {
   const userQuery = query(userDataPath, orderByChild(field), equalTo(value));
-  
+
   // Perform the query and return the result
   return get(userQuery)  // This returns a Promise.
     .then(snapshot => {

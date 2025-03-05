@@ -82,18 +82,14 @@ function Sign_In() {
           />
         </FormControl>
         <Button
-          component="a"
-          href="/profile"
-          sx={{
-            mt: 1,
-            "&:hover": {
-              backgroundColor: "primary.dark", // Darkens background only
-              color: "white",
-            },
-          }}
-        >
-          Sign up
-        </Button>
+            type="submit"
+            disabled={!isFormValid} // Disable button if form is invalid
+            sx={{
+              mt: 1,
+            }}
+          >
+            Log in
+          </Button>
       </Sheet>
     </main>
   );

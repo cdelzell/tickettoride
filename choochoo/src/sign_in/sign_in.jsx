@@ -11,16 +11,39 @@ import { useNavigate } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 import { useState } from "react";
+import { handleLogIn } from "../Firebase/FirebaseLogInManager";
 
 import "./sign_in.css";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Assuming handleLogIn returns a promise
+      const success = await handleLogIn(username, password);
+      if (success) {
+        // Redirect to profile on successful login
+        navigate("/profile");
+      } else {
+        // Handle failed login attempt
+        setError("Error: Username or password incorrect");
+      }
+    } catch (err) {
+      // Catch any unexpected errors (e.g., network issues)
+      setError("Error: Something went wrong. Please try again.");
+    }
+  };
+
+  const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
 
   return (
     <main className="loginPage">
@@ -48,36 +71,42 @@ function Login() {
           </Typography>
           <Typography level="body-med">Sign in to continue.</Typography>
         </div>
-        <FormControl>
-          <FormLabel>Email</FormLabel>
-          <Input
-            // html input attribute
-            name="username"
-            type="username"
-            placeholder="thomasthetrain"
-            value={username}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Password</FormLabel>
-          <Input
-            // html input attribute
-            name="password"
-            type="password"
-            placeholder="password"
-            value={password}
-          />
-        </FormControl>
-        <Button
-          component="a"
-          href="/profile"
-          type="submit"
-          sx={{
-            mt: 1,
-          }}
-        >
-          Log in
-        </Button>
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <FormLabel>Email</FormLabel>
+            <Input
+              name="username"
+              type="text"
+              placeholder="thomasthetrain"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)} // Update state when input changes
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Password</FormLabel>
+            <Input
+              name="password"
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} // Update state when input changes
+            />
+          </FormControl>
+          {error && (
+            <Typography sx={{ color: "red", fontSize: "sm" }}>
+              {error}
+            </Typography>
+          )}
+          <Button
+            type="submit"
+            disabled={!isFormValid} // Disable button if form is invalid
+            sx={{
+              mt: 1,
+            }}
+          >
+            Log in
+          </Button>
+        </form>
         <Typography
           endDecorator={<Link href="/sign_up">Sign up</Link>}
           sx={{ fontSize: "sm", alignSelf: "center" }}
