@@ -7,7 +7,7 @@ import Sign_Up from "/src/sign_up/sign_up.jsx";
 import Main_Game_Page from "/src/main_game_page/main_game_page.jsx";
 import Profile from "/src/profile/profile.jsx";
 import "./index.css";
-import GameRunner from "./components/game-runner.js";
+import GameRunner from "./backend/game-runner.js";
 
 const gameRunner = new GameRunner(['Billy', 'Bob', 'Joe']);
 console.log("GameRunner Instance:", gameRunner);

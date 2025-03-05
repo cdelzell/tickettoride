@@ -27,6 +27,9 @@ class GameRunner {
         return false;
     }
 
+    addCardToPlayer(id: string, color: string) {
+        
+    }
     
 }
 

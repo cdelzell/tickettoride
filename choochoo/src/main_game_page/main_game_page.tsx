@@ -3,8 +3,8 @@ import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
 //import { useWebSocket } from "../web_socket.jsx";
 import "./main_game_page.css";
-import GameRunner from "../components/game-runner"
-import User from "../components/user"
+import GameRunner from "../backend/game-runner"
+import User from "../backend/user"
 
 // this works with typescript so had to change file
 
@@ -31,6 +31,8 @@ export type NetworkProps = {
 //   points: number;
 //   completed: boolean;
 // };
+
+
 
 // const routePoints = {
 //   1: 1,
