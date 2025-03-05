@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
-import GameRunner from "../backend/game-runner"
-import User from "../backend/user"
+import GameRunner from "../backend/game-runner";
+import User from "../backend/user";
 import PlayerCard from "./components/Profile/ProfileCard";
 import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
 import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
@@ -38,8 +38,6 @@ export type NetworkProps = {
 //   points: number;
 //   completed: boolean;
 // };
-
-
 
 // const routePoints = {
 //   1: 1,
@@ -163,21 +161,21 @@ const routes: Route[] = [
     target: cities[1],
     dashed: true,
     color: "#b03517",
-    points: 7,
+    points: 4,
   },
   {
     source: cities[1],
     target: cities[6],
     dashed: true,
     color: "#e6c10e",
-    points: 4,
+    points: 3,
   },
   {
     source: cities[1],
     target: cities[5],
     dashed: true,
     color: "#1e1b1c",
-    points: 4,
+    points: 5,
   },
   {
     source: cities[0],
@@ -198,56 +196,56 @@ const routes: Route[] = [
     target: cities[8],
     dashed: true,
     color: "#c1a5cd",
-    points: 7,
+    points: 4,
   },
   {
     source: cities[7],
     target: cities[3],
     dashed: true,
     color: "#862b0f",
-    points: 4,
+    points: 3,
   }, // riddhi rapids to LA
   {
     source: cities[7],
     target: cities[4],
     dashed: true,
     color: "#c18135",
-    points: 4,
+    points: 3,
   }, // riddhi rapids to tyville
   {
     source: cities[4],
     target: cities[5],
     dashed: true,
     color: "#e6e5e3", //white 8
-    points: 4,
+    points: 3,
   }, // ty ville to clara city
   {
     source: cities[2],
     target: cities[5],
     dashed: true,
     color: "#b03517",
-    points: 7,
+    points: 4,
   }, // denver to clara city
   {
     source: cities[3],
     target: cities[2],
     dashed: true,
     color: "#e6c10e",
-    points: 10,
+    points: 5,
   }, // LA to denver
   {
     source: cities[4],
     target: cities[2],
     dashed: true,
     color: "#1e1b1c",
-    points: 4,
+    points: 3,
   }, // tyville to denver
   {
     source: cities[3],
     target: cities[8],
     dashed: true,
     color: "#72922e",
-    points: 15,
+    points: 6,
   }, // LA to firestone rouge
   {
     source: cities[2],
@@ -261,7 +259,7 @@ const routes: Route[] = [
     target: cities[8],
     dashed: true,
     color: "#c1a5cd",
-    points: 4,
+    points: 5,
   }, // palo noah to firestone rouge
   {
     source: cities[14],
@@ -275,7 +273,7 @@ const routes: Route[] = [
     target: cities[12],
     dashed: true,
     color: "#e6e5e3",
-    points: 10,
+    points: 5,
   }, // phoenix to houston
   {
     source: cities[11],
@@ -303,63 +301,63 @@ const routes: Route[] = [
     target: cities[9],
     dashed: true,
     color: "#72922e",
-    points: 4,
+    points: 3,
   }, // rr to seattle
   {
     source: cities[5],
     target: cities[9],
     dashed: true,
     color: "#a77daf",
-    points: 15,
+    points: 6,
   }, // cc to seattle
   {
     source: cities[6],
     target: cities[10],
     dashed: true,
     color: "#c1a5cd",
-    points: 7,
+    points: 4,
   }, // pn to miami
   {
     source: cities[1],
     target: cities[13],
     dashed: true,
     color: "#c18135",
-    points: 7,
+    points: 4,
   }, //chicago to washington
   {
     source: cities[6],
     target: cities[13],
     dashed: true,
     color: "#e6e5e3",
-    points: 7,
+    points: 4,
   }, //palo noah to washington
   {
     source: cities[6],
     target: cities[12],
     dashed: true,
     color: "#b03517",
-    points: 10,
+    points: 5,
   }, //palo noah to houston
   {
     source: cities[15],
     target: cities[12],
     dashed: true,
     color: "#e6c10e",
-    points: 10,
+    points: 5,
   }, //ALB to houston
   {
     source: cities[15],
     target: cities[14],
     dashed: true,
     color: "#1e1b1c",
-    points: 4,
+    points: 3,
   }, //ALB to OC
   {
     source: cities[6],
     target: cities[14],
     dashed: true,
     color: "#72922e",
-    points: 10,
+    points: 5,
   }, //palo noah to oc
 ];
 
@@ -371,7 +369,7 @@ const graph = {
 };
 
 const MainGamePage = () => {
-  const users: User[] = [new User()]
+  const users: User[] = [new User()];
   const gameRunner = new GameRunner(users);
 
   const width = window.innerWidth;
