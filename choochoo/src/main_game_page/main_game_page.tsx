@@ -4,6 +4,14 @@ import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
 import GameRunner from "../backend/game-runner"
 import User from "../backend/user"
+import PlayerCard from "./components/Profile/ProfileCard";
+import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
+import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
+import DestinationCardsCarousel from "./components/DestinationCard/DestinationCard";
+import DrawDestinationCard from "./components/DestinationCard/DrawDestinationCard";
+import ActionBox from "./components/PlayerActions/ActionBox";
+import TrainCard from "./components/TrainCard/TrainCard";
+import Map from "./components/Map";
 
 // this works with typescript so had to change file
 
