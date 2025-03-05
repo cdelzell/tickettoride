@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
-import PlayerCard from "./components/Profile/ProfileCard";
-import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
-import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
-import DestinationCardsCarousel from "./components/DestinationCard/DestinationCard";
-import DrawDestinationCard from "./components/DestinationCard/DrawDestinationCard";
-import ActionBox from "./components/PlayerActions/ActionBox";
-import TrainCard from "./components/TrainCard/TrainCard";
-import Map from "./components/Map";
-
 import "./main_game_page.css";
+import GameRunner from "../backend/game-runner"
+import User from "../backend/user"
 
 // this works with typescript so had to change file
 
@@ -37,6 +30,8 @@ export type NetworkProps = {
 //   points: number;
 //   completed: boolean;
 // };
+
+
 
 // const routePoints = {
 //   1: 1,
@@ -368,6 +363,9 @@ const graph = {
 };
 
 const MainGamePage = () => {
+  const users: User[] = [new User()]
+  const gameRunner = new GameRunner(users);
+
   const width = window.innerWidth;
   const height = window.innerHeight;
 
@@ -461,5 +459,4 @@ const MainGamePage = () => {
     </main>
   );
 };
-
 export default MainGamePage;
