@@ -1,0 +1,273 @@
+import { ref, update, get} from 'firebase/database';
+import { database } from './FirebaseCredentials'
+
+// USER DATA INTERFACE
+interface UserDataFormat {
+    username: string;
+    email: string;
+    password: string;
+    wins: number;
+    losses: number;
+    total_score: number;
+    profile_picture: string;
+    status: boolean;
+}
+
+// USER DATA OBJECT
+const userData: UserDataFormat = {
+    username: "Nacy_Gren",
+    email: "john.doe@example.com",
+    password: "Password123",
+    wins: 0,
+    losses: 0,
+    total_score: 0,
+    profile_picture: "url/to/profile_pic.jpg",
+    status: true
+};
+
+/**
+ * Function that finds a user using their object ID, then updates their username in the Firebase database
+ * @param {string} objectId - The objectID of the user that you are looking for
+ * @param {string} username - The username to replace the current username with
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+ * @throws {Error} - Throws an error if there is an issue while updating the username or retrieving user data from the database.
+ */
+async function setUsername(objectId: string, username: string, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'username', username);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+
+/**
+* Function that finds a user using their object ID, then updates their email in the Firebase database
+* @param {string} objectId - The objectID of the user that you are looking for
+* @param {string} email - The email to replace the current email with
+* @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+* @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+* @throws {Error} - Throws an error if there is an issue while updating the email or retrieving user data from the database.
+*/
+async function setEmail(objectId: string, email: string, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'email', email);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+/**
+* Function that finds a user using their object ID, then updates their password in the Firebase database
+* @param {string} objectId - The objectID of the user that you are looking for
+* @param {string} password - The password to replace the current password with
+* @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+* @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+* @throws {Error} - Throws an error if there is an issue while updating the password or retrieving user data from the database.
+*/
+async function setPassword(objectId: string, password: string, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'password', password);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+/**
+* Function that finds a user using their object ID, then updates their wins in the Firebase database
+* @param {string} objectId - The objectID of the user that you are looking for
+* @param {number} wins - The wins to replace the current wins with
+* @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+* @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+* @throws {Error} - Throws an error if there is an issue while updating the wins or retrieving user data from the database.
+*/
+async function setWins(objectId: string, wins: number, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'wins', wins);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+/**
+* Function that finds a user using their object ID, then updates their losses in the Firebase database
+* @param {string} objectId - The objectID of the user that you are looking for
+* @param {number} losses - The losses to replace the current losses with
+* @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+* @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+* @throws {Error} - Throws an error if there is an issue while updating the losses or retrieving user data from the database.
+*/
+async function setLoss(objectId: string, losses: number, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'losses', losses);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+/**
+* Function that finds a user using their object ID, then updates their total score in the Firebase database
+* @param {string} objectId - The objectID of the user that you are looking for
+* @param {number} total_score - The total score to replace the current total score with
+* @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+* @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+* @throws {Error} - Throws an error if there is an issue while updating the total score or retrieving user data from the database.
+*/
+async function setTotalScore(objectId: string, total_score: number, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'total_score', total_score);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+/**
+* Function that finds a user using their object ID, then updates their profile picture in the Firebase database
+* @param {string} objectId - The objectID of the user that you are looking for
+* @param {string} profile_picture - The URL of the new profile picture to replace the current profile picture
+* @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+* @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+* @throws {Error} - Throws an error if there is an issue while updating the profile picture or retrieving user data from the database.
+*/
+async function setProfilePicture(objectId: string, profile_picture: string, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'profile_picture', profile_picture);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+/**
+* Function that finds a user using their object ID, then updates their status in the Firebase database
+* @param {string} objectId - The objectID of the user that you are looking for
+* @param {boolean} status - The status to replace the current status with
+* @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+* @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
+* @throws {Error} - Throws an error if there is an issue while updating the status or retrieving user data from the database.
+*/
+async function setStatus(objectId: string, status: boolean, print: boolean): Promise<Object | null> {
+    try {
+        const userData = await updateUserProperty(objectId, 'status', status);
+
+        if (userData) {
+            if (print) {
+                console.log("Updated user data:", userData);  // Print the updated user data if print is true
+            }
+            return userData;
+        } else {
+            console.log(`No user found with ID: ${objectId}`);
+            return null;  // Return null if no user data is found
+        }
+    } catch (error) {
+        console.error("Error handling user data:", error);
+        return null;  // Return null on error
+    }
+}
+
+
+/**
+ * Function to update a user property
+ * @param {string} objectId - The objectID of the user whose property is to be updated. This is typically the unique identifier for the user in the Firebase database.
+ * @param {string} property - The property of the user object to update. This is the name of the field (e.g., 'username', 'email', 'wins', etc.).
+ * @param {string | number | boolean} newValue - The new value for the property. This value can be of type `string`, `number`, or `boolean`, depending on the property being updated.
+ * @returns {Promise<any>} - A promise that resolves to the updated user data from the database after the property has been updated.
+ * @throws {Error} - Throws an error if the update operation fails or if an error occurs during the retrieval of updated data.
+ */
+async function updateUserProperty(objectId: string, property: string, newValue: string | number | boolean): Promise<any> {
+    // Use the correct reference from the initialized database object
+    const userRef = ref(database, 'users/' + objectId);
+
+    try {
+        // Perform the update
+        await update(userRef, {
+            [property]: newValue
+        });
+
+        // Get and return the updated user data
+        const snapshot = await get(userRef);
+        const updatedUserData = snapshot.val();
+
+        return updatedUserData;
+    } catch (error) {
+        console.error("Error updating user property:", error);
+        throw new Error("Failed to update user property");
+    }
+}
