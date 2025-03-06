@@ -18,6 +18,7 @@ export interface Route {
   target: City;
   dashed?: boolean;
   color?: string;
+  game_color: string;
   points: number;
   claimer?: string | null;
 }

@@ -49,7 +49,7 @@ function Login() {
           <Typography level="body-med">Sign in to continue.</Typography>
         </div>
         <FormControl>
-          <FormLabel>Email</FormLabel>
+          <FormLabel>Username</FormLabel>
           <Input
             // html input attribute
             name="username"
