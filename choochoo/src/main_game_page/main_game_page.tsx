@@ -11,6 +11,7 @@ import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
 
 import "./main_game_page.css";
+import { forEachChild } from "typescript";
 
 // this works with typescript so had to change file
 
@@ -405,6 +406,7 @@ const MainGamePage = () => {
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
   const [trainCards, setTrainCards] = useState(train_cards_and_counts);
+  const [sumTrains, setSumTrains] = useState(0);
 
   useEffect(() => {}, [trainCards]);
 
@@ -417,6 +419,15 @@ const MainGamePage = () => {
           : card
       )
     );
+    updateSumTrains();
+  };
+
+  const updateSumTrains = () => {
+    let sum = 0;
+    for (let i = 0; i < trainCards.length; i++) {
+      sum += trainCards[i].count;
+    }
+    setSumTrains(sum);
   };
 
   const handleRouteClaim = (route: Route) => {
@@ -431,11 +442,12 @@ const MainGamePage = () => {
       trainCard.count + wildCard.count >= route.points
     ) {
       // Deduct train cards when claiming a route
-      updateTrainCardCount(route.game_color!, -trainCard.count);
+      updateTrainCardCount(route.game_color!, -route.points);
       if (
         route.points > trainCard.count &&
         trainCard.count + wildCard.count >= route.points
       ) {
+        updateTrainCardCount(route.game_color!, -trainCard.count);
         updateTrainCardCount("wild", -(route.points - trainCard.count));
       }
 
@@ -512,7 +524,7 @@ const MainGamePage = () => {
         <div className="main_player_card">
           <PlayerCard
             username={main_player.username}
-            trainCount={main_player.trainCount}
+            trainCount={sumTrains}
             profilePic={main_player.profilePic}
             main_player={true}
           />
