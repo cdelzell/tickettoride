@@ -72,15 +72,15 @@ const main_player = {
 };
 
 const train_cards = [
-  { color: "./src/assets/cards/red.png" },
-  { color: "./src/assets/cards/yellow.png" },
-  { color: "./src/assets/cards/black.png" },
-  { color: "./src/assets/cards/green.png" },
-  { color: "./src/assets/cards/purple.png" },
-  { color: "./src/assets/cards/blue.png" },
-  { color: "./src/assets/cards/brown.png" },
-  { color: "./src/assets/cards/white.png" },
-  { color: "./src/assets/cards/wild.png" },
+  { color: "./src/assets/cards/red.png", game_color: "red" },
+  { color: "./src/assets/cards/yellow.png", game_color: "yellow" },
+  { color: "./src/assets/cards/black.png", game_color: "black" },
+  { color: "./src/assets/cards/green.png", game_color: "green" },
+  { color: "./src/assets/cards/purple.png", game_color: "purple" },
+  { color: "./src/assets/cards/blue.png", game_color: "blue" },
+  { color: "./src/assets/cards/brown.png", game_color: "brown" },
+  { color: "./src/assets/cards/white.png", game_color: "white" },
+  { color: "./src/assets/cards/wild.png", game_color: "wild" },
 ];
 
 const train_counts = [1, 2, 3, 4, 5, 6, 7, 8, 20];
@@ -104,6 +104,7 @@ export interface Route {
   target: City;
   dashed?: boolean;
   color?: string;
+  game_color: string;
   points: number;
   claimer?: string | null;
 }
@@ -160,6 +161,7 @@ const routes: Route[] = [
     target: cities[1],
     dashed: true,
     color: "#b03517",
+    game_color: "red",
     points: 7,
   },
   {
@@ -167,6 +169,7 @@ const routes: Route[] = [
     target: cities[6],
     dashed: true,
     color: "#e6c10e",
+    game_color: "yellow",
     points: 4,
   },
   {
@@ -174,6 +177,7 @@ const routes: Route[] = [
     target: cities[5],
     dashed: true,
     color: "#1e1b1c",
+    game_color: "black",
     points: 4,
   },
   {
@@ -181,183 +185,209 @@ const routes: Route[] = [
     target: cities[13],
     dashed: true,
     color: "#72922e",
+    game_color: "green",
     points: 1,
-  }, //new york to washington
+  },
   {
     source: cities[1],
     target: cities[8],
     dashed: true,
     color: "#a77daf",
+    game_color: "purple",
     points: 2,
   },
   {
     source: cities[5],
     target: cities[8],
     dashed: true,
-    color: "#c1a5cd",
+    color: "#519bdb",
+    game_color: "blue",
     points: 7,
   },
   {
     source: cities[7],
     target: cities[3],
     dashed: true,
-    color: "#862b0f",
+    color: "#519bdb",
+    game_color: "blue",
     points: 4,
-  }, // riddhi rapids to LA
+  },
   {
     source: cities[7],
     target: cities[4],
     dashed: true,
     color: "#c18135",
+    game_color: "brown",
     points: 4,
-  }, // riddhi rapids to tyville
+  },
   {
     source: cities[4],
     target: cities[5],
     dashed: true,
-    color: "#e6e5e3", //white 8
+    color: "#e6e5e3",
+    game_color: "white",
     points: 4,
-  }, // ty ville to clara city
+  },
   {
     source: cities[2],
     target: cities[5],
     dashed: true,
     color: "#b03517",
+    game_color: "red",
     points: 7,
-  }, // denver to clara city
+  },
   {
     source: cities[3],
     target: cities[2],
     dashed: true,
     color: "#e6c10e",
+    game_color: "yellow",
     points: 10,
-  }, // LA to denver
+  },
   {
     source: cities[4],
     target: cities[2],
     dashed: true,
     color: "#1e1b1c",
+    game_color: "black",
     points: 4,
-  }, // tyville to denver
+  },
   {
     source: cities[3],
     target: cities[8],
     dashed: true,
     color: "#72922e",
+    game_color: "green",
     points: 15,
-  }, // LA to firestone rouge
+  },
   {
     source: cities[2],
     target: cities[8],
     dashed: true,
     color: "#a77daf",
+    game_color: "purple",
     points: 4,
-  }, // denver to firestone rouge
+  },
   {
     source: cities[6],
     target: cities[8],
     dashed: true,
-    color: "#c1a5cd",
+    color: "#519bdb",
+    game_color: "blue",
     points: 4,
-  }, // palo noah to firestone rouge
+  },
   {
     source: cities[14],
     target: cities[12],
     dashed: true,
     color: "#c18135",
+    game_color: "brown",
     points: 2,
-  }, // oc to houston
+  },
   {
     source: cities[11],
     target: cities[12],
     dashed: true,
     color: "#e6e5e3",
+    game_color: "white",
     points: 10,
-  }, // phoenix to houston
+  },
   {
     source: cities[11],
     target: cities[3],
     dashed: true,
     color: "#b03517",
+    game_color: "red",
     points: 2,
-  }, // phoenix to LA
+  },
   {
     source: cities[11],
     target: cities[15],
     dashed: true,
     color: "#e6c10e",
+    game_color: "yellow",
     points: 1,
-  }, // phoenix to ALB
+  },
   {
     source: cities[8],
     target: cities[14],
     dashed: true,
     color: "#1e1b1c",
+    game_color: "black",
     points: 1,
-  }, // fr to oc
+  },
   {
     source: cities[7],
     target: cities[9],
     dashed: true,
     color: "#72922e",
+    game_color: "green",
     points: 4,
-  }, // rr to seattle
+  },
   {
     source: cities[5],
     target: cities[9],
     dashed: true,
     color: "#a77daf",
+    game_color: "purple",
     points: 15,
-  }, // cc to seattle
+  },
   {
     source: cities[6],
     target: cities[10],
     dashed: true,
-    color: "#c1a5cd",
+    color: "#519bdb",
+    game_color: "blue",
     points: 7,
-  }, // pn to miami
+  },
   {
     source: cities[1],
     target: cities[13],
     dashed: true,
     color: "#c18135",
+    game_color: "brown",
     points: 7,
-  }, //chicago to washington
+  },
   {
     source: cities[6],
     target: cities[13],
     dashed: true,
     color: "#e6e5e3",
+    game_color: "white",
     points: 7,
-  }, //palo noah to washington
+  },
   {
     source: cities[6],
     target: cities[12],
     dashed: true,
     color: "#b03517",
+    game_color: "red",
     points: 10,
-  }, //palo noah to houston
+  },
   {
     source: cities[15],
     target: cities[12],
     dashed: true,
     color: "#e6c10e",
+    game_color: "yellow",
     points: 10,
-  }, //ALB to houston
+  },
   {
     source: cities[15],
     target: cities[14],
     dashed: true,
     color: "#1e1b1c",
+    game_color: "black",
     points: 4,
-  }, //ALB to OC
+  },
   {
     source: cities[6],
     target: cities[14],
     dashed: true,
     color: "#72922e",
+    game_color: "green",
     points: 10,
-  }, //palo noah to oc
+  },
 ];
 
 export const background = "#d3d3d3";
@@ -374,19 +404,48 @@ const MainGamePage = () => {
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
+  const [trainCards, setTrainCards] = useState(train_cards_and_counts);
+
+  useEffect(() => {}, [trainCards]);
+
+  // Function to update a specific train card count
+  const updateTrainCardCount = (color: string, amount: number) => {
+    setTrainCards((prevCards) =>
+      prevCards.map((card) =>
+        card.game_color === color
+          ? { ...card, count: Math.max(0, card.count + amount) }
+          : card
+      )
+    );
+  };
 
   const handleRouteClaim = (route: Route) => {
-    // testing - need to change to check if player has eough train cards
-    const updatedRoutes = gameRoutes.map((r) =>
-      action_box_status === 2 &&
-      r.source.name === route.source.name &&
-      r.target.name === route.target.name
-        ? { ...r, claimer: main_player.username }
-        : r
+    const trainCard = trainCards.find(
+      (card) => card.game_color === route.game_color
     );
 
-    setGameRoutes(updatedRoutes);
-    return true;
+    if (
+      action_box_status === 2 &&
+      trainCard &&
+      trainCard.count >= route.points
+    ) {
+      // Deduct train cards when claiming a route
+      updateTrainCardCount(route.game_color!, -route.points);
+
+      // Update the claimed routes
+      setGameRoutes((prevRoutes) =>
+        prevRoutes.map((r) =>
+          action_box_status === 2 &&
+          r.source.name === route.source.name &&
+          r.target.name === route.target.name
+            ? { ...r, claimer: main_player.username }
+            : r
+        )
+      );
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const updateStatus = (newStatus: React.SetStateAction<number>) => {
@@ -429,10 +488,11 @@ const MainGamePage = () => {
 
         {/* train cards */}
         <div className="train_cards">
-          {train_cards_and_counts.map((train_card, index) => (
+          {trainCards.map((train_card, index) => (
             <TrainCard
               key={index}
               color={train_card.color}
+              game_color={train_card.game_color}
               count={train_card.count}
             />
           ))}
