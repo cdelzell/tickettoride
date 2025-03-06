@@ -423,14 +423,21 @@ const MainGamePage = () => {
     const trainCard = trainCards.find(
       (card) => card.game_color === route.game_color
     );
+    const wildCard = trainCards.find((card) => card.game_color === "wild");
 
     if (
       action_box_status === 2 &&
       trainCard &&
-      trainCard.count >= route.points
+      trainCard.count + wildCard.count >= route.points
     ) {
       // Deduct train cards when claiming a route
-      updateTrainCardCount(route.game_color!, -route.points);
+      updateTrainCardCount(route.game_color!, -trainCard.count);
+      if (
+        route.points > trainCard.count &&
+        trainCard.count + wildCard.count >= route.points
+      ) {
+        updateTrainCardCount("wild", -(route.points - trainCard.count));
+      }
 
       // Update the claimed routes
       setGameRoutes((prevRoutes) =>
@@ -467,7 +474,10 @@ const MainGamePage = () => {
         ))}
       </div>
 
-      <FaceUpCards face_up_cards={face_up_cards}></FaceUpCards>
+      <FaceUpCards
+        face_up_cards={face_up_cards}
+        updateTrains={updateTrainCardCount}
+      ></FaceUpCards>
 
       <div className="player_actions">
         <ActionBox
