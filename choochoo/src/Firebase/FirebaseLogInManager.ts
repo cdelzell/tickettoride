@@ -1,27 +1,31 @@
 import {get, query, equalTo, orderByChild } from 'firebase/database'
 import {userDataPath} from './FirebaseCredentials'
+import {setStatus, UserDataFormat} from './FirebaseWriteUserData'
 
-export async function handleLogIn(username: string, enteredPassword: string): Promise<boolean | null> {
-    const userQuery = query(userDataPath, orderByChild('username'), equalTo(username));
+export async function handleLogIn(enteredUsername: string, enteredPassword: string): Promise<[boolean, string] | null> {
+    const userQuery = query(userDataPath, orderByChild('username'), equalTo(enteredUsername));
 
     try {
         const snapshot = await get(userQuery);
         if(snapshot.exists()){
-            const userData = snapshot.val();
-            console.log(userData);
-            const database_password = userData.password;
-            console.log(database_password);
-            if(userData.password === enteredPassword){
+            const userEntry = snapshot.val();
+            const userKey = Object.keys(userEntry)[0];
+            const userData = Object.values(userEntry)[0] as UserDataFormat;
+            const database_password = userData["password"];
+
+            if(database_password === enteredPassword){
+                //setStatus(userData, true)
                 // Call successful login function
-                console.log("Worked");
-                return true;
+                console.log("Log in successed");
+                //setStatus(snapshot.val()[0],true, false);
+                return [true, userKey];
             } else {
                 // Call failed login function
-                console.log("Failed");
-                return false; // User failed to log in
+                console.log("Log in failed");
+                return [false, userKey]; // User failed to log in
             }
         }  else {
-            console.log(`No user found with username = ${username}`);
+            console.log(`No user found with username = ${enteredUsername}`);
             return null;
         }
     } catch (error) {

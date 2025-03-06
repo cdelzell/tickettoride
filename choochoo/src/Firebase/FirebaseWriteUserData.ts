@@ -1,8 +1,9 @@
-import { ref, update, get} from 'firebase/database';
-import { database } from './FirebaseCredentials'
+import { ref, update, get, push} from 'firebase/database';
+import { database, userDataPath } from './FirebaseCredentials'
+import User from '../backend/user';
 
 // USER DATA INTERFACE
-interface UserDataFormat {
+export interface UserDataFormat {
     username: string;
     email: string;
     password: string;
@@ -14,7 +15,7 @@ interface UserDataFormat {
 }
 
 // USER DATA OBJECT
-const userData: UserDataFormat = {
+export const userData: UserDataFormat = {
     username: "Nacy_Gren",
     email: "john.doe@example.com",
     password: "Password123",
@@ -33,7 +34,7 @@ const userData: UserDataFormat = {
  * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
  * @throws {Error} - Throws an error if there is an issue while updating the username or retrieving user data from the database.
  */
-async function setUsername(objectId: string, username: string, print: boolean): Promise<Object | null> {
+export async function setUsername(objectId: string, username: string, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'username', username);
 
@@ -61,7 +62,7 @@ async function setUsername(objectId: string, username: string, print: boolean): 
 * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
 * @throws {Error} - Throws an error if there is an issue while updating the email or retrieving user data from the database.
 */
-async function setEmail(objectId: string, email: string, print: boolean): Promise<Object | null> {
+export async function setEmail(objectId: string, email: string, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'email', email);
 
@@ -88,7 +89,7 @@ async function setEmail(objectId: string, email: string, print: boolean): Promis
 * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
 * @throws {Error} - Throws an error if there is an issue while updating the password or retrieving user data from the database.
 */
-async function setPassword(objectId: string, password: string, print: boolean): Promise<Object | null> {
+export async function setPassword(objectId: string, password: string, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'password', password);
 
@@ -115,7 +116,7 @@ async function setPassword(objectId: string, password: string, print: boolean): 
 * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
 * @throws {Error} - Throws an error if there is an issue while updating the wins or retrieving user data from the database.
 */
-async function setWins(objectId: string, wins: number, print: boolean): Promise<Object | null> {
+export async function setWins(objectId: string, wins: number, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'wins', wins);
 
@@ -142,7 +143,7 @@ async function setWins(objectId: string, wins: number, print: boolean): Promise<
 * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
 * @throws {Error} - Throws an error if there is an issue while updating the losses or retrieving user data from the database.
 */
-async function setLoss(objectId: string, losses: number, print: boolean): Promise<Object | null> {
+export async function setLoss(objectId: string, losses: number, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'losses', losses);
 
@@ -169,7 +170,7 @@ async function setLoss(objectId: string, losses: number, print: boolean): Promis
 * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
 * @throws {Error} - Throws an error if there is an issue while updating the total score or retrieving user data from the database.
 */
-async function setTotalScore(objectId: string, total_score: number, print: boolean): Promise<Object | null> {
+export async function setTotalScore(objectId: string, total_score: number, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'total_score', total_score);
 
@@ -196,7 +197,7 @@ async function setTotalScore(objectId: string, total_score: number, print: boole
 * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
 * @throws {Error} - Throws an error if there is an issue while updating the profile picture or retrieving user data from the database.
 */
-async function setProfilePicture(objectId: string, profile_picture: string, print: boolean): Promise<Object | null> {
+export async function setProfilePicture(objectId: string, profile_picture: string, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'profile_picture', profile_picture);
 
@@ -223,7 +224,7 @@ async function setProfilePicture(objectId: string, profile_picture: string, prin
 * @returns {Promise<Object|null>} - Returns the updated user data, or null if not found or an error occurs
 * @throws {Error} - Throws an error if there is an issue while updating the status or retrieving user data from the database.
 */
-async function setStatus(objectId: string, status: boolean, print: boolean): Promise<Object | null> {
+export async function setStatus(objectId: string, status: boolean, print: boolean): Promise<Object | null> {
     try {
         const userData = await updateUserProperty(objectId, 'status', status);
 
@@ -251,7 +252,7 @@ async function setStatus(objectId: string, status: boolean, print: boolean): Pro
  * @returns {Promise<any>} - A promise that resolves to the updated user data from the database after the property has been updated.
  * @throws {Error} - Throws an error if the update operation fails or if an error occurs during the retrieval of updated data.
  */
-async function updateUserProperty(objectId: string, property: string, newValue: string | number | boolean): Promise<any> {
+export async function updateUserProperty(objectId: string, property: string, newValue: string | number | boolean): Promise<any> {
     // Use the correct reference from the initialized database object
     const userRef = ref(database, 'users/' + objectId);
 
@@ -270,4 +271,41 @@ async function updateUserProperty(objectId: string, property: string, newValue: 
         console.error("Error updating user property:", error);
         throw new Error("Failed to update user property");
     }
+}
+
+/**
+ * Function to write data to Firebase Database
+ * @param {Object} data - The data to be written to the users in the database.
+ * @throws {Error} - Throws an error if there is an issue while updating or retrieving an entry from the database.
+ */
+export function writeUserToDatabase(data: UserDataFormat): void {
+  push(userDataPath, data)
+    .then(() => {
+      console.log(`Data written successfully to ${ref}`);
+    })
+    .catch((error) => {
+      console.error(`Error writing data to ${ref}:`, error);
+    });
+};
+
+export const userData2: UserDataFormat = {
+    username: "Ty",
+    email: "tylovgren.college@gmail.com",
+    password: "Pass123",
+    wins: 12,
+    losses: 34,
+    total_score: 531,
+    profile_picture: "https://generated.inspirobot.me/a/xyJnOogKPn.jpg",
+    status: false
+}
+
+export const userData3: UserDataFormat = {
+    username: "Noah",
+    email: "noah@gmail.com",
+    password: "1",
+    wins: 12,
+    losses: 34,
+    total_score: 531,
+    profile_picture: "https://generated.inspirobot.me/a/d7eEXkY368.jpg",
+    status: false
 }

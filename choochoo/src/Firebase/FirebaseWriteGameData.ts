@@ -36,7 +36,7 @@ interface Game {
  * @param {Object} data - The data to be written to the games in the database. IE userData & gameData
  * @throws {Error} - Throws an error if there is an issue while updating or retrieving an entry from the database.
  */
-function writeDataToDatabase(data: any): void {
+function writeGameToDatabase(data: Game): void {
   push(gameDataPath, data)
     .then(() => {
       console.log(`Data written successfully to ${ref}`);

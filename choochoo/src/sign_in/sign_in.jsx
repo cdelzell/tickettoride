@@ -12,6 +12,7 @@ import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 import { useState } from "react";
 import { handleLogIn } from "../Firebase/FirebaseLogInManager";
+import { writeUserToDatabase, userData, userData2, userData3 } from "../Firebase/FirebaseWriteUserData.ts";
 
 import "./sign_in.css";
 
@@ -24,15 +25,20 @@ function Login() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       // Assuming handleLogIn returns a promise
-      const success = await handleLogIn(username, password);
+      const firebaseData = await handleLogIn(username, password);
+      const success = firebaseData[0]; // boolean value for if username and password were correct
+      const userKey = firebaseData[1];
       if (success) {
-        // Redirect to profile on successful login
-        navigate("/profile");
+        // Redirect to profile on successful login 
+        // and passing the userKey onto the profile page
+        // to allow for loading of stats
+        navigate("/profile", {state: {userKey}});
       } else {
         // Handle failed login attempt
         setError("Error: Username or password incorrect");
