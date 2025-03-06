@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Graph } from "@visx/network";
+// import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
 import PlayerCard from "./components/Profile/ProfileCard";
 import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
