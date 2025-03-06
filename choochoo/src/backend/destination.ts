@@ -1,6 +1,10 @@
 
 class Destination {
-    constructor(id, name, x, y) {
+    id: string;
+    name: string;
+    x: number;
+    y: number;
+    constructor(id: string, name: string, x: number, y: number) {
         this.id = id;
         this.name = name;
         this.x = x;

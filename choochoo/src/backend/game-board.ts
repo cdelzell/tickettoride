@@ -1,60 +1,65 @@
-import TrainCard from './train-card.js'
-import BoardGraph from './board-graph.js'
+import TrainCard from './train-card'
+import DestinationCard from './destination-card'
+import BoardGraph from './board-graph'
 
 class GameBoard {
+    boardGraph: BoardGraph;
+    trainCardDrawPile: TrainCard[];
+    destinationCardDrawPile: DestinationCard[];
+    trainCardDiscardPile: TrainCard[];
+    faceUpTrainCards: TrainCard[];
+
+
     constructor() {
         this.boardGraph = new BoardGraph()
-        this.trainCardDrawPile = this.#getStartTrainCards();
+        this.trainCardDrawPile = [];
+        this.#getStartTrainCards();
         this.destinationCardDrawPile = this.#getStartDestinationCards();
         this.trainCardDiscardPile = [];
         this.faceUpTrainCards = this.#setStartFaceUpTrainCards();
-        this.boardGraph = null;
+        this.boardGraph = new BoardGraph();
     }
 
-    //Shuffles a given array, used here to shuffle decks
-    #shuffleDeck(deck) {
-        for (let i = deck.length - 1; i > 0; i--) {
+    #shuffleTrainDeck() {
+        for (let i = this.trainCardDrawPile.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
-            [deck[i], deck[j]] = [deck[j], deck[i]];
+            [this.trainCardDrawPile[i], this.trainCardDrawPile[j]] = [this.trainCardDrawPile[j], this.trainCardDrawPile[i]];
         }
-        return deck;
     }
 
-    //TODO: It reshuffles the deck, but if there are literally not enough cards in a deck to draw, it will break. This is probably a rare edgecase though and not a huge concern
-    #drawCardsFromDeck(type, numCards) {
-        let returnPile = [];
+    drawSingleTrainCard(): TrainCard {
+        return this.drawTrainCards(1)[0];
+    }
+
+    drawTrainCards(numCards: number): TrainCard[] {
+        let returnPile: TrainCard[] = [];
         for (let i = 0; i < numCards; i++) {
-            if (type == 'train') {
-                if (this.trainCardDrawPile.length < numCards) {
-                    this.#shuffleDiscardIntoDraw()
-                }
-                returnPile.push(this.trainCardDrawPile.shift());
+            if (this.trainCardDrawPile.length < numCards) {
+                this.#shuffleDiscardIntoDraw()
             }
-            else if (type == 'destination'){
-                returnPile.push(this.destinationCardDrawPile.shift());
-            }
-            else {
-                return null //TODO: Error Logic here. BAD CODE
+            const card = this.trainCardDrawPile.shift();
+            if (card) {
+                returnPile.push(card);
             }
         }
         return returnPile;
     }
 
-    drawSingleTrainCard() {
-        return this.#drawCardsFromDeck('train', 1)[0];
+    drawDestinationCards(numCards: number): DestinationCard[] {
+        let returnPile: DestinationCard[] = [];
+        for (let i = 0; i < numCards; i++) {
+            const card = this.destinationCardDrawPile.shift();
+            if (card) {
+                returnPile.push(card);
+            }
+        }
+        return returnPile;
     }
 
-    drawTrainCards(numCards) {
-        return this.#drawCardsFromDeck('train', numCards);
-    }
-
-    drawDestinationCards(numCards) {
-        return this.#drawCardsFromDeck('destination', numCards);
-    }
-
-    takeFaceUpTrainCard(index) {
+    takeFaceUpTrainCard(index: number) {
         let trainCardTaken = this.faceUpTrainCards[index];
         this.faceUpTrainCards[index] = this.drawSingleTrainCard();
+        //TODO: Check for three wilds.
         return trainCardTaken;
     }
 
@@ -62,10 +67,10 @@ class GameBoard {
     #shuffleDiscardIntoDraw() {
         this.trainCardDrawPile = this.trainCardDrawPile.concat(this.trainCardDiscardPile); //Instantiates new draw pile, which may be a problem??
         this.trainCardDiscardPile = [];
-        this.trainCardDrawPile = this.#shuffleDeck(this.trainCardDrawPile)
+        this.#shuffleTrainDeck();
     }
 
-    addDiscardsFromUsedTrainCards(usedTrainCardColors) {
+    addDiscardsFromUsedTrainCards(usedTrainCardColors: string[]) {
         for (let i = 0; i < usedTrainCardColors.length; i++) {
             this.trainCardDiscardPile.push(new TrainCard(usedTrainCardColors[i]));
         }
@@ -90,7 +95,7 @@ class GameBoard {
         for (let i = 0; i < NUM_WILDS; i++) {
             drawPile.push(new TrainCard('Wild'));
         }
-        drawPile = this.#shuffleDeck(drawPile);
+        this.#shuffleTrainDeck();
         return drawPile;
     }
     
@@ -104,15 +109,6 @@ class GameBoard {
     #setStartFaceUpTrainCards() {
         const FACE_UP_NUM = 5; //From rulebook
         return this.drawTrainCards(FACE_UP_NUM)
-    }
-
-    //TEST FUNCTION FOR DEBUGGING IN CONSOLE
-    getCardColorAmounts() {
-        let dict = {'Purple': 0, 'White': 0, 'Blue': 0, 'Yellow': 0, 'Orange': 0, 'Black': 0, 'Red': 0, 'Green': 0, 'Wild': 0};
-        for (let i = 0; i < this.trainCardDrawPile.length; i++) {
-            dict[this.trainCardDrawPile[i]] += 1
-        }
-        return dict
     }
 }
 
