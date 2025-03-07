@@ -35,7 +35,7 @@ export type NetworkProps = {
 // export type DestinationCard = {
 //   source: string;
 //   target: string;
-//   points: number;
+//   trains: number;
 //   completed: boolean;
 // };
 
@@ -86,16 +86,6 @@ const train_cards = [
 
 const train_counts = [1, 2, 3, 2, 5, 1, 4, 2, 1];
 
-const initialSumTrains = () => {
-  let sum = 0;
-  for (let i = 0; i < train_counts.length; i++) {
-    sum += train_counts[i];
-  }
-  return sum;
-};
-
-const initial_sum = initialSumTrains();
-
 const train_cards_and_counts = train_cards.map((card, i) => ({
   ...card,
   count: train_counts[i],
@@ -116,7 +106,7 @@ export interface Route {
   dashed?: boolean;
   color?: string;
   game_color: string;
-  points: number;
+  trains: number;
   claimer?: string | null;
 }
 
@@ -173,7 +163,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#b03517",
     game_color: "red",
-    points: 4,
+    trains: 4,
   },
   {
     source: cities[1],
@@ -181,7 +171,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#e6c10e",
     game_color: "yellow",
-    points: 3,
+    trains: 3,
   },
   {
     source: cities[1],
@@ -189,7 +179,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#1e1b1c",
     game_color: "black",
-    points: 5,
+    trains: 5,
   },
   {
     source: cities[0],
@@ -197,7 +187,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#72922e",
     game_color: "green",
-    points: 1,
+    trains: 1,
   },
   {
     source: cities[1],
@@ -205,7 +195,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#a77daf",
     game_color: "purple",
-    points: 2,
+    trains: 2,
   },
   {
     source: cities[5],
@@ -213,7 +203,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#519bdb",
     game_color: "blue",
-    points: 4,
+    trains: 4,
   },
   {
     source: cities[7],
@@ -221,7 +211,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#519bdb",
     game_color: "blue",
-    points: 3,
+    trains: 3,
   }, // riddhi rapids to LA
   {
     source: cities[7],
@@ -229,7 +219,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#c18135",
     game_color: "brown",
-    points: 3,
+    trains: 3,
   }, // riddhi rapids to tyville
 
   {
@@ -239,7 +229,7 @@ const routes: Route[] = [
     color: "#e6e5e3",
     game_color: "white",
 
-    points: 3,
+    trains: 3,
   }, // ty ville to clara city
   {
     source: cities[2],
@@ -247,7 +237,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#b03517",
     game_color: "red",
-    points: 3,
+    trains: 3,
   }, // denver to clara city
   {
     source: cities[3],
@@ -255,7 +245,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#e6c10e",
     game_color: "yellow",
-    points: 4,
+    trains: 4,
   }, // LA to denver
   {
     source: cities[4],
@@ -263,7 +253,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#1e1b1c",
     game_color: "black",
-    points: 3,
+    trains: 3,
   }, // tyville to denver
   {
     source: cities[3],
@@ -271,7 +261,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#72922e",
     game_color: "green",
-    points: 6,
+    trains: 6,
   }, // LA to firestone rouge
   {
     source: cities[2],
@@ -279,7 +269,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#a77daf",
     game_color: "purple",
-    points: 4,
+    trains: 4,
   },
   {
     source: cities[6],
@@ -287,7 +277,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#519bdb",
     game_color: "blue",
-    points: 5,
+    trains: 5,
   }, // palo noah to firestone rouge
   {
     source: cities[14],
@@ -295,7 +285,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#c18135",
     game_color: "brown",
-    points: 2,
+    trains: 2,
   },
   {
     source: cities[11],
@@ -303,7 +293,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#e6e5e3",
     game_color: "white",
-    points: 5,
+    trains: 5,
   }, // phoenix to houston
   {
     source: cities[11],
@@ -311,7 +301,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#b03517",
     game_color: "red",
-    points: 2,
+    trains: 2,
   },
   {
     source: cities[11],
@@ -319,7 +309,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#e6c10e",
     game_color: "yellow",
-    points: 1,
+    trains: 1,
   },
   {
     source: cities[8],
@@ -327,7 +317,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#1e1b1c",
     game_color: "black",
-    points: 1,
+    trains: 1,
   },
   {
     source: cities[7],
@@ -335,7 +325,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#72922e",
     game_color: "green",
-    points: 3,
+    trains: 3,
   }, // rr to seattle
   {
     source: cities[5],
@@ -343,7 +333,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#a77daf",
     game_color: "purple",
-    points: 6,
+    trains: 6,
   }, // cc to seattle
   {
     source: cities[6],
@@ -351,7 +341,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#519bdb",
     game_color: "blue",
-    points: 4,
+    trains: 4,
   }, // pn to miami
   {
     source: cities[1],
@@ -359,7 +349,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#c18135",
     game_color: "brown",
-    points: 4,
+    trains: 4,
   }, //chicago to washington
   {
     source: cities[6],
@@ -367,7 +357,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#e6e5e3",
     game_color: "white",
-    points: 4,
+    trains: 4,
   }, //palo noah to washington
   {
     source: cities[6],
@@ -375,7 +365,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#b03517",
     game_color: "red",
-    points: 5,
+    trains: 5,
   }, //palo noah to houston
   {
     source: cities[15],
@@ -383,7 +373,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#e6c10e",
     game_color: "yellow",
-    points: 5,
+    trains: 5,
   }, //ALB to houston
   {
     source: cities[15],
@@ -391,7 +381,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#1e1b1c",
     game_color: "black",
-    points: 3,
+    trains: 3,
   }, //ALB to OC
   {
     source: cities[6],
@@ -399,7 +389,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#72922e",
     game_color: "green",
-    points: 5,
+    trains: 5,
   }, //palo noah to oc
 ];
 
@@ -421,7 +411,7 @@ const MainGamePage = () => {
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
   const [trainCards, setTrainCards] = useState(train_cards_and_counts);
-  const [sumTrains, setSumTrains] = useState(initial_sum);
+  const [sumTrains, setSumTrains] = useState(25);
 
   useEffect(() => {}, [trainCards]);
 
@@ -434,7 +424,6 @@ const MainGamePage = () => {
           : card
       )
     );
-    updateSumTrains();
   };
 
   const updateSumTrains = () => {
@@ -454,16 +443,18 @@ const MainGamePage = () => {
     if (
       action_box_status === 2 &&
       trainCard &&
-      trainCard.count + wildCard.count >= route.points
+      trainCard.count + wildCard.count >= route.trains &&
+      sumTrains > route.trains
     ) {
       // Deduct train cards when claiming a route
-      updateTrainCardCount(route.game_color!, -route.points);
+      updateTrainCardCount(route.game_color!, -route.trains);
+      setSumTrains(sumTrains - route.trains);
       if (
-        route.points > trainCard.count &&
-        trainCard.count + wildCard.count >= route.points
+        route.trains > trainCard.count &&
+        trainCard.count + wildCard.count >= route.trains
       ) {
         updateTrainCardCount(route.game_color!, -trainCard.count);
-        updateTrainCardCount("wild", -(route.points - trainCard.count));
+        updateTrainCardCount("wild", -(route.trains - trainCard.count));
       }
 
       // Update the claimed routes
@@ -511,6 +502,7 @@ const MainGamePage = () => {
           action={action_box_status}
           updateStatus={updateStatus}
           updateDrawDest={setDrawDestActive}
+          updateTrains={updateTrainCardCount}
         ></ActionBox>
 
         <DestinationCardsCarousel

@@ -19,7 +19,7 @@ export interface Route {
   dashed?: boolean;
   color?: string;
   game_color: string;
-  points: number;
+  trains: number;
   claimer?: string | null;
 }
 
@@ -159,7 +159,7 @@ function USMap({
                   onMouseLeave={() => setHoveredRoute(null)}
                   onClick={() => handleRouteClaim(route)}
                 >
-                  {route.points}
+                  {route.trains}
                 </text>
               </g>
             )}
