@@ -74,6 +74,9 @@ function Login() {
           type="submit"
           sx={{
             mt: 1,
+            "&:hover": {
+              color: "white",
+            },
           }}
         >
           Log in
