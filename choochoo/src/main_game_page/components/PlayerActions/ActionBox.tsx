@@ -6,10 +6,12 @@ function ActionBox({
   action,
   updateStatus,
   updateDrawDest,
+  updateTrains,
 }: {
   action: number;
   updateStatus: (newStatus: number) => void;
   updateDrawDest: (newStatus: boolean) => void;
+  updateTrains: (color: string, amount: number) => void;
 }) {
   const [goBack, setGoBack] = useState(false);
 
@@ -45,7 +47,7 @@ function ActionBox({
       {action === 0 ? (
         <HomeBox updateStatus={updateStatus} />
       ) : action === 1 ? (
-        <DrawTrains />
+        <DrawTrains updateTrains={updateTrains} />
       ) : action === 2 ? (
         <PlayTrains />
       ) : action === 3 ? (

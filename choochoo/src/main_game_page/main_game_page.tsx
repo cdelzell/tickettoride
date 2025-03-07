@@ -13,7 +13,6 @@ import ActionBox from "./components/PlayerActions/ActionBox";
 import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
 
-
 // this works with typescript so had to change file
 
 // let's go airbnb
@@ -85,7 +84,17 @@ const train_cards = [
   { color: "./src/assets/cards/wild.png", game_color: "wild" },
 ];
 
-const train_counts = [1, 2, 3, 4, 5, 6, 7, 8, 20];
+const train_counts = [1, 2, 3, 2, 5, 1, 4, 2, 1];
+
+const initialSumTrains = () => {
+  let sum = 0;
+  for (let i = 0; i < train_counts.length; i++) {
+    sum += train_counts[i];
+  }
+  return sum;
+};
+
+const initial_sum = initialSumTrains();
 
 const train_cards_and_counts = train_cards.map((card, i) => ({
   ...card,
@@ -238,7 +247,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#b03517",
     game_color: "red",
-
+    points: 3,
   }, // denver to clara city
   {
     source: cities[3],
@@ -246,7 +255,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#e6c10e",
     game_color: "yellow",
-
+    points: 4,
   }, // LA to denver
   {
     source: cities[4],
@@ -254,7 +263,7 @@ const routes: Route[] = [
     dashed: true,
     color: "#1e1b1c",
     game_color: "black",
-
+    points: 3,
   }, // tyville to denver
   {
     source: cities[3],
@@ -412,7 +421,7 @@ const MainGamePage = () => {
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
   const [trainCards, setTrainCards] = useState(train_cards_and_counts);
-  const [sumTrains, setSumTrains] = useState(0);
+  const [sumTrains, setSumTrains] = useState(initial_sum);
 
   useEffect(() => {}, [trainCards]);
 
