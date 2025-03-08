@@ -443,15 +443,15 @@ const MainGamePage = () => {
     if (
       action_box_status === 2 &&
       trainCard &&
-      trainCard.count + wildCard.count >= route.trains &&
+      // trainCard.count + wildCard.count >= route.trains && - CHECK ERROR HERE FOR WILDCARD.COUNT
       sumTrains > route.trains
     ) {
-      // Deduct train cards when claiming a route
+      // Deduct train cards when claiming a route 
       updateTrainCardCount(route.game_color!, -route.trains);
       setSumTrains(sumTrains - route.trains);
       if (
-        route.trains > trainCard.count &&
-        trainCard.count + wildCard.count >= route.trains
+        route.trains > trainCard.count
+        // && trainCard.count + wildCard.count >= route.trains - CHECK ERROR HERE FOR WILDCARD.COUNT
       ) {
         updateTrainCardCount(route.game_color!, -trainCard.count);
         updateTrainCardCount("wild", -(route.trains - trainCard.count));
