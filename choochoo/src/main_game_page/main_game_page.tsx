@@ -412,6 +412,7 @@ const MainGamePage = () => {
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
   const [trainCards, setTrainCards] = useState(train_cards_and_counts);
   const [sumTrains, setSumTrains] = useState(25);
+  const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
 
   useEffect(() => {}, [trainCards]);
 
@@ -523,6 +524,7 @@ const MainGamePage = () => {
               color={train_card.color}
               game_color={train_card.game_color}
               count={train_card.count}
+              hover={hoveredRoute}
             />
           ))}
         </div>
@@ -545,6 +547,8 @@ const MainGamePage = () => {
         routes={gameRoutes}
         cities={cities}
         mainPlayer={main_player}
+        hoveredRoute={hoveredRoute}
+        setHoveredRoute={setHoveredRoute}
         onRouteClaim={handleRouteClaim}
       />
     </main>

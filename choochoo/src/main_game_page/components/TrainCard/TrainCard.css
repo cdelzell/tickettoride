@@ -13,6 +13,14 @@
   display: block;
 }
 
+.nonCurrentHover {
+  opacity: 60%;
+}
+
+.currentHover {
+  filter: brightness(1.25);
+}
+
 .circle {
   position: relative;
   bottom: 1vw;
