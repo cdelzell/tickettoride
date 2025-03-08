@@ -1,7 +1,8 @@
 .box {
   width: 18vw;
   height: 11vw;
-  background-color: white;
+
+  background-color: rgb(255, 255, 255, 0.8);
   border-radius: 1vw;
   display: flex;
   align-items: center;
