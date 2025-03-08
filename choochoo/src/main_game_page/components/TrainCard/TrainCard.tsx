@@ -13,7 +13,7 @@ function TrainCard({
   hover: Route | null;
 }) {
   let hoverClass = "";
-  if (hover != null && game_color != hover.game_color) {
+  if (hover != null && game_color != hover.game_color && game_color != "wild") {
     hoverClass = "nonCurrentHover";
   } else if (hover != null && game_color === hover.game_color) {
     hoverClass = "currentHover";
