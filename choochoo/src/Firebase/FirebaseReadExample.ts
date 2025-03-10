@@ -5,26 +5,12 @@ import { database } from './FirebaseCredentials'
 const userDataPath = ref(database, "users");
 const gameDataPath = ref(database, "activeGames");
 
-//Template of what User enrty will contain
-const userData = {
-  username: "john_doe",                       //String
-  email: "john.doe@example.com",              //String
-  passowrd: "Password123",                    //String
-  wins: 0,                                    //Int
-  loss: 0,                                    //Int
-  total_score: 0,                             //Int
-  profile_picture: "url/to/profile_pic.jpg",  //String
-  status: true                                //Bool
-};
-
-
-
 /**
  * Function to search for users in the Firebase database with a specified username
  * @param {string} username - The username of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByUsername(username: string, print: boolean) {
+async function findUserByUsername(username: string, print: boolean): Promise<Object | null>  {
   try {
     const userData = await findUserByField('username', username);
 
@@ -48,7 +34,7 @@ async function findUserByUsername(username: string, print: boolean) {
  * @param {string} email - The email of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByEmail(email: string, print: boolean) {
+async function findUserByEmail(email: string, print: boolean): Promise<Object | null> {
   try {
     const userData = await findUserByField('email', email);
 
@@ -72,7 +58,7 @@ async function findUserByEmail(email: string, print: boolean) {
  * @param {string} password - The password of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByPassword(password: string, print: boolean) {
+async function findUserByPassword(password: string, print: boolean): Promise<Object | null>{
   try {
     const userData = await findUserByField('password', password);
 
@@ -96,7 +82,7 @@ async function findUserByPassword(password: string, print: boolean) {
  * @param {number} wins - The number of wins of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByWins(wins: number, print: boolean) {
+async function findUserByWins(wins: number, print: boolean): Promise<Object | null> {
   try {
     const userData = await findUserByField('wins', wins);
 
@@ -120,7 +106,7 @@ async function findUserByWins(wins: number, print: boolean) {
  * @param {number} losses - The number of losses of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByLosses(losses: number, print: boolean) {
+async function findUserByLosses(losses: number, print: boolean): Promise<Object | null> {
   try {
     const userData = await findUserByField('losses', losses);
 
@@ -144,7 +130,7 @@ async function findUserByLosses(losses: number, print: boolean) {
  * @param {number} total_score - The total score of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByTotalScore(total_score: number, print: boolean) {
+async function findUserByTotalScore(total_score: number, print: boolean): Promise<Object | null> {
   try {
     const userData = await findUserByField('total_score', total_score);
 
@@ -168,7 +154,7 @@ async function findUserByTotalScore(total_score: number, print: boolean) {
  * @param {string} profile_picture - The profile picture URL of the user that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-async function findUserByProfilePicture(profile_picture: string, print: boolean) {
+async function findUserByProfilePicture(profile_picture: string, print: boolean): Promise<Object | null> {
   try {
     const userData = await findUserByField('profile_picture', profile_picture);
 
@@ -192,7 +178,7 @@ async function findUserByProfilePicture(profile_picture: string, print: boolean)
  * @param {boolean} status - The status of users that you are looking for (true or false)
  * @param {boolean} print - Variable to determine if the program print the data received to console (true prints, false does not)
  */
-async function findUserByStatus(status: boolean, print: boolean) {
+async function findUserByStatus(status: boolean, print: boolean): Promise <Object | null> {
   try {
     // Await the result of findUserByStatus
     const userData = await findUserByField('status', status);
@@ -209,6 +195,7 @@ async function findUserByStatus(status: boolean, print: boolean) {
   } catch (error) {
     console.error("Error retrieving user data by status:", error);
   }
+  return null;
 }
 
 /**
@@ -221,7 +208,7 @@ async function findUserByStatus(status: boolean, print: boolean) {
  *                                        a number (e.g., 5), or a boolean (e.g., true/false), depending on the field.
  * @returns {Object|null} The user data matching the given field and value, or null if no matching user is found.
  */
-function findUserByField(field, value) {
+function findUserByField(field: string, value: string | number | boolean): Promise <Object | null> {
   const userQuery = query(userDataPath, orderByChild(field), equalTo(value));
 
   // Perform the query and return the result
@@ -249,17 +236,14 @@ function findUserByField(field, value) {
  * @param {string} [indent=''] - The indentation string used to format the printed output. It is used to represent the depth of the nested properties for better readability.
  * It starts as an empty string and is added to as the recursion goes deeper.
  */
-function printUserQueryResults(obj, indent = '') {
+function printUserQueryResults(obj: any, indent: string = ''): void {
   if (typeof obj === 'object' && obj !== null) {
-    // Loop through each key in the object
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
-        // If the property is an object, call the function recursively with increased indentation
         if (typeof obj[key] === 'object' && obj[key] !== null) {
           console.log(`${indent}${key}:`);
-          printUserQueryResults(obj[key], indent + '  ');  // Recursively print nested properties
+          printUserQueryResults(obj[key], indent + '  ');
         } else {
-          // Otherwise, print the key-value pair
           console.log(`${indent}${key}: ${obj[key]}`);
         }
       }

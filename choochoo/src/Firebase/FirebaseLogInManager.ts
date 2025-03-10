@@ -1,8 +1,9 @@
 import {get, query, equalTo, orderByChild } from 'firebase/database'
 import {userDataPath} from './FirebaseCredentials'
-import {setStatus, UserDataFormat} from './FirebaseWriteUserData'
+import {setStatus} from './FirebaseWriteUserData'
+import { UserData } from './FirebaseInterfaces';
 
-export async function handleLogIn(enteredUsername: string, enteredPassword: string): Promise<[boolean, string] | null> {
+export async function handleLogIn(enteredUsername: string, enteredPassword: string): Promise<[boolean, string, UserData] | [boolean, string] | null> {
     const userQuery = query(userDataPath, orderByChild('username'), equalTo(enteredUsername));
 
     try {
@@ -10,7 +11,7 @@ export async function handleLogIn(enteredUsername: string, enteredPassword: stri
         if(snapshot.exists()){
             const userEntry = snapshot.val();
             const userKey = Object.keys(userEntry)[0];
-            const userData = Object.values(userEntry)[0] as UserDataFormat;
+            const userData = Object.values(userEntry)[0] as UserData;
             const database_password = userData["password"];
 
             if(database_password === enteredPassword){
@@ -18,7 +19,7 @@ export async function handleLogIn(enteredUsername: string, enteredPassword: stri
                 // Call successful login function
                 console.log("Log in successed");
                 //setStatus(snapshot.val()[0],true, false);
-                return [true, userKey];
+                return [true, userKey, userData];
             } else {
                 // Call failed login function
                 console.log("Log in failed");
