@@ -18,7 +18,8 @@ export interface Route {
   target: City;
   dashed?: boolean;
   color?: string;
-  points: number;
+  game_color: string;
+  trains: number;
   claimer?: string | null;
 }
 
@@ -28,6 +29,8 @@ function USMap({
   routes,
   cities,
   mainPlayer,
+  hoveredRoute,
+  setHoveredRoute,
   onRouteClaim,
 }: {
   width: number;
@@ -35,6 +38,8 @@ function USMap({
   routes: Route[];
   cities: City[];
   mainPlayer: { username: string; profilePic: string };
+  hoveredRoute: Route | null;
+  setHoveredRoute: (route: Route | null) => void;
   onRouteClaim: (route: Route) => boolean;
 }) {
   const MAP_WIDTH = 600;
@@ -44,8 +49,6 @@ function USMap({
     width: width * 0.9,
     height: height * 0.9,
   });
-
-  const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
 
   useEffect(() => {
     function handleResize() {
@@ -158,7 +161,7 @@ function USMap({
                   onMouseLeave={() => setHoveredRoute(null)}
                   onClick={() => handleRouteClaim(route)}
                 >
-                  {route.points}
+                  {route.trains}
                 </text>
               </g>
             )}
@@ -172,6 +175,7 @@ function USMap({
                 height={30}
                 href={mainPlayer.profilePic}
                 preserveAspectRatio="xMidYMid meet"
+                // style={{ borderRadius: ".5vw" }} didn't work!!
               />
             )}
           </g>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Graph } from "@visx/network";
+// import { Graph } from "@visx/network";
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
 import GameRunner from "../backend/game-runner";
@@ -35,7 +35,7 @@ export type NetworkProps = {
 // export type DestinationCard = {
 //   source: string;
 //   target: string;
-//   points: number;
+//   trains: number;
 //   completed: boolean;
 // };
 
@@ -73,18 +73,18 @@ const main_player = {
 };
 
 const train_cards = [
-  { color: "./src/assets/cards/red.png" },
-  { color: "./src/assets/cards/yellow.png" },
-  { color: "./src/assets/cards/black.png" },
-  { color: "./src/assets/cards/green.png" },
-  { color: "./src/assets/cards/purple.png" },
-  { color: "./src/assets/cards/blue.png" },
-  { color: "./src/assets/cards/brown.png" },
-  { color: "./src/assets/cards/white.png" },
-  { color: "./src/assets/cards/wild.png" },
+  { color: "./src/assets/cards/red.png", game_color: "red" },
+  { color: "./src/assets/cards/yellow.png", game_color: "yellow" },
+  { color: "./src/assets/cards/black.png", game_color: "black" },
+  { color: "./src/assets/cards/green.png", game_color: "green" },
+  { color: "./src/assets/cards/purple.png", game_color: "purple" },
+  { color: "./src/assets/cards/blue.png", game_color: "blue" },
+  { color: "./src/assets/cards/brown.png", game_color: "brown" },
+  { color: "./src/assets/cards/white.png", game_color: "white" },
+  { color: "./src/assets/cards/wild.png", game_color: "wild" },
 ];
 
-const train_counts = [1, 2, 3, 4, 5, 6, 7, 8, 20];
+const train_counts = [1, 2, 3, 2, 5, 1, 4, 2, 1];
 
 const train_cards_and_counts = train_cards.map((card, i) => ({
   ...card,
@@ -105,7 +105,8 @@ export interface Route {
   target: City;
   dashed?: boolean;
   color?: string;
-  points: number;
+  game_color: string;
+  trains: number;
   claimer?: string | null;
 }
 
@@ -161,203 +162,234 @@ const routes: Route[] = [
     target: cities[1],
     dashed: true,
     color: "#b03517",
-    points: 4,
+    game_color: "red",
+    trains: 4,
   },
   {
     source: cities[1],
     target: cities[6],
     dashed: true,
     color: "#e6c10e",
-    points: 3,
+    game_color: "yellow",
+    trains: 3,
   },
   {
     source: cities[1],
     target: cities[5],
     dashed: true,
     color: "#1e1b1c",
-    points: 5,
+    game_color: "black",
+    trains: 5,
   },
   {
     source: cities[0],
     target: cities[13],
     dashed: true,
     color: "#72922e",
-    points: 1,
-  }, //new york to washington
+    game_color: "green",
+    trains: 1,
+  },
   {
     source: cities[1],
     target: cities[8],
     dashed: true,
     color: "#a77daf",
-    points: 2,
+    game_color: "purple",
+    trains: 2,
   },
   {
     source: cities[5],
     target: cities[8],
     dashed: true,
-    color: "#c1a5cd",
-    points: 4,
+    color: "#519bdb",
+    game_color: "blue",
+    trains: 4,
   },
   {
     source: cities[7],
     target: cities[3],
     dashed: true,
-    color: "#862b0f",
-    points: 3,
+    color: "#519bdb",
+    game_color: "blue",
+    trains: 3,
   }, // riddhi rapids to LA
   {
     source: cities[7],
     target: cities[4],
     dashed: true,
     color: "#c18135",
-    points: 3,
+    game_color: "brown",
+    trains: 3,
   }, // riddhi rapids to tyville
+
   {
     source: cities[4],
     target: cities[5],
     dashed: true,
-    color: "#e6e5e3", //white 8
-    points: 3,
+    color: "#e6e5e3",
+    game_color: "white",
+
+    trains: 3,
   }, // ty ville to clara city
   {
     source: cities[2],
     target: cities[5],
     dashed: true,
     color: "#b03517",
-    points: 4,
+    game_color: "red",
+    trains: 3,
   }, // denver to clara city
   {
     source: cities[3],
     target: cities[2],
     dashed: true,
     color: "#e6c10e",
-    points: 5,
+    game_color: "yellow",
+    trains: 4,
   }, // LA to denver
   {
     source: cities[4],
     target: cities[2],
     dashed: true,
     color: "#1e1b1c",
-    points: 3,
+    game_color: "black",
+    trains: 3,
   }, // tyville to denver
   {
     source: cities[3],
     target: cities[8],
     dashed: true,
     color: "#72922e",
-    points: 6,
+    game_color: "green",
+    trains: 6,
   }, // LA to firestone rouge
   {
     source: cities[2],
     target: cities[8],
     dashed: true,
     color: "#a77daf",
-    points: 4,
-  }, // denver to firestone rouge
+    game_color: "purple",
+    trains: 4,
+  },
   {
     source: cities[6],
     target: cities[8],
     dashed: true,
-    color: "#c1a5cd",
-    points: 5,
+    color: "#519bdb",
+    game_color: "blue",
+    trains: 5,
   }, // palo noah to firestone rouge
   {
     source: cities[14],
     target: cities[12],
     dashed: true,
     color: "#c18135",
-    points: 2,
-  }, // oc to houston
+    game_color: "brown",
+    trains: 2,
+  },
   {
     source: cities[11],
     target: cities[12],
     dashed: true,
     color: "#e6e5e3",
-    points: 5,
+    game_color: "white",
+    trains: 5,
   }, // phoenix to houston
   {
     source: cities[11],
     target: cities[3],
     dashed: true,
     color: "#b03517",
-    points: 2,
-  }, // phoenix to LA
+    game_color: "red",
+    trains: 2,
+  },
   {
     source: cities[11],
     target: cities[15],
     dashed: true,
     color: "#e6c10e",
-    points: 1,
-  }, // phoenix to ALB
+    game_color: "yellow",
+    trains: 1,
+  },
   {
     source: cities[8],
     target: cities[14],
     dashed: true,
     color: "#1e1b1c",
-    points: 1,
-  }, // fr to oc
+    game_color: "black",
+    trains: 1,
+  },
   {
     source: cities[7],
     target: cities[9],
     dashed: true,
     color: "#72922e",
-    points: 3,
+    game_color: "green",
+    trains: 3,
   }, // rr to seattle
   {
     source: cities[5],
     target: cities[9],
     dashed: true,
     color: "#a77daf",
-    points: 6,
+    game_color: "purple",
+    trains: 6,
   }, // cc to seattle
   {
     source: cities[6],
     target: cities[10],
     dashed: true,
-    color: "#c1a5cd",
-    points: 4,
+    color: "#519bdb",
+    game_color: "blue",
+    trains: 4,
   }, // pn to miami
   {
     source: cities[1],
     target: cities[13],
     dashed: true,
     color: "#c18135",
-    points: 4,
+    game_color: "brown",
+    trains: 4,
   }, //chicago to washington
   {
     source: cities[6],
     target: cities[13],
     dashed: true,
     color: "#e6e5e3",
-    points: 4,
+    game_color: "white",
+    trains: 4,
   }, //palo noah to washington
   {
     source: cities[6],
     target: cities[12],
     dashed: true,
     color: "#b03517",
-    points: 5,
+    game_color: "red",
+    trains: 5,
   }, //palo noah to houston
   {
     source: cities[15],
     target: cities[12],
     dashed: true,
     color: "#e6c10e",
-    points: 5,
+    game_color: "yellow",
+    trains: 5,
   }, //ALB to houston
   {
     source: cities[15],
     target: cities[14],
     dashed: true,
     color: "#1e1b1c",
-    points: 3,
+    game_color: "black",
+    trains: 3,
   }, //ALB to OC
   {
     source: cities[6],
     target: cities[14],
     dashed: true,
     color: "#72922e",
-    points: 5,
+    game_color: "green",
+    trains: 5,
   }, //palo noah to oc
 ];
 
@@ -378,19 +410,68 @@ const MainGamePage = () => {
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
+  const [trainCards, setTrainCards] = useState(train_cards_and_counts);
+  const [sumTrains, setSumTrains] = useState(25);
+  const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
+
+  useEffect(() => {}, [trainCards]);
+
+  // Function to update a specific train card count
+  const updateTrainCardCount = (color: string, amount: number) => {
+    setTrainCards((prevCards) =>
+      prevCards.map((card) =>
+        card.game_color === color
+          ? { ...card, count: Math.max(0, card.count + amount) }
+          : card
+      )
+    );
+  };
+
+  const updateSumTrains = () => {
+    let sum = 0;
+    for (let i = 0; i < trainCards.length; i++) {
+      sum += trainCards[i].count;
+    }
+    setSumTrains(sum);
+  };
 
   const handleRouteClaim = (route: Route) => {
-    // testing - need to change to check if player has eough train cards
-    const updatedRoutes = gameRoutes.map((r) =>
-      action_box_status === 2 &&
-      r.source.name === route.source.name &&
-      r.target.name === route.target.name
-        ? { ...r, claimer: main_player.username }
-        : r
+    const trainCard = trainCards.find(
+      (card) => card.game_color === route.game_color
     );
+    const wildCard = trainCards.find((card) => card.game_color === "wild");
 
-    setGameRoutes(updatedRoutes);
-    return true;
+    if (
+      action_box_status === 2 &&
+      trainCard &&
+      // trainCard.count + wildCard.count >= route.trains && - CHECK ERROR HERE FOR WILDCARD.COUNT
+      sumTrains > route.trains
+    ) {
+      // Deduct train cards when claiming a route 
+      updateTrainCardCount(route.game_color!, -route.trains);
+      setSumTrains(sumTrains - route.trains);
+      if (
+        route.trains > trainCard.count
+        // && trainCard.count + wildCard.count >= route.trains - CHECK ERROR HERE FOR WILDCARD.COUNT
+      ) {
+        updateTrainCardCount(route.game_color!, -trainCard.count);
+        updateTrainCardCount("wild", -(route.trains - trainCard.count));
+      }
+
+      // Update the claimed routes
+      setGameRoutes((prevRoutes) =>
+        prevRoutes.map((r) =>
+          action_box_status === 2 &&
+          r.source.name === route.source.name &&
+          r.target.name === route.target.name
+            ? { ...r, claimer: main_player.username }
+            : r
+        )
+      );
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const updateStatus = (newStatus: React.SetStateAction<number>) => {
@@ -412,13 +493,17 @@ const MainGamePage = () => {
         ))}
       </div>
 
-      <FaceUpCards face_up_cards={face_up_cards}></FaceUpCards>
+      <FaceUpCards
+        face_up_cards={face_up_cards}
+        updateTrains={updateTrainCardCount}
+      ></FaceUpCards>
 
       <div className="player_actions">
         <ActionBox
           action={action_box_status}
           updateStatus={updateStatus}
           updateDrawDest={setDrawDestActive}
+          updateTrains={updateTrainCardCount}
         ></ActionBox>
 
         <DestinationCardsCarousel
@@ -433,11 +518,13 @@ const MainGamePage = () => {
 
         {/* train cards */}
         <div className="train_cards">
-          {train_cards_and_counts.map((train_card, index) => (
+          {trainCards.map((train_card, index) => (
             <TrainCard
               key={index}
               color={train_card.color}
+              game_color={train_card.game_color}
               count={train_card.count}
+              hover={hoveredRoute}
             />
           ))}
         </div>
@@ -446,7 +533,7 @@ const MainGamePage = () => {
         <div className="main_player_card">
           <PlayerCard
             username={main_player.username}
-            trainCount={main_player.trainCount}
+            trainCount={sumTrains}
             profilePic={main_player.profilePic}
             main_player={true}
           />
@@ -460,6 +547,8 @@ const MainGamePage = () => {
         routes={gameRoutes}
         cities={cities}
         mainPlayer={main_player}
+        hoveredRoute={hoveredRoute}
+        setHoveredRoute={setHoveredRoute}
         onRouteClaim={handleRouteClaim}
       />
     </main>
