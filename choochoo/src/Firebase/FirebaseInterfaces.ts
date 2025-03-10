@@ -33,6 +33,7 @@ export interface PlayerHand {
 
 export interface GameData {
   game_ID: string;
+  current_turn: number;
   player_one: Player;
   player_two: Player;
   player_three: Player;

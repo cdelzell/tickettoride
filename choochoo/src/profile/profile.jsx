@@ -4,6 +4,7 @@
   import { useTheme, useMediaQuery } from "@mui/material";
   import Button from "@mui/joy/Button";
   import { Grid2 } from "@mui/material";
+  import { useEffect, useState } from 'react';
   import { useLocation } from 'react-router-dom';
   import "./profile.css";
 
@@ -11,15 +12,29 @@
     return <Profile/>;
   }
 
-  function Profile({firebaseData}) {
-    const { state } = useLocation();  // Use location to get the state passed from navigate
-    const { userProfile } = state;
+function Profile({firebaseData}) {
+  const { state } = useLocation();  // Use location to get the state passed from navigate
+  const { userProfile } = state || {};  // Fallback to empty object if state is undefined
+
+  const [profileData, setProfileData] = useState(() => {
+    // Try to load profile data from sessionStorage if it exists
+    const storedProfile = sessionStorage.getItem("userProfile");
+    return storedProfile ? JSON.parse(storedProfile) : userProfile;
+  });
+
+  // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
+  const { username, wins, total_score, profile_picture } = profileData || {};
+
+  useEffect(() => {
+    // Save userProfile data to sessionStorage whenever it changes
+    if (profileData) {
+      sessionStorage.setItem("userProfile", JSON.stringify(profileData));
+    }
+  }, [profileData]);
 
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
     const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-
-    const { username, wins, total_score, profile_picture } = userProfile;
 
     return (
       <main className="background_set_up">
