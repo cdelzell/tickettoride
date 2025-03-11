@@ -4,9 +4,11 @@ import "./FaceUpCards.css";
 function FaceUpCards({
   face_up_cards,
   updateTrains,
+  active,
 }: {
   face_up_cards: string[];
   updateTrains: (color: string, amount: number) => void;
+  active: boolean;
 }) {
   return (
     <div className="holder">
@@ -15,6 +17,7 @@ function FaceUpCards({
           key={index}
           color={face_up_card}
           updateTrains={updateTrains}
+          active={active}
         />
       ))}
     </div>

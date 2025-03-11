@@ -12,7 +12,12 @@ import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
 import { useState } from "react";
 import { handleLogIn } from "../Firebase/FirebaseLogInManager";
-import { writeUserToDatabase, userData, userData2, userData3 } from "../Firebase/FirebaseWriteUserData.ts";
+import {
+  writeUserToDatabase,
+  userData,
+  userData2,
+  userData3,
+} from "../Firebase/FirebaseWriteUserData.ts";
 
 import "./sign_in.css";
 
@@ -35,10 +40,10 @@ function Login() {
       const success = firebaseData[0]; // boolean value for if username and password were correct
       const userKey = firebaseData[1];
       if (success) {
-        // Redirect to profile on successful login 
+        // Redirect to profile on successful login
         // and passing the userKey onto the profile page
         // to allow for loading of stats
-        navigate("/profile", {state: {userKey}});
+        navigate("/profile", { state: { userKey } });
       } else {
         // Handle failed login attempt
         setError("Error: Username or password incorrect");
@@ -105,7 +110,7 @@ function Login() {
           )}
           <Button
             type="submit"
-            disabled={!isFormValid} // Disable button if form is invalid
+            disabled={!isFormValid} //  // Disable button if form is invalid
             sx={{
               mt: 1,
             }}

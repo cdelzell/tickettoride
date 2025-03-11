@@ -7,11 +7,13 @@ function ActionBox({
   updateStatus,
   updateDrawDest,
   updateTrains,
+  updateFaceUp,
 }: {
   action: number;
   updateStatus: (newStatus: number) => void;
   updateDrawDest: (newStatus: boolean) => void;
   updateTrains: (color: string, amount: number) => void;
+  updateFaceUp: (active: boolean) => void;
 }) {
   const [goBack, setGoBack] = useState(false);
 
@@ -20,6 +22,7 @@ function ActionBox({
       setGoBack(false);
     } else if (action === 1) {
       setGoBack(true);
+      updateFaceUp(true);
     } else if (action === 2) {
       setGoBack(true);
     } else if (action === 3) {
@@ -31,6 +34,8 @@ function ActionBox({
   const handleReturn = () => {
     if (action === 3) {
       updateDrawDest(false);
+    } else if (action === 1) {
+      updateFaceUp(false);
     }
     updateStatus(0);
   };

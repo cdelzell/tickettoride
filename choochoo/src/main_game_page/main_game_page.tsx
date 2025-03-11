@@ -413,6 +413,7 @@ const MainGamePage = () => {
   const [trainCards, setTrainCards] = useState(train_cards_and_counts);
   const [sumTrains, setSumTrains] = useState(25);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
+  const [activeTrains, setActiveTrains] = useState(false);
 
   useEffect(() => {}, [trainCards]);
 
@@ -427,12 +428,10 @@ const MainGamePage = () => {
     );
   };
 
-  const updateSumTrains = () => {
-    let sum = 0;
-    for (let i = 0; i < trainCards.length; i++) {
-      sum += trainCards[i].count;
+  const updateActionCardStatus = (action: boolean) => {
+    if (action) {
+      setActiveTrains(true);
     }
-    setSumTrains(sum);
   };
 
   const handleRouteClaim = (route: Route) => {
@@ -444,15 +443,15 @@ const MainGamePage = () => {
     if (
       action_box_status === 2 &&
       trainCard &&
-      // trainCard.count + wildCard.count >= route.trains && - CHECK ERROR HERE FOR WILDCARD.COUNT
+      trainCard.count + wildCard.count >= route.trains &&
       sumTrains > route.trains
     ) {
-      // Deduct train cards when claiming a route 
+      // Deduct train cards when claiming a route
       updateTrainCardCount(route.game_color!, -route.trains);
       setSumTrains(sumTrains - route.trains);
       if (
-        route.trains > trainCard.count
-        // && trainCard.count + wildCard.count >= route.trains - CHECK ERROR HERE FOR WILDCARD.COUNT
+        route.trains > trainCard.count &&
+        trainCard.count + wildCard.count >= route.trains
       ) {
         updateTrainCardCount(route.game_color!, -trainCard.count);
         updateTrainCardCount("wild", -(route.trains - trainCard.count));
@@ -496,6 +495,7 @@ const MainGamePage = () => {
       <FaceUpCards
         face_up_cards={face_up_cards}
         updateTrains={updateTrainCardCount}
+        active={activeTrains}
       ></FaceUpCards>
 
       <div className="player_actions">
@@ -504,6 +504,7 @@ const MainGamePage = () => {
           updateStatus={updateStatus}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
+          updateFaceUp={updateActionCardStatus}
         ></ActionBox>
 
         <DestinationCardsCarousel
