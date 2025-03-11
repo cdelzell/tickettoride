@@ -44,6 +44,7 @@ function USMap({
 }) {
   const MAP_WIDTH = 600;
   const MAP_HEIGHT = 400;
+  const VERTICAL_OFFSET = 20;
 
   const [dimensions, setDimensions] = useState({
     width: width * 0.9,
@@ -98,7 +99,7 @@ function USMap({
       <image
         href={monoMap}
         x="0"
-        y="0"
+        y="20"
         width={MAP_WIDTH}
         height={MAP_HEIGHT}
         preserveAspectRatio="xMidYMid meet"
@@ -124,7 +125,9 @@ function USMap({
                   : route.color || "black"
               }
               strokeOpacity={0.8}
-              strokeDasharray={route.dashed ? "20,4" : undefined}
+              strokeDasharray={
+                route.claimer ? undefined : route.dashed ? "20,4" : undefined
+              }
               cursor="pointer"
               onMouseEnter={() => setHoveredRoute(route)}
               onMouseLeave={() => setHoveredRoute(null)}
@@ -168,15 +171,33 @@ function USMap({
 
             {/* claimed route change profile */}
             {route.claimer && (
-              <image
-                x={textPos.x - 15}
-                y={textPos.y - 15}
-                width={30}
-                height={30}
-                href={mainPlayer.profilePic}
-                preserveAspectRatio="xMidYMid meet"
-                // style={{ borderRadius: ".5vw" }} didn't work!!
-              />
+              <g>
+                {/* used clip path for circle image - hides image away from border */}
+                <defs>
+                  <clipPath id={`circle-clip-${index}`}>
+                    <circle cx={textPos.x} cy={textPos.y} r={10} />
+                  </clipPath>
+                </defs>
+                <image
+                  x={textPos.x - 15}
+                  y={textPos.y - 15}
+                  width={30}
+                  height={30}
+                  href={mainPlayer.profilePic}
+                  preserveAspectRatio="xMidYMid meet"
+                  className="route-claimer-image"
+                  clipPath={`url(#circle-clip-${index})`}
+                />
+                {/* added a birder around image */}
+                <circle
+                  cx={textPos.x}
+                  cy={textPos.y}
+                  r={10}
+                  fill="none"
+                  stroke={route.color || "black"}
+                  strokeWidth={1.23}
+                />
+              </g>
             )}
           </g>
         );

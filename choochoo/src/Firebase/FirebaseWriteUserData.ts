@@ -1,30 +1,7 @@
 import { ref, update, get, push} from 'firebase/database';
 import { database, userDataPath } from './FirebaseCredentials'
+import { UserData } from './FirebaseInterfaces';
 import User from '../backend/user';
-
-// USER DATA INTERFACE
-export interface UserDataFormat {
-    username: string;
-    email: string;
-    password: string;
-    wins: number;
-    losses: number;
-    total_score: number;
-    profile_picture: string;
-    status: boolean;
-}
-
-// USER DATA OBJECT
-export const userData: UserDataFormat = {
-    username: "Nacy_Gren",
-    email: "john.doe@example.com",
-    password: "Password123",
-    wins: 0,
-    losses: 0,
-    total_score: 0,
-    profile_picture: "url/to/profile_pic.jpg",
-    status: true
-};
 
 /**
  * Function that finds a user using their object ID, then updates their username in the Firebase database
