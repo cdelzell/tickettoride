@@ -80,7 +80,7 @@ function Login() {
         </div>
         <form onSubmit={handleSubmit}>
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>Username</FormLabel>
             <Input
               name="username"
               type="text"
@@ -90,7 +90,13 @@ function Login() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel
+              sx={{
+                mt: 1,
+              }}
+            >
+              Password
+            </FormLabel>
             <Input
               name="password"
               type="password"
@@ -106,9 +112,9 @@ function Login() {
           )}
           <Button
             type="submit"
-            disabled={!isFormValid} //  // Disable button if form is invalid
+            // disabled={!isFormValid} //  // Disable button if form is invalid
             sx={{
-              mt: 1,
+              mt: 3.5,
             }}
           >
             Log in
