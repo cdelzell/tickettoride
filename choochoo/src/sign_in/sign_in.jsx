@@ -42,7 +42,7 @@ function Login() {
         navigate("/profile", { state: { userKey, userProfile } });
       } else {
         // Handle failed login attempt
-        setError("Error: Username or password incorrect");
+        setError("Error: Username or password is incorrect");
       }
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
