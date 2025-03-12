@@ -411,7 +411,7 @@ const MainGamePage = () => {
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
   const [trainCards, setTrainCards] = useState(train_cards_and_counts);
-  const [sumTrains, setSumTrains] = useState(25);
+  const [trains, setTrains] = useState(25);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
 
@@ -446,11 +446,11 @@ const MainGamePage = () => {
       action_box_status === 2 &&
       trainCard &&
       trainCard.count + wildCard.count >= route.trains &&
-      sumTrains > route.trains
+      trains >= route.trains
     ) {
       // Deduct train cards when claiming a route
       updateTrainCardCount(route.game_color!, -route.trains);
-      setSumTrains(sumTrains - route.trains);
+      setTrains(trains - route.trains);
       if (
         route.trains > trainCard.count &&
         trainCard.count + wildCard.count >= route.trains
@@ -536,7 +536,7 @@ const MainGamePage = () => {
         <div className="main_player_card">
           <PlayerCard
             username={main_player.username}
-            trainCount={sumTrains}
+            trainCount={trains}
             profilePic={main_player.profilePic}
             main_player={true}
           />
