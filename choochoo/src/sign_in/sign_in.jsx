@@ -46,7 +46,7 @@ function Login() {
       }
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
-      setError("Error: Something went wrong. Please try again.");
+      setError("Error: Username or password incorrect");
     }
   };
 
