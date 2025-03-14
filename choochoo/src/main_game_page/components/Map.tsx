@@ -188,7 +188,7 @@ function USMap({
                   className="route-claimer-image"
                   clipPath={`url(#circle-clip-${index})`}
                 />
-                {/* added a birder around image */}
+                {/* added a border around image */}
                 <circle
                   cx={textPos.x}
                   cy={textPos.y}
