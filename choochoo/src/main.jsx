@@ -6,12 +6,12 @@ import Sign_In from "/src/sign_in/sign_in.jsx";
 import Sign_Up from "/src/sign_up/sign_up.jsx";
 import Main_Game_Page from "/src/main_game_page/main_game_page.jsx";
 import Profile from "/src/profile/profile.jsx";
+import Edit_Profile from "/src/edit_profile/edit_profile.jsx";
 import "./index.css";
 import GameRunner from "./backend/game-runner.js";
 
-const gameRunner = new GameRunner(['Billy', 'Bob', 'Joe']);
+const gameRunner = new GameRunner(["Billy", "Bob", "Joe"]);
 console.log("GameRunner Instance:", gameRunner);
-
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
         <Route path="Sign_Up" element={<Sign_Up />} />
         <Route path="Main_Game_Page" element={<Main_Game_Page />} />
         <Route path="Profile" element={<Profile />} />
+        <Route path="Edit_Profile" element={<Edit_Profile />} />
       </Routes>
     </BrowserRouter>
   );

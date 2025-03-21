@@ -50,7 +50,7 @@ function Login() {
     }
   };
 
-  const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
+  // const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
 
   return (
     <main className="loginPage">
@@ -112,7 +112,6 @@ function Login() {
           )}
           <Button
             type="submit"
-            // disabled={!isFormValid} //  // Disable button if form is invalid
             sx={{
               mt: 3.5,
             }}

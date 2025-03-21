@@ -1,0 +1,30 @@
+/* Global reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+.loginPage {
+  background-image: url("/src/assets/mono_map.jpg");
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  box-shadow: 0 0 10px 5px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
