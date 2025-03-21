@@ -7,30 +7,32 @@ import { Grid2 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import "./profile.css";
+import firebase from "firebase/compat/app";
 
 function App() {
   return <Profile />;
 }
 
-function Profile({ firebaseData }) {
+function Profile() {
   const { state } = useLocation(); // Use location to get the state passed from navigate
   const { userProfile } = state || {}; // Fallback to empty object if state is undefined
 
-  const [profileData, setProfileData] = useState(() => {
-    // Try to load profile data from sessionStorage if it exists
-    const storedProfile = sessionStorage.getItem("userProfile");
-    return storedProfile ? JSON.parse(storedProfile) : userProfile;
-  });
+  // const [profileData, setProfileData] = useState(() => {
+  //   // Try to load profile data from sessionStorage if it exists
+  //   const storedProfile = sessionStorage.getItem("userProfile");
+  //   return storedProfile ? JSON.parse(storedProfile) : userProfile;
+  // });
 
   // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
-  const { username, wins, total_score, profile_picture } = profileData || {};
+  const { username, wins, total_score, profile_picture } = userProfile || {};
+  console.log(profile_picture);
 
-  useEffect(() => {
-    // Save userProfile data to sessionStorage whenever it changes
-    if (profileData) {
-      sessionStorage.setItem("userProfile", JSON.stringify(profileData));
-    }
-  }, [profileData]);
+  // useEffect(() => {
+  //   // Save userProfile data to sessionStorage whenever it changes
+  //   if (profileData) {
+  //     sessionStorage.setItem("userProfile", JSON.stringify(profileData));
+  //   }
+  // }, [profileData]);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -62,8 +64,8 @@ function Profile({ firebaseData }) {
         <Grid2 container spacing={2} rowSpacing={"3vw"}>
           <Grid2 size={5}>
             <Avatar
-              alt="thomas"
-              src="./src/assets/trains/thomas_train.jpg"
+              alt={username || "User Profile"}
+              src={profile_picture || "./src/assets/trains/thomas_train.jpg"}
               sx={{
                 width: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,
                 height: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,
