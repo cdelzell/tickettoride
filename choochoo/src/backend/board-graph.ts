@@ -32,6 +32,10 @@ class BoardGraph {
         const claimedRoutes = this.routes.filter(r => r.claimer === playerId);
         
     }
+
+    getRouteByIndex(index: number) {
+        return this.routes[index];
+    }
 }
 
 export default BoardGraph;

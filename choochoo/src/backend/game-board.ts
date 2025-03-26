@@ -63,6 +63,20 @@ class GameBoard {
         return trainCardTaken;
     }
 
+    //For frontend
+    getFaceupTrainCardsAsList() {
+        let returnList: string[] = [];
+        for (const card of this.faceUpTrainCards) {
+            returnList.push(card.getColor());
+        }
+        return returnList;
+    }
+
+    getRouteByIndex(index: number) {
+        return this.boardGraph.getRouteByIndex(index);
+    }
+
+
     //Reshuffles the discard pile into the draw pile, while empytying the discard pile
     #shuffleDiscardIntoDraw() {
         this.trainCardDrawPile = this.trainCardDrawPile.concat(this.trainCardDiscardPile); //Instantiates new draw pile, which may be a problem??
@@ -82,21 +96,19 @@ class GameBoard {
     //Returns shuffled list
     #getStartTrainCards() {
         //In order from manual
-        let colors = ['Purple', 'White', 'Blue', 'Yellow', 'Orange', 'Black', 'Red', 'Green'];
+        let colors = ['purple', 'white', 'blue', 'yellow', 'brown', 'black', 'red', 'green'];
         const NUM_EACH_COLOR = 12;
 
-        let drawPile = [];
         for (let i = 0; i < colors.length; i++) {
             for (let j = 0; j < NUM_EACH_COLOR; j++) {
-                drawPile.push(new TrainCard(colors[i]));
+                this.trainCardDrawPile.push(new TrainCard(colors[i]));
             }
         }
         const NUM_WILDS = 14;
         for (let i = 0; i < NUM_WILDS; i++) {
-            drawPile.push(new TrainCard('Wild'));
+            this.trainCardDrawPile.push(new TrainCard('wild'));
         }
         this.#shuffleTrainDeck();
-        return drawPile;
     }
     
     //Generates all destination cards we want

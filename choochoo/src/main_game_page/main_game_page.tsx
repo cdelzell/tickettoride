@@ -91,8 +91,6 @@ const train_cards_and_counts = train_cards.map((card, i) => ({
   count: train_counts[i],
 }));
 
-const face_up_cards = ["red", "wild", "blue", "purple", "white"];
-
 export interface City {
   name: string;
   x: number;
@@ -401,7 +399,7 @@ const graph = {
 };
 
 const MainGamePage = () => {
-  const users: User[] = [new User()];
+  const users: User[] = [new User("Test")];
   const gameRunner = new GameRunner(users);
 
   const width = window.innerWidth;
@@ -419,6 +417,7 @@ const MainGamePage = () => {
 
   // Function to update a specific train card count
   const updateTrainCardCount = (color: string, amount: number) => {
+    console.log("here");
     setTrainCards((prevCards) =>
       prevCards.map((card) =>
         card.game_color === color
@@ -495,7 +494,7 @@ const MainGamePage = () => {
       </div>
 
       <FaceUpCards
-        face_up_cards={face_up_cards}
+        face_up_cards={gameRunner.gameBoard.getFaceupTrainCardsAsList()}
         updateTrains={updateTrainCardCount}
         active={activeTrains}
       ></FaceUpCards>

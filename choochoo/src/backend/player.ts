@@ -60,7 +60,7 @@ class Player {
     }
     
     private setStarterTrainCards(trainCards: TrainCard[]): Record<string, number> {
-        let hand: Record<string, number> = {Purple: 0, White: 0, Blue: 0, Yellow: 0, Orange: 0, Black: 0, Red: 0, Green: 0, Wild: 0};
+        let hand: Record<string, number> = {Purple: 0, White: 0, Blue: 0, Yellow: 0, Brown: 0, Black: 0, Red: 0, Green: 0, Wild: 0};
         for (let card of trainCards) {
             hand[card.getColor()] += 1;
         }
@@ -71,6 +71,17 @@ class Player {
         return this.id;
     }
 
+    getTrainAmount(): number {
+        return this.trainAmount;
+    }
+
+    getTrainCardHand(): Record<string, number> {
+        return this.trainCardHand;
+    }
+
+    getUsername(): string {
+        return this.user.getUsername();
+    }
 }
 
 export default Player
