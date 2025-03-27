@@ -82,6 +82,7 @@ function ActionBox({
         <PlayTrains />
       ) : action === 3 && actionActive == true ? (
         <Submit
+          updateDrawDest={updateDrawDest}
           drawClickCount={drawClickCount}
           setDestClickCount={setDestClickCount}
           playClickCount={playClickCount}
@@ -117,11 +118,13 @@ function PlayTrains() {
 }
 
 function Submit({
+  updateDrawDest,
   drawClickCount,
   playClickCount,
   destClickCount,
   setDestClickCount,
 }: {
+  updateDrawDest: (state: boolean) => void;
   drawClickCount: number;
   playClickCount: number;
   destClickCount: number;
@@ -130,6 +133,7 @@ function Submit({
   const handleClick = () => {
     if (drawClickCount == 0 && playClickCount == 0 && destClickCount == 0) {
       setDestClickCount(destClickCount + 1);
+      updateDrawDest(false);
     }
   };
   return (
