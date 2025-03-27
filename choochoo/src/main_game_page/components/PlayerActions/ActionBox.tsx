@@ -147,7 +147,7 @@ function TurnOver() {
   return (
     <div className="claim_route">
       <p>
-        Your turn is over. Please click the "End Turn" button to end your turn.
+        Your turn is over. Click the "End Turn" button to go to the next player.
       </p>
     </div>
   );
