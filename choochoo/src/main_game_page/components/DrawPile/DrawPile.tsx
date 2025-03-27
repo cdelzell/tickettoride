@@ -2,8 +2,20 @@ import "./DrawPile.css";
 
 function DrawTrains({
   updateTrains,
+  drawClickCount,
+  setDrawClickCount,
+  playClickCount,
+  setPlayClickCount,
+  destClickCount,
+  setDestClickCount,
 }: {
   updateTrains: (color: string, amount: number) => void;
+  drawClickCount: number;
+  setDrawClickCount: (num: number) => void;
+  playClickCount: number;
+  setPlayClickCount: (num: number) => void;
+  destClickCount: number;
+  setDestClickCount: (num: number) => void;
 }) {
   return (
     <div className="draw_trains">
@@ -14,20 +26,47 @@ function DrawTrains({
         <p>c) a combination of both</p>
       </div>
 
-      <DrawPile updateTrains={updateTrains}></DrawPile>
+      <DrawPile
+        updateTrains={updateTrains}
+        drawClickCount={drawClickCount}
+        setDrawClickCount={setDrawClickCount}
+        playClickCount={playClickCount}
+        setPlayClickCount={setPlayClickCount}
+        destClickCount={destClickCount}
+        setDestClickCount={setDestClickCount}
+      ></DrawPile>
     </div>
   );
 }
 
 function DrawPile({
   updateTrains,
+  drawClickCount,
+  setDrawClickCount,
+  playClickCount,
+  setPlayClickCount,
+  destClickCount,
+  setDestClickCount,
 }: {
   updateTrains: (color: string, amount: number) => void;
+  drawClickCount: number;
+  setDrawClickCount: (num: number) => void;
+  playClickCount: number;
+  setPlayClickCount: (num: number) => void;
+  destClickCount: number;
+  setDestClickCount: (num: number) => void;
 }) {
   //import noah's function and draw and return a single train card
-  //onClick={() => updateTrains(color, 1)}
+  const color = "red";
+
+  const handleClick = () => {
+    if (drawClickCount < 2 && playClickCount == 0 && destClickCount == 0) {
+      setDrawClickCount(drawClickCount + 1);
+      updateTrains(color, 1);
+    }
+  };
   return (
-    <button className="draw_pile">
+    <button className="draw_pile" onClick={handleClick}>
       <img src="./src/assets/draw_pile.jpg" alt="draw pile" />
     </button>
   );

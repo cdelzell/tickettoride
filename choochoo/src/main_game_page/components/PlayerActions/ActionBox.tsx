@@ -8,12 +8,24 @@ function ActionBox({
   updateDrawDest,
   updateTrains,
   updateFaceUp,
+  drawClickCount,
+  setDrawClickCount,
+  playClickCount,
+  setPlayClickCount,
+  destClickCount,
+  setDestClickCount,
 }: {
   action: number;
   updateStatus: (newStatus: number) => void;
   updateDrawDest: (newStatus: boolean) => void;
   updateTrains: (color: string, amount: number) => void;
   updateFaceUp: (active: boolean) => void;
+  drawClickCount: number;
+  setDrawClickCount: (num: number) => void;
+  playClickCount: number;
+  setPlayClickCount: (num: number) => void;
+  destClickCount: number;
+  setDestClickCount: (num: number) => void;
 }) {
   const [goBack, setGoBack] = useState(false);
 
@@ -52,7 +64,15 @@ function ActionBox({
       {action === 0 ? (
         <HomeBox updateStatus={updateStatus} />
       ) : action === 1 ? (
-        <DrawTrains updateTrains={updateTrains} />
+        <DrawTrains
+          updateTrains={updateTrains}
+          drawClickCount={drawClickCount}
+          setDrawClickCount={setDrawClickCount}
+          playClickCount={playClickCount}
+          setPlayClickCount={setPlayClickCount}
+          destClickCount={destClickCount}
+          setDestClickCount={setDestClickCount}
+        />
       ) : action === 2 ? (
         <PlayTrains />
       ) : action === 3 ? (

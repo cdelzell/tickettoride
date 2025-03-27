@@ -48,6 +48,10 @@ export type NetworkProps = {
 //   6: 15
 // };
 
+//loop through the players given by noah
+//if the username of the signed in player (identify using state that is passed in through profile) does not match, make them a player
+//otherwise make them the main player
+
 const players = [
   {
     username: "c-bear",
@@ -414,6 +418,9 @@ const MainGamePage = () => {
   const [trains, setTrains] = useState(25);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
+  const [drawClickCount, setDrawClickCount] = useState(0);
+  const [playClickCount, setPlayClickCount] = useState(0);
+  const [destClickCount, setDestClickCount] = useState(0);
 
   useEffect(() => {}, [trainCards]);
 
@@ -446,17 +453,22 @@ const MainGamePage = () => {
       action_box_status === 2 &&
       trainCard &&
       trainCard.count + wildCard.count >= route.trains &&
-      trains >= route.trains
+      trains >= route.trains &&
+      drawClickCount == 0 &&
+      destClickCount == 0 &&
+      playClickCount == 0
     ) {
       // Deduct train cards when claiming a route
       updateTrainCardCount(route.game_color!, -route.trains);
       setTrains(trains - route.trains);
+      setPlayClickCount(playClickCount + 1);
       if (
         route.trains > trainCard.count &&
         trainCard.count + wildCard.count >= route.trains
       ) {
         updateTrainCardCount(route.game_color!, -trainCard.count);
         updateTrainCardCount("wild", -(route.trains - trainCard.count));
+        setPlayClickCount(playClickCount + 1);
       }
 
       // Update the claimed routes
@@ -498,6 +510,12 @@ const MainGamePage = () => {
         face_up_cards={face_up_cards}
         updateTrains={updateTrainCardCount}
         active={activeTrains}
+        drawClickCount={drawClickCount}
+        setDrawClickCount={setDrawClickCount}
+        playClickCount={playClickCount}
+        setPlayClickCount={setPlayClickCount}
+        destClickCount={destClickCount}
+        setDestClickCount={setDestClickCount}
       ></FaceUpCards>
 
       <div className="player_actions">
@@ -507,6 +525,12 @@ const MainGamePage = () => {
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
           updateFaceUp={updateActionCardStatus}
+          drawClickCount={drawClickCount}
+          setDrawClickCount={setDrawClickCount}
+          playClickCount={playClickCount}
+          setPlayClickCount={setPlayClickCount}
+          destClickCount={destClickCount}
+          setDestClickCount={setDestClickCount}
         ></ActionBox>
 
         <DestinationCardsCarousel
@@ -553,6 +577,10 @@ const MainGamePage = () => {
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}
         onRouteClaim={handleRouteClaim}
+        drawClickCount={drawClickCount}
+        playClickCount={playClickCount}
+        setPlayClickCount={setPlayClickCount}
+        destClickCount={destClickCount}
       />
     </main>
   );

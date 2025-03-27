@@ -77,8 +77,7 @@ function Sign_In() {
             something, please leave the field blank.
           </Typography>
         </div>
-
-        {/* Profile Picture Upload Section */}
+        {/* Profile Picture Upload Section
         <div style={{ textAlign: "center" }}>
           <Avatar
             src={preview}
@@ -93,8 +92,7 @@ function Sign_In() {
           >
             Upload Profile Picture
           </Button>
-        </div>
-
+        </div> */}
         {/* Username & Password Fields */}
         <FormControl>
           <FormLabel>New Username</FormLabel>
@@ -120,7 +118,6 @@ function Sign_In() {
             placeholder="confirm password"
           />
         </FormControl>
-
         <Button
           type="submit"
           component={Link}

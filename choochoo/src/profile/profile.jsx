@@ -5,7 +5,8 @@ import { useTheme, useMediaQuery } from "@mui/material";
 import Button from "@mui/joy/Button";
 import { Grid2 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+
 import "./profile.css";
 import firebase from "firebase/compat/app";
 
@@ -14,8 +15,13 @@ function App() {
 }
 
 function Profile() {
+  const navigate = useNavigate();
   const { state } = useLocation(); // Use location to get the state passed from navigate
   const { userProfile } = state || {}; // Fallback to empty object if state is undefined
+
+  const handleNavGame = () => {
+    navigate("/main_game_page", { state: { userProfile } });
+  };
 
   // const [profileData, setProfileData] = useState(() => {
   //   // Try to load profile data from sessionStorage if it exists
@@ -25,7 +31,6 @@ function Profile() {
 
   // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
   const { username, wins, total_score, profile_picture } = userProfile || {};
-  console.log(profile_picture);
 
   // useEffect(() => {
   //   // Save userProfile data to sessionStorage whenever it changes
@@ -127,8 +132,7 @@ function Profile() {
           >
             <Button
               className="button"
-              component={Link}
-              to="/main_game_page"
+              onClick={handleNavGame}
               sx={{
                 "&:hover": {
                   color: "white",
