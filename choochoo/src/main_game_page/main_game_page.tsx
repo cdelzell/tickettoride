@@ -513,9 +513,7 @@ const MainGamePage = () => {
         drawClickCount={drawClickCount}
         setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
-        setPlayClickCount={setPlayClickCount}
         destClickCount={destClickCount}
-        setDestClickCount={setDestClickCount}
       ></FaceUpCards>
 
       <div className="player_actions">
@@ -577,10 +575,6 @@ const MainGamePage = () => {
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}
         onRouteClaim={handleRouteClaim}
-        drawClickCount={drawClickCount}
-        playClickCount={playClickCount}
-        setPlayClickCount={setPlayClickCount}
-        destClickCount={destClickCount}
       />
     </main>
   );

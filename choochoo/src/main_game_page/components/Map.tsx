@@ -32,10 +32,6 @@ function USMap({
   hoveredRoute,
   setHoveredRoute,
   onRouteClaim,
-  drawClickCount,
-  playClickCount,
-  setPlayClickCount,
-  destClickCount,
 }: {
   width: number;
   height: number;
@@ -45,10 +41,6 @@ function USMap({
   hoveredRoute: Route | null;
   setHoveredRoute: (route: Route | null) => void;
   onRouteClaim: (route: Route) => boolean;
-  drawClickCount: number;
-  playClickCount: number;
-  setPlayClickCount: (num: number) => void;
-  destClickCount: number;
 }) {
   const MAP_WIDTH = 600;
   const MAP_HEIGHT = 400;

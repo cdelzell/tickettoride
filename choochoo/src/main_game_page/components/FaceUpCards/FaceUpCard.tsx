@@ -7,9 +7,7 @@ function FaceUpCard({
   drawClickCount,
   setDrawClickCount,
   playClickCount,
-  setPlayClickCount,
   destClickCount,
-  setDestClickCount,
 }: {
   color: string;
   updateTrains: (color: string, amount: number) => void;
@@ -17,9 +15,7 @@ function FaceUpCard({
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
-  setPlayClickCount: (num: number) => void;
   destClickCount: number;
-  setDestClickCount: (num: number) => void;
 }) {
   const handleClick = () => {
     if (active) {

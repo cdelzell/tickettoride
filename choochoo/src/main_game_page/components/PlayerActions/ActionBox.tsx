@@ -28,6 +28,13 @@ function ActionBox({
   setDestClickCount: (num: number) => void;
 }) {
   const [goBack, setGoBack] = useState(false);
+  const [actionActive, setActionActive] = useState(true);
+
+  useEffect(() => {
+    if (destClickCount > 0 || drawClickCount == 2 || playClickCount > 0) {
+      setActionActive(false);
+    }
+  });
 
   useEffect(() => {
     if (action === 0) {
@@ -54,31 +61,34 @@ function ActionBox({
 
   return (
     <div className="box">
-      {goBack ? (
+      {goBack && actionActive == true ? (
         <button onClick={handleReturn} className="return">
           <img src="./src/assets/arrows/left_arrow.png"></img>
         </button>
       ) : (
         <></>
       )}
-      {action === 0 ? (
+      {action === 0 && actionActive == true ? (
         <HomeBox updateStatus={updateStatus} />
-      ) : action === 1 ? (
+      ) : action === 1 && actionActive == true ? (
         <DrawTrains
           updateTrains={updateTrains}
           drawClickCount={drawClickCount}
           setDrawClickCount={setDrawClickCount}
           playClickCount={playClickCount}
-          setPlayClickCount={setPlayClickCount}
           destClickCount={destClickCount}
-          setDestClickCount={setDestClickCount}
         />
-      ) : action === 2 ? (
+      ) : action === 2 && actionActive == true ? (
         <PlayTrains />
-      ) : action === 3 ? (
-        <Submit />
+      ) : action === 3 && actionActive == true ? (
+        <Submit
+          drawClickCount={drawClickCount}
+          setDestClickCount={setDestClickCount}
+          playClickCount={playClickCount}
+          destClickCount={destClickCount}
+        />
       ) : (
-        <div />
+        <TurnOver />
       )}
     </div>
   );
@@ -106,8 +116,37 @@ function PlayTrains() {
   );
 }
 
-function Submit() {
-  return <button className="submit">Submit Destination Card Choices</button>;
+function Submit({
+  drawClickCount,
+  playClickCount,
+  destClickCount,
+  setDestClickCount,
+}: {
+  drawClickCount: number;
+  playClickCount: number;
+  destClickCount: number;
+  setDestClickCount: (num: number) => void;
+}) {
+  const handleClick = () => {
+    if (drawClickCount == 0 && playClickCount == 0 && destClickCount == 0) {
+      setDestClickCount(destClickCount + 1);
+    }
+  };
+  return (
+    <button className="submit" onClick={handleClick}>
+      Submit Destination Card Choices
+    </button>
+  );
+}
+
+function TurnOver() {
+  return (
+    <div className="claim_route">
+      <p>
+        Your turn is over. Please click the "End Turn" button to end your turn.
+      </p>
+    </div>
+  );
 }
 
 export default ActionBox;

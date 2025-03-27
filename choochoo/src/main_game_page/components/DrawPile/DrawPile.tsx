@@ -5,17 +5,13 @@ function DrawTrains({
   drawClickCount,
   setDrawClickCount,
   playClickCount,
-  setPlayClickCount,
   destClickCount,
-  setDestClickCount,
 }: {
   updateTrains: (color: string, amount: number) => void;
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
-  setPlayClickCount: (num: number) => void;
   destClickCount: number;
-  setDestClickCount: (num: number) => void;
 }) {
   return (
     <div className="draw_trains">
@@ -31,9 +27,7 @@ function DrawTrains({
         drawClickCount={drawClickCount}
         setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
-        setPlayClickCount={setPlayClickCount}
         destClickCount={destClickCount}
-        setDestClickCount={setDestClickCount}
       ></DrawPile>
     </div>
   );
@@ -44,17 +38,13 @@ function DrawPile({
   drawClickCount,
   setDrawClickCount,
   playClickCount,
-  setPlayClickCount,
   destClickCount,
-  setDestClickCount,
 }: {
   updateTrains: (color: string, amount: number) => void;
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
-  setPlayClickCount: (num: number) => void;
   destClickCount: number;
-  setDestClickCount: (num: number) => void;
 }) {
   //import noah's function and draw and return a single train card
   const color = "red";
