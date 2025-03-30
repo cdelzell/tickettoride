@@ -1,0 +1,69 @@
+.lobby-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d3d3d3;
+  color: #555;
+}
+
+.lobby-card {
+  width: 90vw;
+  height: 90vh;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  text-align: center;
+}
+
+.lobby-code {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #2c3e50;
+  background: #ffc89f;
+  padding: 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin: 10px 0;
+  user-select: all;
+}
+
+.player-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.player-list li {
+  font-size: 1.2em;
+  margin: 8px 0;
+  padding: 4px 12px;
+  background: #d5e8f6;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.start-button {
+  background: #27ae60;
+  color: white;
+  font-size: 1.2em;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 15px;
+}
+
+.start-button:hover {
+  background: #219150;
+}
+
+.start-button:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
