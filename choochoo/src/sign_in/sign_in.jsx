@@ -35,22 +35,23 @@ function Login() {
       const success = firebaseData[0]; // boolean value for if username and password were correct
       const userKey = firebaseData[1];
       const userProfile = firebaseData[2];
+      console.log(userProfile);
       if (success) {
         // Redirect to profile on successful login
         // and passing the userKey onto the profile page
         // to allow for loading of stats
-        navigate("/profile", { state: { userKey, userProfile } });
+        navigate("/profile", { state: { userProfile } });
       } else {
         // Handle failed login attempt
-        setError("Error: Username or password incorrect");
+        setError("Error: Username or password is incorrect");
       }
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
-      setError("Error: Something went wrong. Please try again.");
+      setError("Error: Username or password incorrect");
     }
   };
 
-  const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
+  // const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
 
   return (
     <main className="loginPage">
@@ -112,7 +113,6 @@ function Login() {
           )}
           <Button
             type="submit"
-            // disabled={!isFormValid} //  // Disable button if form is invalid
             sx={{
               mt: 3.5,
             }}

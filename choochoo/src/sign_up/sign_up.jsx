@@ -82,14 +82,13 @@ function Sign_In() {
           />
         </FormControl>
         <Button
-            type="submit"
-            disabled={!isFormValid} // Disable button if form is invalid
-            sx={{
-              mt: 1,
-            }}
-          >
-            Log in
-          </Button>
+          type="submit"
+          sx={{
+            mt: 1,
+          }}
+        >
+          Log in
+        </Button>
       </Sheet>
     </main>
   );

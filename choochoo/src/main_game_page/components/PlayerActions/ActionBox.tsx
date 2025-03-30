@@ -8,14 +8,35 @@ function ActionBox({
   updateDrawDest,
   updateTrains,
   updateFaceUp,
+  drawClickCount,
+  setDrawClickCount,
+  playClickCount,
+  setPlayClickCount,
+  destClickCount,
+  setDestClickCount,
+  handleDrawPileClick,
 }: {
   action: number;
   updateStatus: (newStatus: number) => void;
   updateDrawDest: (newStatus: boolean) => void;
   updateTrains: (color: string, amount: number) => void;
   updateFaceUp: (active: boolean) => void;
+  drawClickCount: number;
+  setDrawClickCount: (num: number) => void;
+  playClickCount: number;
+  setPlayClickCount: (num: number) => void;
+  destClickCount: number;
+  setDestClickCount: (num: number) => void;
+  handleDrawPileClick: () => void;
 }) {
   const [goBack, setGoBack] = useState(false);
+  const [actionActive, setActionActive] = useState(true);
+
+  useEffect(() => {
+    if (destClickCount > 0 || drawClickCount == 2 || playClickCount > 0) {
+      setActionActive(false);
+    }
+  });
 
   useEffect(() => {
     if (action === 0) {
@@ -29,7 +50,7 @@ function ActionBox({
       setGoBack(true);
       updateDrawDest(true);
     }
-  }, [action, updateDrawDest]); // Runs only when `action` changes
+  }, [action, updateDrawDest, updateFaceUp]); // Added updateFaceUp as dependency
 
   const handleReturn = () => {
     if (action === 3) {
@@ -42,23 +63,36 @@ function ActionBox({
 
   return (
     <div className="box">
-      {goBack ? (
+      {goBack && actionActive === true ? (
         <button onClick={handleReturn} className="return">
-          <img src="./src/assets/arrows/left_arrow.png"></img>
+          <img src="./src/assets/arrows/left_arrow.png" alt="back arrow"></img>
         </button>
       ) : (
         <></>
       )}
-      {action === 0 ? (
+      {action === 0 && actionActive === true ? (
         <HomeBox updateStatus={updateStatus} />
-      ) : action === 1 ? (
-        <DrawTrains updateTrains={updateTrains} />
-      ) : action === 2 ? (
+      ) : action === 1 && actionActive === true ? (
+        <DrawTrains
+          updateTrains={updateTrains}
+          drawClickCount={drawClickCount}
+          setDrawClickCount={setDrawClickCount}
+          playClickCount={playClickCount}
+          destClickCount={destClickCount}
+          handleDrawPileClick={handleDrawPileClick} // Pass the handler down
+        />
+      ) : action === 2 && actionActive === true ? (
         <PlayTrains />
-      ) : action === 3 ? (
-        <Submit />
+      ) : action === 3 && actionActive === true ? (
+        <Submit
+          updateDrawDest={updateDrawDest}
+          drawClickCount={drawClickCount}
+          setDestClickCount={setDestClickCount}
+          playClickCount={playClickCount}
+          destClickCount={destClickCount}
+        />
       ) : (
-        <div />
+        <TurnOver />
       )}
     </div>
   );
@@ -86,8 +120,41 @@ function PlayTrains() {
   );
 }
 
-function Submit() {
-  return <button className="submit">Submit Destination Card Choices</button>;
+function Submit({
+  updateDrawDest,
+  drawClickCount,
+  playClickCount,
+  destClickCount,
+  setDestClickCount,
+}: {
+  updateDrawDest: (state: boolean) => void;
+  drawClickCount: number;
+  playClickCount: number;
+  destClickCount: number;
+  setDestClickCount: (num: number) => void;
+}) {
+  const handleClick = () => {
+    if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
+      setDestClickCount(destClickCount + 1);
+      updateDrawDest(false);
+    }
+  };
+
+  return (
+    <button className="submit" onClick={handleClick}>
+      Submit Destination Card Choices
+    </button>
+  );
+}
+
+function TurnOver() {
+  return (
+    <div className="claim_route">
+      <p>
+        Your turn is over. Click the "End Turn" button to go to the next player.
+      </p>
+    </div>
+  );
 }
 
 export default ActionBox;

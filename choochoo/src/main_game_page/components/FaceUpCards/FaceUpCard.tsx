@@ -4,14 +4,26 @@ function FaceUpCard({
   color,
   updateTrains,
   active,
+  drawClickCount,
+  setDrawClickCount,
+  playClickCount,
+  destClickCount,
+  
 }: {
   color: string;
   updateTrains: (color: string, amount: number) => void;
   active: boolean;
+  drawClickCount: number;
+  setDrawClickCount: (num: number) => void;
+  playClickCount: number;
+  destClickCount: number;
 }) {
   const handleClick = () => {
     if (active) {
-      updateTrains(color, 1);
+      if (drawClickCount < 2 && playClickCount == 0 && destClickCount == 0) {
+        setDrawClickCount(drawClickCount + 1);
+        updateTrains(color, 1);
+      }
     }
   };
   return (

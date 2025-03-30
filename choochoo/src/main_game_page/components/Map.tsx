@@ -88,6 +88,15 @@ function USMap({
     return { x: midX, y: midY };
   };
 
+  function lightenColor(color: string | undefined, factor: number): string {
+    if (!color.startsWith("#")) return color;
+    const num = parseInt(color.slice(1), 16),
+      r = Math.min(255, Math.floor(((num >> 16) & 0xff) * factor)),
+      g = Math.min(255, Math.floor(((num >> 8) & 0xff) * factor)),
+      b = Math.min(255, Math.floor((num & 0xff) * factor));
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
   return width < 10 ? null : (
     <svg
       width={dimensions.width}
@@ -116,15 +125,25 @@ function USMap({
               y1={route.source.y}
               x2={route.target.x}
               y2={route.target.y}
-              strokeWidth={6}
+              strokeWidth={hoveredRoute === route ? 10 : 6} // Slightly larger stroke for outline effect
               stroke={
-                route.claimer
-                  ? route.color
-                  : hoveredRoute === route
-                  ? "yellow"
-                  : route.color || "black"
+                hoveredRoute === route
+                  ? lightenColor(route.color, 1.5)
+                  : "transparent"
               }
-              strokeOpacity={0.8}
+              strokeOpacity={hoveredRoute === route ? 1 : 0.8} // Full opacity for the outline
+              strokeDasharray={
+                route.claimer ? undefined : route.dashed ? "20,4" : undefined
+              }
+            />
+            <line
+              x1={route.source.x}
+              y1={route.source.y}
+              x2={route.target.x}
+              y2={route.target.y}
+              strokeWidth={6}
+              stroke={route.color || "black"}
+              strokeOpacity={hoveredRoute === route ? 0.6 : 0.8} // Slightly reduced opacity when hovered
               strokeDasharray={
                 route.claimer ? undefined : route.dashed ? "20,4" : undefined
               }
@@ -188,7 +207,7 @@ function USMap({
                   className="route-claimer-image"
                   clipPath={`url(#circle-clip-${index})`}
                 />
-                {/* added a birder around image */}
+                {/* added a border around image */}
                 <circle
                   cx={textPos.x}
                   cy={textPos.y}

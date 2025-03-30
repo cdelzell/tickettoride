@@ -5,10 +5,18 @@ function FaceUpCards({
   face_up_cards,
   updateTrains,
   active,
+  drawClickCount,
+  setDrawClickCount,
+  playClickCount,
+  destClickCount,
 }: {
   face_up_cards: string[];
   updateTrains: (color: string, amount: number) => void;
   active: boolean;
+  drawClickCount: number;
+  setDrawClickCount: (num: number) => void;
+  playClickCount: number;
+  destClickCount: number;
 }) {
   return (
     <div className="holder">
@@ -18,6 +26,10 @@ function FaceUpCards({
           color={face_up_card}
           updateTrains={updateTrains}
           active={active}
+          drawClickCount={drawClickCount}
+          setDrawClickCount={setDrawClickCount}
+          playClickCount={playClickCount}
+          destClickCount={destClickCount}
         />
       ))}
     </div>
