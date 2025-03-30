@@ -6,12 +6,14 @@ function DrawTrains({
   setDrawClickCount,
   playClickCount,
   destClickCount,
+  handleDrawPileClick,
 }: {
   updateTrains: (color: string, amount: number) => void;
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
   destClickCount: number;
+  handleDrawPileClick: () => void;  // added this to handle drawing pile
 }) {
   return (
     <div className="draw_trains">
@@ -21,44 +23,41 @@ function DrawTrains({
         <p>b) draw a train from the face-up cards</p>
         <p>c) a combination of both</p>
       </div>
-
       <DrawPile
-        updateTrains={updateTrains}
         drawClickCount={drawClickCount}
         setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
         destClickCount={destClickCount}
-      ></DrawPile>
+        handleDrawPileClick={handleDrawPileClick}  
+      />
     </div>
   );
 }
 
 function DrawPile({
-  updateTrains,
   drawClickCount,
   setDrawClickCount,
   playClickCount,
   destClickCount,
+  handleDrawPileClick,
 }: {
-  updateTrains: (color: string, amount: number) => void;
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
   destClickCount: number;
+  handleDrawPileClick: () => void;  
 }) {
-  //import noah's function and draw and return a single train card
-  const color = "red";
-
-  const handleClick = () => {
-    if (drawClickCount < 2 && playClickCount == 0 && destClickCount == 0) {
-      setDrawClickCount(drawClickCount + 1);
-      updateTrains(color, 1);
-    }
-  };
   return (
-    <button className="draw_pile" onClick={handleClick}>
-      <img src="./src/assets/draw_pile.jpg" alt="draw pile" />
-    </button>
+    <div>
+      <p>Cards drawn: {drawClickCount}/2</p>
+      <button 
+        className="draw_pile" 
+        onClick={handleDrawPileClick} 
+        disabled={drawClickCount >= 2 || playClickCount > 0 || destClickCount > 0}
+      >
+        <img src="./src/assets/draw_pile.jpg" alt="draw pile" />
+      </button>
+    </div>
   );
 }
 
