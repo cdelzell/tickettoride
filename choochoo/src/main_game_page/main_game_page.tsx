@@ -21,33 +21,6 @@ export type NetworkProps = {
   height: number;
 };
 
-// NOTE: STUFF FOR LATER
-// export type Player = {
-//   username: string;
-//   trainCount: number;
-//   profilePic: string;
-//   trainCards: { color: string; count: number }[];
-//   destinationCards: DestinationCard[];
-//   claimedRoutes: number[];
-//   score: number;
-// };
-
-// export type DestinationCard = {
-//   source: string;
-//   target: string;
-//   trains: number;
-//   completed: boolean;
-// };
-
-// const routePoints = {
-//   1: 1,
-//   2: 2,
-//   3: 4,
-//   4: 7,
-//   5: 10,
-//   6: 15
-// };
-
 //loop through the players given by noah
 //if the username of the signed in player (identify using state that is passed in through profile) does not match, make them a player
 //otherwise make them the main player
@@ -421,8 +394,18 @@ const MainGamePage = () => {
   const [drawClickCount, setDrawClickCount] = useState(0);
   const [playClickCount, setPlayClickCount] = useState(0);
   const [destClickCount, setDestClickCount] = useState(0);
+  const [turnComplete, setTurnComplete] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState(0); // index of current player
+  const [drawnCard, setDrawnCard] = useState<string | null>(null);
 
-  useEffect(() => {}, [trainCards]);
+  useEffect(() => {
+    // checkign if player has completed an action
+    if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
+      setTurnComplete(true);
+    } else {
+      setTurnComplete(false);
+    }
+  }, [playClickCount, drawClickCount, destClickCount]);
 
   // Function to update a specific train card count
   const updateTrainCardCount = (color: string, amount: number) => {
@@ -434,6 +417,34 @@ const MainGamePage = () => {
       )
     );
   };
+
+  // CHECK HERE
+  const drawRandomTrainCard = () => {
+    const random = Math.random();
+    let drawnColor;
+
+    if (random < 0.1) {
+      drawnColor = "wild";
+    } else {
+      const regularColors = train_cards
+        .map((card) => card.game_color)
+        .filter((color) => color !== "wild");
+
+      const randomIndex = Math.floor(Math.random() * regularColors.length);
+      drawnColor = regularColors[randomIndex];
+    }
+
+    updateTrainCardCount(drawnColor, 1);
+    setDrawnCard(drawnColor);
+
+    return drawnColor;
+  };
+
+  useEffect(() => {
+    if (action_box_status === 1 && drawClickCount === 2) {
+      drawRandomTrainCard();
+    }
+  }, [drawClickCount, action_box_status]);
 
   const updateActionCardStatus = (action: boolean) => {
     if (action) {
@@ -452,6 +463,7 @@ const MainGamePage = () => {
     if (
       action_box_status === 2 &&
       trainCard &&
+      wildCard &&
       trainCard.count + wildCard.count >= route.trains &&
       trains >= route.trains &&
       drawClickCount == 0 &&
@@ -489,6 +501,87 @@ const MainGamePage = () => {
 
   const updateStatus = (newStatus: React.SetStateAction<number>) => {
     setActionBoxStatus(newStatus);
+
+    if (newStatus === 1 && drawClickCount === 0) {
+      setDrawnCard(null);
+    }
+  };
+
+  const handleDrawTrainClick = () => {
+    if (action_box_status === 1 && drawClickCount < 2) {
+      const newCard = drawRandomTrainCard();
+
+      setDrawClickCount((prevCount) => {
+        const newCount = prevCount + 1;
+
+        if (newCount < 2) {
+          setTimeout(() => drawRandomTrainCard());
+        }
+
+        return newCount;
+      });
+    }
+  };
+
+  const handleEndTurn = () => {
+    setDrawClickCount(0);
+    setPlayClickCount(0);
+    setDestClickCount(0);
+
+    setTurnComplete(false);
+    setActionBoxStatus(0);
+    setActiveTrains(false);
+
+    // move to the next array in cycle
+    setCurrentPlayer((current) => (current + 1) % (players.length + 1));
+  };
+
+  // CSS for the endturn button
+  const endTurnButtonStyle: React.CSSProperties = {
+    padding: "19px 28px",
+    fontSize: "27px",
+    fontWeight: "bold",
+    backgroundColor: "#4CAF50",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+    position: "absolute",
+    left: "40px",
+    top: "67%",
+    zIndex: 1000,
+    display: turnComplete ? "block" : "none",
+  };
+
+  const drawnCardNotificationStyle: React.CSSProperties = {
+    position: "absolute",
+    bottom: "180px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    color: "white",
+    padding: "6px 15px",
+    borderRadius: "5px",
+    zIndex: 1000,
+    display: drawnCard ? "block" : "none",
+  };
+
+  const drawTrainButtonStyle: React.CSSProperties = {
+    padding: "10px 20px",
+    fontSize: "27px",
+    fontWeight: "bold",
+    backgroundColor: "#3498db",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+    position: "absolute",
+    display: action_box_status === 1 && drawClickCount < 2 ? "block" : "none",
+    left: "5px",
+    bottom: "120%",
+    zIndex: 1000,
   };
 
   return (
@@ -502,6 +595,7 @@ const MainGamePage = () => {
             trainCount={player.trainCount}
             profilePic={player.profilePic}
             main_player={false}
+            active={currentPlayer === index + 1} // + 1 because currentPlayer 0 is main player
           />
         ))}
       </div>
@@ -515,6 +609,17 @@ const MainGamePage = () => {
         playClickCount={playClickCount}
         destClickCount={destClickCount}
       ></FaceUpCards>
+
+      {/* end turn button */}
+      {turnComplete && (
+        <button onClick={handleEndTurn} style={endTurnButtonStyle}>
+          End Turn
+        </button>
+      )}
+
+      <div style={drawnCardNotificationStyle}>
+        You drew a {drawnCard} train card!
+      </div>
 
       <div className="player_actions">
         <ActionBox
@@ -530,6 +635,10 @@ const MainGamePage = () => {
           destClickCount={destClickCount}
           setDestClickCount={setDestClickCount}
         ></ActionBox>
+
+        {/* <button style={drawTrainButtonStyle} onClick={handleDrawTrainClick}>
+          Draw Train Card {drawClickCount === 1 ? "(2nd draw)" : ""}
+        </button> */}
 
         <DestinationCardsCarousel
           destinations={destination_cards}
@@ -561,6 +670,7 @@ const MainGamePage = () => {
             trainCount={trains}
             profilePic={main_player.profilePic}
             main_player={true}
+            active={currentPlayer === 0} // main player is active when currentPlayer is 0
           />
         </div>
       </div>

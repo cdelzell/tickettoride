@@ -10,6 +10,7 @@ function PlayerCard({
   trainCount: number;
   profilePic: string;
   main_player: boolean;
+  active: boolean;
 }) {
   return (
     <div className={main_player ? "main_player_card" : "player_card"}>
