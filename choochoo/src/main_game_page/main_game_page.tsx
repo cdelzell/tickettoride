@@ -565,7 +565,7 @@ const MainGamePage = () => {
     cursor: "pointer",
     boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
     position: "absolute",
-    left: "1%",
+    left: "2%",
     top: "70%",
     zIndex: 1000,
     display: turnComplete ? "block" : "none",
