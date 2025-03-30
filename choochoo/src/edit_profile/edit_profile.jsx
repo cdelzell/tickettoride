@@ -24,12 +24,16 @@ function Sign_In() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("/default-profile.png"); // Default image
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file)); // Show preview before upload
-    }
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     setImage(file);
+  //     setPreview(URL.createObjectURL(file)); // Show preview before upload
+  //   }
+  // };
+
+  const handleImageChange = (imageUrl) => {
+    setPreview(imageUrl); // Set the image URL directly to preview
   };
 
   const handleUpload = async () => {
@@ -46,6 +50,21 @@ function Sign_In() {
       console.error("Upload failed:", error);
     }
   };
+
+  const predefinedImagesProfile = [
+    "choochoo/src/assets/trains/thomas_train.jpg",
+    "choochoo/src/assets/trains/gordon_train.webp",
+    "choochoo/src/assets/trains/james_train.webp",
+    "choochoo/src/assets/trains/percy_train.webp",
+    "choochoo/src/assets/trains/arthur.jpg",
+    "choochoo/src/assets/trains/buddy.webp",
+    "choochoo/src/assets/trains/dw.webp",
+    "choochoo/src/assets/trains/clifford.jpg",
+    "choochoo/src/assets/trains/emily_train.webp",
+    "/images/choochoo/src/trains/henry_train.webp",
+    "choochoo/src/assets/trains/shiny.webp",
+    "choochoo/src/assets/trains/george.jpg",
+  ];
 
   return (
     <main className="loginPage">
@@ -77,22 +96,47 @@ function Sign_In() {
             something, please leave the field blank.
           </Typography>
         </div>
-        {/* Profile Picture Upload Section
+
+        {/* Profile Picture Selection Section */}
         <div style={{ textAlign: "center" }}>
           <Avatar
             src={preview}
-            alt=""
+            alt="Profile Picture"
             sx={{ width: 100, height: 100, margin: "auto", mb: 2 }}
           />
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <div
+            className="image-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "8px",
+              marginBottom: "16px",
+            }}
+          >
+            {predefinedImagesProfile.map((imageUrl, index) => (
+              <Avatar
+                key={index}
+                src={imageUrl}
+                alt={`PFP ${index + 1}`}
+                sx={{
+                  width: 50,
+                  height: 50,
+                  cursor: "pointer",
+                  border: preview === imageUrl ? "2px solid blue" : "none",
+                }}
+                onClick={() => handleImageChange(imageUrl)}
+              />
+            ))}
+          </div>
           <Button
             onClick={handleUpload}
             variant="contained"
             sx={{ mt: 1, backgroundColor: "ButtonFace", fontWeight: "normal" }}
           >
-            Upload Profile Picture
+            Save Profile Picture
           </Button>
-        </div> */}
+        </div>
+
         {/* Username & Password Fields */}
         <FormControl>
           <FormLabel>New Username</FormLabel>
