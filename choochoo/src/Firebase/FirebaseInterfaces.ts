@@ -38,5 +38,5 @@ export interface GameData {
   player_two: Player;
   player_three: Player;
   player_four: Player;
-  destination_cars_drawn: number[];
+  destination_cards_drawn: number[];
 }
