@@ -14,6 +14,7 @@ function ActionBox({
   setPlayClickCount,
   destClickCount,
   setDestClickCount,
+  handleDrawPileClick,
 }: {
   action: number;
   updateStatus: (newStatus: number) => void;
@@ -26,6 +27,7 @@ function ActionBox({
   setPlayClickCount: (num: number) => void;
   destClickCount: number;
   setDestClickCount: (num: number) => void;
+  handleDrawPileClick: () => void;
 }) {
   const [goBack, setGoBack] = useState(false);
   const [actionActive, setActionActive] = useState(true);
@@ -48,7 +50,7 @@ function ActionBox({
       setGoBack(true);
       updateDrawDest(true);
     }
-  }, [action, updateDrawDest]); // Runs only when `action` changes
+  }, [action, updateDrawDest, updateFaceUp]); // Added updateFaceUp as dependency
 
   const handleReturn = () => {
     if (action === 3) {
@@ -61,26 +63,27 @@ function ActionBox({
 
   return (
     <div className="box">
-      {goBack && actionActive == true ? (
+      {goBack && actionActive === true ? (
         <button onClick={handleReturn} className="return">
-          <img src="./src/assets/arrows/left_arrow.png"></img>
+          <img src="./src/assets/arrows/left_arrow.png" alt="back arrow"></img>
         </button>
       ) : (
         <></>
       )}
-      {action === 0 && actionActive == true ? (
+      {action === 0 && actionActive === true ? (
         <HomeBox updateStatus={updateStatus} />
-      ) : action === 1 && actionActive == true ? (
+      ) : action === 1 && actionActive === true ? (
         <DrawTrains
           updateTrains={updateTrains}
           drawClickCount={drawClickCount}
           setDrawClickCount={setDrawClickCount}
           playClickCount={playClickCount}
           destClickCount={destClickCount}
+          handleDrawPileClick={handleDrawPileClick} // Pass the handler down
         />
-      ) : action === 2 && actionActive == true ? (
+      ) : action === 2 && actionActive === true ? (
         <PlayTrains />
-      ) : action === 3 && actionActive == true ? (
+      ) : action === 3 && actionActive === true ? (
         <Submit
           updateDrawDest={updateDrawDest}
           drawClickCount={drawClickCount}
@@ -131,11 +134,12 @@ function Submit({
   setDestClickCount: (num: number) => void;
 }) {
   const handleClick = () => {
-    if (drawClickCount == 0 && playClickCount == 0 && destClickCount == 0) {
+    if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
       setDestClickCount(destClickCount + 1);
       updateDrawDest(false);
     }
   };
+
   return (
     <button className="submit" onClick={handleClick}>
       Submit Destination Card Choices

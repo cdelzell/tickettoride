@@ -397,6 +397,7 @@ const MainGamePage = () => {
   const [turnComplete, setTurnComplete] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState(0); // index of current player
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
+  const [showCardNotification, setShowCardNotification] = useState(false);
 
   useEffect(() => {
     // checkign if player has completed an action
@@ -434,17 +435,41 @@ const MainGamePage = () => {
       drawnColor = regularColors[randomIndex];
     }
 
+    // This should update the train card in the player's hand
     updateTrainCardCount(drawnColor, 1);
+
+    // Show notification
     setDrawnCard(drawnColor);
+    setShowCardNotification(true);
+
+    setTimeout(() => {
+      setShowCardNotification(false);
+    }, 2000);
 
     return drawnColor;
   };
 
   useEffect(() => {
-    if (action_box_status === 1 && drawClickCount === 2) {
-      drawRandomTrainCard();
-    }
-  }, [drawClickCount, action_box_status]);
+    const handleDrawCardEvent = () => {
+      handleDrawPileClick();
+    };
+
+    window.addEventListener("drawCard", handleDrawCardEvent);
+    return () => {
+      window.removeEventListener("drawCard", handleDrawCardEvent);
+    };
+  }, [drawClickCount]);
+
+  // useEffect(() => {
+  //   // Only run this effect when drawClickCount changes and we're in draw mode
+  //   if (action_box_status === 1) {
+  //     // If drawClickCount was just incremented, draw a random card
+  //     if (drawClickCount > 0) {
+  //       // Draw a random card
+  //       drawRandomTrainCard();
+  //     }
+  //   }
+  // }, [drawClickCount]);
 
   const updateActionCardStatus = (action: boolean) => {
     if (action) {
@@ -502,24 +527,38 @@ const MainGamePage = () => {
   const updateStatus = (newStatus: React.SetStateAction<number>) => {
     setActionBoxStatus(newStatus);
 
-    if (newStatus === 1 && drawClickCount === 0) {
+    if (newStatus === 1) {
       setDrawnCard(null);
+      setShowCardNotification(false);
+      setDrawClickCount(0);
     }
   };
 
-  const handleDrawTrainClick = () => {
-    if (action_box_status === 1 && drawClickCount < 2) {
-      const newCard = drawRandomTrainCard();
+  // const handleDrawTrainClick = () => {
+  //   if (action_box_status === 1 && drawClickCount < 2) {
+  //     const newCard = drawRandomTrainCard();
 
-      setDrawClickCount((prevCount) => {
-        const newCount = prevCount + 1;
+  //     setDrawClickCount((prevCount) => {
+  //       const newCount = prevCount + 1;
 
-        if (newCount < 2) {
-          setTimeout(() => drawRandomTrainCard());
-        }
+  //       if (newCount < 2) {
+  //         setTimeout(() => drawRandomTrainCard());
+  //       }
 
-        return newCount;
-      });
+  //       return newCount;
+  //     });
+  //   }
+  // };
+
+  const handleDrawPileClick = () => {
+    if (
+      action_box_status === 1 &&
+      drawClickCount < 2 &&
+      playClickCount === 0 &&
+      destClickCount === 0
+    ) {
+      drawRandomTrainCard();
+      setDrawClickCount(drawClickCount + 1);
     }
   };
 
@@ -531,6 +570,7 @@ const MainGamePage = () => {
     setTurnComplete(false);
     setActionBoxStatus(0);
     setActiveTrains(false);
+    setShowCardNotification(false);
 
     // move to the next array in cycle
     setCurrentPlayer((current) => (current + 1) % (players.length + 1));
@@ -565,23 +605,6 @@ const MainGamePage = () => {
     borderRadius: "5px",
     zIndex: 1000,
     display: drawnCard ? "block" : "none",
-  };
-
-  const drawTrainButtonStyle: React.CSSProperties = {
-    padding: "10px 20px",
-    fontSize: "27px",
-    fontWeight: "bold",
-    backgroundColor: "#3498db",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-    position: "absolute",
-    display: action_box_status === 1 && drawClickCount < 2 ? "block" : "none",
-    left: "5px",
-    bottom: "120%",
-    zIndex: 1000,
   };
 
   return (
@@ -634,6 +657,7 @@ const MainGamePage = () => {
           setPlayClickCount={setPlayClickCount}
           destClickCount={destClickCount}
           setDestClickCount={setDestClickCount}
+          handleDrawPileClick={handleDrawPileClick}
         ></ActionBox>
 
         {/* <button style={drawTrainButtonStyle} onClick={handleDrawTrainClick}>

@@ -8,6 +8,7 @@ function FaceUpCard({
   setDrawClickCount,
   playClickCount,
   destClickCount,
+  
 }: {
   color: string;
   updateTrains: (color: string, amount: number) => void;
