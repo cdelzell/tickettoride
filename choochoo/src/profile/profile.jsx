@@ -23,6 +23,10 @@ function Profile() {
     navigate("/main_game_page", { state: { userProfile } });
   };
 
+  const handleJoinGame = () => {
+    navigate("/lobby", { state: { userProfile } }); // Navigate to the Lobby with userProfile state
+  };
+
   // const [profileData, setProfileData] = useState(() => {
   //   // Try to load profile data from sessionStorage if it exists
   //   const storedProfile = sessionStorage.getItem("userProfile");
@@ -143,6 +147,7 @@ function Profile() {
             </Button>
             <Button
               className="button"
+              onClick={handleJoinGame}
               sx={{
                 "&:hover": {
                   color: "white",
