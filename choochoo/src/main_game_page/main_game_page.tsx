@@ -400,7 +400,6 @@ const MainGamePage = () => {
   const [showCardNotification, setShowCardNotification] = useState(false);
 
   useEffect(() => {
-    // checkign if player has completed an action
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
       setTurnComplete(true);
     } else {
@@ -408,7 +407,6 @@ const MainGamePage = () => {
     }
   }, [playClickCount, drawClickCount, destClickCount]);
 
-  // Function to update a specific train card count
   const updateTrainCardCount = (color: string, amount: number) => {
     setTrainCards((prevCards) =>
       prevCards.map((card) =>
@@ -436,8 +434,6 @@ const MainGamePage = () => {
     }
 
     updateTrainCardCount(drawnColor, 1);
-
-    // Show notification
     setDrawnCard(drawnColor);
     setShowCardNotification(true);
 
@@ -458,17 +454,6 @@ const MainGamePage = () => {
       window.removeEventListener("drawCard", handleDrawCardEvent);
     };
   }, [drawClickCount]);
-
-  // useEffect(() => {
-  //   // Only run this effect when drawClickCount changes and we're in draw mode
-  //   if (action_box_status === 1) {
-  //     // If drawClickCount was just incremented, draw a random card
-  //     if (drawClickCount > 0) {
-  //       // Draw a random card
-  //       drawRandomTrainCard();
-  //     }
-  //   }
-  // }, [drawClickCount]);
 
   const updateActionCardStatus = (action: boolean) => {
     if (action) {
@@ -588,15 +573,15 @@ const MainGamePage = () => {
   };
 
   const drawnCardNotificationStyle: React.CSSProperties = {
-    padding: "0.2vw 1vw",
+    padding: "0.1vw 1vw",
     position: "absolute",
     bottom: "20vh",
     left: "50%",
     transform: "translateX(-50%)",
     backgroundColor: "rgba(255, 54, 148, 0.7)",
     color: "white",
-    borderRadius: "1vw",
-    fontSize: "1.3vw",
+    borderRadius: "0.5vw",
+    fontSize: "1.1vw",
     zIndex: 1000,
     transition: "all 0s ease-in-out",
   };
@@ -654,9 +639,6 @@ const MainGamePage = () => {
           handleDrawPileClick={handleDrawPileClick}
         ></ActionBox>
 
-        {/* <button style={drawTrainButtonStyle} onClick={handleDrawTrainClick}>
-          Draw Train Card {drawClickCount === 1 ? "(2nd draw)" : ""}
-        </button> */}
 
         <DestinationCardsCarousel
           destinations={destination_cards}
