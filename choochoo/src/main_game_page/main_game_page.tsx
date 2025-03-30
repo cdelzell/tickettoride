@@ -578,33 +578,35 @@ const MainGamePage = () => {
 
   // CSS for the endturn button
   const endTurnButtonStyle: React.CSSProperties = {
-    padding: "19px 28px",
-    fontSize: "27px",
+    padding: "2vw 4vw", // Scales with viewport width
+    fontSize: "1.2vw", // Adjusts size dynamically
     fontWeight: "bold",
     backgroundColor: "#4CAF50",
     color: "white",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "1vw",
     cursor: "pointer",
     boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
     position: "absolute",
-    left: "40px",
+    left: "1%",
     top: "67%",
     zIndex: 1000,
     display: turnComplete ? "block" : "none",
+    transition: "all 0s ease-in-out",
   };
 
   const drawnCardNotificationStyle: React.CSSProperties = {
+    padding: "0.2vw 1vw",
     position: "absolute",
-    bottom: "180px",
+    bottom: "20vh",
     left: "50%",
     transform: "translateX(-50%)",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "rgba(255, 54, 148, 0.7)",
     color: "white",
-    padding: "6px 15px",
-    borderRadius: "5px",
+    borderRadius: "1vw",
+    fontSize: "1.3vw",
     zIndex: 1000,
-    display: drawnCard ? "block" : "none",
+    transition: "all 0s ease-in-out",
   };
 
   return (
