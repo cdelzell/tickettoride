@@ -435,7 +435,6 @@ const MainGamePage = () => {
       drawnColor = regularColors[randomIndex];
     }
 
-    // This should update the train card in the player's hand
     updateTrainCardCount(drawnColor, 1);
 
     // Show notification
@@ -444,7 +443,7 @@ const MainGamePage = () => {
 
     setTimeout(() => {
       setShowCardNotification(false);
-    }, 2000);
+    }, 3000);
 
     return drawnColor;
   };
@@ -534,22 +533,6 @@ const MainGamePage = () => {
     }
   };
 
-  // const handleDrawTrainClick = () => {
-  //   if (action_box_status === 1 && drawClickCount < 2) {
-  //     const newCard = drawRandomTrainCard();
-
-  //     setDrawClickCount((prevCount) => {
-  //       const newCount = prevCount + 1;
-
-  //       if (newCount < 2) {
-  //         setTimeout(() => drawRandomTrainCard());
-  //       }
-
-  //       return newCount;
-  //     });
-  //   }
-  // };
-
   const handleDrawPileClick = () => {
     if (
       action_box_status === 1 &&
@@ -557,8 +540,17 @@ const MainGamePage = () => {
       playClickCount === 0 &&
       destClickCount === 0
     ) {
-      drawRandomTrainCard();
-      setDrawClickCount(drawClickCount + 1);
+      const newCard = drawRandomTrainCard();
+      if (newCard) {
+        setDrawnCard(newCard);
+        setShowCardNotification(true);
+
+        setTimeout(() => {
+          setShowCardNotification(false);
+        }, 3000);
+      }
+
+      setDrawClickCount((prev) => prev + 1);
     }
   };
 
