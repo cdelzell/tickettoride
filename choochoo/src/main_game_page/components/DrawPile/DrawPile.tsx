@@ -13,7 +13,7 @@ function DrawTrains({
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
   destClickCount: number;
-  handleDrawPileClick: () => void;  // Added this prop
+  handleDrawPileClick: () => void;  // added this to handle drawing pile
 }) {
   return (
     <div className="draw_trains">
@@ -28,7 +28,7 @@ function DrawTrains({
         setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
         destClickCount={destClickCount}
-        handleDrawPileClick={handleDrawPileClick}  // Pass it through
+        handleDrawPileClick={handleDrawPileClick}  
       />
     </div>
   );
@@ -45,9 +45,8 @@ function DrawPile({
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
   destClickCount: number;
-  handleDrawPileClick: () => void;  // Added this prop
+  handleDrawPileClick: () => void;  
 }) {
-  // Use the handler from MainGamePage directly instead of incrementing counter here
   return (
     <div>
       <p>Cards drawn: {drawClickCount}/2</p>

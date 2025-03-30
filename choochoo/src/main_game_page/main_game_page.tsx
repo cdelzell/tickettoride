@@ -555,8 +555,8 @@ const MainGamePage = () => {
 
   // CSS for the endturn button
   const endTurnButtonStyle: React.CSSProperties = {
-    padding: "2vw 4vw", // Scales with viewport width
-    fontSize: "1.2vw", // Adjusts size dynamically
+    padding: "1vw 3vw", // Scales with viewport width
+    fontSize: "1.5vw", // Adjusts size dynamically
     fontWeight: "bold",
     backgroundColor: "#4CAF50",
     color: "white",
@@ -566,7 +566,7 @@ const MainGamePage = () => {
     boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
     position: "absolute",
     left: "1%",
-    top: "67%",
+    top: "70%",
     zIndex: 1000,
     display: turnComplete ? "block" : "none",
     transition: "all 0s ease-in-out",
@@ -619,9 +619,11 @@ const MainGamePage = () => {
         </button>
       )}
 
-      <div style={drawnCardNotificationStyle}>
-        You drew a {drawnCard} train card!
-      </div>
+      {showCardNotification && drawnCard && (
+        <div style={drawnCardNotificationStyle}>
+          You drew a {drawnCard} train card!
+        </div>
+      )}
 
       <div className="player_actions">
         <ActionBox
@@ -638,7 +640,6 @@ const MainGamePage = () => {
           setDestClickCount={setDestClickCount}
           handleDrawPileClick={handleDrawPileClick}
         ></ActionBox>
-
 
         <DestinationCardsCarousel
           destinations={destination_cards}
