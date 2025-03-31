@@ -41,8 +41,14 @@ function ActionBox({
   useEffect(() => {
     if (action === 0) {
       setGoBack(false);
+    } else if (action === 1 && drawClickCount > 0) {
+      setGoBack(false);
+      updateFaceUp(true);
     } else if (action === 1) {
       setGoBack(true);
+      updateFaceUp(true);
+    } else if (action === 1 && drawClickCount > 0) {
+      setGoBack(false);
       updateFaceUp(true);
     } else if (action === 2) {
       setGoBack(true);
