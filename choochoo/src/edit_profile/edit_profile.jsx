@@ -12,6 +12,20 @@ import { useNavigate, Link } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
 import "./edit_profile.css";
 
+// import thomasImg from "/assets/thomasthetrain.jpg"; 
+// import gordonImg from "/assets/trains/gordon_train.webp";
+// import jamesImg from "/assets/trains/james_train.webp";
+// import percyImg from "/assets/trains/percy_train.webp";
+// import arthurImg from "/assets/trains/arthur.jpg";
+// import buddyImg from "/assets/trains/buddy.webp";
+// import dwImg from "/assets/trains/dw.webp";
+// import cliffordImg from "/assets/trains/clifford.jpg";
+// import emilyImg from "/assets/trains/emily_train.webp";
+// import henryImg from "/assets/trains/henry_train.webp";
+// import shinyImg from "/assets/trains/shiny.webp";
+// import georgeImg from "/assets/trains/george.jpg";
+// import defaultImg from "/assets/default-profile.png";
+
 function Render_Page() {
   return <Sign_In className="Login" />;
 }
@@ -22,48 +36,38 @@ function Sign_In() {
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState("/default-profile.png"); // Default image
-
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     setImage(file);
-  //     setPreview(URL.createObjectURL(file)); // Show preview before upload
-  //   }
-  // };
+  const [selectedImageUrl, setSelectedImageUrl] = useState(defaultImg); // Default image
 
   const handleImageChange = (imageUrl) => {
-    setPreview(imageUrl); // Set the image URL directly to preview
+    setSelectedImageUrl(imageUrl);
+    setImage(imageUrl); 
   };
 
   const handleUpload = async () => {
-    if (!image) return alert("Please select an image!");
-
-    const formData = new FormData();
-    formData.append("profilePic", image);
+    if (!selectedImageUrl) return alert("Please select an image!");
 
     try {
-      // Simulate an upload or send to a backend
-      // await fetch("/upload", { method: "POST", body: formData });
-      alert("Profile picture uploaded successfully!");
+      // TYSON - SEND TO FIREBASE HERE I THINK
+      alert("Profile picture updated successfully!");
     } catch (error) {
-      console.error("Upload failed:", error);
+      console.error("Update failed:", error);
     }
   };
 
+
   const predefinedImagesProfile = [
-    "choochoo/src/assets/trains/thomas_train.jpg",
-    "choochoo/src/assets/trains/gordon_train.webp",
-    "choochoo/src/assets/trains/james_train.webp",
-    "choochoo/src/assets/trains/percy_train.webp",
-    "choochoo/src/assets/trains/arthur.jpg",
-    "choochoo/src/assets/trains/buddy.webp",
-    "choochoo/src/assets/trains/dw.webp",
-    "choochoo/src/assets/trains/clifford.jpg",
-    "choochoo/src/assets/trains/emily_train.webp",
-    "/images/choochoo/src/trains/henry_train.webp",
-    "choochoo/src/assets/trains/shiny.webp",
-    "choochoo/src/assets/trains/george.jpg",
+    thomasImg,
+    gordonImg,
+    jamesImg,
+    percyImg,
+    arthurImg,
+    buddyImg,
+    dwImg,
+    cliffordImg,
+    emilyImg,
+    henryImg,
+    shinyImg,
+    georgeImg
   ];
 
   return (
@@ -100,7 +104,7 @@ function Sign_In() {
         {/* Profile Picture Selection Section */}
         <div style={{ textAlign: "center" }}>
           <Avatar
-            src={preview}
+            src={selectedImageUrl}
             alt="Profile Picture"
             sx={{ width: 100, height: 100, margin: "auto", mb: 2 }}
           />
@@ -122,7 +126,7 @@ function Sign_In() {
                   width: 50,
                   height: 50,
                   cursor: "pointer",
-                  border: preview === imageUrl ? "2px solid blue" : "none",
+                  border: selectedImageUrl === imageUrl ? "2px solid blue" : "none",
                 }}
                 onClick={() => handleImageChange(imageUrl)}
               />
