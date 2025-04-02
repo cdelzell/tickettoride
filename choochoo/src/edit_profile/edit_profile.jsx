@@ -12,7 +12,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
 import "./edit_profile.css";
 
-// import thomasImg from "/assets/thomasthetrain.jpg"; 
+// import thomasImg from "/assets/thomasthetrain.jpg";
 // import gordonImg from "/assets/trains/gordon_train.webp";
 // import jamesImg from "/assets/trains/james_train.webp";
 // import percyImg from "/assets/trains/percy_train.webp";
@@ -26,6 +26,22 @@ import "./edit_profile.css";
 // import georgeImg from "/assets/trains/george.jpg";
 // import defaultImg from "/assets/default-profile.png";
 
+export const PROFILE_IMAGES = {
+  thomas: "/assets/thomasthetrain.jpg",
+  gordon: "/assets/trains/gordon_train.webp",
+  james: "/assets/trains/james_train.webp",
+  percy: "/assets/trains/percy_train.webp",
+  arthur: "/assets/trains/arthur.jpg",
+  buddy: "/assets/trains/buddy.webp",
+  dw: "/assets/trains/dw.webp",
+  clifford: "/assets/trains/clifford.jpg",
+  emily: "/assets/trains/emily_train.webp",
+  henry: "/assets/trains/henry_train.webp",
+  shiny: "/assets/trains/shiny.webp",
+  george: "/assets/trains/george.jpg",
+  default: "/assets/Default-pfp.png",
+};
+
 function Render_Page() {
   return <Sign_In className="Login" />;
 }
@@ -36,11 +52,12 @@ function Sign_In() {
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [image, setImage] = useState(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState(defaultImg); // Default image
+  const [selectedImageUrl, setSelectedImageUrl] = useState(PROFILE_IMAGES.default);
+
 
   const handleImageChange = (imageUrl) => {
     setSelectedImageUrl(imageUrl);
-    setImage(imageUrl); 
+    setImage(imageUrl);
   };
 
   const handleUpload = async () => {
@@ -54,7 +71,6 @@ function Sign_In() {
     }
   };
 
-
   const predefinedImagesProfile = [
     thomasImg,
     gordonImg,
@@ -67,7 +83,7 @@ function Sign_In() {
     emilyImg,
     henryImg,
     shinyImg,
-    georgeImg
+    georgeImg,
   ];
 
   return (
@@ -126,7 +142,8 @@ function Sign_In() {
                   width: 50,
                   height: 50,
                   cursor: "pointer",
-                  border: selectedImageUrl === imageUrl ? "2px solid blue" : "none",
+                  border:
+                    selectedImageUrl === imageUrl ? "2px solid blue" : "none",
                 }}
                 onClick={() => handleImageChange(imageUrl)}
               />
