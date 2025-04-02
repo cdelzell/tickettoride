@@ -8,7 +8,6 @@ function FaceUpCard({
   setDrawClickCount,
   playClickCount,
   destClickCount,
-  
 }: {
   color: string;
   updateTrains: (color: string, amount: number) => void;
@@ -27,7 +26,13 @@ function FaceUpCard({
     }
   };
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
+      }}
+    >
       <button className="face_up_card" onClick={() => handleClick()}>
         <img
           className="train_card"
