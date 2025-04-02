@@ -1,7 +1,8 @@
 import { ref, update, get, push} from 'firebase/database';
 import { database, userDataPath } from './FirebaseCredentials'
 import { UserData } from './FirebaseInterfaces';
-import User from '../backend/user';
+
+type UserDataFormat = UserData;
 
 /**
  * Function that finds a user using their object ID, then updates their username in the Firebase database
@@ -273,7 +274,8 @@ export const userData2: UserDataFormat = {
     losses: 34,
     total_score: 531,
     profile_picture: "https://generated.inspirobot.me/a/xyJnOogKPn.jpg",
-    status: false
+    status: false,
+    active_game_id: ""
 }
 
 export const userData3: UserDataFormat = {
@@ -284,5 +286,6 @@ export const userData3: UserDataFormat = {
     losses: 34,
     total_score: 531,
     profile_picture: "https://generated.inspirobot.me/a/d7eEXkY368.jpg",
-    status: false
+    status: false,
+    active_game_id: ""
 }

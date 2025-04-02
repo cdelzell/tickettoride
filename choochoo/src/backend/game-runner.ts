@@ -3,10 +3,12 @@ import Player from './player';
 import User from './user';
 import TrainRoute from './train-route';
 import DestinationCard from './destination-card';
+import { writeGameToDatabase } from '../Firebase/FirebaseWriteGameData';
 
 const START_TRAIN_CARD_NUM = 4;
 
 class GameRunner {
+  gameID: number;
   players: Player[];
   gameBoard: GameBoard;
   currentPlayer: number;
@@ -14,6 +16,7 @@ class GameRunner {
   destinationCardsToDraw: DestinationCard[];
 
   constructor(users: User[]) {
+    this.gameID = Math.random();
     this.gameBoard = new GameBoard();
     this.players = [];
     for (let i = 0; i < users.length; i++) {
@@ -206,11 +209,15 @@ class GameRunner {
   //This is just to update the gamerunner object
 
   //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
-  sendToDatabase() {}
+  sendToDatabase(game: gameObjectType) {
+    writeGameToDatabase(/* Game Object here */);
+  }
 
   //This needs to happen after any other player's turn ends. The database needs to send all above information, and this gamerunner needs to update it.
   //The frontend also needs to become aware of the above mentioned things somehow.
-  updateFromDatabase() {}
+  async updateFromDatabase(gameID: number) {
+    getGame
+  }
 }
 
 export default GameRunner;
