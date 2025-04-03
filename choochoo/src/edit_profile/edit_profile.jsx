@@ -12,19 +12,19 @@ import { useNavigate, Link } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
 import "./edit_profile.css";
 
-// import thomasImg from "/assets/thomasthetrain.jpg";
-// import gordonImg from "/assets/trains/gordon_train.webp";
-// import jamesImg from "/assets/trains/james_train.webp";
-// import percyImg from "/assets/trains/percy_train.webp";
-// import arthurImg from "/assets/trains/arthur.jpg";
-// import buddyImg from "/assets/trains/buddy.webp";
-// import dwImg from "/assets/trains/dw.webp";
-// import cliffordImg from "/assets/trains/clifford.jpg";
-// import emilyImg from "/assets/trains/emily_train.webp";
-// import henryImg from "/assets/trains/henry_train.webp";
-// import shinyImg from "/assets/trains/shiny.webp";
-// import georgeImg from "/assets/trains/george.jpg";
-// import defaultImg from "/assets/default-profile.png";
+// import thomasImg from "../assets/trains/thomas_train.jpg";
+// import gordonImg from "../assets/trains/gordon_train.webp";
+// import jamesImg from "../assets/trains/james_train.webp";
+// import percyImg from "../assets/trains/percy_train.webp";
+// import arthurImg from "../assets/trains/arthur.jpg";
+// import buddyImg from "../assets/trains/buddy.webp";
+// import dwImg from "../assets/trains/dw.webp";
+// import cliffordImg from "../assets/trains/clifford.jpg";
+// import emilyImg from "../assets/trains/emily_train.webp";
+// import henryImg from "../assets/trains/henry_train.webp";
+// import shinyImg from "../assets/trains/shiny.webp";
+// import georgeImg from "../assets/trains/george.jpg";
+// import defaultImg from "../assets/trains/Default_pfp.jpg";
 
 export const PROFILE_IMAGES = {
   thomas: "/assets/thomasthetrain.jpg",
@@ -52,8 +52,9 @@ function Sign_In() {
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [image, setImage] = useState(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState(PROFILE_IMAGES.default);
-
+  const [selectedImageUrl, setSelectedImageUrl] = useState(
+    PROFILE_IMAGES.default
+  );
 
   const handleImageChange = (imageUrl) => {
     setSelectedImageUrl(imageUrl);
@@ -71,20 +72,24 @@ function Sign_In() {
     }
   };
 
-  const predefinedImagesProfile = [
-    thomasImg,
-    gordonImg,
-    jamesImg,
-    percyImg,
-    arthurImg,
-    buddyImg,
-    dwImg,
-    cliffordImg,
-    emilyImg,
-    henryImg,
-    shinyImg,
-    georgeImg,
-  ];
+  // const predefinedImagesProfile = [
+  //   thomasImg,
+  //   gordonImg,
+  //   jamesImg,
+  //   percyImg,
+  //   arthurImg,
+  //   buddyImg,
+  //   dwImg,
+  //   cliffordImg,
+  //   emilyImg,
+  //   henryImg,
+  //   shinyImg,
+  //   georgeImg,
+  // ];
+
+  const predefinedImagesProfile = Object.values(PROFILE_IMAGES).filter(
+    (url) => url !== PROFILE_IMAGES.default
+  );
 
   return (
     <main className="loginPage">
