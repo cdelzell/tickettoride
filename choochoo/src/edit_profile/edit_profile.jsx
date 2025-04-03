@@ -123,7 +123,15 @@ function Sign_In() {
         </div>
 
         {/* Profile Picture Selection Section */}
-        <div style={{ textAlign: "center" }}>
+        <div
+          style={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Avatar
             src={selectedImageUrl}
             alt="Profile Picture"
@@ -134,8 +142,11 @@ function Sign_In() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "8px",
-              marginBottom: "16px",
+              gap: ".5vw",
+              width: "100%",
+              marginBottom: "1vw",
+              justifyItems: "center",
+              alignItems: "center",
             }}
           >
             {predefinedImagesProfile.map((imageUrl, index) => (
