@@ -1,6 +1,7 @@
 import { ref, query, orderByChild, equalTo, get } from "firebase/database";
 import { database, gameDataPath } from './FirebaseCredentials'
-import { GameData } from "./FirebaseInterfaces";
+import GameRunner from "../backend/game-runner";
+type GameRunnerType = typeof GameRunner;
 
 export async function checkForChaneInTurn(params:type) {
     
@@ -16,6 +17,7 @@ export async function findTurnByGameID(game_ID: number, print: boolean): Promise
       const gameData = await findGameByField('game_ID', game_ID);
   
       if (gameData) {
+        // @ts-ignore: Ignore the error on this line
         const turn = gameData.currentPlayer;  // Extract the 'turn' field
         
         if (print) {
@@ -39,9 +41,9 @@ export async function findTurnByGameID(game_ID: number, print: boolean): Promise
  * @param {string} gameID - The game ID of the game that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-export async function findGameByGameID(game_ID: number, print: boolean): Promise<GameData | null>  {
+export async function findGameByGameID(game_ID: number, print: boolean): Promise<Object | null>  {
     try {
-      const gameData = await findGameByField('game_ID', game_ID);
+      const gameData = await findGameByField('gameID', game_ID);
   
       if (gameData) {
         if (print) {
@@ -68,7 +70,7 @@ export async function findGameByGameID(game_ID: number, print: boolean): Promise
  *                                        a number (e.g., 5), or a boolean (e.g., true/false), depending on the field.
  * @returns {Object|null} The user data matching the given field and value, or null if no matching user is found.
  */
-function findGameByField(field: string, value: string | number | boolean): Promise <GameData | null> {
+function findGameByField(field: string, value: string | number | boolean): Promise <Object | null> {
   const gameQuery = query(gameDataPath, orderByChild(field), equalTo(value));
 
   // Perform the query and return the result

@@ -5,7 +5,6 @@ import TrainRoute from './train-route';
 import DestinationCard from './destination-card';
 import { writeGameToDatabase } from '../Firebase/FirebaseWriteGameData';
 import { findGameByGameID } from '../Firebase/FirebaseReadGameData';
-import { GameData } from '../Firebase/FirebaseInterfaces';
 
 const START_TRAIN_CARD_NUM = 4;
 
@@ -33,6 +32,7 @@ class GameRunner {
     this.currentPlayer = 0;
     this.gameOver = false;
     this.destinationCardsToDraw = [];
+    this.sendToDatabase(this);
   }
 
   //PLAN PLAN PLAN

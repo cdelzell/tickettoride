@@ -1,5 +1,7 @@
 import GameBoard from "../backend/game-board";
+
 import Player from "../backend/player";
+
 
 export interface UserData {
     username: string;                       // String
@@ -14,16 +16,7 @@ export interface UserData {
 }
 
 //GAME OBJECT INTERFACES
-type playerType = typeof Player;
-type GameBoardType = typeof GameBoard;
 
-export interface GameData {
-  gameID: number;
-  currentPlayer: number;
-  players: [playerType, playerType, playerType, playerType];
-  gameBoard: GameBoardType;
-  gameOver: boolean;
-}
 
 //--Whether or not the game is over (boolean)
   //--The current player
