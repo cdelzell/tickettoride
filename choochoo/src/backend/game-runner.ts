@@ -5,6 +5,7 @@ import TrainRoute from './train-route';
 import DestinationCard from './destination-card';
 import { writeGameToDatabase } from '../Firebase/FirebaseWriteGameData';
 import { findGameByGameID } from '../Firebase/FirebaseReadGameData';
+import { GameData } from '../Firebase/FirebaseInterfaces';
 
 const START_TRAIN_CARD_NUM = 4;
 
@@ -210,7 +211,7 @@ class GameRunner {
   //This is just to update the gamerunner object
 
   //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
-  sendToDatabase(game/*: gameObjectType*/) {
+  sendToDatabase(game: GameData) {
     writeGameToDatabase(game);
   }
 

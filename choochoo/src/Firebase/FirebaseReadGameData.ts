@@ -2,6 +2,10 @@ import { ref, query, orderByChild, equalTo, get } from "firebase/database";
 import { database, gameDataPath } from './FirebaseCredentials'
 import { GameData } from "./FirebaseInterfaces";
 
+export async function checkForChaneInTurn(params:type) {
+    
+}
+
 /**
  * Function to retrieve the turn number of a game in the Firebase database with a specified gameID 
  * @param {string} gameID - The game ID of the game that you are looking for
@@ -12,7 +16,7 @@ export async function findTurnByGameID(game_ID: number, print: boolean): Promise
       const gameData = await findGameByField('game_ID', game_ID);
   
       if (gameData) {
-        const turn = gameData.current_turn;  // Extract the 'turn' field
+        const turn = gameData.currentPlayer;  // Extract the 'turn' field
         
         if (print) {
           console.log(`Current Turn: ${turn}`);  // Print the turn if print is true

@@ -1,3 +1,6 @@
+import GameBoard from "../backend/game-board";
+import Player from "../backend/player";
+
 export interface UserData {
     username: string;                       // String
     email: string;                          // String
@@ -11,32 +14,25 @@ export interface UserData {
 }
 
 //GAME OBJECT INTERFACES
-export interface Player {
-  player_ID: string;
-  hand: PlayerHand;
-  claimed_route: [string, string][];
-  score: number;
-}
-
-export interface PlayerHand {
-  black_trains: number;
-  blue_trains: number;
-  brown_trains: number;
-  green_trains: number;
-  purple_trains: number;
-  red_trains: number;
-  white_trains: number;
-  wild_trains: number;
-  yellow_trains: number;
-  destination_card_IDs: number[];
-}
+type playerType = typeof Player;
+type GameBoardType = typeof GameBoard;
 
 export interface GameData {
-  game_ID: string;
-  current_turn: number;
-  player_one: Player;
-  player_two: Player;
-  player_three: Player;
-  player_four: Player;
-  destination_cards_drawn: number[];
+  gameID: number;
+  currentPlayer: number;
+  players: [playerType, playerType, playerType, playerType];
+  gameBoard: GameBoardType;
+  gameOver: boolean;
 }
+
+//--Whether or not the game is over (boolean)
+  //--The current player
+  //--The faceup cards
+  //--The state of the draw pile (number of train cards of each color)
+  //--The state of the discard pile (number of train cards of each color)
+  //--The state of the destination card draw pile (which ones are left)
+  //--game-boards' board-graphs' routes' claimers
+  //--Every player's train cards
+  //--Every player's destination cards
+  //--Every player's trains left
+  //--The index of the current player
