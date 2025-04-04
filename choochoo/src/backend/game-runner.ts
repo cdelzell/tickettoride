@@ -211,7 +211,7 @@ class GameRunner {
 
   //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
   sendToDatabase(game/*: gameObjectType*/) {
-    //writeGameToDatabase( <Game Object here >);
+    writeGameToDatabase(game);
   }
 
   //This needs to happen after any other player's turn ends. The database needs to send all above information, and this gamerunner needs to update it.
