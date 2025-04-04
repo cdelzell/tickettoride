@@ -1,5 +1,33 @@
 import { ref, query, orderByChild, equalTo, get } from "firebase/database";
 import { database, gameDataPath } from './FirebaseCredentials'
+import { GameData } from "./FirebaseInterfaces";
+
+/**
+ * Function to retrieve the turn number of a game in the Firebase database with a specified gameID 
+ * @param {string} gameID - The game ID of the game that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+export async function findTurnByGameID(game_ID: number, print: boolean): Promise<number | null>  {
+    try {
+      const gameData = await findGameByField('game_ID', game_ID);
+  
+      if (gameData) {
+        const turn = gameData.current_turn;  // Extract the 'turn' field
+        
+        if (print) {
+          console.log(`Current Turn: ${turn}`);  // Print the turn if print is true
+        }
+        
+        return turn;  // Return only the turn field
+      } else {
+        console.log(`No game found with game ID: ${game_ID}`);
+        return null;  // Return null if no game data is found
+      }
+    } catch (error) {
+      console.error("Error handling game data:", error);
+      return null;  // Return null on error
+    }
+}
 
 
 /**
@@ -7,7 +35,7 @@ import { database, gameDataPath } from './FirebaseCredentials'
  * @param {string} gameID - The game ID of the game that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-export async function findGameByGameID(game_ID: number, print: boolean): Promise<Object | null>  {
+export async function findGameByGameID(game_ID: number, print: boolean): Promise<GameData | null>  {
     try {
       const gameData = await findGameByField('game_ID', game_ID);
   
@@ -24,7 +52,7 @@ export async function findGameByGameID(game_ID: number, print: boolean): Promise
       console.error("Error handling game data:", error);
       return null;  // Return null on error
     }
-  }
+}
 
 /**
  * Function to search for a game in the Firebase database by a specific field and value.
@@ -36,7 +64,7 @@ export async function findGameByGameID(game_ID: number, print: boolean): Promise
  *                                        a number (e.g., 5), or a boolean (e.g., true/false), depending on the field.
  * @returns {Object|null} The user data matching the given field and value, or null if no matching user is found.
  */
-function findGameByField(field: string, value: string | number | boolean): Promise <Object | null> {
+function findGameByField(field: string, value: string | number | boolean): Promise <GameData | null> {
   const gameQuery = query(gameDataPath, orderByChild(field), equalTo(value));
 
   // Perform the query and return the result
