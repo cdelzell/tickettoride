@@ -3,7 +3,7 @@ import { database, gameDataPath } from './FirebaseCredentials'
 import GameRunner from "../backend/game-runner";
 type GameRunnerType = typeof GameRunner;
 
-export async function checkForChaneInTurn(params:type) {
+export async function checkForChaneInTurn(params:any) {
     
 }
 

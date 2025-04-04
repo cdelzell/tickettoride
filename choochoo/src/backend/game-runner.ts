@@ -32,7 +32,6 @@ class GameRunner {
     this.currentPlayer = 0;
     this.gameOver = false;
     this.destinationCardsToDraw = [];
-    this.sendToDatabase(this);
   }
 
   //PLAN PLAN PLAN
@@ -211,14 +210,14 @@ class GameRunner {
   //This is just to update the gamerunner object
 
   //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
-  sendToDatabase(game: GameData) {
+  sendToDatabase(game: typeof GameRunner) {
     writeGameToDatabase(game);
   }
 
   //This needs to happen after any other player's turn ends. The database needs to send all above information, and this gamerunner needs to update it.
   //The frontend also needs to become aware of the above mentioned things somehow.
   async updateFromDatabase(game_ID: number) {
-    return findGameByGameID(game_ID, false);
+    return findGameByGameID(game_ID, true);
   }
 }
 
