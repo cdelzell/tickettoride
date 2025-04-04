@@ -8,50 +8,42 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
 import { useNavigate } from "react-router-dom";
-import { createRoot } from "react-dom/client";
-import { StrictMode } from "react";
 import { useState } from "react";
 import { handleLogIn } from "../Firebase/FirebaseLogInManager";
-import { writeUserToDatabase } from "../Firebase/FirebaseWriteUserData.ts";
 
 import "./sign_in.css";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // To store the error message
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook to handle navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       // Assuming handleLogIn returns a promise
-      const firebaseData = await handleLogIn(username, password);
-      const success = firebaseData[0]; // boolean value for if username and password were correct
-      const userKey = firebaseData[1];
-      const userProfile = firebaseData[2];
-      console.log(userProfile);
+      const success = await handleLogIn(username, password);
       if (success) {
         // Redirect to profile on successful login
-        // and passing the userKey onto the profile page
-        // to allow for loading of stats
-        navigate("/profile", { state: { userProfile } });
+        navigate("/profile");
       } else {
         // Handle failed login attempt
-        setError("Error: Username or password is incorrect");
+        setError("Error: Username or password incorrect");
       }
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
-      setError("Error: Username or password incorrect");
+      setError("Error: Something went wrong. Please try again.");
     }
   };
 
-  // const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
+  const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
 
   return (
     <main className="loginPage">
@@ -81,7 +73,7 @@ function Login() {
         </div>
         <form onSubmit={handleSubmit}>
           <FormControl>
-            <FormLabel>Username</FormLabel>
+            <FormLabel>Email</FormLabel>
             <Input
               name="username"
               type="text"
@@ -91,13 +83,7 @@ function Login() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel
-              sx={{
-                mt: 1,
-              }}
-            >
-              Password
-            </FormLabel>
+            <FormLabel>Password</FormLabel>
             <Input
               name="password"
               type="password"
@@ -113,8 +99,9 @@ function Login() {
           )}
           <Button
             type="submit"
+            disabled={!isFormValid} // Disable button if form is invalid
             sx={{
-              mt: 3.5,
+              mt: 1,
             }}
           >
             Log in

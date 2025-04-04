@@ -8,7 +8,7 @@ import { GameData } from './FirebaseInterfaces'
  * @param {Object} data - The data to be written to the games in the database. IE userData & gameData
  * @throws {Error} - Throws an error if there is an issue while updating or retrieving an entry from the database.
  */
-function writeGameToDatabase(data: GameData): void {
+export function writeGameToDatabase(data: GameData): void {
   push(gameDataPath, data)
     .then(() => {
       console.log(`Data written successfully to ${ref}`);
