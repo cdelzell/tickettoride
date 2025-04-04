@@ -216,8 +216,8 @@ class GameRunner {
 
   //This needs to happen after any other player's turn ends. The database needs to send all above information, and this gamerunner needs to update it.
   //The frontend also needs to become aware of the above mentioned things somehow.
-  async updateFromDatabase(gameID: number) {
-    return findGameByGameID(gameID, false);
+  async updateFromDatabase(game_ID: number) {
+    return findGameByGameID(game_ID, false);
   }
 }
 
