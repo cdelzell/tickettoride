@@ -7,6 +7,7 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import { writeUserToDatabase } from "../Firebase/FirebaseWriteUserData";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
 
 import "./sign_up.css";
 
@@ -18,6 +19,7 @@ import { useTheme, useMediaQuery } from "@mui/material";
 
 function Sign_In() {
   const navigate = useNavigate();
+  let user;
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -36,42 +38,23 @@ function Sign_In() {
         setError("Error: Please fill out all fields!");
       } else {
         user = {
-          username: { username }, // String
-          email: { email }, // String
-          password: { password }, // String
-          wins: 0, // Int
-          losses: 0, // Int
-          total_score: 0, // Int
-          profile_picture: "", // String
-          status: false, // Bool
+          username, // Already a string
+          email,
+          password,
+          wins: 0,
+          losses: 0,
+          total_score: 0,
+          profile_picture: "",
+          status: false,
+          active_game_id: null,
         };
 
-        userKey = writeUserToDatabase(user);
+        const userKey = await writeUserToDatabase(user);
 
         navigate("/profile", {
           state: { userKey, userProfile: user },
         });
       }
-
-      // Rebuild the updated user profile (excluding password)
-      const updatedUserProfile = {
-        ...userProfile, // Spread the current userProfile to retain existing fields
-        username: username.trim() !== "" ? username : userProfile.username, // Update username if new one is provided
-        wins: wins,
-        total_score: total_score,
-        profile_picture:
-          selectedImageUrl !== PROFILE_IMAGES.default
-            ? selectedImageUrl
-            : profile_picture, // Update profile picture if new one is selected
-      };
-
-      console.log("userProfile" + updatedUserProfile);
-
-      navigate("/profile", {
-        state: { userKey, userProfile: updatedUserProfile },
-      });
-      // Redirect to profile on successful login
-      // navigate("/profile", { state: { userKey, userProfile } });
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
       setError("Error: Something went wrong, try again soon!");
