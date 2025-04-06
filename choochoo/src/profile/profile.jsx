@@ -17,7 +17,7 @@ function App() {
 function Profile() {
   const navigate = useNavigate();
   const { state } = useLocation(); // Use location to get the state passed from navigate
-  const { userProfile } = state || {}; // Fallback to empty object if state is undefined
+  const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
 
   const handleNavGame = () => {
     navigate("/main_game_page", { state: { userProfile } });
@@ -35,6 +35,8 @@ function Profile() {
 
   // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
   const { username, wins, total_score, profile_picture } = userProfile || {};
+  console.log(userProfile);
+  console.log(userKey);
 
   // useEffect(() => {
   //   // Save userProfile data to sessionStorage whenever it changes
@@ -158,8 +160,9 @@ function Profile() {
             </Button>
             <Button
               className="button"
-              component={Link}
-              to="/edit_profile"
+              onClick={() => {
+                navigate("/edit_profile", { state: { userKey, userProfile } });
+              }}
               sx={{
                 "&:hover": {
                   color: "white",
