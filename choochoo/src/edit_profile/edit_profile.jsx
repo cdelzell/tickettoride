@@ -63,6 +63,8 @@ function Sign_In() {
   const { player_username, wins, total_score, profile_picture } =
     userProfile || {};
 
+  console.log("initial userProfile" + userProfile);
+
   const [username, setUsernameState] = useState("");
   const [password, setPasswordState] = useState("");
   let userData1, userData2, userData;
@@ -80,7 +82,6 @@ function Sign_In() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("here!");
     try {
       if (username != "") {
         userData2 = await setUsername(userKey, username, true);
@@ -93,13 +94,28 @@ function Sign_In() {
       }
 
       console.log(userData);
-      console.log(userData1);
-      console.log(userData2);
+      console.log(userProfile);
+      console.log("playerun" + player_username);
 
-      console.log("userProfile" + userProfile);
+      // Rebuild the updated user profile (excluding password)
+      const updatedUserProfile = {
+        ...userProfile, // Spread the current userProfile to retain existing fields
+        username: username.trim() !== "" ? username : userProfile.username, // Update username if new one is provided
+        wins: wins,
+        total_score: total_score,
+        profile_picture:
+          selectedImageUrl !== PROFILE_IMAGES.default
+            ? selectedImageUrl
+            : profile_picture, // Update profile picture if new one is selected
+      };
 
+      console.log("userProfile" + updatedUserProfile);
+
+      navigate("/profile", {
+        state: { userKey, userProfile: updatedUserProfile },
+      });
       // Redirect to profile on successful login
-      navigate("/profile", { state: { userKey, userProfile } });
+      // navigate("/profile", { state: { userKey, userProfile } });
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
       setError(

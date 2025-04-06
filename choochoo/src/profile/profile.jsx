@@ -160,13 +160,8 @@ function Profile() {
             </Button>
             <Button
               className="button"
-              component={Link}
-              to={{
-                pathname: "/edit_profile",
-                state: {
-                  userKey,
-                  userProfile,
-                },
+              onClick={() => {
+                navigate("/edit_profile", { state: { userKey, userProfile } });
               }}
               sx={{
                 "&:hover": {
