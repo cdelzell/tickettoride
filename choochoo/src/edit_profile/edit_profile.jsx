@@ -12,6 +12,7 @@ import {
   setUsername,
   setPassword,
   setProfilePicture,
+  doesUserExist,
 } from "../Firebase/FirebaseWriteUserData";
 
 import { useTheme, useMediaQuery } from "@mui/material";
@@ -83,7 +84,7 @@ function Sign_In() {
     e.preventDefault();
 
     try {
-      if (username != "") {
+      if (username != "" && doesUserExist(username, "")) {
         userData2 = await setUsername(userKey, username, true);
       }
       if (password != "") {

@@ -310,6 +310,26 @@ export function writeUserToDatabase(data: UserDataFormat): void {
     });
 }
 
+// Function to check if a user with a given username or email already exists
+export async function doesUserExist(
+  username: string,
+  email: string
+): Promise<boolean> {
+  try {
+    const snapshot = await get(userDataPath);
+    if (snapshot.exists()) {
+      const users = snapshot.val();
+      return Object.values(users).some(
+        (user: any) => user.username === username || user.email === email
+      );
+    }
+    return false;
+  } catch (error) {
+    console.error("Error checking if user exists:", error);
+    throw new Error("Failed to check if user exists");
+  }
+}
+
 export const userData2: UserDataFormat = {
   username: "Ty",
   email: "tylovgren.college@gmail.com",

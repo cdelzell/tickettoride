@@ -5,7 +5,10 @@ import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import { writeUserToDatabase } from "../Firebase/FirebaseWriteUserData";
+import {
+  doesUserExist,
+  writeUserToDatabase,
+} from "../Firebase/FirebaseWriteUserData";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -36,6 +39,10 @@ function Sign_In() {
     try {
       if ((username == "") | (password == "") | (email == "")) {
         setError("Error: Please fill out all fields!");
+      } else if (doesUserExist(username, email)) {
+        setError(
+          "Error: username or email already exists in the database! Please use a different username/email."
+        );
       } else {
         user = {
           username, // Already a string
