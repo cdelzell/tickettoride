@@ -30,16 +30,19 @@ function Login() {
     try {
       // Assuming handleLogIn returns a promise
       const success = await handleLogIn(username, password);
+      const userProfile = success[2];
+      const userKey = success[1];
+
       if (success) {
         // Redirect to profile on successful login
-        navigate("/profile");
+        navigate("/profile", { state: { userKey, userProfile } });
       } else {
         // Handle failed login attempt
-        setError("Error: Username or password incorrect");
+        setError("Error: Username or password is incorrect");
       }
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
-      setError("Error: Something went wrong. Please try again.");
+      setError("Error: Username or password incorrect");
     }
   };
 
@@ -73,7 +76,7 @@ function Login() {
         </div>
         <form onSubmit={handleSubmit}>
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>Username</FormLabel>
             <Input
               name="username"
               type="text"
@@ -83,7 +86,13 @@ function Login() {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel
+              sx={{
+                mt: 1,
+              }}
+            >
+              Password
+            </FormLabel>
             <Input
               name="password"
               type="password"
@@ -99,9 +108,9 @@ function Login() {
           )}
           <Button
             type="submit"
-            disabled={!isFormValid} // Disable button if form is invalid
+            // disabled={!isFormValid} // Disable button if form is invalid
             sx={{
-              mt: 1,
+              mt: 3.5,
             }}
           >
             Log in
