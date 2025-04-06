@@ -19,6 +19,11 @@ function Sign_In() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // To store the error message
+
   return (
     <main className="loginPage">
       <CssBaseline />
@@ -52,6 +57,8 @@ function Sign_In() {
             name="username"
             type="username"
             placeholder="Thomas-the-train"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </FormControl>
         <FormControl>
@@ -61,6 +68,8 @@ function Sign_In() {
             name="email"
             type="email"
             placeholder="thomasthetrain@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </FormControl>
         <FormControl>
@@ -70,17 +79,13 @@ function Sign_In() {
             name="password"
             type="password"
             placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </FormControl>
-        <FormControl>
-          <FormLabel>Confirm Password</FormLabel>
-          <Input
-            // html input attribute
-            name="confirmed password"
-            type="confirmed password"
-            placeholder="confirm password"
-          />
-        </FormControl>
+        {error && (
+          <Typography sx={{ color: "red", fontSize: "sm" }}>{error}</Typography>
+        )}
         <Button
           type="submit"
           sx={{
