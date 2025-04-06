@@ -93,10 +93,6 @@ function Sign_In() {
         userData = await setProfilePicture(userKey, selectedImageUrl);
       }
 
-      console.log(userData);
-      console.log(userProfile);
-      console.log("playerun" + player_username);
-
       // Rebuild the updated user profile (excluding password)
       const updatedUserProfile = {
         ...userProfile, // Spread the current userProfile to retain existing fields
@@ -114,8 +110,6 @@ function Sign_In() {
       navigate("/profile", {
         state: { userKey, userProfile: updatedUserProfile },
       });
-      // Redirect to profile on successful login
-      // navigate("/profile", { state: { userKey, userProfile } });
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
       setError(
