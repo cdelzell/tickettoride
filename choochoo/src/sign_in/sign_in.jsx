@@ -29,15 +29,18 @@ function Login() {
 
     try {
       // Assuming handleLogIn returns a promise
-      const success = await handleLogIn(username, password);
-      const userProfile = success[2];
-      const userKey = success[1];
+      const result = await handleLogIn(username, password);
 
-      if (success) {
-        // Redirect to profile on successful login
-        navigate("/profile", { state: { userKey, userProfile } });
+      if (result === null) {
+        setError("Error: Username not found");
+        return;
+      }
+
+      const [isSuccessful, userKey, userData] = result;
+
+      if (isSuccessful) {
+        navigate("/profile", { state: { userKey, userProfile: userData } });
       } else {
-        // Handle failed login attempt
         setError("Error: Username or password is incorrect");
       }
     } catch (err) {
