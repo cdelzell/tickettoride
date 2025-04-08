@@ -12,6 +12,7 @@ import DrawDestinationCard from "./components/DestinationCard/DrawDestinationCar
 import ActionBox from "./components/PlayerActions/ActionBox";
 import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // this works with typescript so had to change file
 
@@ -382,6 +383,12 @@ const MainGamePage = () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
+  const navigate = useNavigate();
+  const { state } = useLocation(); // Use location to get the state passed from navigate
+  const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
+
+  const { username, wins, total_score, profile_picture } = userProfile || {};
+
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
@@ -668,9 +675,9 @@ const MainGamePage = () => {
         {/* main player */}
         <div className="main_player_card">
           <PlayerCard
-            username={main_player.username}
+            username={username}
             trainCount={trains}
-            profilePic={main_player.profilePic}
+            profilePic={profile_picture}
             main_player={true}
             active={currentPlayer === 0} // main player is active when currentPlayer is 0
           />

@@ -27,23 +27,8 @@ function Profile() {
     navigate("/lobby", { state: { userProfile } }); // Navigate to the Lobby with userProfile state
   };
 
-  // const [profileData, setProfileData] = useState(() => {
-  //   // Try to load profile data from sessionStorage if it exists
-  //   const storedProfile = sessionStorage.getItem("userProfile");
-  //   return storedProfile ? JSON.parse(storedProfile) : userProfile;
-  // });
-
   // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
   const { username, wins, total_score, profile_picture } = userProfile || {};
-  console.log(userProfile);
-  console.log(userKey);
-
-  // useEffect(() => {
-  //   // Save userProfile data to sessionStorage whenever it changes
-  //   if (profileData) {
-  //     sessionStorage.setItem("userProfile", JSON.stringify(profileData));
-  //   }
-  // }, [profileData]);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -138,7 +123,11 @@ function Profile() {
           >
             <Button
               className="button"
-              onClick={handleNavGame}
+              onClick={() => {
+                navigate("/main_game_page", {
+                  state: { userKey, userProfile },
+                });
+              }}
               sx={{
                 "&:hover": {
                   color: "white",
