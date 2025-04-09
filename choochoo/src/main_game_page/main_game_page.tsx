@@ -13,8 +13,6 @@ import ActionBox from "./components/PlayerActions/ActionBox";
 import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
 
-// this works with typescript so had to change file
-
 // let's go airbnb
 export type NetworkProps = {
   width: number;
