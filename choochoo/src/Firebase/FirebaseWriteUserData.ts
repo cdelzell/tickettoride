@@ -329,27 +329,3 @@ export async function doesUserExist(
     throw new Error("Failed to check if user exists");
   }
 }
-
-export const userData2: UserDataFormat = {
-  username: "Ty",
-  email: "tylovgren.college@gmail.com",
-  password: "Pass123",
-  wins: 12,
-  losses: 34,
-  total_score: 531,
-  profile_picture: "https://generated.inspirobot.me/a/xyJnOogKPn.jpg",
-  status: false,
-  active_game_id: "",
-};
-
-export const userData3: UserDataFormat = {
-  username: "Noah",
-  email: "noah@gmail.com",
-  password: "1",
-  wins: 12,
-  losses: 34,
-  total_score: 531,
-  profile_picture: "https://generated.inspirobot.me/a/d7eEXkY368.jpg",
-  status: false,
-  active_game_id: "",
-};
