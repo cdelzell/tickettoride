@@ -39,7 +39,7 @@ function Sign_In() {
     try {
       if ((username == "") | (password == "") | (email == "")) {
         setError("Error: Please fill out all fields!");
-      } else if (doesUserExist(username, email)) {
+      } else if (await doesUserExist(username, email)) {
         setError(
           "Error: username or email already exists in the database! Please use a different username/email."
         );
