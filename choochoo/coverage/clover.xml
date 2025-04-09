@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1744211572768" clover="3.2.0">
-  <project timestamp="1744211572768" name="All files">
+<coverage generated="1744211916992" clover="3.2.0">
+  <project timestamp="1744211916992" name="All files">
     <metrics statements="121" coveredstatements="84" conditionals="45" coveredconditionals="31" methods="27" coveredmethods="16" elements="193" coveredelements="131" complexity="0" loc="121" ncloc="121" packages="1" files="1" classes="1"/>
     <file name="main_game_page.tsx" path="/Users/riddhimunjewar/Documents/GitHub/tickettoride/choochoo/src/main_game_page/main_game_page.tsx">
       <metrics statements="121" coveredstatements="84" conditionals="45" coveredconditionals="31" methods="27" coveredmethods="16"/>
