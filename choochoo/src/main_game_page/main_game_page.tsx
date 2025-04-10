@@ -13,6 +13,7 @@ import ActionBox from "./components/PlayerActions/ActionBox";
 import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
 import { useLocation, useNavigate } from "react-router-dom";
+import DestinationCard from "../backend/destination-card";
 
 // this works with typescript so had to change file
 
@@ -79,29 +80,152 @@ export interface Route {
   claimer?: string | null;
 }
 
+export interface DestinationCardInfo {
+  destination1: string;
+  destination2: string;
+  points: number;
+  image_path: string;
+}
+
 const destination_cards = [
-  "alb_miami",
-  "alb_tyville",
-  "chicago_miami",
-  "chicago_phoenix",
-  "clara_houston",
-  "clara_la",
-  "clara_ny",
-  "denver_palo",
-  "firestone_phoenix",
-  "firestone_riddhi",
-  "miami_riddhi",
-  "ny_houston",
-  "ny_oklahoma",
-  "ny_tyville",
-  "palo_la",
-  "palo_phoenix",
-  "seattle_alb",
-  "seattle_houston",
-  "tyville_palo",
-  "tyville_phoenix",
-  "tyville_wash",
-  "wash_denver",
+  {
+    destination1: "Albuquerque",
+    destination2: "Miami",
+    points: 11,
+    image_path: "alb_miami",
+  },
+  {
+    destination1: "Albuquerque",
+    destination2: "Tyville",
+    points: 9,
+    image_path: "alb_tyville",
+  },
+  {
+    destination1: "Chicago",
+    destination2: "Miami",
+    points: 7,
+    image_path: "chicago_miami",
+  },
+  {
+    destination1: "Chicago",
+    destination2: "Phoenix",
+    points: 11,
+    image_path: "chicago_phoenix",
+  },
+  {
+    destination1: "Clara City",
+    destination2: "Houston",
+    points: 9,
+    image_path: "clara_houston",
+  },
+  {
+    destination1: "Clara City",
+    destination2: "Los Angeles",
+    points: 9,
+    image_path: "clara_la",
+  },
+  {
+    destination1: "Clara City",
+    destination2: "New York",
+    points: 10,
+    image_path: "clara_ny",
+  },
+  {
+    destination1: "Denver",
+    destination2: "Palo Noah",
+    points: 9,
+    image_path: "denver_palo",
+  },
+  {
+    destination1: "Albuquerque",
+    destination2: "Phoenix",
+    points: 9,
+    image_path: "firestone_phoenix",
+  },
+  {
+    destination1: "Firestone Rouge",
+    destination2: "Phoenix",
+    points: 8,
+    image_path: "firestone_phoenix",
+  },
+  {
+    destination1: "Firestone Rouge",
+    destination2: "Riddhi Rapids",
+    points: 9,
+    image_path: "firestone_riddhi",
+  },
+  {
+    destination1: "Miami",
+    destination2: "Riddhi Rapids",
+    points: 18,
+    image_path: "miami_riddhi",
+  },
+  {
+    destination1: "New York",
+    destination2: "Houston",
+    points: 12,
+    image_path: "ny_houston",
+  },
+  {
+    destination1: "New York",
+    destination2: "Oklahoma City",
+    points: 11,
+    image_path: "ny_oklahoma",
+  },
+  {
+    destination1: "New York",
+    destination2: "Tyville",
+    points: 14,
+    image_path: "ny_tyville",
+  },
+  {
+    destination1: "Palo Noah",
+    destination2: "Los Angeles",
+    points: 16,
+    image_path: "palo_la",
+  },
+  {
+    destination1: "Palo Noah",
+    destination2: "Phoenix",
+    points: 12,
+    image_path: "palo_phoenix",
+  },
+  {
+    destination1: "Seattle",
+    destination2: "Albuquerque",
+    points: 10,
+    image_path: "seattle_alb",
+  },
+  {
+    destination1: "Seattle",
+    destination2: "Houston",
+    points: 15,
+    image_path: "seattle_houston",
+  },
+  {
+    destination1: "Tyville",
+    destination2: "Palo Noah",
+    points: 11,
+    image_path: "tyville_palo",
+  },
+  {
+    destination1: "Tyville",
+    destination2: "Phoenix",
+    points: 7,
+    image_path: "tyville_phoenix",
+  },
+  {
+    destination1: "Tyville",
+    destination2: "Washington",
+    points: 13,
+    image_path: "tyville_wash",
+  },
+  {
+    destination1: "Washington",
+    destination2: "Denver",
+    points: 10,
+    image_path: "wash_denver",
+  },
 ];
 
 const cities: City[] = [
@@ -405,6 +529,10 @@ const MainGamePage = () => {
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
 
+  const [destinationCardPoss, setDestinationCardPoss] = useState(
+    gameRunner.getDestinationCardPossibilities()
+  );
+
   //make useeffect for currentplayer, should get all new info from the gamerunner when current player changes
   //make useeffect for gameover, end game
 
@@ -424,6 +552,26 @@ const MainGamePage = () => {
           : card
       )
     );
+  };
+
+  const getDestinationCardPossibilitiesFormatted = (
+    cards: DestinationCard[]
+  ) => {
+    const correctly_formatted_cards = [];
+
+    for (const destination_card of cards) {
+      const moreInfo = destination_cards.find(
+        (card) =>
+          card.destination1 === destination_card.destination1 &&
+          card.destination2 === destination_card.destination2
+      );
+
+      if (moreInfo) {
+        correctly_formatted_cards.push(moreInfo);
+      }
+    }
+
+    return correctly_formatted_cards;
   };
 
   const updatePlayerHand = (cards: number[]) => {
@@ -676,7 +824,9 @@ const MainGamePage = () => {
         {draw_dest_active && (
           <DrawDestinationCard
             //call the backend method here to get the destination cards
-            destinations={["alb_miami", "alb_tyville", "chicago_miami"]}
+            destinations={getDestinationCardPossibilitiesFormatted(
+              destinationCardPoss
+            )}
             drawnDestCards={drawnDestCards}
             setDrawDestCard={setDrawDestCard}
           ></DrawDestinationCard>

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./DestinationCard.css";
+import { DestinationCardInfo } from "../../main_game_page";
 
 function DestinationCardsCarousel({
   destinations,
 }: {
-  destinations: string[];
+  destinations: DestinationCardInfo[];
 }) {
   const [index, setIndex] = useState(0);
 
@@ -20,7 +21,10 @@ function DestinationCardsCarousel({
 
   return (
     <div className="image_carousel">
-      <DestinationCard destination={destinations[index]} location="pile" />
+      <DestinationCard
+        destination={destinations[index].image_path}
+        location="pile"
+      />
       <div className="button_container">
         <button onClick={prevImage} className="carousel_button">
           <img src="./src/assets/arrows/left_arrow.png"></img>

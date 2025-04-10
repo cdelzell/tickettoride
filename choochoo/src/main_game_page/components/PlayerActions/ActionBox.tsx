@@ -153,8 +153,8 @@ function Submit({
   const handleClick = () => {
     if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
       setDestClickCount(destClickCount + 1);
-      updateDrawDest(false);
       gamerunner.claimDestinationCards(drawnDestCards);
+      updateDrawDest(false);
     }
   };
 

@@ -2,13 +2,14 @@ import { blue } from "@mui/material/colors";
 import { DestinationCard } from "./DestinationCard";
 import "./DestinationCard.css";
 import { useState } from "react";
+import { DestinationCardInfo } from "../../main_game_page";
 
 function DrawDestinationCard({
   destinations,
   drawnDestCards,
   setDrawDestCard,
 }: {
-  destinations: string[];
+  destinations: DestinationCardInfo[];
   drawnDestCards: number[];
   setDrawDestCard: (cards: number[]) => void;
 }) {
@@ -47,7 +48,7 @@ function DrawDestinationCard({
         }}
       >
         <DestinationCard
-          destination={destinations[0]}
+          destination={destinations[0].image_path}
           location="draw"
         ></DestinationCard>
       </button>
@@ -58,7 +59,7 @@ function DrawDestinationCard({
         }}
       >
         <DestinationCard
-          destination={destinations[1]}
+          destination={destinations[1].image_path}
           location="draw"
         ></DestinationCard>
       </button>
@@ -69,7 +70,7 @@ function DrawDestinationCard({
         }}
       >
         <DestinationCard
-          destination={destinations[2]}
+          destination={destinations[2].image_path}
           location="draw"
         ></DestinationCard>
       </button>
