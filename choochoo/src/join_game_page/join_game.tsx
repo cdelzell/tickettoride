@@ -11,7 +11,7 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
-import FirebaseLobbyWrite from "../Firebase/FirebaseLobbyManagment";
+import { checkLobbyExists, joinLobby } from "../Firebase/FirebaseLobbyManagment";
 import "./join_game.css";
 
 interface UserProfile {
@@ -55,14 +55,14 @@ function JoinGame() {
       setError("");
 
       // Check if lobby exists
-      const exists = await FirebaseLobbyWrite.checkLobbyExists(code);
+      const exists = await checkLobbyExists(code);
       if (!exists) {
         setError("Lobby not found");
         setIsLoading(false);
         return;
       }
 
-      await FirebaseLobbyWrite.joinLobby(code, username);
+      await joinLobby(code, username);
       sessionStorage.setItem("lobbyCode", code);
 
       const userProfile: UserProfile = { username };

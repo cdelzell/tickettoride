@@ -8,10 +8,11 @@ import Typography from "@mui/joy/Typography";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
-import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../Firebase/FirebaseInterfaces"
+import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../Firebase/FirebaseInterfaces";
 import { createLobby, joinLobby, leaveLobby, onLobbyUpdate, startGame } from "../Firebase/FirebaseLobbyManagment";
 import "./lobby.css";
 
+// Your existing interface for UserProfile
 interface UserProfile {
   username: string;
   wins?: number;
@@ -130,6 +131,19 @@ function Lobby() {
     } catch (err) {
       console.error("Failed to leave lobby:", err);
       setError("Failed to leave lobby");
+    }
+  };
+
+  // Handle copying the lobby code to clipboard
+  const handleCopyCode = () => {
+    if (lobbyCode) {
+      navigator.clipboard.writeText(lobbyCode).then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+      }).catch((err) => {
+        console.error("Failed to copy lobby code:", err);
+        setError("Failed to copy lobby code");
+      });
     }
   };
 

@@ -1,4 +1,4 @@
-import { ref, update, get, push, ThenableReference } from "firebase/database";
+import { update, get, push, child } from "firebase/database";
 import { userDataPath } from "./FirebaseCredentials";
 import { UserData } from "./FirebaseInterfaces";
 
@@ -274,7 +274,7 @@ export async function updateUserProperty(
   newValue: string | number | boolean
 ): Promise<any> {
   // Use the correct reference from the initialized database object
-  const userRef = ref(userDataPath + objectId);
+  const userRef = child(userDataPath, objectId);
 
   try {
     // Perform the update
@@ -300,7 +300,7 @@ export async function updateUserProperty(
  */
 export function writeUserToDatabase(data: UserDataFormat): void {
   push(userDataPath, data)
-    .then((newUserRef: ThenableReference) => {
+    .then((newUserRef) => {
       const userKey = newUserRef.key;
       console.log(`Data written successfully with user key: ${userKey}`);
       return userKey;
