@@ -20,11 +20,13 @@ function Profile() {
   const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
 
   const handleNavGame = () => {
-    navigate("/main_game_page", { state: { userProfile } });
+    sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
+    navigate("/lobby", { state: { userProfile } });
   };
 
   const handleJoinGame = () => {
-    navigate("/lobby", { state: { userProfile } }); // Navigate to the Lobby with userProfile state
+    sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
+    navigate("/join_game", { state: { userProfile } });
   };
 
   // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
@@ -123,11 +125,7 @@ function Profile() {
           >
             <Button
               className="button"
-              onClick={() => {
-                navigate("/main_game_page", {
-                  state: { userKey, userProfile },
-                });
-              }}
+              onClick={handleNavGame}
               sx={{
                 "&:hover": {
                   color: "white",
