@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/joy/Button";
 import Box from "@mui/joy/Box";
 import CssBaseline from "@mui/joy/CssBaseline";
+import Alert from "@mui/joy/Alert";
 import { useTheme, useMediaQuery } from "@mui/material";
-import FirebaseLobbyWrite, { Player } from "../Firebase/FirebaseLobbyWrite";
+import FirebaseLobbyWrite, { Player, Lobby as LobbyType } from "../Firebase/FirebaseLobbyWrite";
 import "./lobby.css";
 
 interface UserProfile {
@@ -20,7 +21,6 @@ function Lobby() {
   const { state } = location;
   const isJoining = state?.isJoining;
   
-  // gettign user profile from storage session
   const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
     const fromState = location?.state?.userProfile;
     const fromStorage = sessionStorage.getItem("userProfile");
@@ -30,9 +30,11 @@ function Lobby() {
   const username = userProfile?.username;
   
   const [players, setPlayers] = useState<Player[]>([]);
+  const [lobby, setLobby] = useState<LobbyType | null>(null);
   const [lobbyCode, setLobbyCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+  const [gameStarting, setGameStarting] = useState<boolean>(false);
   
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -75,42 +77,46 @@ function Lobby() {
   useEffect(() => {
     if (!lobbyCode) return;
     
-    const unsubscribe = FirebaseLobbyWrite.onLobbyUpdate(lobbyCode, (updatedPlayers) => {
-      setPlayers(updatedPlayers);
+    const unsubscribe = FirebaseLobbyWrite.onLobbyUpdate(lobbyCode, (updatedLobby) => {
+      setLobby(updatedLobby);
       
-      if (updatedPlayers.length === 4) {
-        const currentPlayerIsHost = updatedPlayers.some(
-          p => p.username === username && p.isHost
-        );
+      if (updatedLobby.players) {
+        setPlayers(Object.values(updatedLobby.players));
+      }
+      
+      // did game start?
+      if (updatedLobby.status === "started") {
+        setGameStarting(true);
         
-        if (currentPlayerIsHost) {
-          handleStartGame();
-        }
+        navigate("/main_game_page", { 
+          state: { 
+            players: Object.values(updatedLobby.players), 
+            lobbyCode,
+            userProfile 
+          } 
+        });
       }
     });
     
     return () => {
       unsubscribe();
     };
-  }, [lobbyCode, username]);
+  }, [lobbyCode, username, navigate, userProfile]);
   
   const handleStartGame = async () => {
     try {
       if (players.length >= 2) { 
+        setGameStarting(true);
         await FirebaseLobbyWrite.startGame(lobbyCode);
         
-
-        navigate("/main_game_page", { 
-          state: { 
-            players, 
-            lobbyCode,
-            userProfile 
-          } 
-        });
+        // nav will happen via the lobby status change listener
+      } else {
+        setError("Need at least 2 players to start the game");
       }
     } catch (err) {
       console.error("Failed to start game:", err);
       setError("Failed to start game");
+      setGameStarting(false);
     }
   };
   
@@ -126,7 +132,6 @@ function Lobby() {
         sessionStorage.removeItem("lobbyCode");
       }
       
-
       navigate("/profile", { state: { userProfile } });
     } catch (err) {
       console.error("Failed to leave lobby:", err);
@@ -139,6 +144,18 @@ function Lobby() {
       <div className="lobby-container">
         <Box sx={{ textAlign: 'center', padding: 4 }}>
           <h2>Loading lobby...</h2>
+        </Box>
+      </div>
+    );
+  }
+
+  //  added to make sure game doesn't start immediatly 
+  if (gameStarting) {
+    return (
+      <div className="lobby-container">
+        <Box sx={{ textAlign: 'center', padding: 4 }}>
+          <h2>Game starting...</h2>
+          <p>Please wait while the game is being prepared.</p>
         </Box>
       </div>
     );

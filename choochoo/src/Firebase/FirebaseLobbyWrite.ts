@@ -1,3 +1,5 @@
+// Fixed FirebaseLobbyWrite.ts
+
 import { database } from "./FirebaseCredentials";
 import {
   ref,
@@ -24,6 +26,7 @@ export interface Lobby {
   createdAt: object | number;
   players: Record<string, Player>;
   status?: string;
+  pendingPlayers?: Record<string, boolean>; // Track players attempting to join
 }
 
 // lobby service
@@ -47,6 +50,7 @@ const FirebaseLobbyWrite = {
           ...(userId ? { userId } : {}),
         },
       },
+      status: "waiting", 
     };
 
     await set(lobbyRef, lobbyData);
@@ -67,16 +71,38 @@ const FirebaseLobbyWrite = {
     }
 
     const lobbyData = snapshot.val() as Lobby;
+    
+    if (lobbyData.status === "started") {
+      throw new Error("Game has already started");
+    }
 
     const players = lobbyData.players || {};
     console.log("Current players in lobby:", Object.keys(players));
     console.log("Player count:", Object.keys(players).length);
 
+    
     if (Object.keys(players).length >= 4) {
       throw new Error("Lobby is full");
     }
 
-    if (players[username]) {
+    
+    await update(lobbyRef, {
+      [`pendingPlayers/${username}`]: true
+    });
+    
+   
+    const updatedSnapshot = await get(lobbyRef);
+    const updatedLobbyData = updatedSnapshot.val() as Lobby;
+    const updatedPlayers = updatedLobbyData.players || {};
+    
+    if (Object.keys(updatedPlayers).length >= 4) {
+      await update(lobbyRef, {
+        [`pendingPlayers/${username}`]: null
+      });
+      throw new Error("Lobby is full");
+    }
+
+    if (updatedPlayers[username]) {
       console.log("Player already in lobby, updating entry");
     }
 
@@ -87,10 +113,11 @@ const FirebaseLobbyWrite = {
       ...(userId ? { userId } : {}),
     };
 
-    await set(
-      ref(database, `lobbies/${lobbyCode}/players/${username}`),
-      playerData
-    );
+    //  add the player officially
+    await update(lobbyRef, {
+      [`players/${username}`]: playerData,
+      [`pendingPlayers/${username}`]: null 
+    });
 
     return true;
   },
@@ -130,19 +157,21 @@ const FirebaseLobbyWrite = {
 
   onLobbyUpdate: (
     lobbyCode: string,
-    callback: (players: Player[]) => void
+    callback: (lobby: Lobby) => void
   ): (() => void) => {
     const lobbyRef = ref(database, `lobbies/${lobbyCode}`);
 
     const handleValueChange = (snapshot: DataSnapshot) => {
       if (snapshot.exists()) {
         const lobbyData = snapshot.val() as Lobby;
-        const playersList = lobbyData.players
-          ? Object.values(lobbyData.players)
-          : [];
-        callback(playersList);
+        callback(lobbyData);
       } else {
-        callback([]);
+        callback({
+          host: "",
+          createdAt: 0,
+          players: {},
+          status: "closed"
+        });
       }
     };
 
@@ -154,8 +183,10 @@ const FirebaseLobbyWrite = {
   // start game
   startGame: async (lobbyCode: string): Promise<boolean> => {
     const lobbyRef = ref(database, `lobbies/${lobbyCode}`);
-    await update(ref(database), {
-      [`lobbies/${lobbyCode}/status`]: "started",
+    
+    // lobby status first updated
+    await update(lobbyRef, {
+      status: "started",
     });
 
     const gameRef = ref(database, `games/${lobbyCode}`);
