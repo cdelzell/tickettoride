@@ -1,72 +1,108 @@
 .lobby-container {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  width: 100vw;
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 2vw;
 }
 
 .lobby-code-container {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 1.6vw;
+  background-color: #f0f4ff;
+  padding: 1vw 1.6vw;
+  border-radius: 1vw;
+  width: 100%;
+  max-width: 600px;
 }
 
 .lobby-code {
-  font-size: 24px;
+  font-size: 2vw;
+  width: 100vw;
   font-weight: bold;
   color: #3f51b5;
   margin: 0;
 }
 
 .copy-button {
-  margin-left: 10px;
+  margin-left: 1vw;
+  width: 100vw;
 }
 
 .player-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  max-height: 200px;
+  border: 0.1vw solid #e0e0e0;
+  border-radius: 0.8vw;
+  max-height: 30vh;
   overflow-y: auto;
+  width: 100%;
+  max-width: 600px;
 }
 
 .player-list li {
-  padding: 12px 16px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 1.2vw 1.6vw;
+  border-bottom: 0.1vw solid #e0e0e0;
   display: flex;
   align-items: center;
+  background-color: #ffffff;
+}
+
+.player-list li:nth-child(odd) {
+  background-color: #f8f9fc;
 }
 
 .player-list li:last-child {
   border-bottom: none;
 }
 
+.player-host-badge {
+  background-color: #4caf50;
+  color: white;
+  font-size: 1.2vw;
+  padding: 0.3vw 0.8vw;
+  border-radius: 1.2vw;
+  margin-left: 0.8vw;
+}
+
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
-  gap: 10px;
+  margin-top: 2.4vw;
+  gap: 1.6vw;
+  width: 100%;
+  max-width: 600px;
 }
 
-.start-button {
-  flex-grow: 1;
-}
-
+.start-button,
 .leave-button {
   flex-grow: 1;
+  height: 4.8vh;
 }
 
 @media (max-width: 600px) {
+  .join-card {
+    padding: 6vw;
+  }
+
+  .join-header {
+    font-size: 5vw;
+  }
+
   .button-container {
     flex-direction: column;
+  }
+
+  .lobby-code {
+    font-size: 4vw;
+  }
+
+  .player-host-badge {
+    font-size: 3vw;
   }
 }

@@ -4,7 +4,10 @@ import Button from "@mui/joy/Button";
 import Box from "@mui/joy/Box";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Alert from "@mui/joy/Alert";
-import { useTheme, useMediaQuery } from "@mui/material";
+import Typography from "@mui/joy/Typography";
+import CircularProgress from "@mui/joy/CircularProgress";
+import { useTheme } from "@mui/joy/styles";
+import { useMediaQuery } from "@mui/material";
 import FirebaseLobbyWrite, { Player, Lobby as LobbyType } from "../Firebase/FirebaseLobbyWrite";
 import "./lobby.css";
 
@@ -35,11 +38,11 @@ function Lobby() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [gameStarting, setGameStarting] = useState<boolean>(false);
+  const [copySuccess, setCopySuccess] = useState<boolean>(false);
   
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   
-
   useEffect(() => {
     const initializeLobby = async () => {
       try {
@@ -73,7 +76,6 @@ function Lobby() {
     }
   }, [isJoining, username]);
   
-
   useEffect(() => {
     if (!lobbyCode) return;
     
@@ -122,7 +124,8 @@ function Lobby() {
   
   const handleCopyCode = () => {
     navigator.clipboard.writeText(lobbyCode);
-    alert("Lobby code copied to clipboard!");
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
   };
   
   const handleLeave = async () => {
@@ -143,19 +146,20 @@ function Lobby() {
     return (
       <div className="lobby-container">
         <Box sx={{ textAlign: 'center', padding: 4 }}>
-          <h2>Loading lobby...</h2>
+          <CircularProgress size="lg" />
+          <Typography level="h4" sx={{ mt: 2 }}>Loading lobby...</Typography>
         </Box>
       </div>
     );
   }
 
-  //  added to make sure game doesn't start immediatly 
   if (gameStarting) {
     return (
       <div className="lobby-container">
         <Box sx={{ textAlign: 'center', padding: 4 }}>
-          <h2>Game starting...</h2>
-          <p>Please wait while the game is being prepared.</p>
+          <CircularProgress size="lg" />
+          <Typography level="h4" sx={{ mt: 2 }}>Game starting...</Typography>
+          <Typography level="body-md" sx={{ mt: 1 }}>Please wait while the game is being prepared.</Typography>
         </Box>
       </div>
     );
@@ -165,9 +169,12 @@ function Lobby() {
     return (
       <div className="lobby-container">
         <Box sx={{ textAlign: 'center', padding: 4 }}>
-          <h2>Error</h2>
-          <p>{error}</p>
-          <Button onClick={() => navigate("/profile", { state: { userProfile } })}>
+          <Typography level="h4" color="danger">Error</Typography>
+          <Typography level="body-md" sx={{ mt: 1 }}>{error}</Typography>
+          <Button 
+            onClick={() => navigate("/profile", { state: { userProfile } })}
+            sx={{ mt: 2 }}
+          >
             Back to Profile
           </Button>
         </Box>
@@ -179,37 +186,81 @@ function Lobby() {
     <div className="lobby-container">
       <Box
         sx={{
-          width: isSmallScreen ? "80vw" : 500,
+          width: isSmallScreen ? "100vw" : 700,
           backgroundColor: "white",
-          maxWidth: 500,
+          maxWidth: 600,
           mx: "auto",
           my: 4,
-          py: 3,
-          px: 2,
+          py: 4,
+          px: 4,
           display: "flex",
           flexDirection: "column",
-          gap: 2,
-          borderRadius: "sm",
-          boxShadow: "md",
+          gap: 3,
+          borderRadius: "16px",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
         }}
       >
         <CssBaseline />
-        <h1>Game Lobby</h1>
+        <Typography level="h2" sx={{ textAlign: "center", color: "#3f51b5", mb: 2 }}>
+          Game Lobby
+        </Typography>
+        
         <div className="lobby-code-container">
           <h2 className="lobby-code">Lobby Code: {lobbyCode}</h2>
-          <Button onClick={handleCopyCode} className="copy-button">
-            Copy Code
+          <Button 
+            onClick={handleCopyCode} 
+            className="copy-button"
+            variant={copySuccess ? "soft" : "solid"}
+            color={copySuccess ? "success" : "primary"}
+          >
+            {copySuccess ? "Copied!" : "Copy Code"}
           </Button>
         </div>
-        <p>Share this code with your friends to join!</p>
         
-        <h3>Players ({players.length}/4)</h3>
+        <Typography level="body-md" sx={{ mb: 2 }}>
+          Share this code with your friend to join!
+        </Typography>
+        
+        <Typography 
+          level="title-md" 
+          sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "space-between",
+            mb: 1 
+          }}
+        >
+          Players ({players.length}/4)
+          <Typography 
+            level="body-sm" 
+            sx={{ 
+              color: players.length < 2 ? "warning.500" : "success.500",
+              fontWeight: "bold" 
+            }}
+          >
+            {players.length < 2 ? "Need more players" : "Ready to start!"}
+          </Typography>
+        </Typography>
+        
         <ul className="player-list">
           {players.map((player, index) => (
-            <li key={index}>
-              {player.username} {player.isHost ? "(Host)" : ""}
+            <li key={index} style={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography>
+                {player.username} 
+                {player.username === username && " (You)"}
+              </Typography>
+              {player.isHost && (
+                <span className="player-host-badge">Host</span>
+              )}
             </li>
           ))}
+          {players.length === 0 && (
+            <li>
+              <Typography level="body-sm" sx={{ fontStyle: "italic", color: "neutral.500" }}>
+                Waiting for players to join...
+              </Typography>
+            </li>
+          )}
         </ul>
         
         <div className="button-container">
@@ -217,27 +268,20 @@ function Lobby() {
             <Button 
               onClick={handleStartGame} 
               className="start-button"
-              disabled={players.length < 2} 
-              sx={{
-                bgcolor: players.length < 2 ? 'gray' : 'primary',
-                "&:hover": {
-                  color: "white",
-                },
-              }}
+              disabled={players.length < 2 || gameStarting} 
+              color="success"
+              variant="solid"
             >
-              Start Game {players.length < 2 ? "(Need more players)" : ""}
+              {gameStarting ? "Starting..." : "Start Game"}
             </Button>
           )}
           
           <Button 
             onClick={handleLeave} 
             className="leave-button"
-            sx={{
-              bgcolor: 'error.main',
-              "&:hover": {
-                color: "white",
-              },
-            }}
+            color="danger"
+            variant="soft"
+            disabled={gameStarting}
           >
             Leave Lobby
           </Button>

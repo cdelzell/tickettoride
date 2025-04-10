@@ -3,8 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import CssBaseline from "@mui/joy/CssBaseline";
-import { useTheme, useMediaQuery } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import Typography from "@mui/joy/Typography";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Input from "@mui/joy/Input";
+import FormHelperText from "@mui/joy/FormHelperText";
+import CircularProgress from "@mui/joy/CircularProgress";
+import { useTheme } from "@mui/joy/styles";
+import { useMediaQuery } from "@mui/material";
 import FirebaseLobbyWrite from "../Firebase/FirebaseLobbyWrite";
 import "./join_game.css";
 
@@ -20,6 +26,7 @@ function JoinGame() {
   const [username, setUsername] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -55,9 +62,7 @@ function JoinGame() {
         return;
       }
       
-
       await FirebaseLobbyWrite.joinLobby(code, username);
-      
       sessionStorage.setItem("lobbyCode", code);
       
       const userProfile: UserProfile = { username };
@@ -77,76 +82,68 @@ function JoinGame() {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <div className="join-container">
       <Box
+        className="join-card"
         sx={{
-          width: isSmallScreen ? "80vw" : 400,
-          backgroundColor: "white",
+          width: isSmallScreen ? "90vw" : 400,
           maxWidth: 400,
           mx: "auto",
           my: 4,
-          py: 3,
-          px: 2,
+          py: 4,
+          px: 3,
           display: "flex",
           flexDirection: "column",
-          gap: 2,
-          borderRadius: "sm",
-          boxShadow: "md",
         }}
       >
         <CssBaseline />
-        <h1>Join Game</h1>
+        <Typography className="join-header" level="h2">
+          Join Game
+        </Typography>
         
-        <TextField
-          label="Username"
-          variant="outlined"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          margin="normal"
-          fullWidth
-          disabled={!!location?.state?.userProfile?.username}
-        />
-        
-        <TextField
-          label="Lobby Code"
-          variant="outlined"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          margin="normal"
-          fullWidth
-          helperText={error}
-          error={!!error}
-        />
-        
-        <Button 
-          onClick={handleJoin} 
-          className="join-button"
-          disabled={isLoading}
-          sx={{
-            mt: 2,
-            "&:hover": {
-              color: "white",
-            },
-          }}
-        >
-          {isLoading ? "Joining..." : "Join Game"}
-        </Button>
-        
-        <Button 
-          onClick={() => navigate("/profile", { state: location?.state })} 
-          className="back-button"
-          disabled={isLoading}
-          sx={{
-            mt: 1,
-            "&:hover": {
-              color: "white",
-            },
-          }}
-        >
-          Back to Profile
-        </Button>
+        <div className="join-form">
+          <FormControl>
+            <FormLabel>Username</FormLabel>
+            <Input
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              disabled={!!location?.state?.userProfile?.username}
+            />
+          </FormControl>
+          
+          <FormControl error={!!error}>
+            <FormLabel>Lobby Code</FormLabel>
+            <Input
+              placeholder="Enter lobby code"
+              value={code}
+              onChange={(e) => setCode(e.target.value.toUpperCase())}
+            />
+            {error && <FormHelperText>{error}</FormHelperText>}
+          </FormControl>
+          
+          <Button
+            onClick={handleJoin}
+            className="join-button"
+            loading={isLoading}
+            disabled={isLoading}
+            color="primary"
+          >
+            {isLoading ? "Joining..." : "Join Game"}
+          </Button>
+          
+          <Button
+            onClick={() => navigate("/profile", { state: location?.state })}
+            className="back-button"
+            disabled={isLoading}
+            variant="outlined"
+            color="neutral"
+          >
+            Back to Profile
+          </Button>
+        </div>
       </Box>
     </div>
   );

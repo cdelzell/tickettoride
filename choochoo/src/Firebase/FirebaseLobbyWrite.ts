@@ -1,5 +1,3 @@
-// Fixed FirebaseLobbyWrite.ts
-
 import { database } from "./FirebaseCredentials";
 import {
   ref,
@@ -26,7 +24,7 @@ export interface Lobby {
   createdAt: object | number;
   players: Record<string, Player>;
   status?: string;
-  pendingPlayers?: Record<string, boolean>; // Track players attempting to join
+  pendingPlayers?: Record<string, boolean>; 
 }
 
 // lobby service
@@ -72,6 +70,7 @@ const FirebaseLobbyWrite = {
 
     const lobbyData = snapshot.val() as Lobby;
     
+
     if (lobbyData.status === "started") {
       throw new Error("Game has already started");
     }
@@ -80,22 +79,23 @@ const FirebaseLobbyWrite = {
     console.log("Current players in lobby:", Object.keys(players));
     console.log("Player count:", Object.keys(players).length);
 
-    
-    if (Object.keys(players).length >= 4) {
+
+    if (Object.keys(players).length >= 4 && !players[username]) {
+
       throw new Error("Lobby is full");
     }
 
-    
+
     await update(lobbyRef, {
       [`pendingPlayers/${username}`]: true
     });
     
-   
+
     const updatedSnapshot = await get(lobbyRef);
     const updatedLobbyData = updatedSnapshot.val() as Lobby;
     const updatedPlayers = updatedLobbyData.players || {};
-    
-    if (Object.keys(updatedPlayers).length >= 4) {
+
+    if (Object.keys(updatedPlayers).length >= 4 && !updatedPlayers[username]) {
       await update(lobbyRef, {
         [`pendingPlayers/${username}`]: null
       });
@@ -113,7 +113,7 @@ const FirebaseLobbyWrite = {
       ...(userId ? { userId } : {}),
     };
 
-    //  add the player officially
+  
     await update(lobbyRef, {
       [`players/${username}`]: playerData,
       [`pendingPlayers/${username}`]: null 
@@ -184,7 +184,7 @@ const FirebaseLobbyWrite = {
   startGame: async (lobbyCode: string): Promise<boolean> => {
     const lobbyRef = ref(database, `lobbies/${lobbyCode}`);
     
-    // lobby status first updated
+    // update lobby status first
     await update(lobbyRef, {
       status: "started",
     });
