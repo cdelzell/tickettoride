@@ -1,69 +1,108 @@
 .lobby-container {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #d3d3d3;
-  color: #555;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #f5f5f5;
+  padding: 2vw;
 }
 
-.lobby-card {
-  width: 90vw;
-  height: 90vh;
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  text-align: center;
+.lobby-code-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.6vw;
+  background-color: #f0f4ff;
+  padding: 1vw 1.6vw;
+  border-radius: 1vw;
+  width: 100%;
+  max-width: 600px;
 }
 
 .lobby-code {
-  font-size: 1.5em;
+  font-size: 2vw;
+  width: 100vw;
   font-weight: bold;
-  color: #2c3e50;
-  background: #ffc89f;
-  padding: 12px;
-  border-radius: 8px;
-  display: inline-block;
-  margin: 10px 0;
-  user-select: all;
+  color: #3f51b5;
+  margin: 0;
+}
+
+.copy-button {
+  margin-left: 1vw;
+  width: 100vw;
 }
 
 .player-list {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
-  margin-top: 15px;
+  margin: 0;
+  border: 0.1vw solid #e0e0e0;
+  border-radius: 0.8vw;
+  max-height: 30vh;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 600px;
 }
 
 .player-list li {
-  font-size: 1.2em;
-  margin: 8px 0;
-  padding: 4px 12px;
-  background: #d5e8f6;
-  border-radius: 5px;
-  font-weight: bold;
+  padding: 1.2vw 1.6vw;
+  border-bottom: 0.1vw solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
 }
 
-.start-button {
-  background: #27ae60;
+.player-list li:nth-child(odd) {
+  background-color: #f8f9fc;
+}
+
+.player-list li:last-child {
+  border-bottom: none;
+}
+
+.player-host-badge {
+  background-color: #4caf50;
   color: white;
-  font-size: 1.2em;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-top: 15px;
+  font-size: 1.2vw;
+  padding: 0.3vw 0.8vw;
+  border-radius: 1.2vw;
+  margin-left: 0.8vw;
 }
 
-.start-button:hover {
-  background: #219150;
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.4vw;
+  gap: 1.6vw;
+  width: 100%;
+  max-width: 600px;
 }
 
-.start-button:disabled {
-  background: #95a5a6;
-  cursor: not-allowed;
+.start-button,
+.leave-button {
+  flex-grow: 1;
+  height: 4.8vh;
+}
+
+@media (max-width: 600px) {
+  .join-card {
+    padding: 6vw;
+  }
+
+  .join-header {
+    font-size: 5vw;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .lobby-code {
+    font-size: 4vw;
+  }
+
+  .player-host-badge {
+    font-size: 3vw;
+  }
 }
