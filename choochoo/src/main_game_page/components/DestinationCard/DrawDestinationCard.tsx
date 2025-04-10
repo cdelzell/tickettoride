@@ -3,7 +3,15 @@ import { DestinationCard } from "./DestinationCard";
 import "./DestinationCard.css";
 import { useState } from "react";
 
-function DrawDestinationCard({ destinations }: { destinations: string[] }) {
+function DrawDestinationCard({
+  destinations,
+  drawnDestCards,
+  setDrawDestCard,
+}: {
+  destinations: string[];
+  drawnDestCards: number[];
+  setDrawDestCard: (cards: number[]) => void;
+}) {
   const [clicked1, setClicked1] = useState(false);
   const [clicked2, setClicked2] = useState(false);
   const [clicked3, setClicked3] = useState(false);
@@ -11,10 +19,22 @@ function DrawDestinationCard({ destinations }: { destinations: string[] }) {
   const handleClick = (id: string) => {
     if (id === "1") {
       clicked1 ? setClicked1(false) : setClicked1(true);
+      clicked1
+        ? drawnDestCards.filter((drawnDestCards) => drawnDestCards !== 1)
+        : drawnDestCards.push(1);
+      setDrawDestCard(drawnDestCards);
     } else if (id === "2") {
       clicked2 ? setClicked2(false) : setClicked2(true);
+      clicked2
+        ? drawnDestCards.filter((drawnDestCards) => drawnDestCards !== 2)
+        : drawnDestCards.push(2);
+      setDrawDestCard(drawnDestCards);
     } else {
       clicked3 ? setClicked3(false) : setClicked3(true);
+      clicked3
+        ? drawnDestCards.filter((drawnDestCards) => drawnDestCards !== 3)
+        : drawnDestCards.push(3);
+      setDrawDestCard(drawnDestCards);
     }
   };
 

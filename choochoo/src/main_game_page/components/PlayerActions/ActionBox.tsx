@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import DrawTrains from "../DrawPile/DrawPile";
 import "./ActionBox.css";
+import GameRunner from "../../../backend/game-runner";
 
 function ActionBox({
   action,
+  gamerunner,
+  drawnDestCards,
   updateStatus,
   updateDrawDest,
   updateTrains,
@@ -17,6 +20,8 @@ function ActionBox({
   handleDrawPileClick,
 }: {
   action: number;
+  gamerunner: GameRunner;
+  drawnDestCards: number[];
   updateStatus: (newStatus: number) => void;
   updateDrawDest: (newStatus: boolean) => void;
   updateTrains: (color: string, amount: number) => void;
@@ -91,6 +96,8 @@ function ActionBox({
         <PlayTrains />
       ) : action === 3 && actionActive === true ? (
         <Submit
+          gamerunner={gamerunner}
+          drawnDestCards={drawnDestCards}
           updateDrawDest={updateDrawDest}
           drawClickCount={drawClickCount}
           setDestClickCount={setDestClickCount}
@@ -127,12 +134,16 @@ function PlayTrains() {
 }
 
 function Submit({
+  gamerunner,
+  drawnDestCards,
   updateDrawDest,
   drawClickCount,
   playClickCount,
   destClickCount,
   setDestClickCount,
 }: {
+  gamerunner: GameRunner;
+  drawnDestCards: number[];
   updateDrawDest: (state: boolean) => void;
   drawClickCount: number;
   playClickCount: number;
@@ -143,6 +154,7 @@ function Submit({
     if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
       setDestClickCount(destClickCount + 1);
       updateDrawDest(false);
+      gamerunner.claimDestinationCards(drawnDestCards);
     }
   };
 

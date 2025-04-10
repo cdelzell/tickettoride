@@ -396,6 +396,7 @@ const MainGamePage = () => {
   const [trains, setTrains] = useState(25);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
+  const [drawnDestCards, setDrawDestCard] = useState<number[]>([]);
   const [drawClickCount, setDrawClickCount] = useState(0);
   const [playClickCount, setPlayClickCount] = useState(0);
   const [destClickCount, setDestClickCount] = useState(0);
@@ -653,6 +654,8 @@ const MainGamePage = () => {
       <div className="player_actions">
         <ActionBox
           action={action_box_status}
+          gamerunner={gameRunner}
+          drawnDestCards={drawnDestCards}
           updateStatus={updateStatus}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
@@ -674,6 +677,8 @@ const MainGamePage = () => {
           <DrawDestinationCard
             //call the backend method here to get the destination cards
             destinations={["alb_miami", "alb_tyville", "chicago_miami"]}
+            drawnDestCards={drawnDestCards}
+            setDrawDestCard={setDrawDestCard}
           ></DrawDestinationCard>
         )}
 
