@@ -8,7 +8,8 @@ import Typography from "@mui/joy/Typography";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
-import FirebaseLobbyWrite, { Player, Lobby as LobbyType } from "../Firebase/FirebaseLobbyWrite";
+import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../Firebase/FirebaseInterfaces"
+import { createLobby, joinLobby, leaveLobby, onLobbyUpdate, startGame } from "../Firebase/FirebaseLobbyManagment";
 import "./lobby.css";
 
 interface UserProfile {
@@ -23,15 +24,15 @@ function Lobby() {
   const location = useLocation();
   const { state } = location;
   const isJoining = state?.isJoining;
-  
+
   const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
     const fromState = location?.state?.userProfile;
     const fromStorage = sessionStorage.getItem("userProfile");
     return fromState || (fromStorage ? JSON.parse(fromStorage) : null);
   });
-  
+
   const username = userProfile?.username;
-  
+
   const [players, setPlayers] = useState<Player[]>([]);
   const [lobby, setLobby] = useState<LobbyType | null>(null);
   const [lobbyCode, setLobbyCode] = useState<string>("");
@@ -39,25 +40,25 @@ function Lobby() {
   const [error, setError] = useState<string>("");
   const [gameStarting, setGameStarting] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
-  
+
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  
+
   useEffect(() => {
     const initializeLobby = async () => {
       try {
         setIsLoading(true);
-        
+
         let code = sessionStorage.getItem("lobbyCode");
-        
+
         if (!code && !isJoining && username) {
-          code = await FirebaseLobbyWrite.createLobby(username);
+          code = await createLobby(username);
           sessionStorage.setItem("lobbyCode", code);
         } else if (isJoining && username && code) {
           const userId = state?.userKey;
-          await FirebaseLobbyWrite.joinLobby(code, username, userId);
+          await joinLobby(code, username, userId);
         }
-        
+
         if (code) {
           setLobbyCode(code);
         } else {
@@ -65,53 +66,49 @@ function Lobby() {
         }
       } catch (err) {
         console.error("Lobby initialization error:", err);
-        setError(`Failed to ${isJoining ? 'join' : 'create'} lobby. ${err instanceof Error ? err.message : ''}`);
+        setError(`Failed to ${isJoining ? "join" : "create"} lobby. ${err instanceof Error ? err.message : ""}`);
       } finally {
         setIsLoading(false);
       }
     };
-    
+
     if (username) {
       initializeLobby();
     }
   }, [isJoining, username]);
-  
+
   useEffect(() => {
     if (!lobbyCode) return;
-    
-    const unsubscribe = FirebaseLobbyWrite.onLobbyUpdate(lobbyCode, (updatedLobby) => {
+
+    const unsubscribe = onLobbyUpdate(lobbyCode, (updatedLobby) => {
       setLobby(updatedLobby);
-      
+
       if (updatedLobby.players) {
         setPlayers(Object.values(updatedLobby.players));
       }
-      
-      // did game start?
+
       if (updatedLobby.status === "started") {
         setGameStarting(true);
-        
-        navigate("/main_game_page", { 
-          state: { 
-            players: Object.values(updatedLobby.players), 
+        navigate("/main_game_page", {
+          state: {
+            players: Object.values(updatedLobby.players),
             lobbyCode,
-            userProfile 
-          } 
+            userProfile
+          }
         });
       }
     });
-    
+
     return () => {
       unsubscribe();
     };
   }, [lobbyCode, username, navigate, userProfile]);
-  
+
   const handleStartGame = async () => {
     try {
-      if (players.length >= 2) { 
+      if (players.length >= 2) {
         setGameStarting(true);
-        await FirebaseLobbyWrite.startGame(lobbyCode);
-        
-        // nav will happen via the lobby status change listener
+        await startGame(lobbyCode);
       } else {
         setError("Need at least 2 players to start the game");
       }
@@ -121,20 +118,14 @@ function Lobby() {
       setGameStarting(false);
     }
   };
-  
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(lobbyCode);
-    setCopySuccess(true);
-    setTimeout(() => setCopySuccess(false), 2000);
-  };
-  
+
   const handleLeave = async () => {
     try {
       if (username && lobbyCode) {
-        await FirebaseLobbyWrite.leaveLobby(lobbyCode, username);
+        await leaveLobby(lobbyCode, username);
         sessionStorage.removeItem("lobbyCode");
       }
-      
+
       navigate("/profile", { state: { userProfile } });
     } catch (err) {
       console.error("Failed to leave lobby:", err);
@@ -171,7 +162,7 @@ function Lobby() {
         <Box sx={{ textAlign: 'center', padding: 4 }}>
           <Typography level="h4" color="danger">Error</Typography>
           <Typography level="body-md" sx={{ mt: 1 }}>{error}</Typography>
-          <Button 
+          <Button
             onClick={() => navigate("/profile", { state: { userProfile } })}
             sx={{ mt: 2 }}
           >
@@ -204,11 +195,11 @@ function Lobby() {
         <Typography level="h2" sx={{ textAlign: "center", color: "black", mb: 2 }}>
           Game Lobby
         </Typography>
-        
+
         <div className="lobby-code-container">
           <h2 className="lobby-code">Lobby Code: {lobbyCode}</h2>
-          <Button 
-            onClick={handleCopyCode} 
+          <Button
+            onClick={handleCopyCode}
             className="copy-button"
             variant={copySuccess ? "soft" : "solid"}
             color={copySuccess ? "success" : "primary"}
@@ -216,37 +207,37 @@ function Lobby() {
             {copySuccess ? "Copied!" : "Copy Code"}
           </Button>
         </div>
-        
+
         <Typography level="body-md" sx={{ mb: 2 }}>
           Share this code with your friend to join!
         </Typography>
-        
-        <Typography 
-          level="title-md" 
-          sx={{ 
-            display: "flex", 
-            alignItems: "center", 
+
+        <Typography
+          level="title-md"
+          sx={{
+            display: "flex",
+            alignItems: "center",
             justifyContent: "space-between",
-            mb: 1 
+            mb: 1
           }}
         >
           Players ({players.length}/4)
-          <Typography 
-            level="body-sm" 
-            sx={{ 
+          <Typography
+            level="body-sm"
+            sx={{
               color: players.length < 2 ? "warning.500" : "success.500",
-              fontWeight: "bold" 
+              fontWeight: "bold"
             }}
           >
             {players.length < 2 ? "Need more players..." : "Ready to start!"}
           </Typography>
         </Typography>
-        
+
         <ul className="player-list">
           {players.map((player, index) => (
             <li key={index} style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography>
-                {player.username} 
+                {player.username}
                 {player.username === username && " (You)"}
               </Typography>
               {player.isHost && (
@@ -262,22 +253,22 @@ function Lobby() {
             </li>
           )}
         </ul>
-        
+
         <div className="button-container">
           {players.some(p => p.username === username && p.isHost) && (
-            <Button 
-              onClick={handleStartGame} 
+            <Button
+              onClick={handleStartGame}
               className="start-button"
-              disabled={players.length < 2 || gameStarting} 
+              disabled={players.length < 2 || gameStarting}
               color="success"
               variant="solid"
             >
               {gameStarting ? "Starting..." : "Start Game"}
             </Button>
           )}
-          
-          <Button 
-            onClick={handleLeave} 
+
+          <Button
+            onClick={handleLeave}
             className="leave-button"
             color="danger"
             variant="soft"

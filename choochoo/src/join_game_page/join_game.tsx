@@ -11,7 +11,7 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
-import FirebaseLobbyWrite from "../Firebase/FirebaseLobbyWrite";
+import FirebaseLobbyWrite from "../Firebase/FirebaseLobbyManagment";
 import "./join_game.css";
 
 interface UserProfile {
@@ -26,34 +26,34 @@ function JoinGame() {
   const [username, setUsername] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  
+
   useEffect(() => {
     const userProfile = location?.state?.userProfile as UserProfile | undefined;
     if (userProfile?.username) {
       setUsername(userProfile.username);
     }
   }, [location]);
-  
+
   const handleJoin = async () => {
     if (!code) {
       setError("Please enter a lobby code");
       return;
     }
-    
+
     if (!username) {
       setError("Please enter a username");
       return;
     }
-    
+
     try {
       setIsLoading(true);
       setError("");
-      
+
       // Check if lobby exists
       const exists = await FirebaseLobbyWrite.checkLobbyExists(code);
       if (!exists) {
@@ -61,13 +61,13 @@ function JoinGame() {
         setIsLoading(false);
         return;
       }
-      
+
       await FirebaseLobbyWrite.joinLobby(code, username);
       sessionStorage.setItem("lobbyCode", code);
-      
+
       const userProfile: UserProfile = { username };
       sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
-      
+
       // nav to the lobby as a joining player
       navigate("/lobby", {
         state: {
@@ -82,7 +82,7 @@ function JoinGame() {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <div className="join-container">
       <Box
@@ -102,7 +102,7 @@ function JoinGame() {
         <Typography className="join-header" level="h2">
           Join Game
         </Typography>
-        
+
         <div className="join-form">
           <FormControl>
             <FormLabel>Username</FormLabel>
@@ -113,7 +113,7 @@ function JoinGame() {
               disabled={!!location?.state?.userProfile?.username}
             />
           </FormControl>
-          
+
           <FormControl error={!!error}>
             <FormLabel>Lobby Code</FormLabel>
             <Input
@@ -123,7 +123,7 @@ function JoinGame() {
             />
             {error && <FormHelperText>{error}</FormHelperText>}
           </FormControl>
-          
+
           <Button
             onClick={handleJoin}
             className="join-button"
@@ -133,7 +133,7 @@ function JoinGame() {
           >
             {isLoading ? "Joining..." : "Join Game"}
           </Button>
-          
+
           <Button
             onClick={() => navigate("/profile", { state: location?.state })}
             className="back-button"

@@ -1,5 +1,5 @@
-import { ref, update, get, push } from "firebase/database";
-import { database, userDataPath } from "./FirebaseCredentials";
+import { ref, update, get, push, ThenableReference } from "firebase/database";
+import { userDataPath } from "./FirebaseCredentials";
 import { UserData } from "./FirebaseInterfaces";
 
 type UserDataFormat = UserData;
@@ -274,7 +274,7 @@ export async function updateUserProperty(
   newValue: string | number | boolean
 ): Promise<any> {
   // Use the correct reference from the initialized database object
-  const userRef = ref(database, "users/" + objectId);
+  const userRef = ref(userDataPath + objectId);
 
   try {
     // Perform the update
@@ -300,13 +300,17 @@ export async function updateUserProperty(
  */
 export function writeUserToDatabase(data: UserDataFormat): void {
   push(userDataPath, data)
-    .then((newUserRef) => {
-      const userKey = newUserRef.key; // This is the unique key of the newly added user
+    .then((newUserRef: ThenableReference) => {
+      const userKey = newUserRef.key;
       console.log(`Data written successfully with user key: ${userKey}`);
-      return userKey; // Return the key of the new user
+      return userKey;
     })
-    .catch((error) => {
-      console.error(`Error writing data to ${ref}:`, error);
+    .catch((error: unknown) => {
+      if (error instanceof Error) {
+        console.error(`Error writing data to ${userDataPath}:`, error.message);
+      } else {
+        console.error(`Unknown error writing data to ${userDataPath}:`, error);
+      }
     });
 }
 
