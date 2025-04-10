@@ -1,9 +1,5 @@
 import { ref, query, orderByChild, equalTo, get } from "firebase/database";
-import { database } from './FirebaseCredentials'
-
-// Setting path to data subsections
-const userDataPath = ref(database, "users");
-const gameDataPath = ref(database, "activeGames");
+import { userDataPath, gameDataPath } from './FirebaseCredentials'
 
 /**
  * Function to search for users in the Firebase database with a specified username
