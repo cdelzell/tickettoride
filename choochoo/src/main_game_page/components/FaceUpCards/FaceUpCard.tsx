@@ -1,6 +1,9 @@
 import "./FaceUpCards.css";
+import GameRunner from "../../../backend/game-runner";
 
 function FaceUpCard({
+  index,
+  gamerunner,
   color,
   updateTrains,
   active,
@@ -9,8 +12,10 @@ function FaceUpCard({
   playClickCount,
   destClickCount,
 }: {
+  index: number;
+  gamerunner: GameRunner;
   color: string;
-  updateTrains: (color: string, amount: number) => void;
+  updateTrains: (cards: number[]) => void;
   active: boolean;
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
@@ -21,7 +26,8 @@ function FaceUpCard({
     if (active) {
       if (drawClickCount < 2 && playClickCount == 0 && destClickCount == 0) {
         setDrawClickCount(drawClickCount + 1);
-        updateTrains(color, 1);
+        gamerunner.drawFaceupTrainCard(index);
+        updateTrains(gamerunner.getMainPlayerTrainCards());
       }
     }
   };

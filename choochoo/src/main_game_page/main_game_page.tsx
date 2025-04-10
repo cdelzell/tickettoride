@@ -62,13 +62,6 @@ const train_cards = [
   { color: "./src/assets/cards/wild.png", game_color: "wild" },
 ];
 
-const train_counts = [1, 2, 3, 2, 5, 1, 4, 2, 1];
-
-const train_cards_and_counts = train_cards.map((card, i) => ({
-  ...card,
-  count: train_counts[i],
-}));
-
 export interface City {
   name: string;
   x: number;
@@ -379,6 +372,13 @@ const graph = {
 const users: User[] = [new User("Test")];
 const gameRunner = new GameRunner(users);
 
+const train_counts = gameRunner.getMainPlayerTrainCards();
+
+const train_cards_and_counts = train_cards.map((card, i) => ({
+  ...card,
+  count: train_counts[i],
+}));
+
 const MainGamePage = () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -404,6 +404,9 @@ const MainGamePage = () => {
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
 
+  //make useeffect for currentplayer, should get all new info from the gamerunner when current player changes
+  //make useeffect for gameover, end game
+
   useEffect(() => {
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
       setTurnComplete(true);
@@ -413,7 +416,6 @@ const MainGamePage = () => {
   }, [playClickCount, drawClickCount, destClickCount]);
 
   const updateTrainCardCount = (color: string, amount: number) => {
-    console.log("here");
     setTrainCards((prevCards) =>
       prevCards.map((card) =>
         card.game_color === color
@@ -421,6 +423,18 @@ const MainGamePage = () => {
           : card
       )
     );
+  };
+
+  const updatePlayerHand = (cards: number[]) => {
+    console.log("here");
+    const trains = train_cards.map((card, i) => ({
+      ...card,
+      count: cards[i],
+    }));
+
+    console.log(trains);
+
+    setTrainCards(trains);
   };
 
   // CHECK HERE
@@ -542,6 +556,7 @@ const MainGamePage = () => {
       }
 
       setDrawClickCount((prev) => prev + 1);
+      //function to update player hand
     }
   };
 
@@ -554,6 +569,7 @@ const MainGamePage = () => {
     setActionBoxStatus(0);
     setActiveTrains(false);
     setShowCardNotification(false);
+    //have function that updates the map for the gamerunner
 
     // move to the next array in cycle
     setCurrentPlayer((current) => (current + 1) % (players.length + 1));
@@ -611,8 +627,9 @@ const MainGamePage = () => {
       </div>
 
       <FaceUpCards
+        gamerunner={gameRunner}
         face_up_cards={gameRunner.gameBoard.getFaceupTrainCardsAsList()}
-        updateTrains={updateTrainCardCount}
+        updateTrains={updatePlayerHand}
         active={activeTrains}
         drawClickCount={drawClickCount}
         setDrawClickCount={setDrawClickCount}
@@ -655,6 +672,7 @@ const MainGamePage = () => {
 
         {draw_dest_active && (
           <DrawDestinationCard
+            //call the backend method here to get the destination cards
             destinations={["alb_miami", "alb_tyville", "chicago_miami"]}
           ></DrawDestinationCard>
         )}
