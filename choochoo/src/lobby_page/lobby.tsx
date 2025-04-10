@@ -201,7 +201,7 @@ function Lobby() {
         }}
       >
         <CssBaseline />
-        <Typography level="h2" sx={{ textAlign: "center", color: "#3f51b5", mb: 2 }}>
+        <Typography level="h2" sx={{ textAlign: "center", color: "black", mb: 2 }}>
           Game Lobby
         </Typography>
         
@@ -238,7 +238,7 @@ function Lobby() {
               fontWeight: "bold" 
             }}
           >
-            {players.length < 2 ? "Need more players" : "Ready to start!"}
+            {players.length < 2 ? "Need more players..." : "Ready to start!"}
           </Typography>
         </Typography>
         
