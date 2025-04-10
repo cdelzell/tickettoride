@@ -611,7 +611,7 @@ const MainGamePage = () => {
         destClickCount={destClickCount}
       ></FaceUpCards>
 
-      {/* end turn button */}
+      {/* end turn button */} 
       {turnComplete && (
         <button onClick={handleEndTurn} style={endTurnButtonStyle}>
           End Turn
