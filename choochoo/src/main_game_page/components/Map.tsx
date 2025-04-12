@@ -88,7 +88,7 @@ function USMap({
     return { x: midX, y: midY };
   };
 
-  function lightenColor(color: string | undefined, factor: number): string {
+  function lightenColor(color: string = "#000000", factor: number): string {
     if (!color.startsWith("#")) return color;
     const num = parseInt(color.slice(1), 16),
       r = Math.min(255, Math.floor(((num >> 16) & 0xff) * factor)),
@@ -128,7 +128,7 @@ function USMap({
               strokeWidth={hoveredRoute === route ? 10 : 6} // Slightly larger stroke for outline effect
               stroke={
                 hoveredRoute === route
-                  ? lightenColor(route.color, 1.5)
+                  ? lightenColor(route.color ?? "#000000", 1.5)
                   : "transparent"
               }
               strokeOpacity={hoveredRoute === route ? 1 : 0.8} // Full opacity for the outline
