@@ -11,6 +11,6 @@
     "skipLibCheck": true, // Skip checking library files for faster compilation
     "forceConsistentCasingInFileNames": true // Ensure file name case consistency
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "bable.config.cjs"]
 }
 // basic typescript config json file
