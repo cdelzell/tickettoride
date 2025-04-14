@@ -818,7 +818,9 @@ const MainGamePage = () => {
         ></ActionBox>
 
         <DestinationCardsCarousel
-          destinations={destination_cards}
+          destinations={getDestinationCardPossibilitiesFormatted(
+            gameRunner.getPlayerDestinationCards()
+          )}
         ></DestinationCardsCarousel>
 
         {draw_dest_active && (

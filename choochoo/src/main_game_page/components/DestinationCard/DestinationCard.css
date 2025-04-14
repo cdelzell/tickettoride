@@ -1,3 +1,11 @@
+.carousel_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+}
+
 .image_carousel {
   display: flex;
   flex-direction: column;
@@ -57,5 +65,27 @@
 .carousel_button {
   padding: 0;
   border-radius: 1vw;
+  position: absolute;
+  top: 45%;
   background-color: rgba(255, 255, 255, 0.779);
+}
+
+.left {
+  left: -0.5vw;
+}
+
+.right {
+  right: -0.5vw;
+}
+
+.empty_carousel {
+  width: 12vw;
+  height: 8vw;
+  font-style: italic;
+  background-color: white;
+  border-radius: 0.5vw;
+  display: flex;
+  align-items: center;
+  font-size: 1vw;
+  justify-content: center;
 }

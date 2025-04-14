@@ -8,6 +8,7 @@ function DestinationCardsCarousel({
   destinations: DestinationCardInfo[];
 }) {
   const [index, setIndex] = useState(0);
+  const [pile_empty, setPileEmpty] = useState(true);
 
   const nextImage = () => {
     setIndex((prevIndex) => (prevIndex + 1) % destinations.length);
@@ -19,19 +20,30 @@ function DestinationCardsCarousel({
     );
   };
 
+  if (destinations == null) {
+    setPileEmpty(true);
+  }
+
   return (
-    <div className="image_carousel">
-      <DestinationCard
-        destination={destinations[index].image_path}
-        location="pile"
-      />
-      <div className="button_container">
-        <button onClick={prevImage} className="carousel_button">
-          <img src="./src/assets/arrows/left_arrow.png"></img>
-        </button>
-        <button onClick={nextImage} className="carousel_button">
-          <img src="./src/assets/arrows/right_arrow.png"></img>
-        </button>
+    <div className="carousel_container">
+      <div className="image_carousel">
+        {pile_empty ? (
+          <div className="empty_carousel">no destination cards</div>
+        ) : (
+          <DestinationCard
+            destination={destinations[index].image_path}
+            location="pile"
+          />
+        )}
+
+        <div className="button_container">
+          <button onClick={prevImage} className="carousel_button left">
+            <img src="./src/assets/arrows/left_arrow.png"></img>
+          </button>
+          <button onClick={nextImage} className="carousel_button right">
+            <img src="./src/assets/arrows/right_arrow.png"></img>
+          </button>
+        </div>
       </div>
     </div>
   );

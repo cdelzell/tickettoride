@@ -1,10 +1,10 @@
-import GameBoard from './game-board';
-import Player from './player';
-import User from './user';
-import TrainRoute from './train-route';
-import DestinationCard from './destination-card';
-import { writeGameToDatabase } from '../Firebase/FirebaseWriteGameData';
-import { findGameByGameID } from '../Firebase/FirebaseReadGameData';
+import GameBoard from "./game-board";
+import Player from "./player";
+import User from "./user";
+import TrainRoute from "./train-route";
+import DestinationCard from "./destination-card";
+import { writeGameToDatabase } from "../Firebase/FirebaseWriteGameData";
+import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
 
 const START_TRAIN_CARD_NUM = 4;
 
@@ -160,7 +160,7 @@ class GameRunner {
 
   //This gets the destination cards for the main player
   //Called after a player draws destination cards
-  getPlayerDestinationCards(): string[] {
+  getPlayerDestinationCards(): DestinationCard[] {
     return this.players[this.currentPlayer].getDestinationCardHand();
   }
 
