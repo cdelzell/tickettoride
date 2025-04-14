@@ -306,26 +306,24 @@ describe("MainGamePage Component", () => {
     });
   });
 
-  // test('shows notification when drawing a card', async () => {
-  //   render(
-  //     <BrowserRouter>
-  //       <MainGamePage />
-  //     </BrowserRouter>
-  //   );
-
-  //   // draw train
-  //   fireEvent.click(screen.getByText('Draw Trains'));
-
-  //   // draw card
-  //   const event = new CustomEvent('drawCard');
-  //   window.dispatchEvent(event);
-
-  //   // advance timers
-  //   jest.advanceTimersByTime(0);
-
-  //   // check for notifications
-  //   await waitFor(() => {
-  //     expect(screen.getByText(/You drew a .* train card!/)).toBeInTheDocument();
-  //   });
-  // });
+  test("shows notification when drawing a card", async () => {
+    render(
+      <BrowserRouter>
+        <MainGamePage />
+      </BrowserRouter>
+    );
+  
+    fireEvent.click(screen.getByText("Draw Trains"));
+  
+    const event = new CustomEvent("drawCard");
+    window.dispatchEvent(event);
+  
+    jest.advanceTimersByTime(0);
+  
+    await waitFor(() => {
+      const redCard = screen.getByTestId("train-card-red");
+      expect(redCard).toBeInTheDocument();
+      expect(redCard).toHaveTextContent(/red.*2/i);
+    });
+  });  
 });
