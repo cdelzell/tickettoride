@@ -560,6 +560,7 @@ const MainGamePage = () => {
     const correctly_formatted_cards = [];
 
     for (const destination_card of cards) {
+      if (!destination_card) continue;
       const moreInfo = destination_cards.find(
         (card) =>
           card.destination1 === destination_card.destination1 &&
@@ -573,6 +574,12 @@ const MainGamePage = () => {
 
     return correctly_formatted_cards;
   };
+
+  const [playerDestinationCards, setPlayerDestinationCards] = useState(
+    getDestinationCardPossibilitiesFormatted(
+      gameRunner.getPlayerDestinationCards()
+    )
+  );
 
   const updatePlayerHand = (cards: number[]) => {
     console.log("here");
@@ -815,12 +822,12 @@ const MainGamePage = () => {
           destClickCount={destClickCount}
           setDestClickCount={setDestClickCount}
           handleDrawPileClick={handleDrawPileClick}
+          setPlayerDestCards={setPlayerDestinationCards}
+          formatDestCards={getDestinationCardPossibilitiesFormatted}
         ></ActionBox>
 
         <DestinationCardsCarousel
-          destinations={getDestinationCardPossibilitiesFormatted(
-            gameRunner.getPlayerDestinationCards()
-          )}
+          destinations={playerDestinationCards}
         ></DestinationCardsCarousel>
 
         {draw_dest_active && (

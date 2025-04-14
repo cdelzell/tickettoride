@@ -1,7 +1,6 @@
-import { blue } from "@mui/material/colors";
+import { useState } from "react";
 import { DestinationCard } from "./DestinationCard";
 import "./DestinationCard.css";
-import { useState } from "react";
 import { DestinationCardInfo } from "../../main_game_page";
 
 function DrawDestinationCard({
@@ -18,24 +17,27 @@ function DrawDestinationCard({
   const [clicked3, setClicked3] = useState(false);
 
   const handleClick = (id: string) => {
-    if (id === "1") {
-      clicked1 ? setClicked1(false) : setClicked1(true);
-      clicked1
-        ? drawnDestCards.filter((drawnDestCards) => drawnDestCards !== 1)
-        : drawnDestCards.push(1);
-      setDrawDestCard(drawnDestCards);
-    } else if (id === "2") {
-      clicked2 ? setClicked2(false) : setClicked2(true);
-      clicked2
-        ? drawnDestCards.filter((drawnDestCards) => drawnDestCards !== 2)
-        : drawnDestCards.push(2);
-      setDrawDestCard(drawnDestCards);
+    const cardNum = parseInt(id);
+    let newDrawnCards: number[];
+
+    if (drawnDestCards.includes(cardNum)) {
+      // Remove the card
+      newDrawnCards = drawnDestCards.filter((num) => num !== cardNum);
     } else {
-      clicked3 ? setClicked3(false) : setClicked3(true);
-      clicked3
-        ? drawnDestCards.filter((drawnDestCards) => drawnDestCards !== 3)
-        : drawnDestCards.push(3);
-      setDrawDestCard(drawnDestCards);
+      // Add the card
+      newDrawnCards = [...drawnDestCards, cardNum];
+    }
+
+    // Update the selected card numbers
+    setDrawDestCard(newDrawnCards);
+
+    // Toggle the corresponding clicked state
+    if (id === "1") {
+      setClicked1((prev) => !prev);
+    } else if (id === "2") {
+      setClicked2((prev) => !prev);
+    } else {
+      setClicked3((prev) => !prev);
     }
   };
 
@@ -50,7 +52,7 @@ function DrawDestinationCard({
         <DestinationCard
           destination={destinations[0].image_path}
           location="draw"
-        ></DestinationCard>
+        />
       </button>
       <button
         onClick={() => handleClick("2")}
@@ -61,7 +63,7 @@ function DrawDestinationCard({
         <DestinationCard
           destination={destinations[1].image_path}
           location="draw"
-        ></DestinationCard>
+        />
       </button>
       <button
         onClick={() => handleClick("3")}
@@ -72,7 +74,7 @@ function DrawDestinationCard({
         <DestinationCard
           destination={destinations[2].image_path}
           location="draw"
-        ></DestinationCard>
+        />
       </button>
     </div>
   );

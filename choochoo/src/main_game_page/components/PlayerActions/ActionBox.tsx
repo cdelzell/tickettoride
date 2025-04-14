@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import DrawTrains from "../DrawPile/DrawPile";
 import "./ActionBox.css";
 import GameRunner from "../../../backend/game-runner";
+import DestinationCard from "../../../backend/destination-card";
+import { DestinationCardInfo } from "../../main_game_page";
 
 function ActionBox({
   action,
@@ -18,6 +20,8 @@ function ActionBox({
   destClickCount,
   setDestClickCount,
   handleDrawPileClick,
+  setPlayerDestCards,
+  formatDestCards,
 }: {
   action: number;
   gamerunner: GameRunner;
@@ -33,6 +37,13 @@ function ActionBox({
   destClickCount: number;
   setDestClickCount: (num: number) => void;
   handleDrawPileClick: () => void;
+  setPlayerDestCards: (cards: DestinationCardInfo[]) => void;
+  formatDestCards: (cards: DestinationCard[]) => {
+    destination1: string;
+    destination2: string;
+    points: number;
+    image_path: string;
+  }[];
 }) {
   const [goBack, setGoBack] = useState(false);
   const [actionActive, setActionActive] = useState(true);
@@ -103,6 +114,8 @@ function ActionBox({
           setDestClickCount={setDestClickCount}
           playClickCount={playClickCount}
           destClickCount={destClickCount}
+          setPlayerDestCards={setPlayerDestCards}
+          formatDestCards={formatDestCards}
         />
       ) : (
         <TurnOver />
@@ -141,6 +154,8 @@ function Submit({
   playClickCount,
   destClickCount,
   setDestClickCount,
+  setPlayerDestCards,
+  formatDestCards,
 }: {
   gamerunner: GameRunner;
   drawnDestCards: number[];
@@ -149,12 +164,22 @@ function Submit({
   playClickCount: number;
   destClickCount: number;
   setDestClickCount: (num: number) => void;
+  setPlayerDestCards: (cards: DestinationCardInfo[]) => void;
+  formatDestCards: (cards: DestinationCard[]) => {
+    destination1: string;
+    destination2: string;
+    points: number;
+    image_path: string;
+  }[];
 }) {
   const handleClick = () => {
     if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
       setDestClickCount(destClickCount + 1);
       gamerunner.claimDestinationCards(drawnDestCards);
       updateDrawDest(false);
+      setPlayerDestCards(
+        formatDestCards(gamerunner.getPlayerDestinationCards())
+      );
     }
   };
 

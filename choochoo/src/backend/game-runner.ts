@@ -130,6 +130,8 @@ class GameRunner {
 
     //Empty out the temporary draw pile
     this.destinationCardsToDraw = [];
+
+    console.log(this.destinationCardsToDraw);
   }
 
   //Updates the current player once a turn ends
