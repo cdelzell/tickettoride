@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./DestinationCard.css";
 import { DestinationCardInfo } from "../../main_game_page";
 
@@ -10,6 +10,14 @@ function DestinationCardsCarousel({
   const [index, setIndex] = useState(0);
   const [pile_empty, setPileEmpty] = useState(true);
 
+  useEffect(() => {
+    if (destinations.length != 0) {
+      setPileEmpty(false);
+    } else {
+      setPileEmpty(true);
+    }
+  });
+
   const nextImage = () => {
     setIndex((prevIndex) => (prevIndex + 1) % destinations.length);
   };
@@ -19,10 +27,6 @@ function DestinationCardsCarousel({
       (prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length
     );
   };
-
-  if (destinations == null) {
-    setPileEmpty(true);
-  }
 
   return (
     <div className="carousel_container">
