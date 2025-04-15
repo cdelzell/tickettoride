@@ -57,6 +57,7 @@ class Player {
         usedTrainCardColors.push('Wild');
       }
     }
+    this.trainAmount -= route.getLength(); 
     this.scoredPoints += route.getPointValue();
     return usedTrainCardColors;
   }

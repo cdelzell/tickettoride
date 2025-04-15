@@ -77,6 +77,7 @@ export interface Route {
   game_color: string;
   trains: number;
   claimer?: string | null;
+  claimerProfilePic?: string | null;
   routeIndex?: number; // to help backend
 }
 
@@ -496,102 +497,39 @@ const MainGamePage = () => {
     }
   };
 
-  // const handleRouteClaim = (route: Route) => {
-  //   const trainCard = trainCards.find(
-  //     (card) => card.game_color === route.game_color
-  //   );
-  //   const wildCard = trainCards.find((card) => card.game_color === "wild");
-
-  //   if (
-  //     action_box_status === 2 &&
-  //     trainCard &&
-  //     wildCard &&
-  //     trainCard.count + wildCard.count >= route.trains &&
-  //     trains >= route.trains &&
-  //     drawClickCount == 0 &&
-  //     destClickCount == 0 &&
-  //     playClickCount == 0
-  //   ) {
-  //     // // Deduct train cards when claiming a route
-  //     // updateTrainCardCount(route.game_color!, -route.trains);
-  //     // setTrains(trains - route.trains);
-  //     // setPlayClickCount(playClickCount + 1);
-  //     // if (
-  //     //   route.trains > trainCard.count &&
-  //     //   trainCard.count + wildCard.count >= route.trains
-  //     // ) {
-  //     //   updateTrainCardCount(route.game_color!, -trainCard.count);
-  //     //   updateTrainCardCount("wild", -(route.trains - trainCard.count));
-  //     //   setPlayClickCount(playClickCount + 1);
-  //     // }
-
-  //     // // Update the claimed routes
-  //     // setGameRoutes((prevRoutes) =>
-  //     //   prevRoutes.map((r) =>
-  //     //     action_box_status === 2 &&
-  //     //     r.source.name === route.source.name &&
-  //     //     r.target.name === route.target.name
-  //     //       ? { ...r, claimer: main_player.username }
-  //     //       : r
-  //     //   )
-  //     // );
-  //     // return true;
-  //   // } else {
-  //   //   return false;
-  //   const success = gameRunnerInstance.claimRoute(route);
-
-  //   }
-  // };
-
   const handleRouteClaim = (route: Route) => {
+    console.log("Attempting to claim route:", route);
+    console.log("Current state:", {
+      action_box_status,
+      drawClickCount,
+      destClickCount,
+      playClickCount
+    });
+    
     if (
-      action_box_status === 2 &&
+      action_box_status === 2 && 
       drawClickCount === 0 &&
       destClickCount === 0 &&
       playClickCount === 0
     ) {
-      const success = gameRunnerInstance.claimRoute(route.routeIndex ?? 0); // default to 0 if undefined
-
-    
-      if (route.routeIndex !== undefined) {
-        const success = gameRunnerInstance.claimRoute(route.routeIndex);
-      } else {
-        console.error("routeIndex is undefined");
+      if (route.routeIndex === undefined) {
+        console.error("Route index is undefined, cannot claim route");
+        return false;
       }
-
+  
+      console.log("Calling gameRunnerInstance.claimRoute with index:", route.routeIndex);
+      const success = gameRunnerInstance.claimRoute(route.routeIndex);
+      console.log("Claim result:", success);
+  
       if (success) {
-        // Update train cards and trains locally from backend state
-        updatePlayerHand(); // re-fetch updated hand from gameRunner
-        setTrains(
-          gameRunnerInstance.players[
-            gameRunnerInstance.currentPlayer
-          ].getTrainAmount()
-        );
-
-        // Optional: could setPlayClickCount in backend or here
-        setPlayClickCount((prev) => prev + 1);
-
-        // Update the claimed routes with the claimer's username
-        setGameRoutes((prevRoutes) =>
-          prevRoutes.map((r) =>
-            r.source.name === route.source.name &&
-            r.target.name === route.target.name
-              ? {
-                  ...r,
-                  claimer:
-                    gameRunnerInstance.players[
-                      gameRunnerInstance.currentPlayer
-                    ].getUsername(),
-                }
-              : r
-          )
-        );
+        // The rest of your code...
         return true;
       } else {
-        console.log("Route claim failed: invalid conditions");
+        console.log("Failed to claim route: insufficient cards or trains");
         return false;
       }
     } else {
+      console.log("Failed precondition checks. Cannot claim route at this time.");
       return false;
     }
   };
@@ -606,7 +544,6 @@ const MainGamePage = () => {
     }
   };
 
-  // Draw train card from deck using backend
   const drawTrainCardFromDeck = () => {
     if (
       action_box_status === 1 &&

@@ -96,7 +96,7 @@ class GameRunner {
   claimRoute(route: number): boolean {
     let player = this.players[this.currentPlayer];
     let routeObj = this.gameBoard.getRouteByIndex(route);
-    if (player.checkIfCanClaimRoute(routeObj)) {
+    if (player.checkIfCanClaimRoute(routeObj) && player.getTrainAmount() >= routeObj.getLength()) { // addec check for trains AND cards
       let usedCards = player.claimRoute(routeObj);
       routeObj.claimRoute(player.getId());
       this.gameBoard.addDiscardsFromUsedTrainCards(usedCards);
