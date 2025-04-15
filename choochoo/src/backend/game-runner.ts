@@ -82,6 +82,7 @@ class GameRunner {
   drawTrainCardsFromDeck() {
     let card = this.gameBoard.drawSingleTrainCard();
     this.players[this.currentPlayer].addTrainCardToHand(card);
+    return card;
   }
 
   //Called when a faceup card is clicked

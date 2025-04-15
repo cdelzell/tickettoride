@@ -582,24 +582,20 @@ const MainGamePage = () => {
       playClickCount === 0 &&
       destClickCount === 0
     ) {
-      //  backend method to draw card
-      gameRunnerInstance.drawTrainCardsFromDeck();
-
-      // train card counts
-      updatePlayerHand();
-
-      const faceupCards = gameRunnerInstance.getFaceupTrainCards();
-      const drawnColor = faceupCards[faceupCards.length - 1] || "unknown";
-      setDrawnCard(drawnColor);
+      const drawnColor = gameRunnerInstance.drawTrainCardsFromDeck(); // returns the drawn card
+      
+      updatePlayerHand(); // updates your state with the new hand
+      setDrawnCard(drawnColor.getColor()); // use the returned card instead of guessing from face-up cards
+  
       setShowCardNotification(true);
-
       setTimeout(() => {
         setShowCardNotification(false);
       }, 3000);
-
+  
       setDrawClickCount((prev) => prev + 1);
     }
   };
+  
 
   const handleEndTurn = () => {
     setDrawClickCount(0);
