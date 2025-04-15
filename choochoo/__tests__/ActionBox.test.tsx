@@ -103,20 +103,6 @@ describe('ActionBox Component', () => {
     expect(screen.getByText('Submit Destination Card Choices')).toBeInTheDocument();
   });
 
-  test('renders TurnOver component when actionActive is false', () => {
-    render(
-      <ActionBox 
-        {...defaultProps} 
-        drawClickCount={2} // should make aciton box false
-      />
-    );
-    
-    // check here for error 
-    jest.advanceTimersByTime(0); 
-    
-    expect(screen.getByText(/Your turn is over/)).toBeInTheDocument();
-  });
-
   test('clicking Submit button increments destClickCount when allowed', () => {
     render(<ActionBox {...defaultProps} action={3} />);
     

@@ -1,5 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+// import { act } from 'react-dom/test-utils';
 import "@testing-library/jest-dom";
 import MainGamePage from "../src/main_game_page/main_game_page";
 import { BrowserRouter } from "react-router-dom";
@@ -229,44 +230,26 @@ describe("MainGamePage Component", () => {
   //       <MainGamePage />
   //     </BrowserRouter>
   //   );
-  //   expect(screen.queryByText('End Turn')).not.toBeInTheDocument();
-
+  
+  //   expect(screen.queryByText(/end turn/i)).not.toBeInTheDocument();
+  
   //   fireEvent.click(screen.getByText('Draw Trains'));
-
-  //   const event = new CustomEvent('drawCard');
-  //   window.dispatchEvent(event);
-  //   window.dispatchEvent(event);
-
+  
+  //   act(() => {
+  //     const event = new CustomEvent('drawCard');
+  //     window.dispatchEvent(event);
+  //     window.dispatchEvent(event);
+  //   });
+  
   //   jest.advanceTimersByTime(0);
+  
+  //   screen.debug(); 
 
   //   await waitFor(() => {
-  //     expect(screen.getByText('End Turn')).toBeInTheDocument();
+  //     expect(screen.getByText(/end turn/i)).toBeInTheDocument();
   //   });
   // });
-
-  // test('clicking end turn button resets turn state', async () => {
-  //   render(
-  //     <BrowserRouter>
-  //       <MainGamePage />
-  //     </BrowserRouter>
-  //   );
-
-  //   fireEvent.click(screen.getByText('Draw Trains'));
-
-  //   const event = new CustomEvent('drawCard');
-  //   window.dispatchEvent(event);
-  //   window.dispatchEvent(event);
-
-  //   jest.advanceTimersByTime(0);
-
-  //   await waitFor(() => {
-  //     const endTurnButton = screen.getByText('End Turn');
-  //     expect(endTurnButton).toBeInTheDocument();
-  //     fireEvent.click(endTurnButton);
-  //   });
-
-  //   expect(screen.queryByText('End Turn')).not.toBeInTheDocument();
-  // });
+  
 
   test("shows draw destination card component when activated", () => {
     render(
@@ -306,26 +289,24 @@ describe("MainGamePage Component", () => {
     });
   });
 
-  // test('shows notification when drawing a card', async () => {
-  //   render(
-  //     <BrowserRouter>
-  //       <MainGamePage />
-  //     </BrowserRouter>
-  //   );
-
-  //   // draw train
-  //   fireEvent.click(screen.getByText('Draw Trains'));
-
-  //   // draw card
-  //   const event = new CustomEvent('drawCard');
-  //   window.dispatchEvent(event);
-
-  //   // advance timers
-  //   jest.advanceTimersByTime(0);
-
-  //   // check for notifications
-  //   await waitFor(() => {
-  //     expect(screen.getByText(/You drew a .* train card!/)).toBeInTheDocument();
-  //   });
-  // });
+  test("shows notification when drawing a card", async () => {
+    render(
+      <BrowserRouter>
+        <MainGamePage />
+      </BrowserRouter>
+    );
+  
+    fireEvent.click(screen.getByText("Draw Trains"));
+  
+    const event = new CustomEvent("drawCard");
+    window.dispatchEvent(event);
+  
+    jest.advanceTimersByTime(0);
+  
+    await waitFor(() => {
+      const redCard = screen.getByTestId("train-card-red");
+      expect(redCard).toBeInTheDocument();
+      expect(redCard).toHaveTextContent(/red.*2/i);
+    });
+  });  
 });
