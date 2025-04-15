@@ -520,7 +520,7 @@ const MainGamePage = () => {
   const [trains, setTrains] = useState(25);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
-  const [drawnDestCards, setDrawDestCard] = useState<number[]>([]);
+  const [drawnDestCards, setDrawDestCard] = useState<DestinationCard[]>([]);
   const [drawClickCount, setDrawClickCount] = useState(0);
   const [playClickCount, setPlayClickCount] = useState(0);
   const [destClickCount, setDestClickCount] = useState(0);
@@ -725,6 +725,7 @@ const MainGamePage = () => {
     setActionBoxStatus(0);
     setActiveTrains(false);
     setShowCardNotification(false);
+    setDrawDestActive(false);
     //have function that updates the map for the gamerunner
 
     // move to the next array in cycle
@@ -812,6 +813,7 @@ const MainGamePage = () => {
           gamerunner={gameRunner}
           drawnDestCards={drawnDestCards}
           updateStatus={updateStatus}
+          drawDestActive={draw_dest_active}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
           updateFaceUp={updateActionCardStatus}

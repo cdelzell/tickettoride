@@ -99,11 +99,7 @@ class Player {
   }
 
   getDestinationCardHand(): DestinationCard[] {
-    let returnArray: DestinationCard[] = [];
-    for (const card in this.destinationCardHand) {
-      returnArray.push(this.destinationCardHand[card]);
-    }
-    return returnArray;
+    return this.destinationCardHand.map((card) => ({ ...card }));
   }
 }
 

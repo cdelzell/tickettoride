@@ -10,6 +10,7 @@ function ActionBox({
   gamerunner,
   drawnDestCards,
   updateStatus,
+  drawDestActive,
   updateDrawDest,
   updateTrains,
   updateFaceUp,
@@ -25,8 +26,9 @@ function ActionBox({
 }: {
   action: number;
   gamerunner: GameRunner;
-  drawnDestCards: number[];
+  drawnDestCards: DestinationCard[];
   updateStatus: (newStatus: number) => void;
+  drawDestActive: boolean;
   updateDrawDest: (newStatus: boolean) => void;
   updateTrains: (color: string, amount: number) => void;
   updateFaceUp: (active: boolean) => void;
@@ -68,7 +70,7 @@ function ActionBox({
       updateFaceUp(true);
     } else if (action === 2) {
       setGoBack(true);
-    } else if (action === 3) {
+    } else if (action === 3 && destClickCount === 0) {
       setGoBack(true);
       updateDrawDest(true);
     }
@@ -158,7 +160,7 @@ function Submit({
   formatDestCards,
 }: {
   gamerunner: GameRunner;
-  drawnDestCards: number[];
+  drawnDestCards: DestinationCard[];
   updateDrawDest: (state: boolean) => void;
   drawClickCount: number;
   playClickCount: number;
@@ -174,9 +176,11 @@ function Submit({
 }) {
   const handleClick = () => {
     if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
+      updateDrawDest(false);
+
       setDestClickCount(destClickCount + 1);
       gamerunner.claimDestinationCards(drawnDestCards);
-      updateDrawDest(false);
+
       setPlayerDestCards(
         formatDestCards(gamerunner.getPlayerDestinationCards())
       );

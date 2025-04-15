@@ -116,22 +116,27 @@ class GameRunner {
     return this.destinationCardsToDraw;
   }
 
-  claimDestinationCards(indices: number[]) {
-    //Adds cards back to player and removes them from here.
-    for (const index of indices) {
-      this.players[this.currentPlayer].destinationCardHand.push(
-        this.destinationCardsToDraw[index]
-      );
-      this.destinationCardsToDraw.splice(index, 1);
+  claimDestinationCards(cards: DestinationCard[]) {
+    // Move selected cards to player's hand
+    for (const card of cards) {
+      this.players[this.currentPlayer].destinationCardHand.push(card);
     }
 
-    //Let gameboard handle adding cards back
+    // Remove chosen cards from draw pile
+    this.destinationCardsToDraw = this.destinationCardsToDraw.filter(
+      (drawCard) =>
+        !cards.some(
+          (selectedCard) =>
+            selectedCard.destination1 === drawCard.destination1 &&
+            selectedCard.destination2 === drawCard.destination2
+        )
+    );
+
+    // Add any unchosen cards back to game board
     this.gameBoard.addBackDestinationCards(this.destinationCardsToDraw);
 
-    //Empty out the temporary draw pile
+    // Clear temporary draw pile
     this.destinationCardsToDraw = [];
-
-    console.log(this.destinationCardsToDraw);
   }
 
   //Updates the current player once a turn ends
