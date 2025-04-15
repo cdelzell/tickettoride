@@ -413,8 +413,8 @@ const MainGamePage = () => {
   const height = window.innerHeight;
 
   const navigate = useNavigate();
-  const { state } = useLocation(); // Use location to get the state passed from navigate
-  const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
+  const { state } = useLocation(); 
+  const { userKey, userProfile } = state || {}; 
   const { username, wins, total_score, profile_picture } = userProfile || {};
   const [gameRunnerInstance, setGameRunnerInstance] = useState(() => {
     const users = [new User(username || "Default")];
@@ -468,7 +468,7 @@ const MainGamePage = () => {
 
   const updatePlayerHand = () => {
     const newCounts = gameRunnerInstance.getMainPlayerTrainCards();
-  
+
     setTrainCards((prevCards) =>
       prevCards.map((card, i) => ({
         ...card,
@@ -476,29 +476,6 @@ const MainGamePage = () => {
       }))
     );
   };
-
-  // CHECK HERE
-  // const drawRandomTrainCard = () => {
-  //   if (action_box_status === 1 && drawClickCount < 2 && playClickCount === 0 && destClickCount === 0) {
-  //     // call backend method
-  //     gameRunner.drawTrainCardsFromDeck();
-
-  //     // latest train card counts
-  //     updatePlayerHand();
-
-  //     // notification
-  //     const faceupCards = gameRunner.getFaceupTrainCards();
-  //     const drawnColor = faceupCards[faceupCards.length - 1] || "unknown";
-  //     setDrawnCard(drawnColor);
-  //     setShowCardNotification(true);
-
-  //     setTimeout(() => {
-  //       setShowCardNotification(false);
-  //     }, 3000);
-
-  //     setDrawClickCount(prev => prev + 1);
-  //   }
-  // };
 
   useEffect(() => {
     const handleDrawCardEvent = () => {
@@ -519,46 +496,101 @@ const MainGamePage = () => {
     }
   };
 
-  const handleRouteClaim = (route: Route) => {
-    const trainCard = trainCards.find(
-      (card) => card.game_color === route.game_color
-    );
-    const wildCard = trainCards.find((card) => card.game_color === "wild");
+  // const handleRouteClaim = (route: Route) => {
+  //   const trainCard = trainCards.find(
+  //     (card) => card.game_color === route.game_color
+  //   );
+  //   const wildCard = trainCards.find((card) => card.game_color === "wild");
 
+  //   if (
+  //     action_box_status === 2 &&
+  //     trainCard &&
+  //     wildCard &&
+  //     trainCard.count + wildCard.count >= route.trains &&
+  //     trains >= route.trains &&
+  //     drawClickCount == 0 &&
+  //     destClickCount == 0 &&
+  //     playClickCount == 0
+  //   ) {
+  //     // // Deduct train cards when claiming a route
+  //     // updateTrainCardCount(route.game_color!, -route.trains);
+  //     // setTrains(trains - route.trains);
+  //     // setPlayClickCount(playClickCount + 1);
+  //     // if (
+  //     //   route.trains > trainCard.count &&
+  //     //   trainCard.count + wildCard.count >= route.trains
+  //     // ) {
+  //     //   updateTrainCardCount(route.game_color!, -trainCard.count);
+  //     //   updateTrainCardCount("wild", -(route.trains - trainCard.count));
+  //     //   setPlayClickCount(playClickCount + 1);
+  //     // }
+
+  //     // // Update the claimed routes
+  //     // setGameRoutes((prevRoutes) =>
+  //     //   prevRoutes.map((r) =>
+  //     //     action_box_status === 2 &&
+  //     //     r.source.name === route.source.name &&
+  //     //     r.target.name === route.target.name
+  //     //       ? { ...r, claimer: main_player.username }
+  //     //       : r
+  //     //   )
+  //     // );
+  //     // return true;
+  //   // } else {
+  //   //   return false;
+  //   const success = gameRunnerInstance.claimRoute(route);
+
+  //   }
+  // };
+
+  const handleRouteClaim = (route: Route) => {
     if (
       action_box_status === 2 &&
-      trainCard &&
-      wildCard &&
-      trainCard.count + wildCard.count >= route.trains &&
-      trains >= route.trains &&
-      drawClickCount == 0 &&
-      destClickCount == 0 &&
-      playClickCount == 0
+      drawClickCount === 0 &&
+      destClickCount === 0 &&
+      playClickCount === 0
     ) {
-      // Deduct train cards when claiming a route
-      updateTrainCardCount(route.game_color!, -route.trains);
-      setTrains(trains - route.trains);
-      setPlayClickCount(playClickCount + 1);
-      if (
-        route.trains > trainCard.count &&
-        trainCard.count + wildCard.count >= route.trains
-      ) {
-        updateTrainCardCount(route.game_color!, -trainCard.count);
-        updateTrainCardCount("wild", -(route.trains - trainCard.count));
-        setPlayClickCount(playClickCount + 1);
+      const success = gameRunnerInstance.claimRoute(route.routeIndex ?? 0); // default to 0 if undefined
+
+    
+      if (route.routeIndex !== undefined) {
+        const success = gameRunnerInstance.claimRoute(route.routeIndex);
+      } else {
+        console.error("routeIndex is undefined");
       }
 
-      // Update the claimed routes
-      setGameRoutes((prevRoutes) =>
-        prevRoutes.map((r) =>
-          action_box_status === 2 &&
-          r.source.name === route.source.name &&
-          r.target.name === route.target.name
-            ? { ...r, claimer: main_player.username }
-            : r
-        )
-      );
-      return true;
+      if (success) {
+        // Update train cards and trains locally from backend state
+        updatePlayerHand(); // re-fetch updated hand from gameRunner
+        setTrains(
+          gameRunnerInstance.players[
+            gameRunnerInstance.currentPlayer
+          ].getTrainAmount()
+        );
+
+        // Optional: could setPlayClickCount in backend or here
+        setPlayClickCount((prev) => prev + 1);
+
+        // Update the claimed routes with the claimer's username
+        setGameRoutes((prevRoutes) =>
+          prevRoutes.map((r) =>
+            r.source.name === route.source.name &&
+            r.target.name === route.target.name
+              ? {
+                  ...r,
+                  claimer:
+                    gameRunnerInstance.players[
+                      gameRunnerInstance.currentPlayer
+                    ].getUsername(),
+                }
+              : r
+          )
+        );
+        return true;
+      } else {
+        console.log("Route claim failed: invalid conditions");
+        return false;
+      }
     } else {
       return false;
     }
@@ -583,19 +615,18 @@ const MainGamePage = () => {
       destClickCount === 0
     ) {
       const drawnColor = gameRunnerInstance.drawTrainCardsFromDeck(); // returns the drawn card
-      
+
       updatePlayerHand(); // updates your state with the new hand
       setDrawnCard(drawnColor.getColor()); // use the returned card instead of guessing from face-up cards
-  
+
       setShowCardNotification(true);
       setTimeout(() => {
         setShowCardNotification(false);
       }, 3000);
-  
+
       setDrawClickCount((prev) => prev + 1);
     }
   };
-  
 
   const handleEndTurn = () => {
     setDrawClickCount(0);

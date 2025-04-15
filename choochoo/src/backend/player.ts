@@ -61,6 +61,8 @@ class Player {
     return usedTrainCardColors;
   }
 
+  
+
   private setStarterTrainCards(
     trainCards: TrainCard[]
   ): Record<string, number> {
