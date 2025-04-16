@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import { Graph } from "@visx/network";
+
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
 import GameRunner from "../backend/game-runner";
@@ -13,6 +14,11 @@ import ActionBox from "./components/PlayerActions/ActionBox";
 import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
 import { useLocation, useNavigate } from "react-router-dom";
+import DestinationCard from "../backend/destination-card";
+import train_cards from "./constants/train_cards";
+import destination_cards from "./constants/destination_cards";
+import cities from "./constants/cities";
+import routes from "./constants/routes";
 
 // this works with typescript so had to change file
 
@@ -50,18 +56,6 @@ const main_player = {
   profilePic: "./src/assets/trains/thomas_train.jpg",
 };
 
-const train_cards = [
-  { color: "./src/assets/cards/red.png", game_color: "red" },
-  { color: "./src/assets/cards/yellow.png", game_color: "yellow" },
-  { color: "./src/assets/cards/black.png", game_color: "black" },
-  { color: "./src/assets/cards/green.png", game_color: "green" },
-  { color: "./src/assets/cards/purple.png", game_color: "purple" },
-  { color: "./src/assets/cards/blue.png", game_color: "blue" },
-  { color: "./src/assets/cards/brown.png", game_color: "brown" },
-  { color: "./src/assets/cards/white.png", game_color: "white" },
-  { color: "./src/assets/cards/wild.png", game_color: "wild" },
-];
-
 export interface City {
   name: string;
   x: number;
@@ -79,288 +73,12 @@ export interface Route {
   claimer?: string | null;
 }
 
-const destination_cards = [
-  "alb_miami",
-  "alb_tyville",
-  "chicago_miami",
-  "chicago_phoenix",
-  "clara_houston",
-  "clara_la",
-  "clara_ny",
-  "denver_palo",
-  "firestone_phoenix",
-  "firestone_riddhi",
-  "miami_riddhi",
-  "ny_houston",
-  "ny_oklahoma",
-  "ny_tyville",
-  "palo_la",
-  "palo_phoenix",
-  "seattle_alb",
-  "seattle_houston",
-  "tyville_palo",
-  "tyville_phoenix",
-  "tyville_wash",
-  "wash_denver",
-];
-
-const cities: City[] = [
-  { name: "New York", x: 504, y: 133 + 20 }, // 0
-  { name: "Chicago", x: 382, y: 130 + 20 }, // 1
-  { name: "Denver", x: 230, y: 165 + 20 }, // 2
-  { name: "Los Angeles", x: 89, y: 192 + 20 }, // 3
-  { name: "Tyville", x: 175, y: 100 + 20 }, // 4
-  { name: "Clara City", x: 270, y: 70 + 20 }, // 5
-  { name: "Palo Noah", x: 430, y: 230 + 20 }, // 6
-  { name: "Riddhi Rapids", x: 76, y: 100 + 20 }, // 7
-  { name: "Firestone Rouge", x: 340, y: 175 + 20 }, // 8
-  { name: "Seattle", x: 110, y: 35 + 20 }, // 9
-  { name: "Miami", x: 475, y: 305 + 20 }, // 10
-  { name: "Phoenix", x: 165, y: 220 + 20 }, // 11
-  { name: "Houston", x: 315, y: 280 + 20 }, // 12
-  { name: "Washington", x: 485, y: 172 + 20 }, // 13
-  { name: "Oklahoma City", x: 300, y: 213 + 20 }, // 14
-  { name: "Albuquerque", x: 220, y: 212 + 20 }, // 15
-];
-
-// 29 routes
-
-const routes: Route[] = [
-  {
-    source: cities[0],
-    target: cities[1],
-    dashed: true,
-    color: "#b03517",
-    game_color: "red",
-    trains: 4,
-  },
-  {
-    source: cities[1],
-    target: cities[6],
-    dashed: true,
-    color: "#e6c10e",
-    game_color: "yellow",
-    trains: 3,
-  },
-  {
-    source: cities[1],
-    target: cities[5],
-    dashed: true,
-    color: "#1e1b1c",
-    game_color: "black",
-    trains: 5,
-  },
-  {
-    source: cities[0],
-    target: cities[13],
-    dashed: true,
-    color: "#72922e",
-    game_color: "green",
-    trains: 1,
-  },
-  {
-    source: cities[1],
-    target: cities[8],
-    dashed: true,
-    color: "#a77daf",
-    game_color: "purple",
-    trains: 2,
-  },
-  {
-    source: cities[5],
-    target: cities[8],
-    dashed: true,
-    color: "#519bdb",
-    game_color: "blue",
-    trains: 4,
-  },
-  {
-    source: cities[7],
-    target: cities[3],
-    dashed: true,
-    color: "#519bdb",
-    game_color: "blue",
-    trains: 3,
-  }, // riddhi rapids to LA
-  {
-    source: cities[7],
-    target: cities[4],
-    dashed: true,
-    color: "#c18135",
-    game_color: "brown",
-    trains: 3,
-  }, // riddhi rapids to tyville
-
-  {
-    source: cities[4],
-    target: cities[5],
-    dashed: true,
-    color: "#e6e5e3",
-    game_color: "white",
-
-    trains: 3,
-  }, // ty ville to clara city
-  {
-    source: cities[2],
-    target: cities[5],
-    dashed: true,
-    color: "#b03517",
-    game_color: "red",
-    trains: 3,
-  }, // denver to clara city
-  {
-    source: cities[3],
-    target: cities[2],
-    dashed: true,
-    color: "#e6c10e",
-    game_color: "yellow",
-    trains: 4,
-  }, // LA to denver
-  {
-    source: cities[4],
-    target: cities[2],
-    dashed: true,
-    color: "#1e1b1c",
-    game_color: "black",
-    trains: 3,
-  }, // tyville to denver
-  {
-    source: cities[3],
-    target: cities[8],
-    dashed: true,
-    color: "#72922e",
-    game_color: "green",
-    trains: 6,
-  }, // LA to firestone rouge
-  {
-    source: cities[2],
-    target: cities[8],
-    dashed: true,
-    color: "#a77daf",
-    game_color: "purple",
-    trains: 4,
-  },
-  {
-    source: cities[6],
-    target: cities[8],
-    dashed: true,
-    color: "#519bdb",
-    game_color: "blue",
-    trains: 5,
-  }, // palo noah to firestone rouge
-  {
-    source: cities[14],
-    target: cities[12],
-    dashed: true,
-    color: "#c18135",
-    game_color: "brown",
-    trains: 2,
-  },
-  {
-    source: cities[11],
-    target: cities[12],
-    dashed: true,
-    color: "#e6e5e3",
-    game_color: "white",
-    trains: 5,
-  }, // phoenix to houston
-  {
-    source: cities[11],
-    target: cities[3],
-    dashed: true,
-    color: "#b03517",
-    game_color: "red",
-    trains: 2,
-  },
-  {
-    source: cities[11],
-    target: cities[15],
-    dashed: true,
-    color: "#e6c10e",
-    game_color: "yellow",
-    trains: 1,
-  },
-  {
-    source: cities[8],
-    target: cities[14],
-    dashed: true,
-    color: "#1e1b1c",
-    game_color: "black",
-    trains: 1,
-  },
-  {
-    source: cities[7],
-    target: cities[9],
-    dashed: true,
-    color: "#72922e",
-    game_color: "green",
-    trains: 3,
-  }, // rr to seattle
-  {
-    source: cities[5],
-    target: cities[9],
-    dashed: true,
-    color: "#a77daf",
-    game_color: "purple",
-    trains: 6,
-  }, // cc to seattle
-  {
-    source: cities[6],
-    target: cities[10],
-    dashed: true,
-    color: "#519bdb",
-    game_color: "blue",
-    trains: 4,
-  }, // pn to miami
-  {
-    source: cities[1],
-    target: cities[13],
-    dashed: true,
-    color: "#c18135",
-    game_color: "brown",
-    trains: 4,
-  }, //chicago to washington
-  {
-    source: cities[6],
-    target: cities[13],
-    dashed: true,
-    color: "#e6e5e3",
-    game_color: "white",
-    trains: 4,
-  }, //palo noah to washington
-  {
-    source: cities[6],
-    target: cities[12],
-    dashed: true,
-    color: "#b03517",
-    game_color: "red",
-    trains: 5,
-  }, //palo noah to houston
-  {
-    source: cities[15],
-    target: cities[12],
-    dashed: true,
-    color: "#e6c10e",
-    game_color: "yellow",
-    trains: 5,
-  }, //ALB to houston
-  {
-    source: cities[15],
-    target: cities[14],
-    dashed: true,
-    color: "#1e1b1c",
-    game_color: "black",
-    trains: 3,
-  }, //ALB to OC
-  {
-    source: cities[6],
-    target: cities[14],
-    dashed: true,
-    color: "#72922e",
-    game_color: "green",
-    trains: 5,
-  }, //palo noah to oc
-];
+export interface DestinationCardInfo {
+  destination1: string;
+  destination2: string;
+  points: number;
+  image_path: string;
+}
 
 export const background = "#d3d3d3";
 
@@ -396,6 +114,7 @@ const MainGamePage = () => {
   const [trains, setTrains] = useState(25);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
+  const [drawnDestCards, setDrawDestCard] = useState<DestinationCard[]>([]);
   const [drawClickCount, setDrawClickCount] = useState(0);
   const [playClickCount, setPlayClickCount] = useState(0);
   const [destClickCount, setDestClickCount] = useState(0);
@@ -403,6 +122,10 @@ const MainGamePage = () => {
   const [currentPlayer, setCurrentPlayer] = useState(0); // index of current player
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
+
+  const [destinationCardPoss, setDestinationCardPoss] = useState(
+    gameRunner.getDestinationCardPossibilities()
+  );
 
   //make useeffect for currentplayer, should get all new info from the gamerunner when current player changes
   //make useeffect for gameover, end game
@@ -425,14 +148,39 @@ const MainGamePage = () => {
     );
   };
 
+  const getDestinationCardPossibilitiesFormatted = (
+    cards: DestinationCard[]
+  ) => {
+    const correctly_formatted_cards = [];
+
+    for (const destination_card of cards) {
+      if (!destination_card) continue;
+      const moreInfo = destination_cards.find(
+        (card) =>
+          card.destination1 === destination_card.destination1 &&
+          card.destination2 === destination_card.destination2
+      );
+
+      if (moreInfo) {
+        correctly_formatted_cards.push(moreInfo);
+      }
+    }
+
+    return correctly_formatted_cards;
+  };
+
+  const [playerDestinationCards, setPlayerDestinationCards] = useState(
+    getDestinationCardPossibilitiesFormatted(
+      gameRunner.getPlayerDestinationCards()
+    )
+  );
+
   const updatePlayerHand = (cards: number[]) => {
     console.log("here");
     const trains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
-
-    console.log(trains);
 
     setTrainCards(trains);
   };
@@ -569,6 +317,7 @@ const MainGamePage = () => {
     setActionBoxStatus(0);
     setActiveTrains(false);
     setShowCardNotification(false);
+    setDrawDestActive(false);
     //have function that updates the map for the gamerunner
 
     // move to the next array in cycle
@@ -653,7 +402,10 @@ const MainGamePage = () => {
       <div className="player_actions">
         <ActionBox
           action={action_box_status}
+          gamerunner={gameRunner}
+          drawnDestCards={drawnDestCards}
           updateStatus={updateStatus}
+          drawDestActive={draw_dest_active}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
           updateFaceUp={updateActionCardStatus}
@@ -664,16 +416,22 @@ const MainGamePage = () => {
           destClickCount={destClickCount}
           setDestClickCount={setDestClickCount}
           handleDrawPileClick={handleDrawPileClick}
+          setPlayerDestCards={setPlayerDestinationCards}
+          formatDestCards={getDestinationCardPossibilitiesFormatted}
         ></ActionBox>
 
         <DestinationCardsCarousel
-          destinations={destination_cards}
+          destinations={playerDestinationCards}
         ></DestinationCardsCarousel>
 
         {draw_dest_active && (
           <DrawDestinationCard
             //call the backend method here to get the destination cards
-            destinations={["alb_miami", "alb_tyville", "chicago_miami"]}
+            destinations={getDestinationCardPossibilitiesFormatted(
+              destinationCardPoss
+            )}
+            drawnDestCards={drawnDestCards}
+            setDrawDestCard={setDrawDestCard}
           ></DrawDestinationCard>
         )}
 

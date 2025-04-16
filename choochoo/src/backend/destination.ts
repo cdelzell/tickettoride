@@ -1,15 +1,16 @@
-
 class Destination {
-    id: string;
-    name: string;
-    x: number;
-    y: number;
-    constructor(id: string, name: string, x: number, y: number) {
-        this.id = id;
-        this.name = name;
-        this.x = x;
-        this.y = y;
-    }
+  name: string;
+  x: number;
+  y: number;
+  constructor(name: string, x: number, y: number) {
+    this.name = name;
+    this.x = x;
+    this.y = y;
+  }
+
+  getName() {
+    return this.name;
+  }
 }
 
 export default Destination;
