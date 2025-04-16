@@ -95,6 +95,10 @@ class GameRunner {
   claimRoute(route: number): boolean {
     let player = this.players[this.currentPlayer];
     let routeObj = this.gameBoard.getRouteByIndex(route);
+    if (!routeObj || !(routeObj instanceof TrainRoute)) {
+      console.error("Invalid route index:", route);
+      return false;
+    }
     if (player.checkIfCanClaimRoute(routeObj)) {
       let usedCards = player.claimRoute(routeObj);
       routeObj.claimRoute(player.getId());
