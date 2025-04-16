@@ -15,9 +15,16 @@ function App() {
 }
 
 function Profile() {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const navigate = useNavigate();
   const { state } = useLocation(); // Use location to get the state passed from navigate
+
   const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
+  // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
+  const { username, wins, total_score, profile_picture } = userProfile || {};
 
   const handleNavGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
@@ -28,13 +35,6 @@ function Profile() {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
     navigate("/join_game", { state: { userProfile } });
   };
-
-  // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
-  const { username, wins, total_score, profile_picture } = userProfile || {};
-
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <main className="background_set_up">
@@ -63,7 +63,7 @@ function Profile() {
           <Grid2 size={5}>
             <Avatar
               alt={username || "User Profile"}
-              src={profile_picture || "./src/assets/trains/thomas_train.jpg"}
+              src={profile_picture || "/assets/trains/thomas_train.jpg"}
               sx={{
                 width: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,
                 height: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,

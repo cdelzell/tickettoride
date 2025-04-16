@@ -1,6 +1,6 @@
-import TrainCard from './train-card';
-import DestinationCard from './destination-card';
-import BoardGraph from './board-graph';
+import TrainCard from "./train-card";
+import DestinationCard from "./destination-card";
+import BoardGraph from "./board-graph";
 
 class GameBoard {
   boardGraph: BoardGraph;
@@ -106,14 +106,14 @@ class GameBoard {
   #getStartTrainCards() {
     //In order from manual
     let colors = [
-      'purple',
-      'white',
-      'blue',
-      'yellow',
-      'brown',
-      'black',
-      'red',
-      'green',
+      "purple",
+      "white",
+      "blue",
+      "yellow",
+      "brown",
+      "black",
+      "red",
+      "green",
     ];
     const NUM_EACH_COLOR = 12;
 
@@ -124,7 +124,7 @@ class GameBoard {
     }
     const NUM_WILDS = 14;
     for (let i = 0; i < NUM_WILDS; i++) {
-      this.trainCardDrawPile.push(new TrainCard('wild'));
+      this.trainCardDrawPile.push(new TrainCard("wild"));
     }
     this.#shuffleTrainDeck();
   }
@@ -132,7 +132,30 @@ class GameBoard {
   //Generates all destination cards we want
   //TODO
   #getStartDestinationCards() {
-    return [];
+    return [
+      new DestinationCard("Albuquerque", "Miami", 11),
+      new DestinationCard("Albuquerque", "Tyville", 9),
+      new DestinationCard("Chicago", "Miami", 7),
+      new DestinationCard("Chicago", "Phoenix", 11),
+      new DestinationCard("Clara City", "Houston", 9),
+      new DestinationCard("Clara City", "Los Angeles", 9),
+      new DestinationCard("Clara City", "New York", 10),
+      new DestinationCard("Denver", "Palo Noah", 9),
+      new DestinationCard("Firestone Rouge", "Phoenix", 8),
+      new DestinationCard("Firestone Rouge", "Riddhi Rapids", 9),
+      new DestinationCard("Miami", "Riddhi Rapids", 18),
+      new DestinationCard("New York", "Houston", 12),
+      new DestinationCard("New York", "Oklahoma City", 11),
+      new DestinationCard("New York", "Tyville", 14),
+      new DestinationCard("Palo Noah", "Los Angeles", 16),
+      new DestinationCard("Palo Noah", "Phoenix", 12),
+      new DestinationCard("Seattle", "Albuquerque", 10),
+      new DestinationCard("Seattle", "Houston", 15),
+      new DestinationCard("Tyville", "Palo Noah", 11),
+      new DestinationCard("Tyville", "Phoenix", 7),
+      new DestinationCard("Tyville", "Washington", 13),
+      new DestinationCard("Washington", "Denver", 10),
+    ];
   }
 
   //Sets the first face-up cards visible to players

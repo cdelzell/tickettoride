@@ -1,7 +1,7 @@
-import TrainCard from './train-card';
-import DestinationCard from './destination-card';
-import TrainRoute from './train-route';
-import User from './user';
+import TrainCard from "./train-card";
+import DestinationCard from "./destination-card";
+import TrainRoute from "./train-route";
+import User from "./user";
 
 class Player {
   id: string;
@@ -35,7 +35,7 @@ class Player {
   //TODO: A way to tell players they are going to use wild cards
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
-      this.trainCardHand[route.getColor()] + this.trainCardHand['Wild'] >=
+      this.trainCardHand[route.getColor()] + this.trainCardHand["Wild"] >=
       route.getLength()
     ) {
       return true;
@@ -53,8 +53,8 @@ class Player {
         this.trainCardHand[routeColor] -= 1;
         usedTrainCardColors.push(routeColor);
       } else {
-        this.trainCardHand['Wild'] -= 1;
-        usedTrainCardColors.push('Wild');
+        this.trainCardHand["Wild"] -= 1;
+        usedTrainCardColors.push("Wild");
       }
     }
     this.scoredPoints += route.getPointValue();
@@ -98,12 +98,8 @@ class Player {
     return this.user.getUsername();
   }
 
-  getDestinationCardHand(): string[] {
-    let returnArray: string[] = [];
-    for (const card in this.destinationCardHand) {
-      returnArray.push(card);
-    }
-    return returnArray;
+  getDestinationCardHand(): DestinationCard[] {
+    return this.destinationCardHand.map((card) => ({ ...card }));
   }
 }
 
