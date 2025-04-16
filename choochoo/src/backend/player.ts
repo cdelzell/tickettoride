@@ -5,15 +5,15 @@ import User from "./user";
 
 class Player {
   id: string;
-  user: User;
+  username: string;
   trainCardHand: Record<string, number>;
   destinationCardHand: DestinationCard[];
   trainAmount: number;
   scoredPoints: number;
 
-  constructor(id: string, user: User, trainCards: TrainCard[]) {
+  constructor(id: string, user: string, trainCards: TrainCard[]) {
     this.id = id;
-    this.user = user;
+    this.username = user;
     this.trainCardHand = this.setStarterTrainCards(trainCards);
     this.destinationCardHand = [];
     this.trainAmount = 45; //Standard starting amount TODO: Change for balance
@@ -36,8 +36,7 @@ class Player {
   //TODO: A way to tell players they are going to use wild cards
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
-
-      this.trainCardHand[route.getColor()] + this.trainCardHand["wild"] >=
+      this.trainCardHand[route.getGameColor()] + this.trainCardHand["wild"] >=
       route.getLength()
     ) {
       return true;
@@ -101,11 +100,11 @@ class Player {
   }
 
   getUsername(): string {
-    return this.user.getUsername();
+    return this.username;
   }
 
   getDestinationCardHand(): DestinationCard[] {
-    return this.destinationCardHand.map((card) => ({ ...card }));
+    return this.destinationCardHand;
   }
 
   getDestinationCardHandAsCards(): DestinationCard[] {

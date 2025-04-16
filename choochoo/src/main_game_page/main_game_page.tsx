@@ -19,6 +19,7 @@ import train_cards from "./constants/train_cards";
 import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
+import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
 
 // this works with typescript so had to change file
 
@@ -88,23 +89,48 @@ const graph = {
 };
 
 const users: User[] = [new User("Test")];
-const gameRunner = new GameRunner(users);
-
-const train_counts = gameRunner.getMainPlayerTrainCards();
-
-const train_cards_and_counts = train_cards.map((card, i) => ({
-  ...card,
-  count: train_counts[i],
-}));
 
 const MainGamePage = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
   const navigate = useNavigate();
   const { state } = useLocation(); // Use location to get the state passed from navigate
-  const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
+  const { players, lobbyCode, userProfile } = state || {}; // Fallback to empty object if state is undefined
 
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const [gameRunner, setGameRunner] = useState<GameRunner>();
+
+  useEffect(() => {
+    const loadGame = async () => {
+      const result = await findGameByGameID(lobbyCode, false);
+      if (!result) {
+        console.error("No game found. Crashing the app.");
+        throw new Error("Game not found"); // 💥 crash the app
+      }
+      setGameRunner(result); // ✅ safely set it if found
+    };
+
+    loadGame();
+  }, []);
+
+  if (!gameRunner) {
+    // 🚨 Either throw or return a placeholder
+    throw new Error("GameRunner is undefined. Cannot continue."); // hard crash
+    // OR
+    // return <div>Loading...</div>; // soft fail / spinner
+  }
+
+  const train_counts = gameRunner.getMainPlayerTrainCards();
+
+  const train_cards_and_counts = train_cards.map((card, i) => ({
+    ...card,
+    count: train_counts[i],
+  }));
+
+  useEffect(() => {
+    gameRunner.startListeningForUpdates((newGameRunner) => {
+      setGameRunner(newGameRunner); // or whatever you want to do with it
+    });
+  }, []);
   const { username, wins, total_score, profile_picture } = userProfile || {};
 
   const [action_box_status, setActionBoxStatus] = useState(0);
@@ -319,9 +345,12 @@ const MainGamePage = () => {
     setShowCardNotification(false);
     setDrawDestActive(false);
     //have function that updates the map for the gamerunner
+    gameRunner.updateCurrentPlayer();
 
     // move to the next array in cycle
-    setCurrentPlayer((current) => (current + 1) % (players.length + 1));
+    setCurrentPlayer(gameRunner.getCurrentPlayer());
+
+    gameRunner.sendToDatabase(gameRunner);
   };
 
   // CSS for the endturn button

@@ -1,91 +1,97 @@
 import { ref, query, orderByChild, equalTo, get } from "firebase/database";
-import { database, gameDataPath } from './FirebaseCredentials'
+import { database, gameDataPath } from "./FirebaseCredentials";
 import GameRunner from "../backend/game-runner";
 type GameRunnerType = typeof GameRunner;
 
-export async function checkForChaneInTurn(params:any) {
-    
-}
+export async function checkForChaneInTurn(params: any) {}
 
 /**
- * Function to retrieve the turn number of a game in the Firebase database with a specified gameID 
+ * Function to retrieve the turn number of a game in the Firebase database with a specified gameID
  * @param {string} gameID - The game ID of the game that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-export async function findTurnByGameID(game_ID: number, print: boolean): Promise<number | null>  {
-    try {
-      const gameData = await findGameByField('game_ID', game_ID);
-  
-      if (gameData) {
-        // @ts-ignore: Ignore the error on this line
-        const turn = gameData.currentPlayer;  // Extract the 'turn' field
-        
-        if (print) {
-          console.log(`Current Turn: ${turn}`);  // Print the turn if print is true
-        }
-        
-        return turn;  // Return only the turn field
-      } else {
-        console.log(`No game found with game ID: ${game_ID}`);
-        return null;  // Return null if no game data is found
-      }
-    } catch (error) {
-      console.error("Error handling game data:", error);
-      return null;  // Return null on error
-    }
-}
+export async function findTurnByGameID(
+  game_ID: number,
+  print: boolean
+): Promise<number | null> {
+  try {
+    const gameData = await findGameByField("game_ID", game_ID);
 
+    if (gameData) {
+      // @ts-ignore: Ignore the error on this line
+      const turn = gameData.currentPlayer; // Extract the 'turn' field
+
+      if (print) {
+        console.log(`Current Turn: ${turn}`); // Print the turn if print is true
+      }
+
+      return turn; // Return only the turn field
+    } else {
+      console.log(`No game found with game ID: ${game_ID}`);
+      return null; // Return null if no game data is found
+    }
+  } catch (error) {
+    console.error("Error handling game data:", error);
+    return null; // Return null on error
+  }
+}
 
 /**
  * Function to search for games in the Firebase database with a specified gameID
  * @param {string} gameID - The game ID of the game that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-export async function findGameByGameID(game_ID: number, print: boolean): Promise<Object | null>  {
-    try {
-      const gameData = await findGameByField('gameID', game_ID);
-  
-      if (gameData) {
-        if (print) {
-          printGameQueryResults(gameData);  // Print the game data if print is true
-        }
-        return gameData;  // Return the resolved data (game data) if found
-      } else {
-        console.log(`No game found with game ID: ${game_ID}`);
-        return null;  // Return null if no game data is found
+export async function findGameByGameID(
+  game_ID: number,
+  print: boolean
+): Promise<GameRunner | null> {
+  try {
+    const gameData = await findGameByField("gameID", game_ID);
+
+    if (gameData) {
+      if (print) {
+        printGameQueryResults(gameData); // Print the game data if print is true
       }
-    } catch (error) {
-      console.error("Error handling game data:", error);
-      return null;  // Return null on error
+      return gameData; // Return the resolved data (game data) if found
+    } else {
+      console.log(`No game found with game ID: ${game_ID}`);
+      return null; // Return null if no game data is found
     }
+  } catch (error) {
+    console.error("Error handling game data:", error);
+    return null; // Return null on error
+  }
 }
 
 /**
  * Function to search for a game in the Firebase database by a specific field and value.
  * It queries the "game" database and looks for entries where the specified field matches the given value.
  * The function returns the game data if found, otherwise returns null.
- * 
+ *
  * @param {string} field - The field name in the game data to search by (e.g., "gameID", "player1ID", "playerhand").
- * @param {string|number|boolean} value - The value that the specified field should match. This can be a string (e.g., "john_doe"), 
+ * @param {string|number|boolean} value - The value that the specified field should match. This can be a string (e.g., "john_doe"),
  *                                        a number (e.g., 5), or a boolean (e.g., true/false), depending on the field.
  * @returns {Object|null} The user data matching the given field and value, or null if no matching user is found.
  */
-function findGameByField(field: string, value: string | number | boolean): Promise <Object | null> {
+function findGameByField(
+  field: string,
+  value: string | number | boolean
+): Promise<Object | null> {
   const gameQuery = query(gameDataPath, orderByChild(field), equalTo(value));
 
   // Perform the query and return the result
-  return get(gameQuery)  // This returns a Promise.
-    .then(snapshot => {
+  return get(gameQuery) // This returns a Promise.
+    .then((snapshot) => {
       if (snapshot.exists()) {
-        return snapshot.val();  // Return the game data from the snapshot if found
+        return snapshot.val(); // Return the game data from the snapshot if found
       } else {
         console.log(`No game found with ${field}:`, value);
-        return null;  // Return null if no data is found
+        return null; // Return null if no data is found
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error retrieving data:", error);
-      return null;  // Return null on error
+      return null; // Return null on error
     });
 }
 
@@ -98,13 +104,13 @@ function findGameByField(field: string, value: string | number | boolean): Promi
  * @param {string} [indent=''] - The indentation string used to format the printed output. It is used to represent the depth of the nested properties for better readability.
  * It starts as an empty string and is added to as the recursion goes deeper.
  */
-function printGameQueryResults(obj: any, indent: string = ''): void {
-  if (typeof obj === 'object' && obj !== null) {
+function printGameQueryResults(obj: any, indent: string = ""): void {
+  if (typeof obj === "object" && obj !== null) {
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
-        if (typeof obj[key] === 'object' && obj[key] !== null) {
+        if (typeof obj[key] === "object" && obj[key] !== null) {
           console.log(`${indent}${key}:`);
-          printGameQueryResults(obj[key], indent + '  ');
+          printGameQueryResults(obj[key], indent + "  ");
         } else {
           console.log(`${indent}${key}: ${obj[key]}`);
         }

@@ -1,12 +1,13 @@
-
-import GameBoard from './game-board';
-import Player from './player';
-import User from './user';
-import TrainRoute from './train-route';
-import DestinationCard from './destination-card';
-import { writeGameToDatabase } from '../Firebase/FirebaseWriteGameData';
-import { findGameByGameID } from '../Firebase/FirebaseReadGameData';
-import calculateGameScores from './score-calculator';
+import GameBoard from "./game-board";
+import Player from "./player";
+import User from "./user";
+import TrainRoute from "./train-route";
+import DestinationCard from "./destination-card";
+import { writeGameToDatabase } from "../Firebase/FirebaseWriteGameData";
+import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
+import calculateGameScores from "./score-calculator";
+import { ref, onValue } from "firebase/database";
+import { database } from "../Firebase/FirebaseCredentials";
 
 const START_TRAIN_CARD_NUM = 4;
 
@@ -17,9 +18,10 @@ class GameRunner {
   currentPlayer: number;
   gameOver: boolean;
   destinationCardsToDraw: DestinationCard[];
+  unsubscribe?: () => void;
 
-  constructor(users: User[]) {
-    this.gameID = Math.random();
+  constructor(users: string[], lobbyCode: number) {
+    this.gameID = lobbyCode;
     this.gameBoard = new GameBoard();
     this.players = [];
     for (let i = 0; i < users.length; i++) {
@@ -228,7 +230,7 @@ class GameRunner {
   //This is just to update the gamerunner object
 
   //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
-  sendToDatabase(game: typeof GameRunner) {
+  sendToDatabase(game: GameRunner) {
     writeGameToDatabase(game);
   }
 
@@ -236,6 +238,19 @@ class GameRunner {
   //The frontend also needs to become aware of the above mentioned things somehow.
   async updateFromDatabase(game_ID: number) {
     return findGameByGameID(game_ID, true);
+  }
+
+  startListeningForUpdates(callback: (newGameRunner: GameRunner) => void) {
+    const gameRef = ref(database, `games/${this.gameID}`);
+
+    this.unsubscribe = onValue(gameRef, async (snapshot) => {
+      if (snapshot.exists()) {
+        const newRunner = await findGameByGameID(this.gameID, true);
+        if (newRunner) {
+          callback(newRunner); // ✅ Here is your "returned" new GameRunner
+        }
+      }
+    });
   }
 }
 

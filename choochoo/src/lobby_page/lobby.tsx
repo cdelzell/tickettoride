@@ -8,9 +8,19 @@ import Typography from "@mui/joy/Typography";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
-import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../Firebase/FirebaseInterfaces";
-import { createLobby, joinLobby, leaveLobby, onLobbyUpdate, startGame } from "../Firebase/FirebaseLobbyManagment";
+import {
+  type Lobby as LobbyType,
+  type LobbyPlayer as Player,
+} from "../Firebase/FirebaseInterfaces";
+import {
+  createLobby,
+  joinLobby,
+  leaveLobby,
+  onLobbyUpdate,
+  startGame,
+} from "../Firebase/FirebaseLobbyManagment";
 import "./lobby.css";
+import GameRunner from "../backend/game-runner";
 
 // Your existing interface for UserProfile
 interface UserProfile {
@@ -45,6 +55,11 @@ function Lobby() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+  function getHostUsername(players: Player[]): string | null {
+    const host = players.find((player) => player.isHost);
+    return host ? host.username : null;
+  }
+
   useEffect(() => {
     const initializeLobby = async () => {
       try {
@@ -67,7 +82,11 @@ function Lobby() {
         }
       } catch (err) {
         console.error("Lobby initialization error:", err);
-        setError(`Failed to ${isJoining ? "join" : "create"} lobby. ${err instanceof Error ? err.message : ""}`);
+        setError(
+          `Failed to ${isJoining ? "join" : "create"} lobby. ${
+            err instanceof Error ? err.message : ""
+          }`
+        );
       } finally {
         setIsLoading(false);
       }
@@ -90,12 +109,29 @@ function Lobby() {
 
       if (updatedLobby.status === "started") {
         setGameStarting(true);
+
+        const updatedPlayers = Object.values(updatedLobby.players);
+        const player_usernames = updatedPlayers.map(
+          (player) => player.username
+        );
+        const isHost = getHostUsername(updatedPlayers) === username;
+
+        if (isHost) {
+          console.log("gamerunner");
+          const gamerunner = new GameRunner(
+            player_usernames,
+            parseInt(lobbyCode)
+          );
+          gamerunner.sendToDatabase(gamerunner);
+          console.log(gamerunner);
+        }
+
         navigate("/main_game_page", {
           state: {
             players: Object.values(updatedLobby.players),
             lobbyCode,
-            userProfile
-          }
+            userProfile,
+          },
         });
       }
     });
@@ -137,22 +173,27 @@ function Lobby() {
   // Handle copying the lobby code to clipboard
   const handleCopyCode = () => {
     if (lobbyCode) {
-      navigator.clipboard.writeText(lobbyCode).then(() => {
-        setCopySuccess(true);
-        setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
-      }).catch((err) => {
-        console.error("Failed to copy lobby code:", err);
-        setError("Failed to copy lobby code");
-      });
+      navigator.clipboard
+        .writeText(lobbyCode)
+        .then(() => {
+          setCopySuccess(true);
+          setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+        })
+        .catch((err) => {
+          console.error("Failed to copy lobby code:", err);
+          setError("Failed to copy lobby code");
+        });
     }
   };
 
   if (isLoading) {
     return (
       <div className="lobby-container">
-        <Box sx={{ textAlign: 'center', padding: 4 }}>
+        <Box sx={{ textAlign: "center", padding: 4 }}>
           <CircularProgress size="lg" />
-          <Typography level="h4" sx={{ mt: 2 }}>Loading lobby...</Typography>
+          <Typography level="h4" sx={{ mt: 2 }}>
+            Loading lobby...
+          </Typography>
         </Box>
       </div>
     );
@@ -161,10 +202,14 @@ function Lobby() {
   if (gameStarting) {
     return (
       <div className="lobby-container">
-        <Box sx={{ textAlign: 'center', padding: 4 }}>
+        <Box sx={{ textAlign: "center", padding: 4 }}>
           <CircularProgress size="lg" />
-          <Typography level="h4" sx={{ mt: 2 }}>Game starting...</Typography>
-          <Typography level="body-md" sx={{ mt: 1 }}>Please wait while the game is being prepared.</Typography>
+          <Typography level="h4" sx={{ mt: 2 }}>
+            Game starting...
+          </Typography>
+          <Typography level="body-md" sx={{ mt: 1 }}>
+            Please wait while the game is being prepared.
+          </Typography>
         </Box>
       </div>
     );
@@ -173,9 +218,13 @@ function Lobby() {
   if (error) {
     return (
       <div className="lobby-container">
-        <Box sx={{ textAlign: 'center', padding: 4 }}>
-          <Typography level="h4" color="danger">Error</Typography>
-          <Typography level="body-md" sx={{ mt: 1 }}>{error}</Typography>
+        <Box sx={{ textAlign: "center", padding: 4 }}>
+          <Typography level="h4" color="danger">
+            Error
+          </Typography>
+          <Typography level="body-md" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
           <Button
             onClick={() => navigate("/profile", { state: { userProfile } })}
             sx={{ mt: 2 }}
@@ -206,7 +255,10 @@ function Lobby() {
         }}
       >
         <CssBaseline />
-        <Typography level="h2" sx={{ textAlign: "center", color: "black", mb: 2 }}>
+        <Typography
+          level="h2"
+          sx={{ textAlign: "center", color: "black", mb: 2 }}
+        >
           Game Lobby
         </Typography>
 
@@ -232,7 +284,7 @@ function Lobby() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            mb: 1
+            mb: 1,
           }}
         >
           Players ({players.length}/4)
@@ -240,7 +292,7 @@ function Lobby() {
             level="body-sm"
             sx={{
               color: players.length < 2 ? "warning.500" : "success.500",
-              fontWeight: "bold"
+              fontWeight: "bold",
             }}
           >
             {players.length < 2 ? "Need more players..." : "Ready to start!"}
@@ -249,19 +301,23 @@ function Lobby() {
 
         <ul className="player-list">
           {players.map((player, index) => (
-            <li key={index} style={{ display: "flex", justifyContent: "space-between" }}>
+            <li
+              key={index}
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
               <Typography>
                 {player.username}
                 {player.username === username && " (You)"}
               </Typography>
-              {player.isHost && (
-                <span className="player-host-badge">Host</span>
-              )}
+              {player.isHost && <span className="player-host-badge">Host</span>}
             </li>
           ))}
           {players.length === 0 && (
             <li>
-              <Typography level="body-sm" sx={{ fontStyle: "italic", color: "neutral.500" }}>
+              <Typography
+                level="body-sm"
+                sx={{ fontStyle: "italic", color: "neutral.500" }}
+              >
                 Waiting for players to join...
               </Typography>
             </li>
@@ -269,7 +325,7 @@ function Lobby() {
         </ul>
 
         <div className="button-container">
-          {players.some(p => p.username === username && p.isHost) && (
+          {players.some((p) => p.username === username && p.isHost) && (
             <Button
               onClick={handleStartGame}
               className="start-button"
