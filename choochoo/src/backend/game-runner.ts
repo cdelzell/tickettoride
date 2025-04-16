@@ -94,7 +94,7 @@ class GameRunner {
 
   //Called when route claimed during route claiming steps.
   //This relies
-  claimRoute(route: number): boolean {
+  claimRoute(route: number, profilePic?: string): boolean {
     let player = this.players[this.currentPlayer];
     let routeObj = this.gameBoard.getRouteByIndex(route);
     if (!routeObj || !(routeObj instanceof TrainRoute)) {
@@ -103,7 +103,7 @@ class GameRunner {
     }
     if (player.checkIfCanClaimRoute(routeObj)) {
       let usedCards = player.claimRoute(routeObj);
-      routeObj.claimRoute(player.getId());
+      routeObj.claimRoute(player.getId(), profilePic); // Pass the profile picture
       this.gameBoard.addDiscardsFromUsedTrainCards(usedCards);
       this.checkGameOverAfterRouteClaim();
       return true;

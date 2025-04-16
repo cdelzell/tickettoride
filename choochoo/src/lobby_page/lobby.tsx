@@ -12,7 +12,7 @@ import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../Firebase
 import { createLobby, joinLobby, leaveLobby, onLobbyUpdate, startGame } from "../Firebase/FirebaseLobbyManagment";
 import "./lobby.css";
 
-// Your existing interface for UserProfile
+// define userprofile interface
 interface UserProfile {
   username: string;
   wins?: number;
@@ -21,11 +21,13 @@ interface UserProfile {
 }
 
 function Lobby() {
+  // navigation and routing hooks
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
   const isJoining = state?.isJoining;
 
+  // initialize user profile from navigation state or session storage
   const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
     const fromState = location?.state?.userProfile;
     const fromStorage = sessionStorage.getItem("userProfile");
@@ -34,6 +36,7 @@ function Lobby() {
 
   const username = userProfile?.username;
 
+  // define state variables
   const [players, setPlayers] = useState<Player[]>([]);
   const [lobby, setLobby] = useState<LobbyType | null>(null);
   const [lobbyCode, setLobbyCode] = useState<string>("");
@@ -45,6 +48,7 @@ function Lobby() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // create or join a lobby 
   useEffect(() => {
     const initializeLobby = async () => {
       try {
@@ -52,6 +56,7 @@ function Lobby() {
 
         let code = sessionStorage.getItem("lobbyCode");
 
+        // create new lobby if not joining, else join existing one
         if (!code && !isJoining && username) {
           code = await createLobby(username);
           sessionStorage.setItem("lobbyCode", code);
@@ -78,6 +83,7 @@ function Lobby() {
     }
   }, [isJoining, username]);
 
+  // listen for lobby updates and sync player list as thye come in
   useEffect(() => {
     if (!lobbyCode) return;
 
@@ -88,6 +94,7 @@ function Lobby() {
         setPlayers(Object.values(updatedLobby.players));
       }
 
+      // navigate to game page when lobby status changes to started
       if (updatedLobby.status === "started") {
         setGameStarting(true);
         navigate("/main_game_page", {
@@ -105,6 +112,7 @@ function Lobby() {
     };
   }, [lobbyCode, username, navigate, userProfile]);
 
+  // start the game if there are enough players - rn this is 2, will change to 4 when we get closer ot the end
   const handleStartGame = async () => {
     try {
       if (players.length >= 2) {
@@ -120,6 +128,7 @@ function Lobby() {
     }
   };
 
+  // leave the current lobby and navigate to profile
   const handleLeave = async () => {
     try {
       if (username && lobbyCode) {
@@ -147,6 +156,7 @@ function Lobby() {
     }
   };
 
+  // show loading screen while lobby initializes
   if (isLoading) {
     return (
       <div className="lobby-container">
@@ -158,6 +168,7 @@ function Lobby() {
     );
   }
 
+  // show loading screen while game is starting if needed
   if (gameStarting) {
     return (
       <div className="lobby-container">
@@ -170,6 +181,7 @@ function Lobby() {
     );
   }
 
+  // show error screen if something went wrong
   if (error) {
     return (
       <div className="lobby-container">
@@ -187,6 +199,7 @@ function Lobby() {
     );
   }
 
+  // main lobby ui
   return (
     <div className="lobby-container">
       <Box

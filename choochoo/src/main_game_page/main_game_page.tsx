@@ -122,7 +122,7 @@ const MainGamePage = () => {
       )
     );
   };
-
+// use this to get cards from pile
   const getDestinationCardPossibilitiesFormatted = (
     cards: DestinationCard[]
   ) => {
@@ -151,11 +151,13 @@ const MainGamePage = () => {
   );
 
   const updatePlayerHand = (cards: number[]) => {
-    const trains = train_cards.map((card, i) => ({
+    const updatedTrains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
-    setTrainCards(trains);
+  
+    setTrainCards(updatedTrains);
+
   };
 
   const drawRandomTrainCard = () => {
@@ -196,11 +198,16 @@ const MainGamePage = () => {
   }, [drawClickCount]);
 
   const handleRouteClaim = (route: Route) => {
-    const trainCard = trainCards.find(
-      (card) => card.game_color === route.game_color
+    // find the route in game board graph using index instead of color
+    const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
+      (r) => 
+        (r.destination1 === route.source.name && r.destination2 === route.target.name) ||
+        (r.destination1 === route.target.name && r.destination2 === route.source.name)
     );
-    const wildCard = trainCards.find((card) => card.game_color === "wild");
-
+    if (routeIndex === -1) {
+      console.error("Route not found in board graph:", route);
+      return false;
+    }
     if (
       action_box_status === 2 &&
       trainCard &&
@@ -210,31 +217,40 @@ const MainGamePage = () => {
       drawClickCount === 0 &&
       destClickCount === 0 &&
       playClickCount === 0
+      drawClickCount === 0 &&
+      destClickCount === 0 &&
+      playClickCount === 0
     ) {
-      updateTrainCardCount(route.game_color!, -route.trains);
-      setTrains(trains - route.trains);
-      setPlayClickCount(playClickCount + 1);
-      if (
-        route.trains > trainCard.count &&
-        trainCard.count + wildCard.count >= route.trains
-      ) {
-        updateTrainCardCount(route.game_color!, -trainCard.count);
-        updateTrainCardCount("wild", -(route.trains - trainCard.count));
+      // ugame runner function to claim route
+      const claimed = gameRunner.claimRoute(routeIndex , profile_picture);
+      
+      if (claimed) {
+      
         setPlayClickCount(playClickCount + 1);
+        setTrains(gameRunner.getMainPlayerTrainCount());
+        
+        const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
+        const updatedTrainCards = train_cards.map((card, i) => ({
+          ...card,
+          count: updatedTrainCounts[i],
+        }));
+        setTrainCards(updatedTrainCards);
+        
+        // UI
+        setGameRoutes((prevRoutes) =>
+          prevRoutes.map((r) =>
+            (r.source.name === route.source.name && r.target.name === route.target.name) ||
+            (r.source.name === route.target.name && r.target.name === route.source.name)
+              ? { ...r, claimer: username, claimerProfilePic: profile_picture  }
+              : r
+          )
+        );
+        
+        return true;
       }
-
-      setGameRoutes((prevRoutes) =>
-        prevRoutes.map((r) =>
-          r.source.name === route.source.name &&
-          r.target.name === route.target.name
-            ? { ...r, claimer: main_player.username }
-            : r
-        )
-      );
-      return true;
-    } else {
-      return false;
     }
+    
+    return false;
   };
 
   const updateStatus = (newStatus: number) => {
@@ -248,23 +264,44 @@ const MainGamePage = () => {
   };
 
   const handleDrawPileClick = () => {
+  
     if (
       action_box_status === 1 &&
       drawClickCount < 2 &&
       playClickCount === 0 &&
       destClickCount === 0
     ) {
-      const newCard = drawRandomTrainCard();
-      if (newCard) {
-        setDrawnCard(newCard);
+      gameRunner.drawTrainCardsFromDeck();
+      const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
+      
+      // find which card was drawn by comparing previous counts to new counts
+      let drawnCardColor = null;
+      for (let i = 0; i < trainCards.length; i++) {
+        if (updatedTrainCounts[i] > trainCards[i].count) {
+          drawnCardColor = train_cards[i].game_color;
+          break;
+        }
+      }
+      
+      // new train cards udpated
+      const updatedTrainCards = train_cards.map((card, i) => ({
+        ...card,
+        count: updatedTrainCounts[i],
+      }));
+      setTrainCards(updatedTrainCards);
+      
+      if (drawnCardColor) {
+        setDrawnCard(drawnCardColor);
         setShowCardNotification(true);
-
+      
         setTimeout(() => {
           setShowCardNotification(false);
         }, 3000);
       }
 
-      setDrawClickCount((prev) => prev + 1);
+      
+      setDrawClickCount(prevCount => prevCount + 1);
+
     }
   };
 
