@@ -82,6 +82,7 @@ class GameRunner {
   drawTrainCardsFromDeck() {
     let card = this.gameBoard.drawSingleTrainCard();
     this.players[this.currentPlayer].addTrainCardToHand(card);
+    return card;
   }
 
   //Called when a faceup card is clicked
@@ -95,7 +96,13 @@ class GameRunner {
   claimRoute(route: number): boolean {
     let player = this.players[this.currentPlayer];
     let routeObj = this.gameBoard.getRouteByIndex(route);
-    if (player.checkIfCanClaimRoute(routeObj)) {
+
+    if (!routeObj || !(routeObj instanceof TrainRoute)) {
+      console.error("Invalid route index:", route);
+      return false;
+    }
+    
+    if (player.checkIfCanClaimRoute(routeObj) && player.getTrainAmount() >= routeObj.getLength()) {
       let usedCards = player.claimRoute(routeObj);
       routeObj.claimRoute(player.getId());
       this.gameBoard.addDiscardsFromUsedTrainCards(usedCards);

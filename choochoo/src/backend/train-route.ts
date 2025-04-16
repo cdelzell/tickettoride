@@ -30,7 +30,7 @@ class TrainRoute {
     }
 
     getColor() {
-        return this.color;
+        return this.color.toLowerCase(); // making sure this is lwoercase
     }
 
     claimRoute(playerId: string) {

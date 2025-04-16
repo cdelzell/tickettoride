@@ -21,6 +21,8 @@ export interface Route {
   game_color: string;
   trains: number;
   claimer?: string | null;
+  claimerProfilePic?: string | null; 
+  routeIndex?: number; 
 }
 
 function USMap({
@@ -202,7 +204,7 @@ function USMap({
                   y={textPos.y - 15}
                   width={30}
                   height={30}
-                  href={mainPlayer.profilePic}
+                  href={route.claimerProfilePic || mainPlayer.profilePic}
                   preserveAspectRatio="xMidYMid meet"
                   className="route-claimer-image"
                   clipPath={`url(#circle-clip-${index})`}

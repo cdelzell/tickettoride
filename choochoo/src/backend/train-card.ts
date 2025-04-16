@@ -6,7 +6,7 @@ class TrainCard {
   }
 
   getColor(): string {
-    return this.color;
+    return this.color.toLowerCase();
   }
 }
 

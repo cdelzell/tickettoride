@@ -21,7 +21,8 @@ class Player {
   }
 
   addTrainCardToHand(trainCard: TrainCard): void {
-    this.trainCardHand[trainCard.getColor()] += 1;
+    const color = trainCard.getColor().toLowerCase();
+    this.trainCardHand[color] += 1;
   }
 
   addMultipleTrainCardsToHand(trainCards: TrainCard[]): void {
@@ -33,9 +34,15 @@ class Player {
   //Simple check to see if a player has enough cards of a route's type to claim it
   //Includes wild card functionality
   //TODO: A way to tell players they are going to use wild cards
-  checkIfCanClaimRoute(route: TrainRoute): boolean {
+ checkIfCanClaimRoute(route: TrainRoute): boolean {
+    if (!(route instanceof TrainRoute)) {
+      console.error("Invalid route passed to checkIfCanClaimRoute:", route);
+      return false;
+    }
+  
     if (
-      this.trainCardHand[route.getColor()] + this.trainCardHand["Wild"] >=
+      this.trainCardHand[route.getColor()] + this.trainCardHand['wild'] >=
+
       route.getLength()
     ) {
       return true;
@@ -46,20 +53,32 @@ class Player {
   //Claims a route by removing the right number of colored cards from their hand. Supports wilds.
   //Returns an array of cards used.
   claimRoute(route: TrainRoute): string[] {
+    if (!(route instanceof TrainRoute)) {
+      console.error("Invalid route passed to claimRoute:", route);
+      return [];
+    }
+  
     let usedTrainCardColors = [];
     for (let i = 0; i < route.getLength(); i++) {
-      let routeColor = route.getColor();
+      let routeColor = route.getColor().toLowerCase();
       if (this.trainCardHand[routeColor] > 0) {
         this.trainCardHand[routeColor] -= 1;
         usedTrainCardColors.push(routeColor);
       } else {
-        this.trainCardHand["Wild"] -= 1;
-        usedTrainCardColors.push("Wild");
+        this.trainCardHand['wild'] -= 1;
+        usedTrainCardColors.push('wild');
+
       }
     }
+    this.trainAmount -= route.getLength();
     this.scoredPoints += route.getPointValue();
     return usedTrainCardColors;
   }
+  
+  
+  
+
+  
 
   private setStarterTrainCards(
     trainCards: TrainCard[]
