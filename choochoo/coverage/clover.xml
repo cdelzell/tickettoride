@@ -3,23 +3,26 @@
   <project timestamp="1744675124201" name="All files">
     <metrics statements="174" coveredstatements="127" conditionals="95" coveredconditionals="71" methods="41" coveredmethods="29" elements="310" coveredelements="227" complexity="0" loc="174" ncloc="174" packages="2" files="2" classes="2"/>
     <package name="main_game_page">
-      <metrics statements="130" coveredstatements="90" conditionals="49" coveredconditionals="31" methods="29" coveredmethods="18"/>
+      <metrics statements="142" coveredstatements="48" conditionals="53" coveredconditionals="2" methods="31" coveredmethods="2"/>
       <file name="main_game_page.tsx" path="/Users/riddhimunjewar/Documents/GitHub/tickettoride/choochoo/src/main_game_page/main_game_page.tsx">
-        <metrics statements="130" coveredstatements="90" conditionals="49" coveredconditionals="31" methods="29" coveredmethods="18"/>
+        <metrics statements="142" coveredstatements="48" conditionals="53" coveredconditionals="2" methods="31" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="47" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
         <line num="53" count="1" type="stmt"/>
         <line num="82" count="1" type="stmt"/>
         <line num="107" count="1" type="stmt"/>
@@ -138,54 +141,28 @@
         <line num="719" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="main_game_page.components.PlayerActions">
-      <metrics statements="44" coveredstatements="37" conditionals="46" coveredconditionals="40" methods="12" coveredmethods="11"/>
-      <file name="ActionBox.tsx" path="/Users/riddhimunjewar/Documents/GitHub/tickettoride/choochoo/src/main_game_page/components/PlayerActions/ActionBox.tsx">
-        <metrics statements="44" coveredstatements="37" conditionals="46" coveredconditionals="40" methods="12" coveredmethods="11"/>
+    <package name="main_game_page.constants">
+      <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="cities.tsx" path="/Users/riddhimunjewar/Documents/GitHub/tickettoride/choochoo/src/main_game_page/constants/cities.tsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+      </file>
+      <file name="destination_cards.tsx" path="/Users/riddhimunjewar/Documents/GitHub/tickettoride/choochoo/src/main_game_page/constants/destination_cards.tsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="149" count="1" type="stmt"/>
+      </file>
+      <file name="routes.tsx" path="/Users/riddhimunjewar/Documents/GitHub/tickettoride/choochoo/src/main_game_page/constants/routes.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="32" count="18" type="stmt"/>
-        <line num="33" count="18" type="stmt"/>
-        <line num="35" count="18" type="stmt"/>
-        <line num="36" count="18" type="cond" truecount="3" falsecount="1"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="41" count="18" type="stmt"/>
-        <line num="42" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="43" count="4" type="stmt"/>
-        <line num="44" count="7" type="cond" truecount="3" falsecount="1"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
-        <line num="47" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="48" count="4" type="stmt"/>
-        <line num="49" count="4" type="stmt"/>
-        <line num="50" count="3" type="cond" truecount="2" falsecount="2"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="53" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="55" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="56" count="2" type="stmt"/>
-        <line num="57" count="2" type="stmt"/>
-        <line num="61" count="18" type="stmt"/>
-        <line num="62" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="63" count="0" type="stmt"/>
-        <line num="64" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="65" count="1" type="stmt"/>
-        <line num="67" count="1" type="stmt"/>
-        <line num="70" count="18" type="stmt"/>
-        <line num="112" count="4" type="stmt"/>
-        <line num="114" count="1" type="stmt"/>
-        <line num="115" count="1" type="stmt"/>
-        <line num="116" count="1" type="stmt"/>
-        <line num="122" count="2" type="stmt"/>
-        <line num="142" count="4" type="stmt"/>
-        <line num="143" count="1" type="cond" truecount="4" falsecount="0"/>
-        <line num="144" count="1" type="stmt"/>
-        <line num="145" count="1" type="stmt"/>
-        <line num="149" count="4" type="stmt"/>
-        <line num="157" count="0" type="stmt"/>
-        <line num="166" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="259" count="1" type="stmt"/>
+      </file>
+      <file name="train_cards.tsx" path="/Users/riddhimunjewar/Documents/GitHub/tickettoride/choochoo/src/main_game_page/constants/train_cards.tsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
       </file>
     </package>
   </project>
