@@ -1,7 +1,7 @@
-import TrainCard from './train-card';
-import DestinationCard from './destination-card';
-import TrainRoute from './train-route';
-import User from './user';
+import TrainCard from "./train-card";
+import DestinationCard from "./destination-card";
+import TrainRoute from "./train-route";
+import User from "./user";
 
 class Player {
   id: string;
@@ -42,6 +42,7 @@ class Player {
   
     if (
       this.trainCardHand[route.getColor()] + this.trainCardHand['wild'] >=
+
       route.getLength()
     ) {
       return true;
@@ -66,6 +67,7 @@ class Player {
       } else {
         this.trainCardHand['wild'] -= 1;
         usedTrainCardColors.push('wild');
+
       }
     }
     this.trainAmount -= route.getLength();
@@ -115,12 +117,8 @@ class Player {
     return this.user.getUsername();
   }
 
-  getDestinationCardHand(): string[] {
-    let returnArray: string[] = [];
-    for (const card in this.destinationCardHand) {
-      returnArray.push(card);
-    }
-    return returnArray;
+  getDestinationCardHand(): DestinationCard[] {
+    return this.destinationCardHand.map((card) => ({ ...card }));
   }
 }
 

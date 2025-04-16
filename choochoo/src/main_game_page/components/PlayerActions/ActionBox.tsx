@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import DrawTrains from "../DrawPile/DrawPile";
 import "./ActionBox.css";
+import GameRunner from "../../../backend/game-runner";
+import DestinationCard from "../../../backend/destination-card";
+import { DestinationCardInfo } from "../../main_game_page";
 
 function ActionBox({
   action,
+  gamerunner,
+  drawnDestCards,
   updateStatus,
+  drawDestActive,
   updateDrawDest,
   updateTrains,
   updateFaceUp,
@@ -15,9 +21,14 @@ function ActionBox({
   destClickCount,
   setDestClickCount,
   handleDrawPileClick,
+  setPlayerDestCards,
+  formatDestCards,
 }: {
   action: number;
+  gamerunner: GameRunner;
+  drawnDestCards: DestinationCard[];
   updateStatus: (newStatus: number) => void;
+  drawDestActive: boolean;
   updateDrawDest: (newStatus: boolean) => void;
   updateTrains: (color: string, amount: number) => void;
   updateFaceUp: (active: boolean) => void;
@@ -28,6 +39,13 @@ function ActionBox({
   destClickCount: number;
   setDestClickCount: (num: number) => void;
   handleDrawPileClick: () => void;
+  setPlayerDestCards: (cards: DestinationCardInfo[]) => void;
+  formatDestCards: (cards: DestinationCard[]) => {
+    destination1: string;
+    destination2: string;
+    points: number;
+    image_path: string;
+  }[];
 }) {
   const [goBack, setGoBack] = useState(false);
   const [actionActive, setActionActive] = useState(true);
@@ -52,7 +70,7 @@ function ActionBox({
       updateFaceUp(true);
     } else if (action === 2) {
       setGoBack(true);
-    } else if (action === 3) {
+    } else if (action === 3 && destClickCount === 0) {
       setGoBack(true);
       updateDrawDest(true);
     }
@@ -91,11 +109,15 @@ function ActionBox({
         <PlayTrains />
       ) : action === 3 && actionActive === true ? (
         <Submit
+          gamerunner={gamerunner}
+          drawnDestCards={drawnDestCards}
           updateDrawDest={updateDrawDest}
           drawClickCount={drawClickCount}
           setDestClickCount={setDestClickCount}
           playClickCount={playClickCount}
           destClickCount={destClickCount}
+          setPlayerDestCards={setPlayerDestCards}
+          formatDestCards={formatDestCards}
         />
       ) : (
         <TurnOver />
@@ -127,22 +149,41 @@ function PlayTrains() {
 }
 
 function Submit({
+  gamerunner,
+  drawnDestCards,
   updateDrawDest,
   drawClickCount,
   playClickCount,
   destClickCount,
   setDestClickCount,
+  setPlayerDestCards,
+  formatDestCards,
 }: {
+  gamerunner: GameRunner;
+  drawnDestCards: DestinationCard[];
   updateDrawDest: (state: boolean) => void;
   drawClickCount: number;
   playClickCount: number;
   destClickCount: number;
   setDestClickCount: (num: number) => void;
+  setPlayerDestCards: (cards: DestinationCardInfo[]) => void;
+  formatDestCards: (cards: DestinationCard[]) => {
+    destination1: string;
+    destination2: string;
+    points: number;
+    image_path: string;
+  }[];
 }) {
   const handleClick = () => {
     if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
-      setDestClickCount(destClickCount + 1);
       updateDrawDest(false);
+
+      setDestClickCount(destClickCount + 1);
+      gamerunner.claimDestinationCards(drawnDestCards);
+
+      setPlayerDestCards(
+        formatDestCards(gamerunner.getPlayerDestinationCards())
+      );
     }
   };
 
