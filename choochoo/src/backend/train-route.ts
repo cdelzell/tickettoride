@@ -13,20 +13,23 @@ class TrainRoute {
   destination1: string;
   destination2: string;
   length: number;
-  color: string;
+  gameColor: string;
+  hexColor: string;
   claimer: string | null;
 
   constructor(
     destination1: string,
     destination2: string,
     length: number,
-    color: string
+    gameColor: string,
+    hexColor: string
   ) {
-    //Store destination ids
+    //Store destination names
     this.destination1 = destination1;
     this.destination2 = destination2;
     this.length = length;
-    this.color = color;
+    this.gameColor = gameColor;
+    this.hexColor = hexColor;
     this.claimer = null; //Will be set when claimed
   }
 
@@ -34,8 +37,12 @@ class TrainRoute {
     return this.length;
   }
 
-  getColor() {
-    return this.color;
+  getGameColor() {
+    return this.gameColor;
+  }
+
+  getHexColor() {
+    return this.hexColor;
   }
 
   claimRoute(playerId: string) {
@@ -48,6 +55,10 @@ class TrainRoute {
 
   getDestinations(): string[] {
     return [this.destination1, this.destination2];
+  }
+
+  getClaimer(): string | null {
+    return this.claimer;
   }
 }
 export default TrainRoute;

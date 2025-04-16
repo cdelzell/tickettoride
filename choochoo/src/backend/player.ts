@@ -35,7 +35,7 @@ class Player {
   //TODO: A way to tell players they are going to use wild cards
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
-      this.trainCardHand[route.getColor()] + this.trainCardHand['Wild'] >=
+      this.trainCardHand[route.getGameColor()] + this.trainCardHand['Wild'] >=
       route.getLength()
     ) {
       return true;
@@ -48,7 +48,7 @@ class Player {
   claimRoute(route: TrainRoute): string[] {
     let usedTrainCardColors = [];
     for (let i = 0; i < route.getLength(); i++) {
-      let routeColor = route.getColor();
+      let routeColor = route.getGameColor();
       if (this.trainCardHand[routeColor] > 0) {
         this.trainCardHand[routeColor] -= 1;
         usedTrainCardColors.push(routeColor);

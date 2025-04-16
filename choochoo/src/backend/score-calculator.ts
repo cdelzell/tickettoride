@@ -3,7 +3,7 @@ import Player from './player';
 import TrainRoute from './train-route';
 import DestinationCard from './destination-card';
 
-function calculateGameScores(
+export function calculateGameScores(
   players: Player[],
   boardGraph: BoardGraph
 ): { [key: string]: number } {
@@ -40,7 +40,7 @@ function getPlayerPointsFromDestinationCards(
 ): number {
   let score: number = 0;
 
-  const routes = boardGraph.getRoutesForPlayer(player.getId());
+  const routes = boardGraph.getRoutesForPlayer(player.getUsername());
   const networks = getConnectedNetworks(routes); //An array of sets of destinations that they've touched, put into sets based on how they're linked
   for (const card of player.getDestinationCardHandAsCards()) {
     const destinations = card.getDestinationsAsArray();
@@ -104,3 +104,5 @@ function isDestinationCardInNetworks(
   }
   return false;
 }
+
+export default calculateGameScores;
