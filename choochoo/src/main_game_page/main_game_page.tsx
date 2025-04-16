@@ -174,8 +174,6 @@ const MainGamePage = () => {
     )
   );
 
-  console.log(playerDestinationCards);
-
   const updatePlayerHand = (cards: number[]) => {
     console.log("here");
     const trains = train_cards.map((card, i) => ({
