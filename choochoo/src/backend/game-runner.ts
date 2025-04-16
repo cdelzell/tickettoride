@@ -1,10 +1,12 @@
-import GameBoard from "./game-board";
-import Player from "./player";
-import User from "./user";
-import TrainRoute from "./train-route";
-import DestinationCard from "./destination-card";
-import { writeGameToDatabase } from "../Firebase/FirebaseWriteGameData";
-import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
+
+import GameBoard from './game-board';
+import Player from './player';
+import User from './user';
+import TrainRoute from './train-route';
+import DestinationCard from './destination-card';
+import { writeGameToDatabase } from '../Firebase/FirebaseWriteGameData';
+import { findGameByGameID } from '../Firebase/FirebaseReadGameData';
+import calculateGameScores from './score-calculator';
 
 const START_TRAIN_CARD_NUM = 4;
 
@@ -200,6 +202,11 @@ class GameRunner {
   //Should return who has claims to which routes. Need to index routes?
   getMap() {
     return;
+  }
+
+  //TODO: Set return value and finish this
+  getEndGameInfo() {
+    return calculateGameScores(this.players, this.gameBoard.boardGraph);
   }
 
   //HERE IS EVERYTHING FOR SERVER COMMUNICATION/UPDATING

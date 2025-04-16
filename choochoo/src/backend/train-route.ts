@@ -6,39 +6,59 @@ const point_vals = new Map<number, number>([
   [3, 4],
   [4, 7],
   [5, 10],
-  [6, 15]
+  [6, 15],
 ]);
 
 class TrainRoute {
-    destination1: string;
-    destination2: string;
-    length: number;
-    color: string;
-    claimer: string | null;
-    
-    constructor(destination1: string, destination2: string, length: number, color: string) {
-        //Store destination ids
-        this.destination1 = destination1;
-        this.destination2 = destination2; 
-        this.length = length;
-        this.color = color;
-        this.claimer = null; //Will be set when claimed
-    }
+  destination1: string;
+  destination2: string;
+  length: number;
+  gameColor: string;
+  hexColor: string;
+  claimer: string | null;
 
-    getLength() {
-        return this.length;
-    }
+  constructor(
+    destination1: string,
+    destination2: string,
+    length: number,
+    gameColor: string,
+    hexColor: string
+  ) {
+    //Store destination names
+    this.destination1 = destination1;
+    this.destination2 = destination2;
+    this.length = length;
+    this.gameColor = gameColor;
+    this.hexColor = hexColor;
+    this.claimer = null; //Will be set when claimed
+  }
 
-    getColor() {
-        return this.color;
-    }
+  getLength() {
+    return this.length;
+  }
 
-    claimRoute(playerId: string) {
-        this.claimer = playerId;
-    }
+  getGameColor() {
+    return this.gameColor;
+  }
 
-    getPointValue(): number {
-        return point_vals.get(this.length) ?? 0;
-    }
+  getHexColor() {
+    return this.hexColor;
+  }
+
+  claimRoute(playerId: string) {
+    this.claimer = playerId;
+  }
+
+  getPointValue(): number {
+    return point_vals.get(this.length) ?? 0;
+  }
+
+  getDestinations(): string[] {
+    return [this.destination1, this.destination2];
+  }
+
+  getClaimer(): string | null {
+    return this.claimer;
+  }
 }
 export default TrainRoute;
