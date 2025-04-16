@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-// import { Graph } from "@visx/network";
-
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
 import GameRunner from "../backend/game-runner";
 import User from "../backend/user";
 import PlayerCard from "./components/Profile/ProfileCard";
-import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
 import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
 import DestinationCardsCarousel from "./components/DestinationCard/DestinationCard";
 import DrawDestinationCard from "./components/DestinationCard/DrawDestinationCard";
@@ -19,42 +16,6 @@ import train_cards from "./constants/train_cards";
 import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
-
-// this works with typescript so had to change file
-
-// let's go airbnb
-export type NetworkProps = {
-  width: number;
-  height: number;
-};
-
-//loop through the players given by noah
-//if the username of the signed in player (identify using state that is passed in through profile) does not match, make them a player
-//otherwise make them the main player
-
-const players = [
-  {
-    username: "c-bear",
-    trainCount: 1700,
-    profilePic: "./src/assets/trains/percy_train.webp",
-  },
-  {
-    username: "t-dawg",
-    trainCount: 0,
-    profilePic: "./src/assets/trains/gordon_train.webp",
-  },
-  {
-    username: "ridster",
-    trainCount: 2,
-    profilePic: "./src/assets/trains/james_train.webp",
-  },
-];
-
-const main_player = {
-  username: "noah-rama",
-  trainCount: 2,
-  profilePic: "./src/assets/trains/thomas_train.jpg",
-};
 
 export interface City {
   name: string;
@@ -82,14 +43,32 @@ export interface DestinationCardInfo {
 
 export const background = "#d3d3d3";
 
-const graph = {
-  nodes: cities,
-  links: routes,
+const players = [
+  {
+    username: "c-bear",
+    trainCount: 1700,
+    profilePic: "./src/assets/trains/percy_train.webp",
+  },
+  {
+    username: "t-dawg",
+    trainCount: 0,
+    profilePic: "./src/assets/trains/gordon_train.webp",
+  },
+  {
+    username: "ridster",
+    trainCount: 2,
+    profilePic: "./src/assets/trains/james_train.webp",
+  },
+];
+
+const main_player = {
+  username: "noah-rama",
+  trainCount: 2,
+  profilePic: "./src/assets/trains/thomas_train.jpg",
 };
 
 const users: User[] = [new User("Test")];
 const gameRunner = new GameRunner(users);
-
 const train_counts = gameRunner.getMainPlayerTrainCards();
 
 const train_cards_and_counts = train_cards.map((card, i) => ({
@@ -102,9 +81,8 @@ const MainGamePage = () => {
   const height = window.innerHeight;
 
   const navigate = useNavigate();
-  const { state } = useLocation(); // Use location to get the state passed from navigate
-  const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
-
+  const { state } = useLocation();
+  const { userKey, userProfile } = state || {};
   const { username, wins, total_score, profile_picture } = userProfile || {};
 
   const [action_box_status, setActionBoxStatus] = useState(0);
@@ -119,16 +97,13 @@ const MainGamePage = () => {
   const [playClickCount, setPlayClickCount] = useState(0);
   const [destClickCount, setDestClickCount] = useState(0);
   const [turnComplete, setTurnComplete] = useState(false);
-  const [currentPlayer, setCurrentPlayer] = useState(0); // index of current player
+  const [currentPlayer, setCurrentPlayer] = useState(0);
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
 
   const [destinationCardPoss, setDestinationCardPoss] = useState(
     gameRunner.getDestinationCardPossibilities()
   );
-
-  //make useeffect for currentplayer, should get all new info from the gamerunner when current player changes
-  //make useeffect for gameover, end game
 
   useEffect(() => {
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
@@ -176,16 +151,13 @@ const MainGamePage = () => {
   );
 
   const updatePlayerHand = (cards: number[]) => {
-    console.log("here");
     const trains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
-
     setTrainCards(trains);
   };
 
-  // CHECK HERE
   const drawRandomTrainCard = () => {
     const random = Math.random();
     let drawnColor;
@@ -223,14 +195,6 @@ const MainGamePage = () => {
     };
   }, [drawClickCount]);
 
-  const updateActionCardStatus = (action: boolean) => {
-    if (action) {
-      setActiveTrains(true);
-    } else {
-      setActiveTrains(false);
-    }
-  };
-
   const handleRouteClaim = (route: Route) => {
     const trainCard = trainCards.find(
       (card) => card.game_color === route.game_color
@@ -243,11 +207,10 @@ const MainGamePage = () => {
       wildCard &&
       trainCard.count + wildCard.count >= route.trains &&
       trains >= route.trains &&
-      drawClickCount == 0 &&
-      destClickCount == 0 &&
-      playClickCount == 0
+      drawClickCount === 0 &&
+      destClickCount === 0 &&
+      playClickCount === 0
     ) {
-      // Deduct train cards when claiming a route
       updateTrainCardCount(route.game_color!, -route.trains);
       setTrains(trains - route.trains);
       setPlayClickCount(playClickCount + 1);
@@ -260,10 +223,8 @@ const MainGamePage = () => {
         setPlayClickCount(playClickCount + 1);
       }
 
-      // Update the claimed routes
       setGameRoutes((prevRoutes) =>
         prevRoutes.map((r) =>
-          action_box_status === 2 &&
           r.source.name === route.source.name &&
           r.target.name === route.target.name
             ? { ...r, claimer: main_player.username }
@@ -276,7 +237,7 @@ const MainGamePage = () => {
     }
   };
 
-  const updateStatus = (newStatus: React.SetStateAction<number>) => {
+  const updateStatus = (newStatus: number) => {
     setActionBoxStatus(newStatus);
 
     if (newStatus === 1) {
@@ -304,7 +265,6 @@ const MainGamePage = () => {
       }
 
       setDrawClickCount((prev) => prev + 1);
-      //function to update player hand
     }
   };
 
@@ -312,24 +272,18 @@ const MainGamePage = () => {
     setDrawClickCount(0);
     setPlayClickCount(0);
     setDestClickCount(0);
-
     setTurnComplete(false);
     setActionBoxStatus(0);
     setActiveTrains(false);
     setShowCardNotification(false);
     setDrawDestActive(false);
-    //have function that updates the map for the gamerunner
-
-    // move to the next array in cycle
     setCurrentPlayer((current) => (current + 1) % (players.length + 1));
   };
 
-  // CSS for the endturn button
   const endTurnButtonStyle: React.CSSProperties = {
-    // padding: "1vw 3vw", // Scales with viewport width
     width: "12vw",
     height: "3vw",
-    fontSize: "1vw", // Adjusts size dynamically
+    fontSize: "1vw",
     fontWeight: "bold",
     backgroundColor: "#4CAF50",
     color: "white",
@@ -361,16 +315,15 @@ const MainGamePage = () => {
 
   return (
     <main className="main_game_page">
-      {/* player cards */}
       <div className="player_cards">
         {players.map((player, index) => (
           <PlayerCard
             key={index}
             username={player.username}
             trainCount={player.trainCount}
-            profilePic={player.profilePic}
+            profilePic={player.profilePic.split("/").pop() || "Default_pfp.jpg"}
             main_player={false}
-            active={currentPlayer === index + 1} // + 1 because currentPlayer 0 is main player
+            active={currentPlayer === index + 1}
           />
         ))}
       </div>
@@ -384,9 +337,8 @@ const MainGamePage = () => {
         setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
         destClickCount={destClickCount}
-      ></FaceUpCards>
+      />
 
-      {/* end turn button */}
       {turnComplete && (
         <button onClick={handleEndTurn} style={endTurnButtonStyle}>
           End Turn
@@ -408,7 +360,7 @@ const MainGamePage = () => {
           drawDestActive={draw_dest_active}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
-          updateFaceUp={updateActionCardStatus}
+          updateFaceUp={setActiveTrains}
           drawClickCount={drawClickCount}
           setDrawClickCount={setDrawClickCount}
           playClickCount={playClickCount}
@@ -418,24 +370,18 @@ const MainGamePage = () => {
           handleDrawPileClick={handleDrawPileClick}
           setPlayerDestCards={setPlayerDestinationCards}
           formatDestCards={getDestinationCardPossibilitiesFormatted}
-        ></ActionBox>
+        />
 
-        <DestinationCardsCarousel
-          destinations={playerDestinationCards}
-        ></DestinationCardsCarousel>
+        <DestinationCardsCarousel destinations={playerDestinationCards} />
 
         {draw_dest_active && (
           <DrawDestinationCard
-            //call the backend method here to get the destination cards
-            destinations={getDestinationCardPossibilitiesFormatted(
-              destinationCardPoss
-            )}
+            destinations={getDestinationCardPossibilitiesFormatted(destinationCardPoss)}
             drawnDestCards={drawnDestCards}
             setDrawDestCard={setDrawDestCard}
-          ></DrawDestinationCard>
+          />
         )}
 
-        {/* train cards */}
         <div className="train_cards">
           {trainCards.map((train_card, index) => (
             <TrainCard
@@ -448,19 +394,17 @@ const MainGamePage = () => {
           ))}
         </div>
 
-        {/* main player */}
         <div className="main_player_card">
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profile_picture}
+            profilePic={profile_picture?.split("/").pop() || "Default_pfp.jpg"}
             main_player={true}
-            active={currentPlayer === 0} // main player is active when currentPlayer is 0
+            active={currentPlayer === 0}
           />
         </div>
       </div>
 
-      {/* map */}
       <Map
         width={width}
         height={height}
@@ -474,4 +418,5 @@ const MainGamePage = () => {
     </main>
   );
 };
+
 export default MainGamePage;
