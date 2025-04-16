@@ -105,6 +105,10 @@ class Player {
     }
     return returnArray;
   }
+
+  getDestinationCardHandAsCards(): DestinationCard[] {
+    return this.destinationCardHand;
+  }
 }
 
 export default Player;
