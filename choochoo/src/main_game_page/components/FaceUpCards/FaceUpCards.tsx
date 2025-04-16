@@ -25,6 +25,7 @@ function FaceUpCards({
     <div className="holder">
       {face_up_cards.map((face_up_card, index) => (
         <FaceUpCard
+          key={index}
           index={index}
           gamerunner={gamerunner}
           color={face_up_card}

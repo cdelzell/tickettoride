@@ -499,12 +499,6 @@ const MainGamePage = () => {
 
   const handleRouteClaim = (route: Route) => {
     console.log("Attempting to claim route:", route);
-    console.log("Current state:", {
-      action_box_status,
-      drawClickCount,
-      destClickCount,
-      playClickCount
-    });
     
     if (
       action_box_status === 2 && 
@@ -517,12 +511,24 @@ const MainGamePage = () => {
         return false;
       }
   
-      console.log("Calling gameRunnerInstance.claimRoute with index:", route.routeIndex);
       const success = gameRunnerInstance.claimRoute(route.routeIndex);
-      console.log("Claim result:", success);
-  
+      
       if (success) {
-        // The rest of your code...
+        setGameRoutes(prevRoutes => 
+          prevRoutes.map(r => 
+            r.routeIndex === route.routeIndex 
+              ? { 
+                  ...r, 
+                  claimer: username, 
+                  claimerProfilePic: profile_picture 
+                } 
+              : r
+          )
+        );
+        
+        setTrains(gameRunnerInstance.getMainPlayerTrainCount());
+        updatePlayerHand();
+        setPlayClickCount(1);
         return true;
       } else {
         console.log("Failed to claim route: insufficient cards or trains");
