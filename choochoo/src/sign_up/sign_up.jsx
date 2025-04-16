@@ -51,7 +51,7 @@ function Sign_In() {
           wins: 0,
           losses: 0,
           total_score: 0,
-          profile_picture: "",
+          profile_picture: "/assets/trains/thomas_train.jpg",
           status: false,
           active_game_id: null,
         };

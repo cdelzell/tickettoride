@@ -1,57 +1,95 @@
-import { blue } from "@mui/material/colors";
+import { useState } from "react";
 import { DestinationCard } from "./DestinationCard";
 import "./DestinationCard.css";
-import { useState } from "react";
+import { DestinationCardInfo } from "../../main_game_page";
+import BackendDestinationCard from "../../../backend/destination-card";
 
-function DrawDestinationCard({ destinations }: { destinations: string[] }) {
+function DrawDestinationCard({
+  destinations,
+  drawnDestCards,
+  setDrawDestCard,
+}: {
+  destinations: DestinationCardInfo[];
+  drawnDestCards: BackendDestinationCard[];
+  setDrawDestCard: (cards: BackendDestinationCard[]) => void;
+}) {
   const [clicked1, setClicked1] = useState(false);
   const [clicked2, setClicked2] = useState(false);
   const [clicked3, setClicked3] = useState(false);
 
   const handleClick = (id: string) => {
-    if (id === "1") {
-      clicked1 ? setClicked1(false) : setClicked1(true);
-    } else if (id === "2") {
-      clicked2 ? setClicked2(false) : setClicked2(true);
+    const selected = destinations[parseInt(id)];
+
+    const card: BackendDestinationCard = {
+      destination1: selected.destination1,
+      destination2: selected.destination2,
+      pointValue: selected.points,
+    };
+
+    const exists = drawnDestCards.some(
+      (c) =>
+        c.destination1 === card.destination1 &&
+        c.destination2 === card.destination2
+    );
+
+    if (exists) {
+      setDrawDestCard(
+        drawnDestCards.filter(
+          (c) =>
+            !(
+              c.destination1 === card.destination1 &&
+              c.destination2 === card.destination2
+            )
+        )
+      );
     } else {
-      clicked3 ? setClicked3(false) : setClicked3(true);
+      setDrawDestCard([...drawnDestCards, card]);
+    }
+
+    // Toggle the corresponding clicked state
+    if (id === "0") {
+      setClicked1((prev) => !prev);
+    } else if (id === "1") {
+      setClicked2((prev) => !prev);
+    } else {
+      setClicked3((prev) => !prev);
     }
   };
 
   return (
     <div className="draw_destination">
       <button
-        onClick={() => handleClick("1")}
+        onClick={() => handleClick("0")}
         style={{
           outline: clicked1 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
         }}
       >
         <DestinationCard
-          destination={destinations[0]}
+          destination={destinations[0].image_path}
           location="draw"
-        ></DestinationCard>
+        />
       </button>
       <button
-        onClick={() => handleClick("2")}
+        onClick={() => handleClick("1")}
         style={{
           outline: clicked2 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
         }}
       >
         <DestinationCard
-          destination={destinations[1]}
+          destination={destinations[1].image_path}
           location="draw"
-        ></DestinationCard>
+        />
       </button>
       <button
-        onClick={() => handleClick("3")}
+        onClick={() => handleClick("2")}
         style={{
           outline: clicked3 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
         }}
       >
         <DestinationCard
-          destination={destinations[2]}
+          destination={destinations[2].image_path}
           location="draw"
-        ></DestinationCard>
+        />
       </button>
     </div>
   );

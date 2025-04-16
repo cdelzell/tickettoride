@@ -1,7 +1,7 @@
-import TrainCard from './train-card';
-import DestinationCard from './destination-card';
-import TrainRoute from './train-route';
-import User from './user';
+import TrainCard from "./train-card";
+import DestinationCard from "./destination-card";
+import TrainRoute from "./train-route";
+import User from "./user";
 
 class Player {
   id: string;
@@ -21,7 +21,8 @@ class Player {
   }
 
   addTrainCardToHand(trainCard: TrainCard): void {
-    this.trainCardHand[trainCard.getColor()] += 1;
+    const color = trainCard.getColor().toLowerCase();
+    this.trainCardHand[color] += 1;
   }
 
   addMultipleTrainCardsToHand(trainCards: TrainCard[]): void {
@@ -35,7 +36,8 @@ class Player {
   //TODO: A way to tell players they are going to use wild cards
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
-      this.trainCardHand[route.getGameColor()] + this.trainCardHand['Wild'] >=
+
+      this.trainCardHand[route.getColor()] + this.trainCardHand["wild"] >=
       route.getLength()
     ) {
       return true;
@@ -46,6 +48,10 @@ class Player {
   //Claims a route by removing the right number of colored cards from their hand. Supports wilds.
   //Returns an array of cards used.
   claimRoute(route: TrainRoute): string[] {
+    if (!(route instanceof TrainRoute)) {
+      console.error("Invalid route passed to claimRoute:", route);
+      return [];
+    }
     let usedTrainCardColors = [];
     for (let i = 0; i < route.getLength(); i++) {
       let routeColor = route.getGameColor();
@@ -53,8 +59,8 @@ class Player {
         this.trainCardHand[routeColor] -= 1;
         usedTrainCardColors.push(routeColor);
       } else {
-        this.trainCardHand['Wild'] -= 1;
-        usedTrainCardColors.push('Wild');
+        this.trainCardHand["wild"] -= 1;
+        usedTrainCardColors.push("wild");
       }
     }
     this.scoredPoints += route.getPointValue();
@@ -98,12 +104,8 @@ class Player {
     return this.user.getUsername();
   }
 
-  getDestinationCardHand(): string[] {
-    let returnArray: string[] = [];
-    for (const card in this.destinationCardHand) {
-      returnArray.push(card);
-    }
-    return returnArray;
+  getDestinationCardHand(): DestinationCard[] {
+    return this.destinationCardHand.map((card) => ({ ...card }));
   }
 
   getDestinationCardHandAsCards(): DestinationCard[] {
