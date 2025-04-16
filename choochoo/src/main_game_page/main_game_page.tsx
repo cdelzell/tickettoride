@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 // import { Graph } from "@visx/network";
 
 import monoMap from "../assets/mono_map.jpg";
@@ -20,7 +20,6 @@ import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
 
-
 // this works with typescript so had to change file
 
 // let's go airbnb
@@ -35,26 +34,26 @@ export type NetworkProps = {
 
 const players = [
   {
-    username: 'c-bear',
+    username: "c-bear",
     trainCount: 1700,
-    profilePic: './src/assets/trains/percy_train.webp',
+    profilePic: "./src/assets/trains/percy_train.webp",
   },
   {
-    username: 't-dawg',
+    username: "t-dawg",
     trainCount: 0,
-    profilePic: './src/assets/trains/gordon_train.webp',
+    profilePic: "./src/assets/trains/gordon_train.webp",
   },
   {
-    username: 'ridster',
+    username: "ridster",
     trainCount: 2,
-    profilePic: './src/assets/trains/james_train.webp',
+    profilePic: "./src/assets/trains/james_train.webp",
   },
 ];
 
 const main_player = {
-  username: 'noah-rama',
+  username: "noah-rama",
   trainCount: 2,
-  profilePic: './src/assets/trains/thomas_train.jpg',
+  profilePic: "./src/assets/trains/thomas_train.jpg",
 };
 
 export interface City {
@@ -81,14 +80,14 @@ export interface DestinationCardInfo {
   image_path: string;
 }
 
-export const background = '#d3d3d3';
+export const background = "#d3d3d3";
 
 const graph = {
   nodes: cities,
   links: routes,
 };
 
-const users: User[] = [new User('Test')];
+const users: User[] = [new User("Test")];
 const gameRunner = new GameRunner(users);
 
 const train_counts = gameRunner.getMainPlayerTrainCards();
@@ -177,7 +176,7 @@ const MainGamePage = () => {
   );
 
   const updatePlayerHand = (cards: number[]) => {
-    console.log('here');
+    console.log("here");
     const trains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
@@ -192,11 +191,11 @@ const MainGamePage = () => {
     let drawnColor;
 
     if (random < 0.1) {
-      drawnColor = 'wild';
+      drawnColor = "wild";
     } else {
       const regularColors = train_cards
         .map((card) => card.game_color)
-        .filter((color) => color !== 'wild');
+        .filter((color) => color !== "wild");
 
       const randomIndex = Math.floor(Math.random() * regularColors.length);
       drawnColor = regularColors[randomIndex];
@@ -218,9 +217,9 @@ const MainGamePage = () => {
       handleDrawPileClick();
     };
 
-    window.addEventListener('drawCard', handleDrawCardEvent);
+    window.addEventListener("drawCard", handleDrawCardEvent);
     return () => {
-      window.removeEventListener('drawCard', handleDrawCardEvent);
+      window.removeEventListener("drawCard", handleDrawCardEvent);
     };
   }, [drawClickCount]);
 
@@ -236,7 +235,7 @@ const MainGamePage = () => {
     const trainCard = trainCards.find(
       (card) => card.game_color === route.game_color
     );
-    const wildCard = trainCards.find((card) => card.game_color === 'wild');
+    const wildCard = trainCards.find((card) => card.game_color === "wild");
 
     if (
       action_box_status === 2 &&
@@ -257,7 +256,7 @@ const MainGamePage = () => {
         trainCard.count + wildCard.count >= route.trains
       ) {
         updateTrainCardCount(route.game_color!, -trainCard.count);
-        updateTrainCardCount('wild', -(route.trains - trainCard.count));
+        updateTrainCardCount("wild", -(route.trains - trainCard.count));
         setPlayClickCount(playClickCount + 1);
       }
 
@@ -328,36 +327,36 @@ const MainGamePage = () => {
   // CSS for the endturn button
   const endTurnButtonStyle: React.CSSProperties = {
     // padding: "1vw 3vw", // Scales with viewport width
-    width: '12vw',
-    height: '3vw',
-    fontSize: '1vw', // Adjusts size dynamically
-    fontWeight: 'bold',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '1vw',
-    cursor: 'pointer',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-    position: 'absolute',
-    right: '1.5vw',
-    bottom: '13.9vw',
+    width: "12vw",
+    height: "3vw",
+    fontSize: "1vw", // Adjusts size dynamically
+    fontWeight: "bold",
+    backgroundColor: "#4CAF50",
+    color: "white",
+    border: "none",
+    borderRadius: "1vw",
+    cursor: "pointer",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+    position: "absolute",
+    right: "1.5vw",
+    bottom: "13.9vw",
     zIndex: 1000,
-    display: turnComplete ? 'block' : 'none',
-    transition: 'all 0s ease-in-out',
+    display: turnComplete ? "block" : "none",
+    transition: "all 0s ease-in-out",
   };
 
   const drawnCardNotificationStyle: React.CSSProperties = {
-    padding: '0.1vw 1vw',
-    position: 'absolute',
-    bottom: '12.56vw',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    backgroundColor: 'rgba(255, 54, 148, 0.7)',
-    color: 'white',
-    borderRadius: '0.5vw',
-    fontSize: '1.1vw',
+    padding: "0.1vw 1vw",
+    position: "absolute",
+    bottom: "12.56vw",
+    left: "50%",
+    transform: "translateX(-50%)",
+    backgroundColor: "rgba(255, 54, 148, 0.7)",
+    color: "white",
+    borderRadius: "0.5vw",
+    fontSize: "1.1vw",
     zIndex: 1000,
-    transition: 'all 0s ease-in-out',
+    transition: "all 0s ease-in-out",
   };
 
   return (
