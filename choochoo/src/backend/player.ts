@@ -6,6 +6,7 @@ import User from "./user";
 class Player {
   id: string;
   user: User;
+  trainAmount: number;
   trainCardHand: Record<string, number>;
   destinationCardHand: DestinationCard[];  // Ensure this is of type DestinationCard[]
   scoredPoints: number;
@@ -15,6 +16,7 @@ class Player {
     this.user = user;
     this.trainCardHand = this.setStarterTrainCards(trainCards);
     this.destinationCardHand = []; // Initializing as empty array
+    this.trainAmount = 45;
     this.scoredPoints = 0;
   }
 
@@ -89,6 +91,9 @@ class Player {
     return this.id;
   }
 
+  getTrainAmount(): number {
+    return this.trainAmount;
+  }
 
   getTrainCardHand(): Record<string, number> {
     return this.trainCardHand;
