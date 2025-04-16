@@ -210,13 +210,6 @@ const MainGamePage = () => {
     }
     if (
       action_box_status === 2 &&
-      trainCard &&
-      wildCard &&
-      trainCard.count + wildCard.count >= route.trains &&
-      trains >= route.trains &&
-      drawClickCount === 0 &&
-      destClickCount === 0 &&
-      playClickCount === 0
       drawClickCount === 0 &&
       destClickCount === 0 &&
       playClickCount === 0
