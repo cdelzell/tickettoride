@@ -1,5 +1,5 @@
 import TrainCard from "./train-card";
-import DestinationCard from "./destination-card";
+import DestinationCard from "./destination-card"; // Importing the DestinationCard class
 import TrainRoute from "./train-route";
 import User from "./user";
 
@@ -7,17 +7,22 @@ class Player {
   id: string;
   user: User;
   trainCardHand: Record<string, number>;
-  destinationCardHand: DestinationCard[];
-  trainAmount: number;
+  destinationCardHand: DestinationCard[];  // Ensure this is of type DestinationCard[]
   scoredPoints: number;
 
   constructor(id: string, user: User, trainCards: TrainCard[]) {
     this.id = id;
     this.user = user;
     this.trainCardHand = this.setStarterTrainCards(trainCards);
-    this.destinationCardHand = [];
-    this.trainAmount = 45; //Standard starting amount TODO: Change for balance
+    this.destinationCardHand = []; // Initializing as empty array
     this.scoredPoints = 0;
+  }
+
+  // Adding DestinationCards to the player's hand (creating instances)
+  addDestinationCardToHand(destinationCardInfo: { destination1: string; destination2: string; pointValue: number }): void {
+    // Create a new DestinationCard instance
+    const newDestinationCard = new DestinationCard(destinationCardInfo.destination1, destinationCardInfo.destination2, destinationCardInfo.pointValue);
+    this.destinationCardHand.push(newDestinationCard);
   }
 
   addTrainCardToHand(trainCard: TrainCard): void {
@@ -31,13 +36,9 @@ class Player {
     }
   }
 
-  //Simple check to see if a player has enough cards of a route's type to claim it
-  //Includes wild card functionality
-  //TODO: A way to tell players they are going to use wild cards
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
-
-      this.trainCardHand[route.getColor()] + this.trainCardHand["wild"] >=
+      this.trainCardHand[route.getGameColor()] + this.trainCardHand["wild"] >=
       route.getLength()
     ) {
       return true;
@@ -45,8 +46,6 @@ class Player {
     return false;
   }
 
-  //Claims a route by removing the right number of colored cards from their hand. Supports wilds.
-  //Returns an array of cards used.
   claimRoute(route: TrainRoute): string[] {
     if (!(route instanceof TrainRoute)) {
       console.error("Invalid route passed to claimRoute:", route);
@@ -67,9 +66,7 @@ class Player {
     return usedTrainCardColors;
   }
 
-  private setStarterTrainCards(
-    trainCards: TrainCard[]
-  ): Record<string, number> {
+  private setStarterTrainCards(trainCards: TrainCard[]): Record<string, number> {
     let hand: Record<string, number> = {
       red: 0,
       yellow: 0,
@@ -92,9 +89,6 @@ class Player {
     return this.id;
   }
 
-  getTrainAmount(): number {
-    return this.trainAmount;
-  }
 
   getTrainCardHand(): Record<string, number> {
     return this.trainCardHand;
@@ -105,7 +99,7 @@ class Player {
   }
 
   getDestinationCardHand(): DestinationCard[] {
-    return this.destinationCardHand.map((card) => ({ ...card }));
+    return this.destinationCardHand;
   }
 
   getDestinationCardHandAsCards(): DestinationCard[] {

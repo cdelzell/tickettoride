@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DestinationCard } from "./DestinationCard";
 import "./DestinationCard.css";
 import { DestinationCardInfo } from "../../main_game_page";
-import BackendDestinationCard from "../../../backend/destination-card";
+import BackendDestinationCard from "../../../backend/destination-card"; // Assuming this is the class import
 
 function DrawDestinationCard({
   destinations,
@@ -20,26 +20,24 @@ function DrawDestinationCard({
   const handleClick = (id: string) => {
     const selected = destinations[parseInt(id)];
 
-    const card: BackendDestinationCard = {
-      destination1: selected.destination1,
-      destination2: selected.destination2,
-      pointValue: selected.points,
-    };
+    // create an instance of the BackendDestinationCard class
+    const card = new BackendDestinationCard(
+      selected.destination1,
+      selected.destination2,
+      selected.points
+    );
 
+    // check if the card already exists in drawnDestCards
     const exists = drawnDestCards.some(
       (c) =>
-        c.destination1 === card.destination1 &&
-        c.destination2 === card.destination2
+        c.getDestinationsAsArray().join(",") === card.getDestinationsAsArray().join(",")
     );
 
     if (exists) {
       setDrawDestCard(
         drawnDestCards.filter(
           (c) =>
-            !(
-              c.destination1 === card.destination1 &&
-              c.destination2 === card.destination2
-            )
+            c.getDestinationsAsArray().join(",") !== card.getDestinationsAsArray().join(",")
         )
       );
     } else {
