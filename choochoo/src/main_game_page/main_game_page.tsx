@@ -16,7 +16,7 @@ import train_cards from "./constants/train_cards";
 import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
-import { profileImages } from "@/image_imports";
+import { findGameByGameID } from "../firebase/FirebaseReadGameData";
 
 export interface City {
   name: string;
@@ -33,7 +33,6 @@ export interface Route {
   game_color: string;
   trains: number;
   claimer?: string | null;
-  claimerProfilePic?: string;
 }
 
 export interface DestinationCardInfo {
@@ -45,18 +44,47 @@ export interface DestinationCardInfo {
 
 export const background = "#d3d3d3";
 
+const players = [
+  {
+    username: "c-bear",
+    trainCount: 1700,
+    profilePic: "./src/assets/trains/percy_train.webp",
+  },
+  {
+    username: "t-dawg",
+    trainCount: 0,
+    profilePic: "./src/assets/trains/gordon_train.webp",
+  },
+  {
+    username: "ridster",
+    trainCount: 2,
+    profilePic: "./src/assets/trains/james_train.webp",
+  },
+];
+
+const main_player = {
+  username: "noah-rama",
+  trainCount: 2,
+  profilePic: "./src/assets/trains/thomas_train.jpg",
+};
+
+const users: User[] = [new User("Test")];
+
 const MainGamePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { players = [], lobbyCode, userProfile } = state || {};
+  const { players, lobbyCode, userProfile } = state || {};
   const { username, wins, total_score, profile_picture } = userProfile || {};
 
   const width = window.innerWidth;
   const height = window.innerHeight;
-
   const [gameRunner, setGameRunner] = useState<GameRunner>();
-  const [destinationCardPoss, setDestinationCardPoss] = useState<DestinationCard[]>([]);
-  const [playerDestinationCards, setPlayerDestinationCards] = useState<DestinationCardInfo[]>([]);
+  const [destinationCardPoss, setDestinationCardPoss] = useState<
+    DestinationCard[]
+  >([]);
+  const [playerDestinationCards, setPlayerDestinationCards] = useState<
+    DestinationCardInfo[]
+  >([]);
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
@@ -73,17 +101,25 @@ const MainGamePage = () => {
   const [showCardNotification, setShowCardNotification] = useState(false);
 
   const [trainCards, setTrainCards] = useState(() =>
-    train_cards.map((card) => ({ ...card, count: 0 }))
+    train_cards.map((card) => ({
+      ...card,
+      count: 0,
+    }))
   );
 
   useEffect(() => {
-    if (!lobbyCode) return;
+    if (!lobbyCode) {
+      console.warn("No lobby code yet. Waiting...");
+      return;
+    }
+
     const tempRunner = new GameRunner([], lobbyCode);
     tempRunner.startListeningForUpdates((newRunner) => {
       setGameRunner(newRunner);
     });
+
     return () => {
-      // tempRunner.stopListeningForUpdates?.();
+      //tempRunner.stopListeningForUpdates?.();
     };
   }, [lobbyCode]);
 
@@ -99,7 +135,9 @@ const MainGamePage = () => {
     if (gameRunner) {
       setDestinationCardPoss(gameRunner.getDestinationCardPossibilities());
       const cards = gameRunner.getPlayerDestinationCards();
-      setPlayerDestinationCards(getDestinationCardPossibilitiesFormatted(cards));
+      setPlayerDestinationCards(
+        getDestinationCardPossibilitiesFormatted(cards)
+      );
     }
   }, [gameRunner]);
 
@@ -118,14 +156,16 @@ const MainGamePage = () => {
     const handleDrawCardEvent = () => {
       handleDrawPileClick();
     };
+
     window.addEventListener("drawCard", handleDrawCardEvent);
     return () => {
       window.removeEventListener("drawCard", handleDrawCardEvent);
     };
   }, [drawClickCount]);
 
-  const normalizeProfileKey = (path: string): string =>
-    path?.split("/").pop()?.split(".")[0]?.split("-")[0] || "default";
+  if (!gameRunner) {
+    return <div>Loading game...</div>;
+  }
 
   const updateTrainCardCount = (color: string, amount: number) => {
     setTrainCards((prevCards) =>
@@ -136,29 +176,69 @@ const MainGamePage = () => {
       )
     );
   };
+  // use this to get cards from pile
+  const getDestinationCardPossibilitiesFormatted = (
+    cards: DestinationCard[]
+  ) => {
+    const correctly_formatted_cards = [];
 
-  const getDestinationCardPossibilitiesFormatted = (cards: DestinationCard[]) => {
-    return cards
-      .map((destination_card) => {
-        if (!destination_card) return null;
-        return destination_cards.find(
-          (card) =>
-            card.destination1 === destination_card.destination1 &&
-            card.destination2 === destination_card.destination2
-        );
-      })
-      .filter((card): card is DestinationCardInfo => card !== null);
+    for (const destination_card of cards) {
+      if (!destination_card) continue;
+      const moreInfo = destination_cards.find(
+        (card) =>
+          card.destination1 === destination_card.destination1 &&
+          card.destination2 === destination_card.destination2
+      );
+
+      if (moreInfo) {
+        correctly_formatted_cards.push(moreInfo);
+      }
+    }
+
+    return correctly_formatted_cards;
   };
 
   const updatePlayerHand = (cards: number[]) => {
-    const updatedTrains = train_cards.map((card, i) => ({
+    const trains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
+
     setTrainCards(updatedTrains);
   };
 
+  const drawRandomTrainCard = () => {
+    const random = Math.random();
+    let drawnColor;
+
+    if (random < 0.1) {
+      drawnColor = "wild";
+    } else {
+      const regularColors = train_cards
+        .map((card) => card.game_color)
+        .filter((color) => color !== "wild");
+
+      const randomIndex = Math.floor(Math.random() * regularColors.length);
+      drawnColor = regularColors[randomIndex];
+    }
+
+    updateTrainCardCount(drawnColor, 1);
+    setDrawnCard(drawnColor);
+    setShowCardNotification(true);
+
+    setTimeout(() => {
+      setShowCardNotification(false);
+    }, 3000);
+
+    return drawnColor;
+  };
+
+  const updateActionCardStatus = (action: boolean) => {
+    setActiveTrains(action);
+  };
+
   const handleRouteClaim = (route: Route) => {
+    // find the route in game board graph using index instead of color
     const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
       (r) =>
         (r.destination1 === route.source.name &&
@@ -166,16 +246,19 @@ const MainGamePage = () => {
         (r.destination1 === route.target.name &&
           r.destination2 === route.source.name)
     );
-
-    if (routeIndex === -1) return false;
-
+    if (routeIndex === -1) {
+      console.error("Route not found in board graph:", route);
+      return false;
+    }
     if (
       action_box_status === 2 &&
       drawClickCount === 0 &&
       destClickCount === 0 &&
       playClickCount === 0
     ) {
+      // ugame runner function to claim route
       const claimed = gameRunner.claimRoute(routeIndex, profile_picture);
+
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
         setTrains(gameRunner.getMainPlayerTrainCount());
@@ -187,6 +270,7 @@ const MainGamePage = () => {
         }));
         setTrainCards(updatedTrainCards);
 
+        // UI
         setGameRoutes((prevRoutes) =>
           prevRoutes.map((r) =>
             (r.source.name === route.source.name &&
@@ -197,9 +281,11 @@ const MainGamePage = () => {
               : r
           )
         );
+
         return true;
       }
     }
+
     return false;
   };
 
@@ -222,6 +308,7 @@ const MainGamePage = () => {
       gameRunner.drawTrainCardsFromDeck();
       const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
 
+      // find which card was drawn by comparing previous counts to new counts
       let drawnCardColor = null;
       for (let i = 0; i < trainCards.length; i++) {
         if (updatedTrainCounts[i] > trainCards[i].count) {
@@ -230,6 +317,7 @@ const MainGamePage = () => {
         }
       }
 
+      // new train cards udpated
       const updatedTrainCards = train_cards.map((card, i) => ({
         ...card,
         count: updatedTrainCounts[i],
@@ -239,7 +327,10 @@ const MainGamePage = () => {
       if (drawnCardColor) {
         setDrawnCard(drawnCardColor);
         setShowCardNotification(true);
-        setTimeout(() => setShowCardNotification(false), 3000);
+
+        setTimeout(() => {
+          setShowCardNotification(false);
+        }, 3000);
       }
 
       setDrawClickCount((prevCount) => prevCount + 1);
@@ -270,11 +361,13 @@ const MainGamePage = () => {
     border: "none",
     borderRadius: "1vw",
     cursor: "pointer",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
     position: "absolute",
     right: "1.5vw",
     bottom: "13.9vw",
     zIndex: 1000,
     display: turnComplete ? "block" : "none",
+    transition: "all 0s ease-in-out",
   };
 
   const drawnCardNotificationStyle: React.CSSProperties = {
@@ -288,6 +381,7 @@ const MainGamePage = () => {
     borderRadius: "0.5vw",
     fontSize: "1.1vw",
     zIndex: 1000,
+    transition: "all 0s ease-in-out",
   };
 
   return (
@@ -298,7 +392,7 @@ const MainGamePage = () => {
             key={index}
             username={player.username}
             trainCount={player.trainCount}
-            profilePic={normalizeProfileKey(player.profilePic)}
+            profilePic={player.profilePic.split("/").pop() || "Default_pfp.jpg"}
             main_player={false}
             active={currentPlayer === index + 1}
           />
@@ -353,7 +447,9 @@ const MainGamePage = () => {
 
         {draw_dest_active && (
           <DrawDestinationCard
-            destinations={getDestinationCardPossibilitiesFormatted(destinationCardPoss)}
+            destinations={getDestinationCardPossibilitiesFormatted(
+              destinationCardPoss
+            )}
             drawnDestCards={drawnDestCards}
             setDrawDestCard={setDrawDestCard}
           />
@@ -375,7 +471,7 @@ const MainGamePage = () => {
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={normalizeProfileKey(profile_picture)}
+            profilePic={profile_picture?.split("/").pop() || "Default_pfp.jpg"}
             main_player={true}
             active={currentPlayer === 0}
           />
@@ -387,10 +483,7 @@ const MainGamePage = () => {
         height={height}
         routes={gameRoutes}
         cities={cities}
-        mainPlayer={{
-          username,
-          profilePic: profile_picture,
-        }}
+        mainPlayer={main_player}
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}
         onRouteClaim={handleRouteClaim}
