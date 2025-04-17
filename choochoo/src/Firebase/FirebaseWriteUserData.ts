@@ -1,4 +1,4 @@
-import { update, get, push, child } from "firebase/database";
+import { update, get, set, child } from "firebase/database";
 import { userDataPath } from "./FirebaseCredentials";
 import { UserData } from "./FirebaseInterfaces";
 
@@ -294,22 +294,23 @@ export async function updateUserProperty(
 }
 
 /**
- * Function to write data to Firebase Database
- * @param {Object} data - The data to be written to the users in the database.
- * @throws {Error} - Throws an error if there is an issue while updating or retrieving an entry from the database.
+ * Function to write user data to Firebase Database under a specific user ID.
+ * @param {UserDataFormat} data - The user data to be stored.
+ * @param {string} userID - The unique ID to use as the Firebase key for this user.
+ * @throws {Error} - Logs an error if writing to the database fails.
  */
-export function writeUserToDatabase(data: UserDataFormat): void {
-  push(userDataPath, data)
-    .then((newUserRef) => {
-      const userKey = newUserRef.key;
-      console.log(`Data written successfully with user key: ${userKey}`);
-      return userKey;
+export function writeUserToDatabase(data: UserDataFormat, userID: string): void {
+  const userRef = child(userDataPath, userID);
+
+  set(userRef, data)
+    .then(() => {
+      console.log(`User data written successfully to userID: ${userID}`);
     })
     .catch((error: unknown) => {
       if (error instanceof Error) {
-        console.error(`Error writing data to ${userDataPath}:`, error.message);
+        console.error(`Error writing data to user ${userID}:`, error.message);
       } else {
-        console.error(`Unknown error writing data to ${userDataPath}:`, error);
+        console.error(`Unknown error writing data to user ${userID}:`, error);
       }
     });
 }

@@ -56,7 +56,7 @@ function Sign_Up() {
         active_game_id: null,
       };
 
-      const userKey = await writeUserToDatabase(user);
+      const userKey = await writeUserToDatabase(user,user.username);
       sessionStorage.setItem("userProfile", JSON.stringify(user));
       navigate("/profile", { state: { userKey, userProfile: user } });
     } catch (err) {
