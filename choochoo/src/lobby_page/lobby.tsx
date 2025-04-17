@@ -9,8 +9,17 @@ import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
 
-import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../firebase/FirebaseInterfaces";
-import { createLobby, joinLobby, leaveLobby, onLobbyUpdate, startGame } from "../firebase/FirebaseLobbyManagment";
+import {
+  type Lobby as LobbyType,
+  type LobbyPlayer as Player,
+} from "../firebase/FirebaseInterfaces";
+import {
+  createLobby,
+  joinLobby,
+  leaveLobby,
+  onLobbyUpdate,
+  startGame,
+} from "../firebase/FirebaseLobbyManagment";
 
 import "./lobby.css";
 import GameRunner from "../backend/game-runner";
@@ -51,12 +60,10 @@ function Lobby() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-
   function getHostUsername(players: Player[]): string | null {
     const host = players.find((player) => player.isHost);
     return host ? host.username : null;
   }
-
 
   // create or join a lobby
   useEffect(() => {

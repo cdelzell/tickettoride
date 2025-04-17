@@ -39,17 +39,21 @@ function Login() {
       const [isSuccessful, userKey, userData] = result;
 
       if (isSuccessful && userData) {
-        const rawPic = userData.profile_picture?.split("/").pop()?.split(".")[0] || "default";
+        const rawPic =
+          userData.profile_picture?.split("/").pop()?.split(".")[0] ||
+          "default";
         const normalizedPic = rawPic.split("-")[0];
-      
+
         const cleanedUserData = {
           ...userData,
           profile_picture: normalizedPic,
         };
-      
+
         sessionStorage.setItem("userProfile", JSON.stringify(cleanedUserData));
-        navigate("/profile", { state: { userKey, userProfile: cleanedUserData } });
-      }            
+        navigate("/profile", {
+          state: { userKey, userProfile: cleanedUserData },
+        });
+      }
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
       setError("Error: Username or password incorrect");

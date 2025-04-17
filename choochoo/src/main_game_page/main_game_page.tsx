@@ -16,7 +16,7 @@ import train_cards from "./constants/train_cards";
 import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
-import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
+import { findGameByGameID } from "../firebase/FirebaseReadGameData";
 
 export interface City {
   name: string;
@@ -176,7 +176,7 @@ const MainGamePage = () => {
       )
     );
   };
-// use this to get cards from pile
+  // use this to get cards from pile
   const getDestinationCardPossibilitiesFormatted = (
     cards: DestinationCard[]
   ) => {
@@ -203,9 +203,8 @@ const MainGamePage = () => {
       ...card,
       count: cards[i],
     }));
-  
-    setTrainCards(updatedTrains);
 
+    setTrainCards(updatedTrains);
   };
 
   const drawRandomTrainCard = () => {
@@ -241,9 +240,11 @@ const MainGamePage = () => {
   const handleRouteClaim = (route: Route) => {
     // find the route in game board graph using index instead of color
     const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
-      (r) => 
-        (r.destination1 === route.source.name && r.destination2 === route.target.name) ||
-        (r.destination1 === route.target.name && r.destination2 === route.source.name)
+      (r) =>
+        (r.destination1 === route.source.name &&
+          r.destination2 === route.target.name) ||
+        (r.destination1 === route.target.name &&
+          r.destination2 === route.source.name)
     );
     if (routeIndex === -1) {
       console.error("Route not found in board graph:", route);
@@ -256,34 +257,35 @@ const MainGamePage = () => {
       playClickCount === 0
     ) {
       // ugame runner function to claim route
-      const claimed = gameRunner.claimRoute(routeIndex , profile_picture);
-      
+      const claimed = gameRunner.claimRoute(routeIndex, profile_picture);
+
       if (claimed) {
-      
         setPlayClickCount(playClickCount + 1);
         setTrains(gameRunner.getMainPlayerTrainCount());
-        
+
         const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
         const updatedTrainCards = train_cards.map((card, i) => ({
           ...card,
           count: updatedTrainCounts[i],
         }));
         setTrainCards(updatedTrainCards);
-        
+
         // UI
         setGameRoutes((prevRoutes) =>
           prevRoutes.map((r) =>
-            (r.source.name === route.source.name && r.target.name === route.target.name) ||
-            (r.source.name === route.target.name && r.target.name === route.source.name)
-              ? { ...r, claimer: username, claimerProfilePic: profile_picture  }
+            (r.source.name === route.source.name &&
+              r.target.name === route.target.name) ||
+            (r.source.name === route.target.name &&
+              r.target.name === route.source.name)
+              ? { ...r, claimer: username, claimerProfilePic: profile_picture }
               : r
           )
         );
-        
+
         return true;
       }
     }
-    
+
     return false;
   };
 
@@ -297,7 +299,6 @@ const MainGamePage = () => {
   };
 
   const handleDrawPileClick = () => {
-  
     if (
       action_box_status === 1 &&
       drawClickCount < 2 &&
@@ -306,7 +307,7 @@ const MainGamePage = () => {
     ) {
       gameRunner.drawTrainCardsFromDeck();
       const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
-      
+
       // find which card was drawn by comparing previous counts to new counts
       let drawnCardColor = null;
       for (let i = 0; i < trainCards.length; i++) {
@@ -315,25 +316,24 @@ const MainGamePage = () => {
           break;
         }
       }
-      
+
       // new train cards udpated
       const updatedTrainCards = train_cards.map((card, i) => ({
         ...card,
         count: updatedTrainCounts[i],
       }));
       setTrainCards(updatedTrainCards);
-      
+
       if (drawnCardColor) {
         setDrawnCard(drawnCardColor);
         setShowCardNotification(true);
-      
+
         setTimeout(() => {
           setShowCardNotification(false);
         }, 3000);
       }
-      
-      setDrawClickCount(prevCount => prevCount + 1);
 
+      setDrawClickCount((prevCount) => prevCount + 1);
     }
   };
 

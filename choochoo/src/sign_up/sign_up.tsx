@@ -6,7 +6,10 @@ import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import { useTheme, useMediaQuery } from "@mui/material";
-import { doesUserExist, writeUserToDatabase } from "../firebase/FirebaseWriteUserData";
+import {
+  doesUserExist,
+  writeUserToDatabase,
+} from "../firebase/FirebaseWriteUserData";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./sign_up.css";

@@ -33,11 +33,14 @@ function EditProfile() {
   const [error, setError] = useState("");
   const { state } = useLocation();
   const { userKey, userProfile } = state || {};
-  const { player_username, wins, total_score, profile_picture } = userProfile || {};
+  const { player_username, wins, total_score, profile_picture } =
+    userProfile || {};
 
   const [username, setUsernameState] = useState("");
   const [password, setPasswordState] = useState("");
-  const [selectedImageKey, setSelectedImageKey] = useState(profile_picture || "default");
+  const [selectedImageKey, setSelectedImageKey] = useState(
+    profile_picture || "default"
+  );
 
   const handleImageChange = (imageUrl: string) => {
     const fileName = imageUrl.split("/").pop()?.split(".")[0] || "default";
@@ -49,7 +52,7 @@ function EditProfile() {
     e.preventDefault();
 
     try {
-      if (username !== "" && await doesUserExist(username, "")) {
+      if (username !== "" && (await doesUserExist(username, ""))) {
         await setUsername(userKey, username, true);
       }
       if (password !== "") {
@@ -69,9 +72,13 @@ function EditProfile() {
       };
 
       sessionStorage.setItem("userProfile", JSON.stringify(updatedUserProfile));
-      navigate("/profile", { state: { userKey, userProfile: updatedUserProfile } });
+      navigate("/profile", {
+        state: { userKey, userProfile: updatedUserProfile },
+      });
     } catch (err) {
-      setError("Error: Issues changing profile data at this time. Please try again later!");
+      setError(
+        "Error: Issues changing profile data at this time. Please try again later!"
+      );
     }
   };
 
@@ -104,7 +111,9 @@ function EditProfile() {
             <b>Hello!</b>
           </Typography>
           <Typography level="body-md">
-            If you would like to change your username, password, or both, please fill out the appropriate fields! If you would not like to change something, please leave the field blank.
+            If you would like to change your username, password, or both, please
+            fill out the appropriate fields! If you would not like to change
+            something, please leave the field blank.
           </Typography>
         </div>
 
@@ -144,7 +153,8 @@ function EditProfile() {
                     width: 50,
                     height: 50,
                     cursor: "pointer",
-                    border: selectedImageKey === key ? "2px solid blue" : "none",
+                    border:
+                      selectedImageKey === key ? "2px solid blue" : "none",
                   }}
                   onClick={() => handleImageChange(url)}
                 />
