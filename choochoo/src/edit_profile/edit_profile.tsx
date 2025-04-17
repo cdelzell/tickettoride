@@ -7,49 +7,21 @@ import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Avatar from "@mui/material/Avatar";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   setUsername,
   setPassword,
   setProfilePicture,
   doesUserExist,
-} from "../Firebase/FirebaseWriteUserData";
+} from "../firebase/FirebaseWriteUserData";
 
 import { useTheme, useMediaQuery } from "@mui/material";
 import "./edit_profile.css";
 
-// import thomasImg from "../assets/trains/thomas_train.jpg";
-// import gordonImg from "../assets/trains/gordon_train.webp";
-// import jamesImg from "../assets/trains/james_train.webp";
-// import percyImg from "../assets/trains/percy_train.webp";
-// import arthurImg from "../assets/trains/arthur.jpg";
-// import buddyImg from "../assets/trains/buddy.webp";
-// import dwImg from "../assets/trains/dw.webp";
-// import cliffordImg from "../assets/trains/clifford.jpg";
-// import emilyImg from "../assets/trains/emily_train.webp";
-// import henryImg from "../assets/trains/henry_train.webp";
-// import shinyImg from "../assets/trains/shiny.webp";
-// import georgeImg from "../assets/trains/george.jpg";
-// import defaultImg from "../assets/trains/Default_pfp.jpg";
-
-export const PROFILE_IMAGES = {
-  thomas: "/assets/thomasthetrain.jpg",
-  gordon: "/assets/trains/gordon_train.webp",
-  james: "/assets/trains/james_train.webp",
-  percy: "/assets/trains/percy_train.webp",
-  arthur: "/assets/trains/arthur.jpg",
-  buddy: "/assets/trains/buddy.webp",
-  dw: "/assets/trains/dw.webp",
-  clifford: "/assets/trains/clifford.jpg",
-  emily: "/assets/trains/emily_train.webp",
-  henry: "/assets/trains/henry_train.webp",
-  shiny: "/assets/trains/shiny.webp",
-  george: "/assets/trains/george.jpg",
-  default: "/assets/Default-pfp.png",
-};
+import { profileImages as PROFILE_IMAGES } from "@/image_imports";
 
 function Render_Page() {
-  return <Sign_In className="Login" />;
+  return <Sign_In />;
 }
 
 function Sign_In() {
@@ -58,64 +30,53 @@ function Sign_In() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [error, setError] = useState(""); // To store the error message
-  const { state } = useLocation(); // Use location to get the state passed from navigate
-  const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
-  const { player_username, wins, total_score, profile_picture } =
-    userProfile || {};
-
-  console.log("initial userProfile" + userProfile);
+  const [error, setError] = useState("");
+  const { state } = useLocation();
+  const { userKey, userProfile } = state || {};
+  const { player_username, wins, total_score, profile_picture } = userProfile || {};
 
   const [username, setUsernameState] = useState("");
   const [password, setPasswordState] = useState("");
-  let userData1, userData2, userData;
+  const [image, setImage] = useState<string | null>(null);
+  // Initialize with the default image from PROFILE_IMAGES object.
+  const [selectedImageUrl, setSelectedImageUrl] = useState(PROFILE_IMAGES.default);
 
-  const [image, setImage] = useState(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState(
-    PROFILE_IMAGES.default
-  );
+  // Debug log for monitoring the selected image URL
+  console.log("Selected Image URL:", selectedImageUrl);
 
-  const handleImageChange = (imageUrl) => {
+  const handleImageChange = (imageUrl: string) => {
     setSelectedImageUrl(imageUrl);
     setImage(imageUrl);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      if (username != "" && doesUserExist(username, "")) {
-        userData2 = await setUsername(userKey, username, true);
+      if (username !== "" && await doesUserExist(username, "")) {
+        await setUsername(userKey, username, true);
       }
-      if (password != "") {
-        userData1 = await setPassword(userKey, password, true);
+      if (password !== "") {
+        await setPassword(userKey, password, true);
       }
-      if (selectedImageUrl != PROFILE_IMAGES.default) {
-        userData = await setProfilePicture(userKey, selectedImageUrl);
+      if (selectedImageUrl !== PROFILE_IMAGES.default) {
+        await setProfilePicture(userKey, selectedImageUrl, true);
       }
 
-      // Rebuild the updated user profile (excluding password)
       const updatedUserProfile = {
-        ...userProfile, // Spread the current userProfile to retain existing fields
-        username: username.trim() !== "" ? username : userProfile.username, // Update username if new one is provided
-        wins: wins,
-        total_score: total_score,
+        ...userProfile,
+        username: username.trim() !== "" ? username : userProfile.username,
+        wins,
+        total_score,
         profile_picture:
-          selectedImageUrl !== PROFILE_IMAGES.default
-            ? selectedImageUrl
-            : profile_picture, // Update profile picture if new one is selected
+          selectedImageUrl !== PROFILE_IMAGES.default ? selectedImageUrl : profile_picture,
       };
-
-      console.log("userProfile" + updatedUserProfile);
 
       navigate("/profile", {
         state: { userKey, userProfile: updatedUserProfile },
       });
     } catch (err) {
-      // Catch any unexpected errors (e.g., network issues)
-      setError(
-        "Error: Issues changing profile data at this time. Please try again later!"
-      );
+      setError("Error: Issues changing profile data at this time. Please try again later!");
     }
   };
 
@@ -123,28 +84,15 @@ function Sign_In() {
     if (!selectedImageUrl) return alert("Please select an image!");
 
     try {
-      // TYSON - SEND TO FIREBASE HERE I THINK
+      await setProfilePicture(userKey, selectedImageUrl, true);
       alert("Profile picture updated successfully!");
     } catch (error) {
       console.error("Update failed:", error);
+      alert("Failed to update profile picture.");
     }
   };
 
-  // const predefinedImagesProfile = [
-  //   thomasImg,
-  //   gordonImg,
-  //   jamesImg,
-  //   percyImg,
-  //   arthurImg,
-  //   buddyImg,
-  //   dwImg,
-  //   cliffordImg,
-  //   emilyImg,
-  //   henryImg,
-  //   shinyImg,
-  //   georgeImg,
-  // ];
-
+  // Filter out the default image from the list of profile images
   const predefinedImagesProfile = Object.values(PROFILE_IMAGES).filter(
     (url) => url !== PROFILE_IMAGES.default
   );
@@ -173,14 +121,13 @@ function Sign_In() {
           <Typography level="h1" component="h1">
             <b>Hello!</b>
           </Typography>
-          <Typography level="body-med">
-            If you would like to change your username, password, or both, please
-            fill out the appropriate fields! If you would not like to change
-            something, please leave the field blank.
+          <Typography level="body-md">
+            If you would like to change your username, password, or both, please fill out the
+            appropriate fields! If you would not like to change something, please leave the field
+            blank.
           </Typography>
         </div>
 
-        {/* Profile Picture Selection Section */}
         <form onSubmit={handleSubmit}>
           <div
             style={{
@@ -191,8 +138,9 @@ function Sign_In() {
               alignItems: "center",
             }}
           >
+            {/* Avatar uses a fallback: if selectedImageUrl is falsey, it falls back to PROFILE_IMAGES.default */}
             <Avatar
-              src={selectedImageUrl}
+              src={selectedImageUrl || PROFILE_IMAGES.default}
               alt="Profile Picture"
               sx={{ width: 100, height: 100, margin: "auto", mb: 2 }}
             />
@@ -226,7 +174,7 @@ function Sign_In() {
             </div>
             <Button
               onClick={handleUpload}
-              variant="contained"
+              variant="solid"
               sx={{
                 mt: 1,
                 backgroundColor: "ButtonFace",
@@ -236,8 +184,6 @@ function Sign_In() {
               Save Profile Picture
             </Button>
           </div>
-
-          {/* Username & Password Fields */}
 
           <FormControl>
             <FormLabel>New Username</FormLabel>
@@ -256,6 +202,7 @@ function Sign_In() {
               onChange={(e) => setPasswordState(e.target.value)}
             />
           </FormControl>
+
           <Button
             type="submit"
             sx={{

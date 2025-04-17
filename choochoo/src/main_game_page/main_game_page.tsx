@@ -4,7 +4,6 @@ import "./main_game_page.css";
 import GameRunner from "../backend/game-runner";
 import User from "../backend/user";
 import PlayerCard from "./components/Profile/ProfileCard";
-import FaceUpCard from "./components/FaceUpCards/FaceUpCard";
 import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
 import DestinationCardsCarousel from "./components/DestinationCard/DestinationCard";
 import DrawDestinationCard from "./components/DestinationCard/DrawDestinationCard";
@@ -18,35 +17,6 @@ import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
 import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
-
-export type NetworkProps = {
-  width: number;
-  height: number;
-};
-
-const players = [
-  {
-    username: "c-bear",
-    trainCount: 1700,
-    profilePic: "./src/assets/trains/percy_train.webp",
-  },
-  {
-    username: "t-dawg",
-    trainCount: 0,
-    profilePic: "./src/assets/trains/gordon_train.webp",
-  },
-  {
-    username: "ridster",
-    trainCount: 2,
-    profilePic: "./src/assets/trains/james_train.webp",
-  },
-];
-
-const main_player = {
-  username: "noah-rama",
-  trainCount: 2,
-  profilePic: "./src/assets/trains/thomas_train.jpg",
-};
 
 export interface City {
   name: string;
@@ -74,9 +44,28 @@ export interface DestinationCardInfo {
 
 export const background = "#d3d3d3";
 
-const graph = {
-  nodes: cities,
-  links: routes,
+const players = [
+  {
+    username: "c-bear",
+    trainCount: 1700,
+    profilePic: "./src/assets/trains/percy_train.webp",
+  },
+  {
+    username: "t-dawg",
+    trainCount: 0,
+    profilePic: "./src/assets/trains/gordon_train.webp",
+  },
+  {
+    username: "ridster",
+    trainCount: 2,
+    profilePic: "./src/assets/trains/james_train.webp",
+  },
+];
+
+const main_player = {
+  username: "noah-rama",
+  trainCount: 2,
+  profilePic: "./src/assets/trains/thomas_train.jpg",
 };
 
 const users: User[] = [new User("Test")];
@@ -163,11 +152,16 @@ const MainGamePage = () => {
     }
   }, [gameRunner]);
 
-  //   window.addEventListener("drawCard", handleDrawCardEvent);
-  //   return () => {
-  //     window.removeEventListener("drawCard", handleDrawCardEvent);
-  //   };
-  // }, [drawClickCount]);
+  useEffect(() => {
+    const handleDrawCardEvent = () => {
+      handleDrawPileClick();
+    };
+
+    window.addEventListener("drawCard", handleDrawCardEvent);
+    return () => {
+      window.removeEventListener("drawCard", handleDrawCardEvent);
+    };
+  }, [drawClickCount]);
 
   if (!gameRunner) {
     return <div>Loading game...</div>;
@@ -182,7 +176,7 @@ const MainGamePage = () => {
       )
     );
   };
-
+// use this to get cards from pile
   const getDestinationCardPossibilitiesFormatted = (
     cards: DestinationCard[]
   ) => {
@@ -209,8 +203,9 @@ const MainGamePage = () => {
       ...card,
       count: cards[i],
     }));
+  
+    setTrainCards(updatedTrains);
 
-    setTrainCards(trains);
   };
 
   const drawRandomTrainCard = () => {
@@ -244,49 +239,55 @@ const MainGamePage = () => {
   };
 
   const handleRouteClaim = (route: Route) => {
-    const trainCard = trainCards.find(
-      (card) => card.game_color === route.game_color
+    // find the route in game board graph using index instead of color
+    const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
+      (r) => 
+        (r.destination1 === route.source.name && r.destination2 === route.target.name) ||
+        (r.destination1 === route.target.name && r.destination2 === route.source.name)
     );
-    const wildCard = trainCards.find((card) => card.game_color === "wild");
-
+    if (routeIndex === -1) {
+      console.error("Route not found in board graph:", route);
+      return false;
+    }
     if (
       action_box_status === 2 &&
-      trainCard &&
-      wildCard &&
-      trainCard.count + wildCard.count >= route.trains &&
-      trains >= route.trains &&
       drawClickCount === 0 &&
       destClickCount === 0 &&
       playClickCount === 0
     ) {
-      updateTrainCardCount(route.game_color!, -route.trains);
-      setTrains(trains - route.trains);
-      setPlayClickCount(playClickCount + 1);
-      if (
-        route.trains > trainCard.count &&
-        trainCard.count + wildCard.count >= route.trains
-      ) {
-        updateTrainCardCount(route.game_color!, -trainCard.count);
-        updateTrainCardCount("wild", -(route.trains - trainCard.count));
+      // ugame runner function to claim route
+      const claimed = gameRunner.claimRoute(routeIndex , profile_picture);
+      
+      if (claimed) {
+      
         setPlayClickCount(playClickCount + 1);
+        setTrains(gameRunner.getMainPlayerTrainCount());
+        
+        const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
+        const updatedTrainCards = train_cards.map((card, i) => ({
+          ...card,
+          count: updatedTrainCounts[i],
+        }));
+        setTrainCards(updatedTrainCards);
+        
+        // UI
+        setGameRoutes((prevRoutes) =>
+          prevRoutes.map((r) =>
+            (r.source.name === route.source.name && r.target.name === route.target.name) ||
+            (r.source.name === route.target.name && r.target.name === route.source.name)
+              ? { ...r, claimer: username, claimerProfilePic: profile_picture  }
+              : r
+          )
+        );
+        
+        return true;
       }
-
-      setGameRoutes((prevRoutes) =>
-        prevRoutes.map((r) =>
-          action_box_status === 2 &&
-          r.source.name === route.source.name &&
-          r.target.name === route.target.name
-            ? { ...r, claimer: main_player.username }
-            : r
-        )
-      );
-      return true;
-    } else {
-      return false;
     }
+    
+    return false;
   };
 
-  const updateStatus = (newStatus: React.SetStateAction<number>) => {
+  const updateStatus = (newStatus: number) => {
     setActionBoxStatus(newStatus);
     if (newStatus === 1) {
       setDrawnCard(null);
@@ -296,23 +297,43 @@ const MainGamePage = () => {
   };
 
   const handleDrawPileClick = () => {
+  
     if (
       action_box_status === 1 &&
       drawClickCount < 2 &&
       playClickCount === 0 &&
       destClickCount === 0
     ) {
-      const newCard = drawRandomTrainCard();
-      if (newCard) {
-        setDrawnCard(newCard);
+      gameRunner.drawTrainCardsFromDeck();
+      const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
+      
+      // find which card was drawn by comparing previous counts to new counts
+      let drawnCardColor = null;
+      for (let i = 0; i < trainCards.length; i++) {
+        if (updatedTrainCounts[i] > trainCards[i].count) {
+          drawnCardColor = train_cards[i].game_color;
+          break;
+        }
+      }
+      
+      // new train cards udpated
+      const updatedTrainCards = train_cards.map((card, i) => ({
+        ...card,
+        count: updatedTrainCounts[i],
+      }));
+      setTrainCards(updatedTrainCards);
+      
+      if (drawnCardColor) {
+        setDrawnCard(drawnCardColor);
         setShowCardNotification(true);
-
+      
         setTimeout(() => {
           setShowCardNotification(false);
         }, 3000);
       }
+      
+      setDrawClickCount(prevCount => prevCount + 1);
 
-      setDrawClickCount((prev) => prev + 1);
     }
   };
 
@@ -371,7 +392,7 @@ const MainGamePage = () => {
             key={index}
             username={player.username}
             trainCount={player.trainCount}
-            profilePic={player.profilePic}
+            profilePic={player.profilePic.split("/").pop() || "Default_pfp.jpg"}
             main_player={false}
             active={currentPlayer === index + 1}
           />
@@ -410,7 +431,7 @@ const MainGamePage = () => {
           drawDestActive={draw_dest_active}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
-          updateFaceUp={updateActionCardStatus}
+          updateFaceUp={setActiveTrains}
           drawClickCount={drawClickCount}
           setDrawClickCount={setDrawClickCount}
           playClickCount={playClickCount}
@@ -450,7 +471,7 @@ const MainGamePage = () => {
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profile_picture}
+            profilePic={profile_picture?.split("/").pop() || "Default_pfp.jpg"}
             main_player={true}
             active={currentPlayer === 0}
           />

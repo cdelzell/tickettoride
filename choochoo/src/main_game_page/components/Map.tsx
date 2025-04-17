@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import monoMap from "../../assets/mono_map.jpg";
+import { monoMap } from "@/image_imports";
+
 
 export type NetworkProps = {
   width: number;

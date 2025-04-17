@@ -1,4 +1,5 @@
 import "./DrawPile.css";
+import { drawPile } from "@/image_imports";
 
 function DrawTrains({
   updateTrains,
@@ -13,7 +14,7 @@ function DrawTrains({
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
   destClickCount: number;
-  handleDrawPileClick: () => void;  // added this to handle drawing pile
+  handleDrawPileClick: () => void;
 }) {
   return (
     <div className="draw_trains">
@@ -28,7 +29,7 @@ function DrawTrains({
         setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
         destClickCount={destClickCount}
-        handleDrawPileClick={handleDrawPileClick}  
+        handleDrawPileClick={handleDrawPileClick}
       />
     </div>
   );
@@ -45,17 +46,17 @@ function DrawPile({
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
   destClickCount: number;
-  handleDrawPileClick: () => void;  
+  handleDrawPileClick: () => void;
 }) {
   return (
     <div>
       <p>Cards drawn: {drawClickCount}/2</p>
-      <button 
-        className="draw_pile" 
-        onClick={handleDrawPileClick} 
+      <button
+        className="draw_pile"
+        onClick={handleDrawPileClick}
         disabled={drawClickCount >= 2 || playClickCount > 0 || destClickCount > 0}
       >
-        <img src="./src/assets/draw_pile.jpg" alt="draw pile" />
+        <img src={drawPile} alt="draw pile" />
       </button>
     </div>
   );

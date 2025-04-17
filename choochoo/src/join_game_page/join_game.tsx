@@ -11,7 +11,7 @@ import FormHelperText from "@mui/joy/FormHelperText";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
-import { checkLobbyExists, joinLobby } from "../Firebase/FirebaseLobbyManagment";
+import { checkLobbyExists, joinLobby } from "../firebase/FirebaseLobbyManagment";
 import "./join_game.css";
 
 interface UserProfile {

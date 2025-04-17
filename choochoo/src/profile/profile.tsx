@@ -5,10 +5,10 @@ import { useTheme, useMediaQuery } from "@mui/material";
 import Button from "@mui/joy/Button";
 import { Grid2 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./profile.css";
-import firebase from "firebase/compat/app";
+import { profileImages } from "@/image_imports";
 
 function App() {
   return <Profile />;
@@ -20,10 +20,8 @@ function Profile() {
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const navigate = useNavigate();
-  const { state } = useLocation(); // Use location to get the state passed from navigate
-
-  const { userKey, userProfile } = state || {}; // Fallback to empty object if state is undefined
-  // Destructure only from profileData, which will contain either sessionStorage data or userProfile from location
+  const { state } = useLocation();
+  const { userKey, userProfile } = state || {};
   const { username, wins, total_score, profile_picture } = userProfile || {};
 
   const handleNavGame = () => {
@@ -36,6 +34,9 @@ function Profile() {
     navigate("/join_game", { state: { userProfile } });
   };
 
+  const resolvedProfilePic = profileImages[profile_picture as keyof typeof profileImages] || profileImages.default;
+
+
   return (
     <main className="background_set_up">
       <CssBaseline />
@@ -46,16 +47,15 @@ function Profile() {
           backgroundColor: "white",
           maxHeight: 700,
           maxWidth: 500,
-          mx: "auto", // margin left & right
-          my: 4, // margin top & bottom
-          py: 3, // padding top & bottom
-          px: 2, // padding left & right
+          mx: "auto",
+          my: 4,
+          py: 3,
+          px: 2,
           display: "flex",
           flexDirection: "column",
           gap: 2,
           borderRadius: "sm",
           boxShadow: "md",
-          // overflowY: "scroll",
           minHeight: 50,
         }}
       >
@@ -63,7 +63,7 @@ function Profile() {
           <Grid2 size={5}>
             <Avatar
               alt={username || "User Profile"}
-              src={profile_picture || "/assets/trains/thomas_train.jpg"}
+              src={resolvedProfilePic}
               sx={{
                 width: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,
                 height: isSmallScreen ? "13vw" : isMediumScreen ? "20vw" : 170,
@@ -111,6 +111,7 @@ function Profile() {
               </p>
             </div>
           </Grid2>
+
           <Grid2 size={12}>
             <span></span>
           </Grid2>
@@ -126,22 +127,14 @@ function Profile() {
             <Button
               className="button"
               onClick={handleNavGame}
-              sx={{
-                "&:hover": {
-                  color: "white",
-                },
-              }}
+              sx={{ "&:hover": { color: "white" } }}
             >
               Make Game
             </Button>
             <Button
               className="button"
               onClick={handleJoinGame}
-              sx={{
-                "&:hover": {
-                  color: "white",
-                },
-              }}
+              sx={{ "&:hover": { color: "white" } }}
             >
               Join Game
             </Button>
@@ -150,11 +143,7 @@ function Profile() {
               onClick={() => {
                 navigate("/edit_profile", { state: { userKey, userProfile } });
               }}
-              sx={{
-                "&:hover": {
-                  color: "white",
-                },
-              }}
+              sx={{ "&:hover": { color: "white" } }}
             >
               Edit Profile
             </Button>

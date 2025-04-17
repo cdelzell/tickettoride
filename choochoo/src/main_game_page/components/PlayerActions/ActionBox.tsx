@@ -4,6 +4,7 @@ import "./ActionBox.css";
 import GameRunner from "../../../backend/game-runner";
 import DestinationCard from "../../../backend/destination-card";
 import { DestinationCardInfo } from "../../main_game_page";
+import { leftArrow } from "@/image_imports";
 
 function ActionBox({
   action,
@@ -51,7 +52,7 @@ function ActionBox({
   const [actionActive, setActionActive] = useState(true);
 
   useEffect(() => {
-    if (destClickCount > 0 || drawClickCount == 2 || playClickCount > 0) {
+    if (destClickCount > 0 || drawClickCount === 2 || playClickCount > 0) {
       setActionActive(false);
     }
   });
@@ -65,16 +66,13 @@ function ActionBox({
     } else if (action === 1) {
       setGoBack(true);
       updateFaceUp(true);
-    } else if (action === 1 && drawClickCount > 0) {
-      setGoBack(false);
-      updateFaceUp(true);
     } else if (action === 2) {
       setGoBack(true);
     } else if (action === 3 && destClickCount === 0) {
       setGoBack(true);
       updateDrawDest(true);
     }
-  }, [action, updateDrawDest, updateFaceUp]); // Added updateFaceUp as dependency
+  }, [action, updateDrawDest, updateFaceUp]);
 
   const handleReturn = () => {
     if (action === 3) {
@@ -89,11 +87,10 @@ function ActionBox({
     <div className="box">
       {goBack && actionActive === true ? (
         <button onClick={handleReturn} className="return">
-          <img src="./src/assets/arrows/left_arrow.png" alt="back arrow"></img>
+          <img src={leftArrow} alt="back arrow" />
         </button>
-      ) : (
-        <></>
-      )}
+      ) : null}
+
       {action === 0 && actionActive === true ? (
         <HomeBox updateStatus={updateStatus} />
       ) : action === 1 && actionActive === true ? (
@@ -103,7 +100,7 @@ function ActionBox({
           setDrawClickCount={setDrawClickCount}
           playClickCount={playClickCount}
           destClickCount={destClickCount}
-          handleDrawPileClick={handleDrawPileClick} // Pass the handler down
+          handleDrawPileClick={handleDrawPileClick}
         />
       ) : action === 2 && actionActive === true ? (
         <PlayTrains />
@@ -177,7 +174,6 @@ function Submit({
   const handleClick = () => {
     if (drawClickCount === 0 && playClickCount === 0 && destClickCount === 0) {
       updateDrawDest(false);
-
       setDestClickCount(destClickCount + 1);
       gamerunner.claimDestinationCards(drawnDestCards);
 

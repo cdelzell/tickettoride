@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./DestinationCard.css";
 import { DestinationCardInfo } from "../../main_game_page";
+import { leftArrow, rightArrow, destinationCardImages } from "@/image_imports";
 
 function DestinationCardsCarousel({
   destinations,
@@ -11,21 +12,15 @@ function DestinationCardsCarousel({
   const [pile_empty, setPileEmpty] = useState(true);
 
   useEffect(() => {
-    if (destinations.length != 0) {
-      setPileEmpty(false);
-    } else {
-      setPileEmpty(true);
-    }
-  });
+    setPileEmpty(destinations.length === 0);
+  }, [destinations]);
 
   const nextImage = () => {
     setIndex((prevIndex) => (prevIndex + 1) % destinations.length);
   };
 
   const prevImage = () => {
-    setIndex(
-      (prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length
-    );
+    setIndex((prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length);
   };
 
   return (
@@ -34,18 +29,15 @@ function DestinationCardsCarousel({
         {pile_empty ? (
           <div className="empty_carousel">no destination cards</div>
         ) : (
-          <DestinationCard
-            destination={destinations[index].image_path}
-            location="pile"
-          />
+          <DestinationCard destination={destinations[index].image_path} location="pile" />
         )}
 
         <div className="button_container">
           <button onClick={prevImage} className="carousel_button left">
-            <img src="./src/assets/arrows/left_arrow.png"></img>
+            <img src={leftArrow} alt="Previous" />
           </button>
           <button onClick={nextImage} className="carousel_button right">
-            <img src="./src/assets/arrows/right_arrow.png"></img>
+            <img src={rightArrow} alt="Next" />
           </button>
         </div>
       </div>
@@ -60,20 +52,19 @@ export function DestinationCard({
   destination: string;
   location: string;
 }) {
-  let name = "destination_card";
-  if (location === "draw") {
-    name = "destination_card_draw";
-  } else if (location === "test") {
-    name = "test";
-  }
+  const className =
+    location === "draw"
+      ? "destination_card_draw"
+      : location === "test"
+        ? "test"
+        : "destination_card";
 
-  return (
-    <img
-      className={name}
-      src={"./src/assets/destination_cards/" + destination + ".png"}
-      alt={destination}
-    />
-  );
+  const imgSrc = destinationCardImages[destination as keyof typeof destinationCardImages];
+
+
+
+  return <img className={className} src={imgSrc} alt={destination} />;
 }
+
 
 export default DestinationCardsCarousel;
