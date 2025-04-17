@@ -50,14 +50,15 @@ class BoardGraph {
   }
 
   static fromJSON(data: any): BoardGraph {
-    const graph = new BoardGraph();
-    const claimers = data.routeClaimers ?? [];
+    const graph = Object.create(BoardGraph.prototype) as BoardGraph;
 
-    for (let i = 0; i < claimers.length; i++) {
-      if (claimers[i]) {
-        graph.routes[i].claimRoute(claimers[i]);
-      }
-    }
+    graph.destinations = Array.isArray(data?.destinations)
+      ? data.destinations
+      : [];
+
+    graph.routes = Array.isArray(data?.routes)
+      ? data.routes.map((r: any) => TrainRoute.fromJSON?.(r) ?? r)
+      : [];
 
     return graph;
   }

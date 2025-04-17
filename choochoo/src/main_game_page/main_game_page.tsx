@@ -100,23 +100,23 @@ const MainGamePage = () => {
   const [gameRunner, setGameRunner] = useState<GameRunner>();
 
   useEffect(() => {
-    const loadGame = async () => {
-      const result = await findGameByGameID(lobbyCode, false);
-      if (!result) {
-        console.error("No game found. Crashing the app.");
-        throw new Error("Game not found"); // 💥 crash the app
-      }
-      setGameRunner(GameRunner.fromJSON(result)); // ✅ safely set it if found
-    };
+    if (!lobbyCode) {
+      console.warn("No lobby code yet. Waiting...");
+      return;
+    }
 
-    loadGame();
-  }, []);
+    const tempRunner = new GameRunner([], lobbyCode);
+    tempRunner.startListeningForUpdates((newRunner) => {
+      setGameRunner(newRunner);
+    });
+
+    return () => {
+      //tempRunner.stopListeningForUpdates?.();
+    };
+  }, [lobbyCode]);
 
   if (!gameRunner) {
-    // Either throw or return a placeholder
-    throw new Error("GameRunner is undefined. Cannot continue."); // hard crash
-    // OR
-    // return <div>Loading...</div>; // soft fail / spinner
+    return <div>Loading game...</div>; // or a spinner, skeleton, etc.
   }
 
   const train_counts = gameRunner.getMainPlayerTrainCards();

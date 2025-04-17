@@ -127,14 +127,24 @@ class Player {
   static fromJSON(data: any): Player {
     const player = Object.create(Player.prototype) as Player;
 
-    player.id = data.id;
-    player.username = data.username;
-    player.trainCardHand = data.trainCardHand;
-    player.destinationCardHand = data.destinationCardHand.map(
+    player.id = data.id ?? "";
+    player.username = data.username ?? "Unknown";
+    player.trainCardHand = data.trainCardHand ?? {
+      red: 0,
+      yellow: 0,
+      black: 0,
+      green: 0,
+      purple: 0,
+      blue: 0,
+      brown: 0,
+      white: 0,
+      wild: 0,
+    };
+    player.destinationCardHand = (data.destinationCardHand ?? []).map(
       (card: any) => DestinationCard.fromJSON?.(card) ?? card
     );
-    player.trainAmount = data.trainAmount;
-    player.scoredPoints = data.scoredPoints;
+    player.trainAmount = data.trainAmount ?? 45;
+    player.scoredPoints = data.scoredPoints ?? 0;
 
     return player;
   }

@@ -51,7 +51,7 @@ export async function findGameByGameID(
 
     if (gameData) {
       if (print) {
-        printGameQueryResults(gameData); // Print the game data if print is true
+        printGameQueryResults("gamedata" + gameData); // Print the game data if print is true
       }
       return gameData; // Return the resolved data (game data) if found
     } else {

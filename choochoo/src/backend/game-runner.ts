@@ -245,15 +245,21 @@ class GameRunner {
   static fromJSON(data: any): GameRunner {
     const runner = Object.create(GameRunner.prototype) as GameRunner;
 
-    runner.gameID = data.gameID;
-    runner.currentPlayer = data.currentPlayer;
-    runner.gameOver = data.gameOver;
+    runner.gameID = data.gameID ?? 0;
+    runner.currentPlayer = data.currentPlayer ?? 0;
+    runner.gameOver = data.gameOver ?? false;
 
-    runner.players = data.players.map((p: any) => Player.fromJSON(p));
-    runner.gameBoard = GameBoard.fromJSON(data.gameBoard);
-    runner.destinationCardsToDraw = data.destinationCardsToDraw.map((d: any) =>
-      DestinationCard.fromJSON(d)
-    );
+    runner.players = Array.isArray(data.players)
+      ? data.players.map((p: any) => Player.fromJSON(p))
+      : [];
+
+    runner.gameBoard = data.gameBoard
+      ? GameBoard.fromJSON(data.gameBoard)
+      : new GameBoard();
+
+    runner.destinationCardsToDraw = Array.isArray(data.destinationCardsToDraw)
+      ? data.destinationCardsToDraw.map((d: any) => DestinationCard.fromJSON(d))
+      : [];
 
     return runner;
   }
