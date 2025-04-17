@@ -199,7 +199,7 @@ const MainGamePage = () => {
   };
 
   const updatePlayerHand = (cards: number[]) => {
-    const trains = train_cards.map((card, i) => ({
+    const updatedTrains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
