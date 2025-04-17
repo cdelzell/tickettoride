@@ -293,7 +293,7 @@ const MainGamePage = () => {
   return (
     <main className="main_game_page">
       <div className="player_cards">
-        {players.map((player, index) => (
+        {test_players.map((player, index) => (
           <PlayerCard
             key={index}
             username={player.username}
