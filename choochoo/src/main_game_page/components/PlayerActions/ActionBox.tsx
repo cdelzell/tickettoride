@@ -4,7 +4,7 @@ import "./ActionBox.css";
 import GameRunner from "../../../backend/game-runner";
 import DestinationCard from "../../../backend/destination-card";
 import { DestinationCardInfo } from "../../main_game_page";
-// import leftArrow from "../../assets/arrows/left_arrow.png"; // getting an error here
+import leftArrow from "@/assets/arrows/left_arrow.png";
 
 function ActionBox({
   action,
@@ -87,7 +87,7 @@ function ActionBox({
     <div className="box">
       {goBack && actionActive === true ? (
         <button onClick={handleReturn} className="return">
-          {/* <img src={leftArrow} alt="back arrow" /> */}
+          <img src={leftArrow} alt="back arrow" />
         </button>
       ) : null}
 

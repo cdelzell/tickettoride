@@ -13,7 +13,7 @@ import {
   setPassword,
   setProfilePicture,
   doesUserExist,
-} from "../Firebase/FirebaseWriteUserData";
+} from "../firebase/FirebaseWriteUserData";
 
 import { useTheme, useMediaQuery } from "@mui/material";
 import "./edit_profile.css";

@@ -4,8 +4,8 @@ import Player from './player';
 import User from './user';
 import TrainRoute from './train-route';
 import DestinationCard from './destination-card';
-import { writeGameToDatabase } from '../Firebase/FirebaseWriteGameData';
-import { findGameByGameID } from '../Firebase/FirebaseReadGameData';
+import { writeGameToDatabase } from '../firebase/FirebaseWriteGameData';
+import { findGameByGameID } from '../firebase/FirebaseReadGameData';
 import calculateGameScores from './score-calculator';
 
 const START_TRAIN_CARD_NUM = 4;

@@ -8,8 +8,8 @@ import Typography from "@mui/joy/Typography";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { useTheme } from "@mui/joy/styles";
 import { useMediaQuery } from "@mui/material";
-import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../Firebase/FirebaseInterfaces";
-import { createLobby, joinLobby, leaveLobby, onLobbyUpdate, startGame } from "../Firebase/FirebaseLobbyManagment";
+import { type Lobby as LobbyType, type LobbyPlayer as Player } from "../firebase/FirebaseInterfaces";
+import { createLobby, joinLobby, leaveLobby, onLobbyUpdate, startGame } from "../firebase/FirebaseLobbyManagment";
 import "./lobby.css";
 
 // define userprofile interface
