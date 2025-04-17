@@ -106,7 +106,7 @@ const MainGamePage = () => {
         console.error("No game found. Crashing the app.");
         throw new Error("Game not found"); // 💥 crash the app
       }
-      setGameRunner(result); // ✅ safely set it if found
+      setGameRunner(GameRunner.fromJSON(result)); // ✅ safely set it if found
     };
 
     loadGame();
@@ -350,7 +350,7 @@ const MainGamePage = () => {
     // move to the next array in cycle
     setCurrentPlayer(gameRunner.getCurrentPlayer());
 
-    gameRunner.sendToDatabase(gameRunner);
+    gameRunner.sendToDatabase();
   };
 
   // CSS for the endturn button

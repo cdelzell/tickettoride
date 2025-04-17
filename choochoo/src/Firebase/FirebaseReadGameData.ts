@@ -1,4 +1,4 @@
-import { ref, query, orderByChild, equalTo, get } from "firebase/database";
+import { child, query, orderByChild, equalTo, get } from "firebase/database";
 import { database, gameDataPath } from "./FirebaseCredentials";
 import GameRunner from "../backend/game-runner";
 type GameRunnerType = typeof GameRunner;
@@ -42,11 +42,12 @@ export async function findTurnByGameID(
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
 export async function findGameByGameID(
-  game_ID: number,
+  gameID: number,
   print: boolean
-): Promise<GameRunner | null> {
+): Promise<Object | null> {
   try {
-    const gameData = await findGameByField("gameID", game_ID);
+    const gameRef = child(gameDataPath, `${gameID}`);
+    const gameData = await get(gameRef);
 
     if (gameData) {
       if (print) {
@@ -54,7 +55,7 @@ export async function findGameByGameID(
       }
       return gameData; // Return the resolved data (game data) if found
     } else {
-      console.log(`No game found with game ID: ${game_ID}`);
+      console.log(`No game found with game ID: ${gameID}`);
       return null; // Return null if no game data is found
     }
   } catch (error) {

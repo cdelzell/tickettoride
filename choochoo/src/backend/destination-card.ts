@@ -16,6 +16,22 @@ class DestinationCard {
   getPointValue(): number {
     return this.pointValue;
   }
+
+  toJSON() {
+    return {
+      destination1: this.destination1,
+      destination2: this.destination2,
+      pointValue: this.pointValue,
+    };
+  }
+
+  static fromJSON(data: any): DestinationCard {
+    return new DestinationCard(
+      data.destination1,
+      data.destination2,
+      data.pointValue
+    );
+  }
 }
 
 export default DestinationCard;

@@ -110,6 +110,34 @@ class Player {
   getDestinationCardHandAsCards(): DestinationCard[] {
     return this.destinationCardHand;
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      username: this.username,
+      trainCardHand: this.trainCardHand,
+      destinationCardHand: this.destinationCardHand.map(
+        (card) => card.toJSON?.() ?? card
+      ),
+      trainAmount: this.trainAmount,
+      scoredPoints: this.scoredPoints,
+    };
+  }
+
+  static fromJSON(data: any): Player {
+    const player = Object.create(Player.prototype) as Player;
+
+    player.id = data.id;
+    player.username = data.username;
+    player.trainCardHand = data.trainCardHand;
+    player.destinationCardHand = data.destinationCardHand.map(
+      (card: any) => DestinationCard.fromJSON?.(card) ?? card
+    );
+    player.trainAmount = data.trainAmount;
+    player.scoredPoints = data.scoredPoints;
+
+    return player;
+  }
 }
 
 export default Player;
