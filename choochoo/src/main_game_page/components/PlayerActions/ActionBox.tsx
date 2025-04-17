@@ -4,7 +4,7 @@ import "./ActionBox.css";
 import GameRunner from "../../../backend/game-runner";
 import DestinationCard from "../../../backend/destination-card";
 import { DestinationCardInfo } from "../../main_game_page";
-import leftArrow from "@/assets/arrows/left_arrow.png";
+import { leftArrow } from "@/image_imports";
 
 function ActionBox({
   action,

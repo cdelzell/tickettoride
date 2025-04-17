@@ -8,35 +8,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import "./profile.css";
-
-import arthur from "@/assets/Profile_Images/arthur.jpg";
-import buddy from "@/assets/Profile_Images/buddy.webp";
-import clifford from "@/assets/Profile_Images/clifford.jpg";
-import defaultImg from "@/assets/Profile_Images/Default_pfp.jpg";
-import dw from "@/assets/Profile_Images/dw.webp";
-import emily from "@/assets/Profile_Images/emily_train.webp";
-import george from "@/assets/Profile_Images/george.jpg";
-import gordon from "@/assets/Profile_Images/gordon_train.webp";
-import henry from "@/assets/Profile_Images/henry_train.webp";
-import james from "@/assets/Profile_Images/james_train.webp";
-import shiny from "@/assets/Profile_Images/shiny.webp";
-import thomas from "@/assets/Profile_Images/thomas_train.jpg";
-
-const PROFILE_IMAGES: Record<string, string> = {
-  arthur,
-  buddy,
-  clifford,
-  default: defaultImg,
-  dw,
-  emily,
-  george,
-  gordon,
-  henry,
-  james,
-  shiny,
-  thomas,
-};
-
+import { profileImages } from "@/image_imports";
 
 function App() {
   return <Profile />;
@@ -62,9 +34,8 @@ function Profile() {
     navigate("/join_game", { state: { userProfile } });
   };
 
-  const resolvedProfilePic =
-    PROFILE_IMAGES[profile_picture as keyof typeof PROFILE_IMAGES] ||
-    PROFILE_IMAGES.default;
+  const resolvedProfilePic = profileImages[profile_picture as keyof typeof profileImages] || profileImages.default;
+
 
   return (
     <main className="background_set_up">

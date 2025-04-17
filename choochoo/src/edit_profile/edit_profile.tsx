@@ -18,35 +18,7 @@ import {
 import { useTheme, useMediaQuery } from "@mui/material";
 import "./edit_profile.css";
 
-// Static image imports from Profile_Images
-import arthur from "@/assets/Profile_Images/arthur.jpg";
-import buddy from "@/assets/Profile_Images/buddy.webp";
-import clifford from "@/assets/Profile_Images/clifford.jpg";
-import defaultImg from "@/assets/Profile_Images/Default_pfp.jpg";
-import dw from "@/assets/Profile_Images/dw.webp";
-import emily from "@/assets/Profile_Images/emily_train.webp";
-import george from "@/assets/Profile_Images/george.jpg";
-import gordon from "@/assets/Profile_Images/gordon_train.webp";
-import henry from "@/assets/Profile_Images/henry_train.webp";
-import james from "@/assets/Profile_Images/james_train.webp";
-import shiny from "@/assets/Profile_Images/shiny.webp";
-import thomas from "@/assets/Profile_Images/thomas_train.jpg";
-
-// Build the PROFILE_IMAGES object using imported images
-export const PROFILE_IMAGES = {
-  arthur,
-  buddy,
-  clifford,
-  default: defaultImg,
-  dw,
-  emily,
-  george,
-  gordon,
-  henry,
-  james,
-  shiny,
-  thomas,
-};
+import { profileImages as PROFILE_IMAGES } from "@/image_imports";
 
 function Render_Page() {
   return <Sign_In />;

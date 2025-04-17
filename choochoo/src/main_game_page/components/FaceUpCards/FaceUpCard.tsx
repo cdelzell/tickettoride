@@ -1,27 +1,6 @@
 import "./FaceUpCards.css";
 import GameRunner from "../../../backend/game-runner";
-
-import red from "@/assets/cards/red.png";
-import yellow from "@/assets/cards/yellow.png";
-import black from "@/assets/cards/black.png";
-import green from "@/assets/cards/green.png";
-import purple from "@/assets/cards/purple.png";
-import blue from "@/assets/cards/blue.png";
-import brown from "@/assets/cards/brown.png";
-import white from "@/assets/cards/white.png";
-import wild from "@/assets/cards/wild.png";
-
-const cardImages: Record<string, string> = {
-  red,
-  yellow,
-  black,
-  green,
-  purple,
-  blue,
-  brown,
-  white,
-  wild,
-};
+import { trainCardImages } from "@/image_imports";
 
 function FaceUpCard({
   index,
@@ -53,17 +32,11 @@ function FaceUpCard({
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignContent: "center",
-      }}
-    >
+    <div style={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
       <button className="face_up_card" onClick={handleClick}>
         <img
           className="train_card"
-          src={cardImages[color] ?? wild}
+          src={trainCardImages[color] ?? trainCardImages["wild"]}
           alt={color}
         />
       </button>

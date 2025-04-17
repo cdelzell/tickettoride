@@ -1,32 +1,9 @@
 import { Route } from "../Map";
 import "./TrainCard.css";
-
-// ✅ Import all train card images
-import red from "@/assets/cards/red.png";
-import yellow from "@/assets/cards/yellow.png";
-import black from "@/assets/cards/black.png";
-import green from "@/assets/cards/green.png";
-import purple from "@/assets/cards/purple.png";
-import blue from "@/assets/cards/blue.png";
-import brown from "@/assets/cards/brown.png";
-import white from "@/assets/cards/white.png";
-import wild from "@/assets/cards/wild.png";
-
-// ✅ Map game_color to image
-const cardImages: Record<string, string> = {
-  red,
-  yellow,
-  black,
-  green,
-  purple,
-  blue,
-  brown,
-  white,
-  wild,
-};
+import { trainCardImages } from "@/image_imports";
 
 function TrainCard({
-  color, // will no longer be used
+  color, // still passed, but unused
   count,
   game_color,
   hover,
@@ -43,7 +20,7 @@ function TrainCard({
     hoverClass = "currentHover";
   }
 
-  const imgSrc = cardImages[game_color] ?? wild;
+  const imgSrc = trainCardImages[game_color] ?? trainCardImages["wild"];
 
   return (
     <div className="card_with_count">
