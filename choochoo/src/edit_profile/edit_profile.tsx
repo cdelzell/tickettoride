@@ -21,10 +21,10 @@ import "./edit_profile.css";
 import { profileImages as PROFILE_IMAGES } from "@/image_imports";
 
 function Render_Page() {
-  return <Sign_In />;
+  return <EditProfile />;
 }
 
-function Sign_In() {
+function EditProfile() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -37,16 +37,12 @@ function Sign_In() {
 
   const [username, setUsernameState] = useState("");
   const [password, setPasswordState] = useState("");
-  const [image, setImage] = useState<string | null>(null);
-  // Initialize with the default image from PROFILE_IMAGES object.
-  const [selectedImageUrl, setSelectedImageUrl] = useState(PROFILE_IMAGES.default);
-
-  // Debug log for monitoring the selected image URL
-  console.log("Selected Image URL:", selectedImageUrl);
+  const [selectedImageKey, setSelectedImageKey] = useState(profile_picture || "default");
 
   const handleImageChange = (imageUrl: string) => {
-    setSelectedImageUrl(imageUrl);
-    setImage(imageUrl);
+    const fileName = imageUrl.split("/").pop()?.split(".")[0] || "default";
+    const cleanKey = fileName.split("-")[0];
+    setSelectedImageKey(cleanKey);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,8 +55,9 @@ function Sign_In() {
       if (password !== "") {
         await setPassword(userKey, password, true);
       }
-      if (selectedImageUrl !== PROFILE_IMAGES.default) {
-        await setProfilePicture(userKey, selectedImageUrl, true);
+
+      if (selectedImageKey !== profile_picture) {
+        await setProfilePicture(userKey, selectedImageKey, true);
       }
 
       const updatedUserProfile = {
@@ -68,33 +65,18 @@ function Sign_In() {
         username: username.trim() !== "" ? username : userProfile.username,
         wins,
         total_score,
-        profile_picture:
-          selectedImageUrl !== PROFILE_IMAGES.default ? selectedImageUrl : profile_picture,
+        profile_picture: selectedImageKey,
       };
 
-      navigate("/profile", {
-        state: { userKey, userProfile: updatedUserProfile },
-      });
+      sessionStorage.setItem("userProfile", JSON.stringify(updatedUserProfile));
+      navigate("/profile", { state: { userKey, userProfile: updatedUserProfile } });
     } catch (err) {
       setError("Error: Issues changing profile data at this time. Please try again later!");
     }
   };
 
-  const handleUpload = async () => {
-    if (!selectedImageUrl) return alert("Please select an image!");
-
-    try {
-      await setProfilePicture(userKey, selectedImageUrl, true);
-      alert("Profile picture updated successfully!");
-    } catch (error) {
-      console.error("Update failed:", error);
-      alert("Failed to update profile picture.");
-    }
-  };
-
-  // Filter out the default image from the list of profile images
-  const predefinedImagesProfile = Object.values(PROFILE_IMAGES).filter(
-    (url) => url !== PROFILE_IMAGES.default
+  const predefinedImagesProfile = Object.entries(PROFILE_IMAGES).filter(
+    ([key]) => key !== "default"
   );
 
   return (
@@ -122,9 +104,7 @@ function Sign_In() {
             <b>Hello!</b>
           </Typography>
           <Typography level="body-md">
-            If you would like to change your username, password, or both, please fill out the
-            appropriate fields! If you would not like to change something, please leave the field
-            blank.
+            If you would like to change your username, password, or both, please fill out the appropriate fields! If you would not like to change something, please leave the field blank.
           </Typography>
         </div>
 
@@ -138,9 +118,8 @@ function Sign_In() {
               alignItems: "center",
             }}
           >
-            {/* Avatar uses a fallback: if selectedImageUrl is falsey, it falls back to PROFILE_IMAGES.default */}
             <Avatar
-              src={selectedImageUrl || PROFILE_IMAGES.default}
+              src={PROFILE_IMAGES[selectedImageKey] || PROFILE_IMAGES.default}
               alt="Profile Picture"
               sx={{ width: 100, height: 100, margin: "auto", mb: 2 }}
             />
@@ -156,33 +135,21 @@ function Sign_In() {
                 alignItems: "center",
               }}
             >
-              {predefinedImagesProfile.map((imageUrl, index) => (
+              {predefinedImagesProfile.map(([key, url], index) => (
                 <Avatar
                   key={index}
-                  src={imageUrl}
-                  alt={`PFP ${index + 1}`}
+                  src={url}
+                  alt={`PFP ${key}`}
                   sx={{
                     width: 50,
                     height: 50,
                     cursor: "pointer",
-                    border:
-                      selectedImageUrl === imageUrl ? "2px solid blue" : "none",
+                    border: selectedImageKey === key ? "2px solid blue" : "none",
                   }}
-                  onClick={() => handleImageChange(imageUrl)}
+                  onClick={() => handleImageChange(url)}
                 />
               ))}
             </div>
-            <Button
-              onClick={handleUpload}
-              variant="solid"
-              sx={{
-                mt: 1,
-                backgroundColor: "ButtonFace",
-                fontWeight: "normal",
-              }}
-            >
-              Save Profile Picture
-            </Button>
           </div>
 
           <FormControl>
@@ -197,11 +164,17 @@ function Sign_In() {
           <FormControl>
             <FormLabel>New Password</FormLabel>
             <Input
-              placeholder="confirm password"
+              placeholder="Confirm password"
               value={password}
               onChange={(e) => setPasswordState(e.target.value)}
             />
           </FormControl>
+
+          {error && (
+            <Typography sx={{ color: "red", fontSize: "sm" }}>
+              {error}
+            </Typography>
+          )}
 
           <Button
             type="submit"

@@ -9,7 +9,7 @@ import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { handleLogIn } from "../Firebase/FirebaseLogInManager";
+import { handleLogIn } from "../firebase/FirebaseLogInManager";
 
 import "./sign_in.css";
 
@@ -24,7 +24,7 @@ function Login() {
 
   const navigate = useNavigate(); // Hook to handle navigation
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -38,11 +38,18 @@ function Login() {
 
       const [isSuccessful, userKey, userData] = result;
 
-      if (isSuccessful) {
-        navigate("/profile", { state: { userKey, userProfile: userData } });
-      } else {
-        setError("Error: Username or password is incorrect");
-      }
+      if (isSuccessful && userData) {
+        const rawPic = userData.profile_picture?.split("/").pop()?.split(".")[0] || "default";
+        const normalizedPic = rawPic.split("-")[0];
+      
+        const cleanedUserData = {
+          ...userData,
+          profile_picture: normalizedPic,
+        };
+      
+        sessionStorage.setItem("userProfile", JSON.stringify(cleanedUserData));
+        navigate("/profile", { state: { userKey, userProfile: cleanedUserData } });
+      }            
     } catch (err) {
       // Catch any unexpected errors (e.g., network issues)
       setError("Error: Username or password incorrect");
@@ -75,7 +82,7 @@ function Login() {
           <Typography level="h1" component="h1">
             <b>Welcome!</b>
           </Typography>
-          <Typography level="body-med">Sign in to continue.</Typography>
+          <Typography level="body-md">Sign in to continue.</Typography>
         </div>
         <form onSubmit={handleSubmit}>
           <FormControl>

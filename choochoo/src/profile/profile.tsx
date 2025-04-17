@@ -4,9 +4,8 @@ import CssBaseline from "@mui/joy/CssBaseline";
 import { useTheme, useMediaQuery } from "@mui/material";
 import Button from "@mui/joy/Button";
 import { Grid2 } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import "./profile.css";
 import { profileImages } from "@/image_imports";
 
@@ -18,11 +17,36 @@ function Profile() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { userKey, userProfile } = state || {};
-  const { username, wins, total_score, profile_picture } = userProfile || {};
+
+  const [userKey, setUserKey] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
+
+  // ✅ On mount, grab user data from state or sessionStorage
+  useEffect(() => {
+    const stateUserKey = state?.userKey;
+    const stateUserProfile = state?.userProfile;
+    const storedProfile = JSON.parse(sessionStorage.getItem("userProfile") || "{}");
+
+    if (stateUserProfile && stateUserKey) {
+      setUserKey(stateUserKey);
+      setUserProfile(stateUserProfile);
+      sessionStorage.setItem("userProfile", JSON.stringify(stateUserProfile));
+    } else if (storedProfile) {
+      setUserProfile(storedProfile);
+    }
+  }, [state]);
+
+  // Early return if profile isn't loaded yet
+  if (!userProfile) return null;
+
+  const { username, wins, total_score, profile_picture } = userProfile;
+
+  // Normalize profile picture to match known keys
+  const rawFileName = profile_picture?.split("/").pop()?.split(".")[0] || "default";
+  const baseName = rawFileName.split("-")[0];
+  const resolvedProfilePic = profileImages[baseName as keyof typeof profileImages] ?? profileImages.default;
 
   const handleNavGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
@@ -33,9 +57,6 @@ function Profile() {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
     navigate("/join_game", { state: { userProfile } });
   };
-
-  const resolvedProfilePic = profileImages[profile_picture as keyof typeof profileImages] || profileImages.default;
-
 
   return (
     <main className="background_set_up">
@@ -112,30 +133,19 @@ function Profile() {
             </div>
           </Grid2>
 
-          <Grid2 size={12}>
-            <span></span>
-          </Grid2>
-          <Grid2 size={12}>
-            <span></span>
-          </Grid2>
+          <Grid2 size={12}><span></span></Grid2>
+          <Grid2 size={12}><span></span></Grid2>
+
           <Grid2
             size={12}
             display={"flex"}
             justifyContent={"space-between"}
             marginX={"1vw"}
           >
-            <Button
-              className="button"
-              onClick={handleNavGame}
-              sx={{ "&:hover": { color: "white" } }}
-            >
+            <Button className="button" onClick={handleNavGame} sx={{ "&:hover": { color: "white" } }}>
               Make Game
             </Button>
-            <Button
-              className="button"
-              onClick={handleJoinGame}
-              sx={{ "&:hover": { color: "white" } }}
-            >
+            <Button className="button" onClick={handleJoinGame} sx={{ "&:hover": { color: "white" } }}>
               Join Game
             </Button>
             <Button

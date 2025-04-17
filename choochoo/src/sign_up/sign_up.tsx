@@ -5,25 +5,18 @@ import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import {
-  doesUserExist,
-  writeUserToDatabase,
-} from "../Firebase/FirebaseWriteUserData";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useTheme, useMediaQuery } from "@mui/material";
+import { doesUserExist, writeUserToDatabase } from "../firebase/FirebaseWriteUserData";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import "./sign_up.css";
 
 function Render_Page() {
-  return <Sign_In className="Login" />;
+  return <Sign_Up />;
 }
 
-import { useTheme, useMediaQuery } from "@mui/material";
-
-function Sign_In() {
+function Sign_Up() {
   const navigate = useNavigate();
-  let user;
-
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -31,40 +24,40 @@ function Sign_In() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // To store the error message
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      if ((username == "") | (password == "") | (email == "")) {
+      if (!username || !password || !email) {
         setError("Error: Please fill out all fields!");
-      } else if (await doesUserExist(username, email)) {
-        setError(
-          "Error: username or email already exists in the database! Please use a different username/email."
-        );
-      } else {
-        user = {
-          username, // Already a string
-          email,
-          password,
-          wins: 0,
-          losses: 0,
-          total_score: 0,
-          profile_picture: "/assets/trains/thomas_train.jpg",
-          status: false,
-          active_game_id: null,
-        };
-
-        const userKey = await writeUserToDatabase(user);
-
-        navigate("/profile", {
-          state: { userKey, userProfile: user },
-        });
+        return;
       }
+
+      const exists = await doesUserExist(username, email);
+      if (exists) {
+        setError("Error: Username or email already exists!");
+        return;
+      }
+
+      const user = {
+        username,
+        email,
+        password,
+        wins: 0,
+        losses: 0,
+        total_score: 0,
+        profile_picture: "default",
+        status: false,
+        active_game_id: null,
+      };
+
+      const userKey = await writeUserToDatabase(user);
+      sessionStorage.setItem("userProfile", JSON.stringify(user));
+      navigate("/profile", { state: { userKey, userProfile: user } });
     } catch (err) {
-      // Catch any unexpected errors (e.g., network issues)
-      setError("Error: Something went wrong, try again soon!");
+      setError("Error: Something went wrong. Try again soon!");
     }
   };
 
@@ -92,35 +85,35 @@ function Sign_In() {
           <Typography level="h1" component="h1">
             <b>Welcome!</b>
           </Typography>
-          <Typography level="body-med">Sign up to continue.</Typography>
+          <Typography level="body-md">Sign up to continue.</Typography>
         </div>
+
         <form onSubmit={handleSubmit}>
           <FormControl>
             <FormLabel>Username</FormLabel>
             <Input
-              // html input attribute
               name="username"
-              type="username"
+              type="text"
               placeholder="Thomas-the-train"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </FormControl>
+
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
-              // html input attribute
               name="email"
               type="email"
-              placeholder="thomasthetrain@email.com"
+              placeholder="thomas@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </FormControl>
+
           <FormControl>
             <FormLabel>Password</FormLabel>
             <Input
-              // html input attribute
               name="password"
               type="password"
               placeholder="password"
@@ -128,18 +121,15 @@ function Sign_In() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
+
           {error && (
             <Typography sx={{ color: "red", fontSize: "sm" }}>
               {error}
             </Typography>
           )}
-          <Button
-            type="submit"
-            sx={{
-              mt: 1,
-            }}
-          >
-            Log in
+
+          <Button type="submit" sx={{ mt: 1 }}>
+            Sign Up
           </Button>
         </form>
       </Sheet>
