@@ -229,9 +229,39 @@ class GameRunner {
   //Any updates to the UI that happen on their turn should be handled already by button events, which is nice.
   //This is just to update the gamerunner object
 
+  toJSON() {
+    return {
+      gameID: this.gameID,
+      players: this.players.map((p) => p.toJSON?.() ?? p),
+      gameBoard: this.gameBoard.toJSON?.() ?? this.gameBoard,
+      currentPlayer: this.currentPlayer,
+      gameOver: this.gameOver,
+      destinationCardsToDraw: this.destinationCardsToDraw.map(
+        (d) => d.toJSON?.() ?? d
+      ),
+    };
+  }
+
+  static fromJSON(data: any): GameRunner {
+    const runner = Object.create(GameRunner.prototype) as GameRunner;
+
+    runner.gameID = data.gameID;
+    runner.currentPlayer = data.currentPlayer;
+    runner.gameOver = data.gameOver;
+
+    runner.players = data.players.map((p: any) => Player.fromJSON(p));
+    runner.gameBoard = GameBoard.fromJSON(data.gameBoard);
+    runner.destinationCardsToDraw = data.destinationCardsToDraw.map((d: any) =>
+      DestinationCard.fromJSON(d)
+    );
+
+    return runner;
+  }
+
   //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
-  sendToDatabase(game: GameRunner) {
-    writeGameToDatabase(game as Omit<GameRunner, "unsubscribe">);
+  sendToDatabase() {
+    const json = this.toJSON();
+    writeGameToDatabase(json, this.gameID);
   }
 
   //This needs to happen after any other player's turn ends. The database needs to send all above information, and this gamerunner needs to update it.
@@ -241,14 +271,13 @@ class GameRunner {
   }
 
   startListeningForUpdates(callback: (newGameRunner: GameRunner) => void) {
-    const gameRef = ref(database, `games/${this.gameID}`);
+    const gameRef = ref(database, `activeGames/${this.gameID}`); //  correct path
 
-    this.unsubscribe = onValue(gameRef, async (snapshot) => {
+    this.unsubscribe = onValue(gameRef, (snapshot) => {
       if (snapshot.exists()) {
-        const newRunner = await findGameByGameID(this.gameID, true);
-        if (newRunner) {
-          callback(newRunner); // ✅ Here is your "returned" new GameRunner
-        }
+        const rawData = snapshot.val();
+        const newRunner = GameRunner.fromJSON(rawData); // deserialize immediately
+        callback(newRunner);
       }
     });
   }

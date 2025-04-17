@@ -124,7 +124,7 @@ function Lobby() {
           );
           console.log(gamerunner);
 
-          gamerunner.sendToDatabase(gamerunner);
+          gamerunner.sendToDatabase();
           console.log(gamerunner);
         }
 
