@@ -122,6 +122,8 @@ function Lobby() {
             player_usernames,
             parseInt(lobbyCode)
           );
+          console.log(gamerunner);
+
           gamerunner.sendToDatabase(gamerunner);
           console.log(gamerunner);
         }

@@ -113,7 +113,7 @@ const MainGamePage = () => {
   }, []);
 
   if (!gameRunner) {
-    // 🚨 Either throw or return a placeholder
+    // Either throw or return a placeholder
     throw new Error("GameRunner is undefined. Cannot continue."); // hard crash
     // OR
     // return <div>Loading...</div>; // soft fail / spinner
