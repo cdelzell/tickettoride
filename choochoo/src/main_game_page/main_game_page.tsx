@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { Graph } from "@visx/network";
-
 import monoMap from "../assets/mono_map.jpg";
 import "./main_game_page.css";
 import GameRunner from "../backend/game-runner";
@@ -21,17 +19,10 @@ import cities from "./constants/cities";
 import routes from "./constants/routes";
 import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
 
-// this works with typescript so had to change file
-
-// let's go airbnb
 export type NetworkProps = {
   width: number;
   height: number;
 };
-
-//loop through the players given by noah
-//if the username of the signed in player (identify using state that is passed in through profile) does not match, make them a player
-//otherwise make them the main player
 
 const players = [
   {
@@ -92,12 +83,40 @@ const users: User[] = [new User("Test")];
 
 const MainGamePage = () => {
   const navigate = useNavigate();
-  const { state } = useLocation(); // Use location to get the state passed from navigate
-  const { players, lobbyCode, userProfile } = state || {}; // Fallback to empty object if state is undefined
+  const { state } = useLocation();
+  const { players, lobbyCode, userProfile } = state || {};
+  const { username, wins, total_score, profile_picture } = userProfile || {};
 
   const width = window.innerWidth;
   const height = window.innerHeight;
   const [gameRunner, setGameRunner] = useState<GameRunner>();
+  const [destinationCardPoss, setDestinationCardPoss] = useState<
+    DestinationCard[]
+  >([]);
+  const [playerDestinationCards, setPlayerDestinationCards] = useState<
+    DestinationCardInfo[]
+  >([]);
+  const [action_box_status, setActionBoxStatus] = useState(0);
+  const [draw_dest_active, setDrawDestActive] = useState(false);
+  const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
+  const [trains, setTrains] = useState(25);
+  const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
+  const [activeTrains, setActiveTrains] = useState(false);
+  const [drawnDestCards, setDrawDestCard] = useState<DestinationCard[]>([]);
+  const [drawClickCount, setDrawClickCount] = useState(0);
+  const [playClickCount, setPlayClickCount] = useState(0);
+  const [destClickCount, setDestClickCount] = useState(0);
+  const [turnComplete, setTurnComplete] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState(0);
+  const [drawnCard, setDrawnCard] = useState<string | null>(null);
+  const [showCardNotification, setShowCardNotification] = useState(false);
+
+  const [trainCards, setTrainCards] = useState(() =>
+    train_cards.map((card) => ({
+      ...card,
+      count: 0,
+    }))
+  );
 
   useEffect(() => {
     if (!lobbyCode) {
@@ -115,47 +134,6 @@ const MainGamePage = () => {
     };
   }, [lobbyCode]);
 
-  if (!gameRunner) {
-    return <div>Loading game...</div>; // or a spinner, skeleton, etc.
-  }
-
-  const train_counts = gameRunner.getMainPlayerTrainCards();
-
-  const train_cards_and_counts = train_cards.map((card, i) => ({
-    ...card,
-    count: train_counts[i],
-  }));
-
-  useEffect(() => {
-    gameRunner.startListeningForUpdates((newGameRunner) => {
-      setGameRunner(newGameRunner); // or whatever you want to do with it
-    });
-  }, []);
-  const { username, wins, total_score, profile_picture } = userProfile || {};
-
-  const [action_box_status, setActionBoxStatus] = useState(0);
-  const [draw_dest_active, setDrawDestActive] = useState(false);
-  const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
-  const [trainCards, setTrainCards] = useState(train_cards_and_counts);
-  const [trains, setTrains] = useState(25);
-  const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
-  const [activeTrains, setActiveTrains] = useState(false);
-  const [drawnDestCards, setDrawDestCard] = useState<DestinationCard[]>([]);
-  const [drawClickCount, setDrawClickCount] = useState(0);
-  const [playClickCount, setPlayClickCount] = useState(0);
-  const [destClickCount, setDestClickCount] = useState(0);
-  const [turnComplete, setTurnComplete] = useState(false);
-  const [currentPlayer, setCurrentPlayer] = useState(0); // index of current player
-  const [drawnCard, setDrawnCard] = useState<string | null>(null);
-  const [showCardNotification, setShowCardNotification] = useState(false);
-
-  const [destinationCardPoss, setDestinationCardPoss] = useState(
-    gameRunner.getDestinationCardPossibilities()
-  );
-
-  //make useeffect for currentplayer, should get all new info from the gamerunner when current player changes
-  //make useeffect for gameover, end game
-
   useEffect(() => {
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
       setTurnComplete(true);
@@ -163,6 +141,37 @@ const MainGamePage = () => {
       setTurnComplete(false);
     }
   }, [playClickCount, drawClickCount, destClickCount]);
+
+  useEffect(() => {
+    if (gameRunner) {
+      setDestinationCardPoss(gameRunner.getDestinationCardPossibilities());
+      const cards = gameRunner.getPlayerDestinationCards();
+      setPlayerDestinationCards(
+        getDestinationCardPossibilitiesFormatted(cards)
+      );
+    }
+  }, [gameRunner]);
+
+  useEffect(() => {
+    if (gameRunner) {
+      const train_counts = gameRunner.getMainPlayerTrainCards();
+      const updatedTrainCards = train_cards.map((card, i) => ({
+        ...card,
+        count: train_counts[i],
+      }));
+      setTrainCards(updatedTrainCards);
+    }
+  }, [gameRunner]);
+
+  //   window.addEventListener("drawCard", handleDrawCardEvent);
+  //   return () => {
+  //     window.removeEventListener("drawCard", handleDrawCardEvent);
+  //   };
+  // }, [drawClickCount]);
+
+  if (!gameRunner) {
+    return <div>Loading game...</div>;
+  }
 
   const updateTrainCardCount = (color: string, amount: number) => {
     setTrainCards((prevCards) =>
@@ -195,14 +204,7 @@ const MainGamePage = () => {
     return correctly_formatted_cards;
   };
 
-  const [playerDestinationCards, setPlayerDestinationCards] = useState(
-    getDestinationCardPossibilitiesFormatted(
-      gameRunner.getPlayerDestinationCards()
-    )
-  );
-
   const updatePlayerHand = (cards: number[]) => {
-    console.log("here");
     const trains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
@@ -211,7 +213,6 @@ const MainGamePage = () => {
     setTrainCards(trains);
   };
 
-  // CHECK HERE
   const drawRandomTrainCard = () => {
     const random = Math.random();
     let drawnColor;
@@ -238,23 +239,8 @@ const MainGamePage = () => {
     return drawnColor;
   };
 
-  useEffect(() => {
-    const handleDrawCardEvent = () => {
-      handleDrawPileClick();
-    };
-
-    window.addEventListener("drawCard", handleDrawCardEvent);
-    return () => {
-      window.removeEventListener("drawCard", handleDrawCardEvent);
-    };
-  }, [drawClickCount]);
-
   const updateActionCardStatus = (action: boolean) => {
-    if (action) {
-      setActiveTrains(true);
-    } else {
-      setActiveTrains(false);
-    }
+    setActiveTrains(action);
   };
 
   const handleRouteClaim = (route: Route) => {
@@ -269,11 +255,10 @@ const MainGamePage = () => {
       wildCard &&
       trainCard.count + wildCard.count >= route.trains &&
       trains >= route.trains &&
-      drawClickCount == 0 &&
-      destClickCount == 0 &&
-      playClickCount == 0
+      drawClickCount === 0 &&
+      destClickCount === 0 &&
+      playClickCount === 0
     ) {
-      // Deduct train cards when claiming a route
       updateTrainCardCount(route.game_color!, -route.trains);
       setTrains(trains - route.trains);
       setPlayClickCount(playClickCount + 1);
@@ -286,7 +271,6 @@ const MainGamePage = () => {
         setPlayClickCount(playClickCount + 1);
       }
 
-      // Update the claimed routes
       setGameRoutes((prevRoutes) =>
         prevRoutes.map((r) =>
           action_box_status === 2 &&
@@ -304,7 +288,6 @@ const MainGamePage = () => {
 
   const updateStatus = (newStatus: React.SetStateAction<number>) => {
     setActionBoxStatus(newStatus);
-
     if (newStatus === 1) {
       setDrawnCard(null);
       setShowCardNotification(false);
@@ -330,7 +313,6 @@ const MainGamePage = () => {
       }
 
       setDrawClickCount((prev) => prev + 1);
-      //function to update player hand
     }
   };
 
@@ -338,27 +320,20 @@ const MainGamePage = () => {
     setDrawClickCount(0);
     setPlayClickCount(0);
     setDestClickCount(0);
-
     setTurnComplete(false);
     setActionBoxStatus(0);
     setActiveTrains(false);
     setShowCardNotification(false);
     setDrawDestActive(false);
-    //have function that updates the map for the gamerunner
     gameRunner.updateCurrentPlayer();
-
-    // move to the next array in cycle
     setCurrentPlayer(gameRunner.getCurrentPlayer());
-
     gameRunner.sendToDatabase();
   };
 
-  // CSS for the endturn button
   const endTurnButtonStyle: React.CSSProperties = {
-    // padding: "1vw 3vw", // Scales with viewport width
     width: "12vw",
     height: "3vw",
-    fontSize: "1vw", // Adjusts size dynamically
+    fontSize: "1vw",
     fontWeight: "bold",
     backgroundColor: "#4CAF50",
     color: "white",
@@ -390,7 +365,6 @@ const MainGamePage = () => {
 
   return (
     <main className="main_game_page">
-      {/* player cards */}
       <div className="player_cards">
         {players.map((player, index) => (
           <PlayerCard
@@ -399,7 +373,7 @@ const MainGamePage = () => {
             trainCount={player.trainCount}
             profilePic={player.profilePic}
             main_player={false}
-            active={currentPlayer === index + 1} // + 1 because currentPlayer 0 is main player
+            active={currentPlayer === index + 1}
           />
         ))}
       </div>
@@ -413,9 +387,8 @@ const MainGamePage = () => {
         setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
         destClickCount={destClickCount}
-      ></FaceUpCards>
+      />
 
-      {/* end turn button */}
       {turnComplete && (
         <button onClick={handleEndTurn} style={endTurnButtonStyle}>
           End Turn
@@ -447,24 +420,20 @@ const MainGamePage = () => {
           handleDrawPileClick={handleDrawPileClick}
           setPlayerDestCards={setPlayerDestinationCards}
           formatDestCards={getDestinationCardPossibilitiesFormatted}
-        ></ActionBox>
+        />
 
-        <DestinationCardsCarousel
-          destinations={playerDestinationCards}
-        ></DestinationCardsCarousel>
+        <DestinationCardsCarousel destinations={playerDestinationCards} />
 
         {draw_dest_active && (
           <DrawDestinationCard
-            //call the backend method here to get the destination cards
             destinations={getDestinationCardPossibilitiesFormatted(
               destinationCardPoss
             )}
             drawnDestCards={drawnDestCards}
             setDrawDestCard={setDrawDestCard}
-          ></DrawDestinationCard>
+          />
         )}
 
-        {/* train cards */}
         <div className="train_cards">
           {trainCards.map((train_card, index) => (
             <TrainCard
@@ -477,19 +446,17 @@ const MainGamePage = () => {
           ))}
         </div>
 
-        {/* main player */}
         <div className="main_player_card">
           <PlayerCard
             username={username}
             trainCount={trains}
             profilePic={profile_picture}
             main_player={true}
-            active={currentPlayer === 0} // main player is active when currentPlayer is 0
+            active={currentPlayer === 0}
           />
         </div>
       </div>
 
-      {/* map */}
       <Map
         width={width}
         height={height}
@@ -503,4 +470,5 @@ const MainGamePage = () => {
     </main>
   );
 };
+
 export default MainGamePage;
