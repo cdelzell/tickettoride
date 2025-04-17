@@ -1,4 +1,4 @@
-import { ref, query, orderByChild, equalTo, get } from "firebase/database";
+import { child, query, orderByChild, equalTo, get } from "firebase/database";
 import { database, gameDataPath } from './FirebaseCredentials'
 import GameRunner from "../backend/game-runner";
 type GameRunnerType = typeof GameRunner;
@@ -8,42 +8,14 @@ export async function checkForChaneInTurn(params:any) {
 }
 
 /**
- * Function to retrieve the turn number of a game in the Firebase database with a specified gameID 
- * @param {string} gameID - The game ID of the game that you are looking for
- * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
- */
-export async function findTurnByGameID(game_ID: number, print: boolean): Promise<number | null>  {
-    try {
-      const gameData = await findGameByField('game_ID', game_ID);
-  
-      if (gameData) {
-        // @ts-ignore: Ignore the error on this line
-        const turn = gameData.currentPlayer;  // Extract the 'turn' field
-        
-        if (print) {
-          console.log(`Current Turn: ${turn}`);  // Print the turn if print is true
-        }
-        
-        return turn;  // Return only the turn field
-      } else {
-        console.log(`No game found with game ID: ${game_ID}`);
-        return null;  // Return null if no game data is found
-      }
-    } catch (error) {
-      console.error("Error handling game data:", error);
-      return null;  // Return null on error
-    }
-}
-
-
-/**
  * Function to search for games in the Firebase database with a specified gameID
  * @param {string} gameID - The game ID of the game that you are looking for
  * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
  */
-export async function findGameByGameID(game_ID: number, print: boolean): Promise<Object | null>  {
+export async function findGameByGameID(gameID: number, print: boolean): Promise<Object | null>  {
     try {
-      const gameData = await findGameByField('gameID', game_ID);
+      const gameRef = child(gameDataPath, `${gameID}`);
+      const gameData = await get(gameRef);
   
       if (gameData) {
         if (print) {
@@ -51,7 +23,7 @@ export async function findGameByGameID(game_ID: number, print: boolean): Promise
         }
         return gameData;  // Return the resolved data (game data) if found
       } else {
-        console.log(`No game found with game ID: ${game_ID}`);
+        console.log(`No game found with game ID: ${gameID}`);
         return null;  // Return null if no game data is found
       }
     } catch (error) {
