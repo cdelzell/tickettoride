@@ -65,6 +65,29 @@ class TrainRoute {
     return this.claimer;
   }
 
+  toJSON() {
+    return {
+      destination1: this.destination1,
+      destination2: this.destination2,
+      length: this.length,
+      gameColor: this.gameColor,
+      hexColor: this.hexColor,
+      claimer: this.claimer,
+    };
+  }
+
+  static fromJSON(data: any): TrainRoute {
+    const route = new TrainRoute(
+      data.destination1,
+      data.destination2,
+      data.length,
+      data.gameColor,
+      data.hexColor
+    );
+    route.claimer = data.claimer ?? null;
+    return route;
+  }
+  
   getClaimerProfilePic(): string | null {
     return this.claimerProfilePic;
   }

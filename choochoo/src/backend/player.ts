@@ -5,15 +5,17 @@ import User from "./user";
 
 class Player {
   id: string;
-  user: User;
+  username: string;
+  trainCardHand: Record<string, number>;
+  destinationCardHand: DestinationCard[];
   trainAmount: number;
   trainCardHand: Record<string, number>;
   destinationCardHand: DestinationCard[];  // Ensure this is of type DestinationCard[]
   scoredPoints: number;
 
-  constructor(id: string, user: User, trainCards: TrainCard[]) {
+  constructor(id: string, user: string, trainCards: TrainCard[]) {
     this.id = id;
-    this.user = user;
+    this.username = user;
     this.trainCardHand = this.setStarterTrainCards(trainCards);
     this.destinationCardHand = []; // Initializing as empty array
     this.trainAmount = 45;
@@ -100,7 +102,7 @@ class Player {
   }
 
   getUsername(): string {
-    return this.user.getUsername();
+    return this.username;
   }
 
   getDestinationCardHand(): DestinationCard[] {
@@ -109,6 +111,44 @@ class Player {
 
   getDestinationCardHandAsCards(): DestinationCard[] {
     return this.destinationCardHand;
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      username: this.username,
+      trainCardHand: this.trainCardHand,
+      destinationCardHand: this.destinationCardHand.map(
+        (card) => card.toJSON?.() ?? card
+      ),
+      trainAmount: this.trainAmount,
+      scoredPoints: this.scoredPoints,
+    };
+  }
+
+  static fromJSON(data: any): Player {
+    const player = Object.create(Player.prototype) as Player;
+
+    player.id = data.id ?? "";
+    player.username = data.username ?? "Unknown";
+    player.trainCardHand = data.trainCardHand ?? {
+      red: 0,
+      yellow: 0,
+      black: 0,
+      green: 0,
+      purple: 0,
+      blue: 0,
+      brown: 0,
+      white: 0,
+      wild: 0,
+    };
+    player.destinationCardHand = (data.destinationCardHand ?? []).map(
+      (card: any) => DestinationCard.fromJSON?.(card) ?? card
+    );
+    player.trainAmount = data.trainAmount ?? 45;
+    player.scoredPoints = data.scoredPoints ?? 0;
+
+    return player;
   }
 }
 

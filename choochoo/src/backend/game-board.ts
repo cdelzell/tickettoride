@@ -163,6 +163,55 @@ class GameBoard {
     const FACE_UP_NUM = 5; //From rulebook
     return this.drawTrainCards(FACE_UP_NUM);
   }
+
+  toJSON() {
+    return {
+      boardGraph: this.boardGraph.toJSON?.() ?? this.boardGraph,
+      trainCardDrawPile: this.trainCardDrawPile.map((c) => c.toJSON?.() ?? c),
+      destinationCardDrawPile: this.destinationCardDrawPile.map(
+        (c) => c.toJSON?.() ?? c
+      ),
+      trainCardDiscardPile: this.trainCardDiscardPile.map(
+        (c) => c.toJSON?.() ?? c
+      ),
+      faceUpTrainCards: this.faceUpTrainCards.map((c) => c.toJSON?.() ?? c),
+    };
+  }
+
+  static fromJSON(data: any): GameBoard {
+    const board = Object.create(GameBoard.prototype) as GameBoard;
+
+    board.boardGraph =
+      BoardGraph.fromJSON?.(data.boardGraph) ?? new BoardGraph();
+
+    board.trainCardDrawPile = Array.isArray(data.trainCardDrawPile)
+      ? data.trainCardDrawPile.map(
+          (c: any) => TrainCard.fromJSON?.(c) ?? new TrainCard(c.color)
+        )
+      : [];
+
+    board.destinationCardDrawPile = Array.isArray(data.destinationCardDrawPile)
+      ? data.destinationCardDrawPile.map(
+          (c: any) =>
+            DestinationCard.fromJSON?.(c) ??
+            new DestinationCard(c.destination1, c.destination2, c.pointValue)
+        )
+      : [];
+
+    board.trainCardDiscardPile = Array.isArray(data.trainCardDiscardPile)
+      ? data.trainCardDiscardPile.map(
+          (c: any) => TrainCard.fromJSON?.(c) ?? new TrainCard(c.color)
+        )
+      : [];
+
+    board.faceUpTrainCards = Array.isArray(data.faceUpTrainCards)
+      ? data.faceUpTrainCards.map(
+          (c: any) => TrainCard.fromJSON?.(c) ?? new TrainCard(c.color)
+        )
+      : [];
+
+    return board;
+  }
 }
 
 export default GameBoard;

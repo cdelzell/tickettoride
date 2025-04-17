@@ -16,6 +16,7 @@ import train_cards from "./constants/train_cards";
 import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
+import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
 
 export interface City {
   name: string;
@@ -68,27 +69,25 @@ const main_player = {
 };
 
 const users: User[] = [new User("Test")];
-const gameRunner = new GameRunner(users);
-const train_counts = gameRunner.getMainPlayerTrainCards();
-
-const train_cards_and_counts = train_cards.map((card, i) => ({
-  ...card,
-  count: train_counts[i],
-}));
 
 const MainGamePage = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { userKey, userProfile } = state || {};
+  const { players, lobbyCode, userProfile } = state || {};
   const { username, wins, total_score, profile_picture } = userProfile || {};
 
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const [gameRunner, setGameRunner] = useState<GameRunner>();
+  const [destinationCardPoss, setDestinationCardPoss] = useState<
+    DestinationCard[]
+  >([]);
+  const [playerDestinationCards, setPlayerDestinationCards] = useState<
+    DestinationCardInfo[]
+  >([]);
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
-  const [trainCards, setTrainCards] = useState(train_cards_and_counts);
   const [trains, setTrains] = useState(25);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
@@ -101,9 +100,28 @@ const MainGamePage = () => {
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
 
-  const [destinationCardPoss, setDestinationCardPoss] = useState(
-    gameRunner.getDestinationCardPossibilities()
+  const [trainCards, setTrainCards] = useState(() =>
+    train_cards.map((card) => ({
+      ...card,
+      count: 0,
+    }))
   );
+
+  useEffect(() => {
+    if (!lobbyCode) {
+      console.warn("No lobby code yet. Waiting...");
+      return;
+    }
+
+    const tempRunner = new GameRunner([], lobbyCode);
+    tempRunner.startListeningForUpdates((newRunner) => {
+      setGameRunner(newRunner);
+    });
+
+    return () => {
+      //tempRunner.stopListeningForUpdates?.();
+    };
+  }, [lobbyCode]);
 
   useEffect(() => {
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
@@ -112,6 +130,42 @@ const MainGamePage = () => {
       setTurnComplete(false);
     }
   }, [playClickCount, drawClickCount, destClickCount]);
+
+  useEffect(() => {
+    if (gameRunner) {
+      setDestinationCardPoss(gameRunner.getDestinationCardPossibilities());
+      const cards = gameRunner.getPlayerDestinationCards();
+      setPlayerDestinationCards(
+        getDestinationCardPossibilitiesFormatted(cards)
+      );
+    }
+  }, [gameRunner]);
+
+  useEffect(() => {
+    if (gameRunner) {
+      const train_counts = gameRunner.getMainPlayerTrainCards();
+      const updatedTrainCards = train_cards.map((card, i) => ({
+        ...card,
+        count: train_counts[i],
+      }));
+      setTrainCards(updatedTrainCards);
+    }
+  }, [gameRunner]);
+
+  useEffect(() => {
+    const handleDrawCardEvent = () => {
+      handleDrawPileClick();
+    };
+
+    window.addEventListener("drawCard", handleDrawCardEvent);
+    return () => {
+      window.removeEventListener("drawCard", handleDrawCardEvent);
+    };
+  }, [drawClickCount]);
+
+  if (!gameRunner) {
+    return <div>Loading game...</div>;
+  }
 
   const updateTrainCardCount = (color: string, amount: number) => {
     setTrainCards((prevCards) =>
@@ -144,14 +198,8 @@ const MainGamePage = () => {
     return correctly_formatted_cards;
   };
 
-  const [playerDestinationCards, setPlayerDestinationCards] = useState(
-    getDestinationCardPossibilitiesFormatted(
-      gameRunner.getPlayerDestinationCards()
-    )
-  );
-
   const updatePlayerHand = (cards: number[]) => {
-    const updatedTrains = train_cards.map((card, i) => ({
+    const trains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
@@ -186,16 +234,9 @@ const MainGamePage = () => {
     return drawnColor;
   };
 
-  useEffect(() => {
-    const handleDrawCardEvent = () => {
-      handleDrawPileClick();
-    };
-
-    window.addEventListener("drawCard", handleDrawCardEvent);
-    return () => {
-      window.removeEventListener("drawCard", handleDrawCardEvent);
-    };
-  }, [drawClickCount]);
+  const updateActionCardStatus = (action: boolean) => {
+    setActiveTrains(action);
+  };
 
   const handleRouteClaim = (route: Route) => {
     // find the route in game board graph using index instead of color
@@ -248,7 +289,6 @@ const MainGamePage = () => {
 
   const updateStatus = (newStatus: number) => {
     setActionBoxStatus(newStatus);
-
     if (newStatus === 1) {
       setDrawnCard(null);
       setShowCardNotification(false);
@@ -291,7 +331,6 @@ const MainGamePage = () => {
           setShowCardNotification(false);
         }, 3000);
       }
-
       
       setDrawClickCount(prevCount => prevCount + 1);
 
@@ -307,7 +346,9 @@ const MainGamePage = () => {
     setActiveTrains(false);
     setShowCardNotification(false);
     setDrawDestActive(false);
-    setCurrentPlayer((current) => (current + 1) % (players.length + 1));
+    gameRunner.updateCurrentPlayer();
+    setCurrentPlayer(gameRunner.getCurrentPlayer());
+    gameRunner.sendToDatabase();
   };
 
   const endTurnButtonStyle: React.CSSProperties = {
@@ -406,7 +447,9 @@ const MainGamePage = () => {
 
         {draw_dest_active && (
           <DrawDestinationCard
-            destinations={getDestinationCardPossibilitiesFormatted(destinationCardPoss)}
+            destinations={getDestinationCardPossibilitiesFormatted(
+              destinationCardPoss
+            )}
             drawnDestCards={drawnDestCards}
             setDrawDestCard={setDrawDestCard}
           />

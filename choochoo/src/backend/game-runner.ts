@@ -1,12 +1,13 @@
-
-import GameBoard from './game-board';
-import Player from './player';
-import User from './user';
-import TrainRoute from './train-route';
-import DestinationCard from './destination-card';
-import { writeGameToDatabase } from '../firebase/FirebaseWriteGameData';
-import { findGameByGameID } from '../firebase/FirebaseReadGameData';
-import calculateGameScores from './score-calculator';
+import GameBoard from "./game-board";
+import Player from "./player";
+import User from "./user";
+import TrainRoute from "./train-route";
+import DestinationCard from "./destination-card";
+import { writeGameToDatabase } from "../Firebase/FirebaseWriteGameData";
+import { findGameByGameID } from "../Firebase/FirebaseReadGameData";
+import calculateGameScores from "./score-calculator";
+import { ref, onValue } from "firebase/database";
+import { database } from "../Firebase/FirebaseCredentials";
 
 const START_TRAIN_CARD_NUM = 4;
 
@@ -17,9 +18,10 @@ class GameRunner {
   currentPlayer: number;
   gameOver: boolean;
   destinationCardsToDraw: DestinationCard[];
+  unsubscribe?: () => void;
 
-  constructor(users: User[]) {
-    this.gameID = Math.random();
+  constructor(users: string[], lobbyCode: number) {
+    this.gameID = lobbyCode;
     this.gameBoard = new GameBoard();
     this.players = [];
     for (let i = 0; i < users.length; i++) {
@@ -227,15 +229,63 @@ class GameRunner {
   //Any updates to the UI that happen on their turn should be handled already by button events, which is nice.
   //This is just to update the gamerunner object
 
+  toJSON() {
+    return {
+      gameID: this.gameID,
+      players: this.players.map((p) => p.toJSON?.() ?? p),
+      gameBoard: this.gameBoard.toJSON?.() ?? this.gameBoard,
+      currentPlayer: this.currentPlayer,
+      gameOver: this.gameOver,
+      destinationCardsToDraw: this.destinationCardsToDraw.map(
+        (d) => d.toJSON?.() ?? d
+      ),
+    };
+  }
+
+  static fromJSON(data: any): GameRunner {
+    const runner = Object.create(GameRunner.prototype) as GameRunner;
+
+    runner.gameID = data.gameID ?? 0;
+    runner.currentPlayer = data.currentPlayer ?? 0;
+    runner.gameOver = data.gameOver ?? false;
+
+    runner.players = Array.isArray(data.players)
+      ? data.players.map((p: any) => Player.fromJSON(p))
+      : [];
+
+    runner.gameBoard = data.gameBoard
+      ? GameBoard.fromJSON(data.gameBoard)
+      : new GameBoard();
+
+    runner.destinationCardsToDraw = Array.isArray(data.destinationCardsToDraw)
+      ? data.destinationCardsToDraw.map((d: any) => DestinationCard.fromJSON(d))
+      : [];
+
+    return runner;
+  }
+
   //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
-  sendToDatabase(game: typeof GameRunner) {
-    writeGameToDatabase(game);
+  sendToDatabase() {
+    const json = this.toJSON();
+    writeGameToDatabase(json, this.gameID);
   }
 
   //This needs to happen after any other player's turn ends. The database needs to send all above information, and this gamerunner needs to update it.
   //The frontend also needs to become aware of the above mentioned things somehow.
   async updateFromDatabase(game_ID: number) {
     return findGameByGameID(game_ID, true);
+  }
+
+  startListeningForUpdates(callback: (newGameRunner: GameRunner) => void) {
+    const gameRef = ref(database, `activeGames/${this.gameID}`); //  correct path
+
+    this.unsubscribe = onValue(gameRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const rawData = snapshot.val();
+        const newRunner = GameRunner.fromJSON(rawData); // deserialize immediately
+        callback(newRunner);
+      }
+    });
   }
 }
 
