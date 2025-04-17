@@ -44,7 +44,7 @@ export interface DestinationCardInfo {
 
 export const background = "#d3d3d3";
 
-const players = [
+const test_players = [
   {
     username: "c-bear",
     trainCount: 1700,
@@ -387,7 +387,7 @@ const MainGamePage = () => {
   return (
     <main className="main_game_page">
       <div className="player_cards">
-        {players.map((player, index) => (
+        {test_players.map((player, index) => (
           <PlayerCard
             key={index}
             username={player.username}
