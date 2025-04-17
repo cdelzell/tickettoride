@@ -9,8 +9,6 @@ class Player {
   trainCardHand: Record<string, number>;
   destinationCardHand: DestinationCard[];
   trainAmount: number;
-  trainCardHand: Record<string, number>;
-  destinationCardHand: DestinationCard[];  // Ensure this is of type DestinationCard[]
   scoredPoints: number;
 
   constructor(id: string, user: string, trainCards: TrainCard[]) {
