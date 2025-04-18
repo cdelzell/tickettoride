@@ -402,7 +402,7 @@ const MainGamePage = () => {
 
   return (
     <main className="main_game_page">
-      <div className="player_cards">
+      <div className="player_cards_format">
         {allPlayers.map((player, index) => (
           <PlayerCard
             key={index}
@@ -483,7 +483,7 @@ const MainGamePage = () => {
           ))}
         </div>
 
-        <div className="main_player_card">
+        <div>
           <PlayerCard
             username={username}
             trainCount={trains}
