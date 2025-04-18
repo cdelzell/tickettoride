@@ -432,7 +432,7 @@ const MainGamePage = () => {
             trainCount={player.trainAmount}
             profilePic={"default"}
             main_player={false}
-            active={currentPlayer === index + 1}
+            active={currentPlayer === parseInt(player.id)}
           />
         ))}
       </div>
