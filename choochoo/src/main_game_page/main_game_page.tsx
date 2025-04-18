@@ -56,6 +56,7 @@ const MainGamePage = () => {
     profile_picture?.split("/").pop() || "Default_pfp.jpg";
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(0);
+  const [displayPlayers, setDisplayPlayers] = useState<Player[]>([]);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -110,6 +111,12 @@ const MainGamePage = () => {
   }, [lobbyCode]);
 
   useEffect(() => {
+    if (gameRunner) {
+      setCurrentPlayer(gameRunner.getCurrentPlayer());
+    }
+  }, [gameRunner]);
+
+  useEffect(() => {
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
       setTurnComplete(true);
     } else {
@@ -141,6 +148,16 @@ const MainGamePage = () => {
       }
     }
   }, [allPlayers, username]);
+
+  useEffect(() => {
+    if (allPlayers) {
+      if (!allPlayers.length || !username) return;
+
+      // find your own player object
+      const withoutSelf = allPlayers.filter((p) => p.username !== username);
+      setDisplayPlayers(withoutSelf);
+    }
+  }, [allPlayers]);
 
   const formatTrainHand = (hand: number[]) => {
     const formattedHand = train_cards.map((card, i) => ({
@@ -174,8 +191,13 @@ const MainGamePage = () => {
   }, [drawClickCount]);
 
   useEffect(() => {
-    console.log(currentPlayer);
-  }, [currentPlayer]);
+    console.log(
+      "⌛ playerIndex:",
+      playerIndex,
+      " | currentPlayer:",
+      currentPlayer
+    );
+  }, [playerIndex, currentPlayer]);
 
   if (!gameRunner) {
     return <div>Loading game...</div>;
@@ -365,7 +387,7 @@ const MainGamePage = () => {
     gameRunner.sendToDatabase();
   };
 
-  console.log(currentPlayer === playerIndex);
+  console.log(gameRunner);
 
   const endTurnButtonStyle: React.CSSProperties = {
     width: "12vw",
@@ -403,7 +425,7 @@ const MainGamePage = () => {
   return (
     <main className="main_game_page">
       <div className="player_cards_format">
-        {allPlayers.map((player, index) => (
+        {displayPlayers.map((player, index) => (
           <PlayerCard
             key={index}
             username={player.username}
@@ -440,6 +462,7 @@ const MainGamePage = () => {
 
       <div className="player_actions">
         <ActionBox
+          active={currentPlayer === playerIndex}
           action={action_box_status}
           gamerunner={gameRunner}
           drawnDestCards={drawnDestCards}

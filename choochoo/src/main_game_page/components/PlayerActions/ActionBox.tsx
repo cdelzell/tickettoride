@@ -7,6 +7,7 @@ import { DestinationCardInfo } from "../../main_game_page";
 import { leftArrow } from "@/image_imports";
 
 function ActionBox({
+  active,
   action,
   gamerunner,
   drawnDestCards,
@@ -25,6 +26,7 @@ function ActionBox({
   setPlayerDestCards,
   formatDestCards,
 }: {
+  active: boolean;
   action: number;
   gamerunner: GameRunner;
   drawnDestCards: DestinationCard[];
@@ -82,6 +84,10 @@ function ActionBox({
     }
     updateStatus(0);
   };
+
+  if (!active) {
+    return <div className="box">Not your turn!</div>;
+  }
 
   return (
     <div className="box">
