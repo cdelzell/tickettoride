@@ -41,7 +41,6 @@
   align-items: center;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  box-shadow: 0 0.1vw 0.5vw rgb(255, 204, 0);
   overflow: hidden;
   text-overflow: ellipsis;
 }

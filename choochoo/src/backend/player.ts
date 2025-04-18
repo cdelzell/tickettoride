@@ -4,13 +4,12 @@ import TrainRoute from "./train-route";
 import User from "./user";
 
 class Player {
-  id: string;
-  username: string;
-  trainCardHand: Record<string, number>;
   destinationCardHand: DestinationCard[];
-  trainAmount: number;
+  id: string;
   scoredPoints: number;
-
+  trainAmount: number;
+  trainCardHand: Record<string, number>;
+  username: string;
   constructor(id: string, user: string, trainCards: TrainCard[]) {
     this.id = id;
     this.username = user;
@@ -21,9 +20,17 @@ class Player {
   }
 
   // Adding DestinationCards to the player's hand (creating instances)
-  addDestinationCardToHand(destinationCardInfo: { destination1: string; destination2: string; pointValue: number }): void {
+  addDestinationCardToHand(destinationCardInfo: {
+    destination1: string;
+    destination2: string;
+    pointValue: number;
+  }): void {
     // Create a new DestinationCard instance
-    const newDestinationCard = new DestinationCard(destinationCardInfo.destination1, destinationCardInfo.destination2, destinationCardInfo.pointValue);
+    const newDestinationCard = new DestinationCard(
+      destinationCardInfo.destination1,
+      destinationCardInfo.destination2,
+      destinationCardInfo.pointValue
+    );
     this.destinationCardHand.push(newDestinationCard);
   }
 
@@ -68,7 +75,9 @@ class Player {
     return usedTrainCardColors;
   }
 
-  private setStarterTrainCards(trainCards: TrainCard[]): Record<string, number> {
+  private setStarterTrainCards(
+    trainCards: TrainCard[]
+  ): Record<string, number> {
     let hand: Record<string, number> = {
       red: 0,
       yellow: 0,

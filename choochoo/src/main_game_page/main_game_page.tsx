@@ -17,6 +17,9 @@ import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
 import routes from "./constants/routes";
 import { findGameByGameID } from "../firebase/FirebaseReadGameData";
+import { findUserByUsername } from "../firebase/FirebaseReadUser";
+import { set } from "firebase/database";
+import Player from "@/backend/player";
 
 export interface City {
   name: string;
@@ -44,37 +47,15 @@ export interface DestinationCardInfo {
 
 export const background = "#d3d3d3";
 
-const players = [
-  {
-    username: "c-bear",
-    trainCount: 1700,
-    profilePic: "./src/assets/trains/percy_train.webp",
-  },
-  {
-    username: "t-dawg",
-    trainCount: 0,
-    profilePic: "./src/assets/trains/gordon_train.webp",
-  },
-  {
-    username: "ridster",
-    trainCount: 2,
-    profilePic: "./src/assets/trains/james_train.webp",
-  },
-];
-
-const main_player = {
-  username: "noah-rama",
-  trainCount: 2,
-  profilePic: "./src/assets/trains/thomas_train.jpg",
-};
-
-const users: User[] = [new User("Test")];
-
 const MainGamePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { players, lobbyCode, userProfile } = state || {};
   const { username, wins, total_score, profile_picture } = userProfile || {};
+  const profile_pic_formatted =
+    profile_picture?.split("/").pop() || "Default_pfp.jpg";
+  const [allPlayers, setAllPlayers] = useState<Player[]>([]);
+  const [playerIndex, setPlayerIndex] = useState(0);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -88,7 +69,7 @@ const MainGamePage = () => {
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
-  const [trains, setTrains] = useState(25);
+  const [trains, setTrains] = useState(45);
   const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
   const [drawnDestCards, setDrawDestCard] = useState<DestinationCard[]>([]);
@@ -108,6 +89,13 @@ const MainGamePage = () => {
   );
 
   useEffect(() => {
+    if (gameRunner) {
+      const gamePlayers = gameRunner.getPlayers();
+      setAllPlayers(gamePlayers);
+    }
+  }, [gameRunner]);
+
+  useEffect(() => {
     if (!lobbyCode) {
       console.warn("No lobby code yet. Waiting...");
       return;
@@ -118,9 +106,7 @@ const MainGamePage = () => {
       setGameRunner(newRunner);
     });
 
-    return () => {
-      //tempRunner.stopListeningForUpdates?.();
-    };
+    return () => {};
   }, [lobbyCode]);
 
   useEffect(() => {
@@ -142,8 +128,32 @@ const MainGamePage = () => {
   }, [gameRunner]);
 
   useEffect(() => {
+    if (allPlayers) {
+      if (!allPlayers.length || !username) return;
+
+      // find your own player object
+      const self = allPlayers.find((p) => p.username === username);
+
+      if (self) {
+        setPlayerIndex(parseInt(self.id));
+        setTrains(self.trainAmount);
+        setTrainCards(formatTrainHand(Object.values(self.trainCardHand)));
+      }
+    }
+  }, [allPlayers, username]);
+
+  const formatTrainHand = (hand: number[]) => {
+    const formattedHand = train_cards.map((card, i) => ({
+      ...card,
+      count: hand[i],
+    }));
+
+    return formattedHand;
+  };
+
+  useEffect(() => {
     if (gameRunner) {
-      const train_counts = gameRunner.getMainPlayerTrainCards();
+      const train_counts = gameRunner.getOtherPlayerTrainCards(username);
       const updatedTrainCards = train_cards.map((card, i) => ({
         ...card,
         count: train_counts[i],
@@ -162,6 +172,10 @@ const MainGamePage = () => {
       window.removeEventListener("drawCard", handleDrawCardEvent);
     };
   }, [drawClickCount]);
+
+  useEffect(() => {
+    console.log(currentPlayer);
+  }, [currentPlayer]);
 
   if (!gameRunner) {
     return <div>Loading game...</div>;
@@ -351,6 +365,8 @@ const MainGamePage = () => {
     gameRunner.sendToDatabase();
   };
 
+  console.log(currentPlayer === playerIndex);
+
   const endTurnButtonStyle: React.CSSProperties = {
     width: "12vw",
     height: "3vw",
@@ -387,12 +403,12 @@ const MainGamePage = () => {
   return (
     <main className="main_game_page">
       <div className="player_cards">
-        {players.map((player, index) => (
+        {allPlayers.map((player, index) => (
           <PlayerCard
             key={index}
             username={player.username}
-            trainCount={player.trainCount}
-            profilePic={player.profilePic.split("/").pop() || "Default_pfp.jpg"}
+            trainCount={player.trainAmount}
+            profilePic={"default"}
             main_player={false}
             active={currentPlayer === index + 1}
           />
@@ -471,9 +487,9 @@ const MainGamePage = () => {
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profile_picture?.split("/").pop() || "Default_pfp.jpg"}
+            profilePic={profile_pic_formatted}
             main_player={true}
-            active={currentPlayer === 0}
+            active={currentPlayer === playerIndex}
           />
         </div>
       </div>
@@ -483,7 +499,10 @@ const MainGamePage = () => {
         height={height}
         routes={gameRoutes}
         cities={cities}
-        mainPlayer={main_player}
+        mainPlayer={{
+          username: username,
+          profilePic: profile_pic_formatted,
+        }}
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}
         onRouteClaim={handleRouteClaim}

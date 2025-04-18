@@ -6,6 +6,7 @@ function PlayerCard({
   trainCount,
   profilePic,
   main_player,
+  active,
 }: {
   username: string;
   trainCount: number;
@@ -20,8 +21,15 @@ function PlayerCard({
   const imgSrc = profileImages[key] ?? profileImages["default"];
 
   return (
-    <div className={main_player ? "main_player_card" : "player_card"}>
-      <img className="profile_pic" src={imgSrc} alt={`Profile of ${username}`} />
+    <div
+      className={main_player ? "main_player_card" : "player_card"}
+      data-active={active}
+    >
+      <img
+        className="profile_pic"
+        src={imgSrc}
+        alt={`Profile of ${username}`}
+      />
       <div className="player_info">
         <span className="username">{username}</span>
         <span className="train_count">{trainCount} Trains</span>

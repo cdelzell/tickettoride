@@ -173,10 +173,26 @@ class GameRunner {
     return handValues;
   }
 
+  getOtherPlayerTrainCards(username: string): number[] {
+    let player = this.players.find((p) => p.getUsername() === username);
+    if (player) {
+      let hand = player.getTrainCardHand();
+      let handValues = Object.values(hand);
+      return handValues;
+    }
+
+    return [];
+  }
+
   //This gets the destination cards for the main player
   //Called after a player draws destination cards
   getPlayerDestinationCards(): DestinationCard[] {
     return this.players[this.currentPlayer].getDestinationCardHand();
+  }
+
+  //returns list of players
+  getPlayers() {
+    return this.players;
   }
 
   //Returns the number of trains another player (not the main player) has left
@@ -284,6 +300,7 @@ class GameRunner {
         const rawData = snapshot.val();
         const newRunner = GameRunner.fromJSON(rawData); // deserialize immediately
         callback(newRunner);
+        console.log(newRunner);
       }
     });
   }

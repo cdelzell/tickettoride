@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { monoMap } from "@/image_imports";
-
+import { profileImages } from "@/image_imports";
 
 export type NetworkProps = {
   width: number;
@@ -51,6 +51,10 @@ function USMap({
     width: width * 0.9,
     height: height * 0.9,
   });
+
+  const key = mainPlayer.profilePic.split(".")[0].toLowerCase(); // e.g., "george.jpg" => "george"
+
+  const imgSrc = profileImages[key] ?? profileImages["default"];
 
   useEffect(() => {
     function handleResize() {
@@ -203,7 +207,7 @@ function USMap({
                   y={textPos.y - 15}
                   width={30}
                   height={30}
-                  href={mainPlayer.profilePic}
+                  href={imgSrc}
                   preserveAspectRatio="xMidYMid meet"
                   className="route-claimer-image"
                   clipPath={`url(#circle-clip-${index})`}
