@@ -15,6 +15,7 @@ class TrainRoute {
   length: number;
   gameColor: string;
   hexColor: string;
+  dashed: boolean;
   claimer: string | null;
   claimerProfilePic: string | null;
 
@@ -23,15 +24,19 @@ class TrainRoute {
     destination2: string,
     length: number,
     gameColor: string,
-    hexColor: string
+    hexColor: string,
+    dashed: boolean,
+    claimer: string | null,
+    claimerProfilePic: string | null
   ) {
     this.destination1 = destination1;
     this.destination2 = destination2;
     this.length = length;
     this.gameColor = gameColor;
     this.hexColor = hexColor;
-    this.claimer = null;
-    this.claimerProfilePic = null;
+    this.dashed = dashed;
+    this.claimer = claimer ?? null;
+    this.claimerProfilePic = claimerProfilePic ?? null;
   }
 
   getLength() {
@@ -72,7 +77,9 @@ class TrainRoute {
       length: this.length,
       gameColor: this.gameColor,
       hexColor: this.hexColor,
+      dashed: this.dashed,
       claimer: this.claimer,
+      claimerProfilePic: this.claimerProfilePic,
     };
   }
 
@@ -82,12 +89,15 @@ class TrainRoute {
       data.destination2,
       data.length,
       data.gameColor,
-      data.hexColor
+      data.hexColor,
+      data.dashed,
+      data.claimer,
+      data.claimerProfilePic
     );
     route.claimer = data.claimer ?? null;
     return route;
   }
-  
+
   getClaimerProfilePic(): string | null {
     return this.claimerProfilePic;
   }

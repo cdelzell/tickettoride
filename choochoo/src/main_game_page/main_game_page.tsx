@@ -15,11 +15,13 @@ import DestinationCard from "../backend/destination-card";
 import train_cards from "./constants/train_cards";
 import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
-import routes from "./constants/routes";
+// import routes from "./constants/routes";
+import { Routes as routes } from "../backend/hardcoded-map";
 import { findGameByGameID } from "../firebase/FirebaseReadGameData";
 import { findUserByUsername } from "../firebase/FirebaseReadUser";
 import { set } from "firebase/database";
 import Player from "@/backend/player";
+import TrainRoute from "@/backend/train-route";
 
 export interface City {
   name: string;
@@ -29,13 +31,14 @@ export interface City {
 }
 
 export interface Route {
-  source: City;
-  target: City;
-  dashed?: boolean;
-  color?: string;
-  game_color: string;
-  trains: number;
-  claimer?: string | null;
+  destination1: string;
+  destination2: string;
+  dashed: boolean;
+  length: number;
+  gameColor: string;
+  hexColor: string;
+  claimer: string | null;
+  claimerProfilePic: string | null;
 }
 
 export interface DestinationCardInfo {
@@ -69,9 +72,9 @@ const MainGamePage = () => {
   >([]);
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
-  const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
+  const [gameRoutes, setGameRoutes] = useState<TrainRoute[]>(routes);
   const [trains, setTrains] = useState(45);
-  const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
+  const [hoveredRoute, setHoveredRoute] = useState<TrainRoute | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
   const [drawnDestCards, setDrawDestCard] = useState<DestinationCard[]>([]);
   const [drawClickCount, setDrawClickCount] = useState(0);
@@ -104,6 +107,8 @@ const MainGamePage = () => {
 
     const tempRunner = new GameRunner([], lobbyCode);
     tempRunner.startListeningForUpdates((newRunner) => {
+      console.log(newRunner.gameBoard.boardGraph.routes);
+      console.log(newRunner);
       setGameRunner(newRunner);
     });
 
@@ -150,6 +155,13 @@ const MainGamePage = () => {
   }, [allPlayers, username]);
 
   useEffect(() => {
+    if (gameRunner) {
+      setGameRoutes(gameRunner.gameBoard.boardGraph.routes);
+      // console.log(gameRunner.gameBoard.boardGraph.routes);
+    }
+  }, [gameRunner]);
+
+  useEffect(() => {
     if (allPlayers) {
       if (!allPlayers.length || !username) return;
 
@@ -189,15 +201,6 @@ const MainGamePage = () => {
       window.removeEventListener("drawCard", handleDrawCardEvent);
     };
   }, [drawClickCount]);
-
-  useEffect(() => {
-    console.log(
-      "⌛ playerIndex:",
-      playerIndex,
-      " | currentPlayer:",
-      currentPlayer
-    );
-  }, [playerIndex, currentPlayer]);
 
   if (!gameRunner) {
     return <div>Loading game...</div>;
@@ -273,14 +276,14 @@ const MainGamePage = () => {
     setActiveTrains(action);
   };
 
-  const handleRouteClaim = (route: Route) => {
+  const handleRouteClaim = (route: TrainRoute) => {
     // find the route in game board graph using index instead of color
     const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
       (r) =>
-        (r.destination1 === route.source.name &&
-          r.destination2 === route.target.name) ||
-        (r.destination1 === route.target.name &&
-          r.destination2 === route.source.name)
+        (r.destination1 === route.destination1 &&
+          r.destination2 === route.destination2) ||
+        (r.destination1 === route.destination2 &&
+          r.destination2 === route.destination1)
     );
     if (routeIndex === -1) {
       console.error("Route not found in board graph:", route);
@@ -293,7 +296,7 @@ const MainGamePage = () => {
       playClickCount === 0
     ) {
       // ugame runner function to claim route
-      const claimed = gameRunner.claimRoute(routeIndex, profile_picture);
+      const claimed = gameRunner.claimRoute(routeIndex, profile_pic_formatted);
 
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
@@ -307,16 +310,15 @@ const MainGamePage = () => {
         setTrainCards(updatedTrainCards);
 
         // UI
-        setGameRoutes((prevRoutes) =>
-          prevRoutes.map((r) =>
-            (r.source.name === route.source.name &&
-              r.target.name === route.target.name) ||
-            (r.source.name === route.target.name &&
-              r.target.name === route.source.name)
-              ? { ...r, claimer: username, claimerProfilePic: profile_picture }
-              : r
-          )
-        );
+        setGameRoutes((prevRoutes) => {
+          const updatedRoutes = [...prevRoutes];
+          const r = updatedRoutes[routeIndex];
+
+          r.claimer = username;
+          r.claimerProfilePic = profile_pic_formatted;
+
+          return updatedRoutes;
+        });
 
         return true;
       }
@@ -386,8 +388,6 @@ const MainGamePage = () => {
     setCurrentPlayer(gameRunner.getCurrentPlayer());
     gameRunner.sendToDatabase();
   };
-
-  console.log(gameRunner);
 
   const endTurnButtonStyle: React.CSSProperties = {
     width: "12vw",

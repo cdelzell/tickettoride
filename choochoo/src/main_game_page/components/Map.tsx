@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { monoMap } from "@/image_imports";
 import { profileImages } from "@/image_imports";
+import TrainRoute from "@/backend/train-route";
 
 export type NetworkProps = {
   width: number;
@@ -11,17 +12,18 @@ export interface City {
   name: string;
   x: number;
   y: number;
-  color?: string;
+  hexColor?: string;
 }
 
 export interface Route {
-  source: City;
-  target: City;
+  destination1: string;
+  destination2: string;
   dashed?: boolean;
-  color?: string;
-  game_color: string;
-  trains: number;
+  hexColor?: string;
+  gameColor: string;
+  length: number;
   claimer?: string | null;
+  claimerProfilePic?: string | null;
 }
 
 function USMap({
@@ -36,12 +38,12 @@ function USMap({
 }: {
   width: number;
   height: number;
-  routes: Route[];
+  routes: TrainRoute[];
   cities: City[];
   mainPlayer: { username: string; profilePic: string };
   hoveredRoute: Route | null;
-  setHoveredRoute: (route: Route | null) => void;
-  onRouteClaim: (route: Route) => boolean;
+  setHoveredRoute: (route: TrainRoute | null) => void;
+  onRouteClaim: (route: TrainRoute) => boolean;
 }) {
   const MAP_WIDTH = 600;
   const MAP_HEIGHT = 400;
@@ -81,21 +83,34 @@ function USMap({
 
   const scaleFactor = dimensions.width / MAP_WIDTH;
 
-  const handleRouteClaim = (route: Route) => {
+  const findCity = (city: string) => {
+    const cityObject = cities.find((c) => c.name === city);
+
+    if (!cityObject) {
+      return cities[0];
+    }
+
+    return cityObject;
+  };
+
+  const handleRouteClaim = (route: TrainRoute) => {
     if (onRouteClaim(route)) {
       // need to connect o backend
     }
   };
 
   const getRouteTextPosition = (route: Route) => {
-    const midX = (route.source.x + route.target.x) / 2;
-    const midY = (route.source.y + route.target.y) / 2;
+    const destination1 = findCity(route.destination1);
+    const destination2 = findCity(route.destination2);
+
+    const midX = (destination1.x + destination2.x) / 2;
+    const midY = (destination1.y + destination2.y) / 2;
     return { x: midX, y: midY };
   };
 
-  function lightenColor(color: string = "#000000", factor: number): string {
-    if (!color.startsWith("#")) return color;
-    const num = parseInt(color.slice(1), 16),
+  function lightenColor(hexColor: string = "#000000", factor: number): string {
+    if (!hexColor.startsWith("#")) return hexColor;
+    const num = parseInt(hexColor.slice(1), 16),
       r = Math.min(255, Math.floor(((num >> 16) & 0xff) * factor)),
       g = Math.min(255, Math.floor(((num >> 8) & 0xff) * factor)),
       b = Math.min(255, Math.floor((num & 0xff) * factor));
@@ -122,18 +137,20 @@ function USMap({
       {/*  routes  */}
       {routes.map((route, index) => {
         const textPos = getRouteTextPosition(route);
+        const destination1 = findCity(route.destination1);
+        const destination2 = findCity(route.destination2);
 
         return (
           <g key={`route-${index}`}>
             <line
-              x1={route.source.x}
-              y1={route.source.y}
-              x2={route.target.x}
-              y2={route.target.y}
+              x1={destination1.x}
+              y1={destination1.y}
+              x2={destination2.x}
+              y2={destination2.y}
               strokeWidth={hoveredRoute === route ? 10 : 6} // Slightly larger stroke for outline effect
               stroke={
                 hoveredRoute === route
-                  ? lightenColor(route.color ?? "#000000", 1.5)
+                  ? lightenColor(route.hexColor ?? "#000000", 1.5)
                   : "transparent"
               }
               strokeOpacity={hoveredRoute === route ? 1 : 0.8} // Full opacity for the outline
@@ -142,12 +159,12 @@ function USMap({
               }
             />
             <line
-              x1={route.source.x}
-              y1={route.source.y}
-              x2={route.target.x}
-              y2={route.target.y}
+              x1={destination1.x}
+              y1={destination1.y}
+              x2={destination2.x}
+              y2={destination2.y}
               strokeWidth={6}
-              stroke={route.color || "black"}
+              stroke={route.hexColor || "black"}
               strokeOpacity={hoveredRoute === route ? 0.6 : 0.8} // Slightly reduced opacity when hovered
               strokeDasharray={
                 route.claimer ? undefined : route.dashed ? "20,4" : undefined
@@ -188,7 +205,7 @@ function USMap({
                   onMouseLeave={() => setHoveredRoute(null)}
                   onClick={() => handleRouteClaim(route)}
                 >
-                  {route.trains}
+                  {route.length}
                 </text>
               </g>
             )}
@@ -218,7 +235,7 @@ function USMap({
                   cy={textPos.y}
                   r={10}
                   fill="none"
-                  stroke={route.color || "black"}
+                  stroke={route.hexColor || "black"}
                   strokeWidth={1.23}
                 />
               </g>
@@ -239,7 +256,7 @@ function USMap({
               cx={city.x}
               cy={city.y}
               r={5}
-              fill={city.color || "black"}
+              fill={city.hexColor || "black"}
               opacity={0.68}
             />
 
