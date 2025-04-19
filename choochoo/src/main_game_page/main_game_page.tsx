@@ -84,6 +84,7 @@ const MainGamePage = () => {
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   const [trainCards, setTrainCards] = useState(() =>
     train_cards.map((card) => ({
@@ -300,6 +301,7 @@ const MainGamePage = () => {
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
         setTrains(gameRunner.getMainPlayerTrainCount());
+        setGameOver(gameRunner.checkGameOverAfterRouteClaim());
 
         const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
         const updatedTrainCards = train_cards.map((card, i) => ({
@@ -420,6 +422,10 @@ const MainGamePage = () => {
     zIndex: 1000,
     transition: "all 0s ease-in-out",
   };
+
+  if (gameOver) {
+    return <div>Game over</div>;
+  }
 
   return (
     <main className="main_game_page">

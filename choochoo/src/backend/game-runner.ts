@@ -116,7 +116,10 @@ class GameRunner {
   checkGameOverAfterRouteClaim() {
     if (this.players[this.currentPlayer].getTrainAmount() < 3) {
       this.gameOver = true;
+      return true;
     }
+
+    return false;
   }
 
   getDestinationCardPossibilities(): DestinationCard[] {
