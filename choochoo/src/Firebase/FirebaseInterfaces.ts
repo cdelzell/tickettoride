@@ -1,15 +1,17 @@
+import DestinationCard from "@/backend/destination-card";
 import GameBoard from "../backend/game-board";
+import TrainCard from "@/backend/train-card";
 
 export interface UserData {
-  username: string;                       // String
-  email: string;                          // String
-  password: string;                       // String
-  wins: number;                           // Int
-  losses: number;                           // Int
-  total_score: number;                    // Int
-  profile_picture: string;                // String
-  status: boolean;                        // Bool
-  active_game_id: string | null;          // String or null
+  username: string; // String
+  email: string; // String
+  password: string; // String
+  wins: number; // Int
+  losses: number; // Int
+  total_score: number; // Int
+  profile_picture: string; // String
+  status: boolean; // Bool
+  active_game_id: string | null; // String or null
 }
 
 export interface LobbyPlayer {
@@ -27,9 +29,16 @@ export interface Lobby {
   pendingPlayers?: Record<string, boolean>;
 }
 
+export interface GamePlayer {
+  destinationCardHand: DestinationCard[];
+  id: string;
+  scoredPoints: number;
+  trainAmount: number;
+  trainCardHand: TrainCard[];
+  username: string;
+}
 
 //GAME OBJECT INTERFACES
-
 
 //--Whether or not the game is over (boolean)
 //--The current player

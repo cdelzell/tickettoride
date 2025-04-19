@@ -24,7 +24,12 @@ function FaceUpCard({
   destClickCount: number;
 }) {
   const handleClick = () => {
-    if (active && drawClickCount < 2 && playClickCount === 0 && destClickCount === 0) {
+    if (
+      active &&
+      drawClickCount < 2 &&
+      playClickCount === 0 &&
+      destClickCount === 0
+    ) {
       setDrawClickCount(drawClickCount + 1);
       gamerunner.drawFaceupTrainCard(index);
       updateTrains(gamerunner.getMainPlayerTrainCards());
@@ -32,7 +37,13 @@ function FaceUpCard({
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
+      }}
+    >
       <button className="face_up_card" onClick={handleClick}>
         <img
           className="train_card"

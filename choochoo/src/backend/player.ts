@@ -4,13 +4,13 @@ import TrainRoute from "./train-route";
 import User from "./user";
 
 class Player {
-  id: string;
-  username: string;
-  trainCardHand: Record<string, number>;
   destinationCardHand: DestinationCard[];
-  trainAmount: number;
-  scoredPoints: number;
+  id: string;
 
+  scoredPoints: number;
+  trainAmount: number;
+  trainCardHand: Record<string, number>;
+  username: string;
   constructor(id: string, user: string, trainCards: TrainCard[]) {
     this.id = id;
     this.username = user;
@@ -21,9 +21,17 @@ class Player {
   }
 
   // Adding DestinationCards to the player's hand (creating instances)
-  addDestinationCardToHand(destinationCardInfo: { destination1: string; destination2: string; pointValue: number }): void {
+  addDestinationCardToHand(destinationCardInfo: {
+    destination1: string;
+    destination2: string;
+    pointValue: number;
+  }): void {
     // Create a new DestinationCard instance
-    const newDestinationCard = new DestinationCard(destinationCardInfo.destination1, destinationCardInfo.destination2, destinationCardInfo.pointValue);
+    const newDestinationCard = new DestinationCard(
+      destinationCardInfo.destination1,
+      destinationCardInfo.destination2,
+      destinationCardInfo.pointValue
+    );
     this.destinationCardHand.push(newDestinationCard);
   }
 
@@ -41,7 +49,8 @@ class Player {
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
       this.trainCardHand[route.getGameColor()] + this.trainCardHand["wild"] >=
-      route.getLength()
+        route.getLength() &&
+      route.claimer == null
     ) {
       return true;
     }
@@ -68,7 +77,9 @@ class Player {
     return usedTrainCardColors;
   }
 
-  private setStarterTrainCards(trainCards: TrainCard[]): Record<string, number> {
+  private setStarterTrainCards(
+    trainCards: TrainCard[]
+  ): Record<string, number> {
     let hand: Record<string, number> = {
       red: 0,
       yellow: 0,
@@ -145,6 +156,8 @@ class Player {
     );
     player.trainAmount = data.trainAmount ?? 45;
     player.scoredPoints = data.scoredPoints ?? 0;
+
+    console.log(player.trainCardHand);
 
     return player;
   }

@@ -21,195 +21,294 @@ export const Cities: Destination[] = [
 ];
 
 export const Routes: TrainRoute[] = [
-  new TrainRoute(Cities[0].getName(), Cities[1].getName(), 4, "red", "#b03517"), // ny to chicago
+  new TrainRoute(
+    Cities[0].getName(),
+    Cities[1].getName(),
+    4,
+    "red",
+    "#b03517",
+    true,
+    null,
+    null
+  ), // ny to chicago
   new TrainRoute(
     Cities[1].getName(),
     Cities[6].getName(),
     3,
     "yellow",
-    "#e6c10e"
+    "#e6c10e",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[1].getName(),
     Cities[5].getName(),
     5,
     "black",
-    "#1e1b1c"
+    "#1e1b1c",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[0].getName(),
     Cities[13].getName(),
     1,
     "green",
-    "#72922e"
+    "#72922e",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[1].getName(),
     Cities[8].getName(),
     2,
     "purple",
-    "#a77daf"
+    "#a77daf",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[5].getName(),
     Cities[8].getName(),
     4,
     "blue",
-    "#519bdb"
+    "#519bdb",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[7].getName(),
     Cities[3].getName(),
     3,
     "blue",
-    "#519bdb"
+    "#519bdb",
+    true,
+    null,
+    null
   ), // riddhi rapids to LA
   new TrainRoute(
     Cities[7].getName(),
     Cities[4].getName(),
     3,
     "brown",
-    "#c18135"
+    "#c18135",
+    true,
+    null,
+    null
   ), // riddhi rapids to tyville
   new TrainRoute(
     Cities[4].getName(),
     Cities[5].getName(),
     3,
     "white",
-    "#e6e5e3"
+    "#e6e5e3",
+    true,
+    null,
+    null
   ), // ty ville to clara city
-  new TrainRoute(Cities[2].getName(), Cities[5].getName(), 3, "red", "#b03517"), // denver to clara city
+  new TrainRoute(
+    Cities[2].getName(),
+    Cities[5].getName(),
+    3,
+    "red",
+    "#b03517",
+    true,
+    null,
+    null
+  ), // denver to clara city
   new TrainRoute(
     Cities[3].getName(),
     Cities[2].getName(),
     4,
     "yellow",
-    "#e6c10e"
+    "#e6c10e",
+    true,
+    null,
+    null
   ), // LA to denver
   new TrainRoute(
     Cities[4].getName(),
     Cities[2].getName(),
     3,
     "black",
-    "#1e1b1c"
+    "#1e1b1c",
+    true,
+    null,
+    null
   ), // tyville to denver
   new TrainRoute(
     Cities[3].getName(),
     Cities[8].getName(),
     6,
     "green",
-    "#72922e"
+    "#72922e",
+    true,
+    null,
+    null
   ), // LA to firestone rouge
   new TrainRoute(
     Cities[2].getName(),
     Cities[8].getName(),
     4,
     "purple",
-    "#a77daf"
+    "#a77daf",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[6].getName(),
     Cities[8].getName(),
     5,
     "blue",
-    "#519bdb"
+    "#519bdb",
+    true,
+    null,
+    null
   ), // palo noah to firestone rouge
   new TrainRoute(
     Cities[14].getName(),
     Cities[12].getName(),
     2,
     "brown",
-    "#c18135"
+    "#c18135",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[11].getName(),
     Cities[12].getName(),
     5,
     "white",
-    "#e6e5e3"
+    "#e6e5e3",
+    true,
+    null,
+    null
   ), // phoenix to houston
   new TrainRoute(
     Cities[11].getName(),
     Cities[3].getName(),
     2,
     "red",
-    "#b03517"
+    "#b03517",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[11].getName(),
     Cities[15].getName(),
     1,
     "yellow",
-    "#e6c10e"
+    "#e6c10e",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[8].getName(),
     Cities[14].getName(),
     1,
     "black",
-    "#1e1b1c"
+    "#1e1b1c",
+    true,
+    null,
+    null
   ),
   new TrainRoute(
     Cities[7].getName(),
     Cities[9].getName(),
     3,
     "green",
-    "#72922e"
+    "#72922e",
+    true,
+    null,
+    null
   ), // rr to seattle
   new TrainRoute(
     Cities[5].getName(),
     Cities[9].getName(),
     6,
     "purple",
-    "#a77daf"
+    "#a77daf",
+    true,
+    null,
+    null
   ), // cc to seattle
   new TrainRoute(
     Cities[6].getName(),
     Cities[10].getName(),
     4,
     "blue",
-    "#519bdb"
+    "#519bdb",
+    true,
+    null,
+    null
   ), // pn to miami
   new TrainRoute(
     Cities[1].getName(),
     Cities[13].getName(),
     4,
     "brown",
-    "#c18135"
+    "#c18135",
+    true,
+    null,
+    null
   ), // chicago to washington
   new TrainRoute(
     Cities[6].getName(),
     Cities[13].getName(),
     4,
     "white",
-    "#e6e5e3"
+    "#e6e5e3",
+    true,
+    null,
+    null
   ), // palo noah to washington
   new TrainRoute(
     Cities[6].getName(),
     Cities[12].getName(),
     5,
     "red",
-    "#b03517"
+    "#b03517",
+    true,
+    null,
+    null
   ), // palo noah to houston
   new TrainRoute(
     Cities[15].getName(),
     Cities[12].getName(),
     5,
     "yellow",
-    "#e6c10e"
+    "#e6c10e",
+    true,
+    null,
+    null
   ), // ALB to houston
   new TrainRoute(
     Cities[15].getName(),
     Cities[14].getName(),
     3,
     "black",
-    "#1e1b1c"
+    "#1e1b1c",
+    true,
+    null,
+    null
   ), // ALB to OC
   new TrainRoute(
     Cities[6].getName(),
     Cities[14].getName(),
     5,
     "green",
-    "#72922e"
+    "#72922e",
+    true,
+    null,
+    null
   ), // palo noah to OC
 ];
