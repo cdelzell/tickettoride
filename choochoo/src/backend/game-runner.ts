@@ -168,16 +168,29 @@ class GameRunner {
   //Return the a dictionary with keys of colors as strings and values of the number of that card the cahracter has
   //Called after card drawn or route claimed
   getMainPlayerTrainCards(): number[] {
-    let hand = this.players[this.currentPlayer].getTrainCardHand();
-    let handValues = Object.values(hand);
-    return handValues;
+    return this.getOtherPlayerTrainCards(
+      this.players[this.currentPlayer].getUsername()
+    );
   }
 
   getOtherPlayerTrainCards(username: string): number[] {
     let player = this.players.find((p) => p.getUsername() === username);
     if (player) {
       let hand = player.getTrainCardHand();
-      let handValues = Object.values(hand);
+      const order = [
+        "red",
+        "yellow",
+        "black",
+        "green",
+        "purple",
+        "blue",
+        "brown",
+        "white",
+        "wild",
+      ];
+      const sortedList = order.map((color) => hand[color]);
+      let handValues = Object.values(sortedList);
+      console.log(sortedList);
       return handValues;
     }
 

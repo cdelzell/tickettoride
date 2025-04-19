@@ -107,8 +107,6 @@ const MainGamePage = () => {
 
     const tempRunner = new GameRunner([], lobbyCode);
     tempRunner.startListeningForUpdates((newRunner) => {
-      console.log(newRunner.gameBoard.boardGraph.routes);
-      console.log(newRunner);
       setGameRunner(newRunner);
     });
 
@@ -140,7 +138,7 @@ const MainGamePage = () => {
   }, [gameRunner]);
 
   useEffect(() => {
-    if (allPlayers) {
+    if (allPlayers && gameRunner) {
       if (!allPlayers.length || !username) return;
 
       // find your own player object
@@ -149,7 +147,9 @@ const MainGamePage = () => {
       if (self) {
         setPlayerIndex(parseInt(self.id));
         setTrains(self.trainAmount);
-        setTrainCards(formatTrainHand(Object.values(self.trainCardHand)));
+        setTrainCards(
+          formatTrainHand(gameRunner?.getOtherPlayerTrainCards(self.username))
+        );
       }
     }
   }, [allPlayers, username]);
@@ -157,7 +157,6 @@ const MainGamePage = () => {
   useEffect(() => {
     if (gameRunner) {
       setGameRoutes(gameRunner.gameBoard.boardGraph.routes);
-      // console.log(gameRunner.gameBoard.boardGraph.routes);
     }
   }, [gameRunner]);
 
@@ -182,7 +181,7 @@ const MainGamePage = () => {
 
   useEffect(() => {
     if (gameRunner) {
-      const train_counts = gameRunner.getOtherPlayerTrainCards(username);
+      const train_counts = gameRunner.getMainPlayerTrainCards();
       const updatedTrainCards = train_cards.map((card, i) => ({
         ...card,
         count: train_counts[i],

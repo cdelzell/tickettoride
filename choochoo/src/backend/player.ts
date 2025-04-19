@@ -6,6 +6,7 @@ import User from "./user";
 class Player {
   destinationCardHand: DestinationCard[];
   id: string;
+
   scoredPoints: number;
   trainAmount: number;
   trainCardHand: Record<string, number>;
@@ -48,7 +49,8 @@ class Player {
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
       this.trainCardHand[route.getGameColor()] + this.trainCardHand["wild"] >=
-      route.getLength()
+        route.getLength() &&
+      route.claimer == null
     ) {
       return true;
     }
@@ -154,6 +156,8 @@ class Player {
     );
     player.trainAmount = data.trainAmount ?? 45;
     player.scoredPoints = data.scoredPoints ?? 0;
+
+    console.log(player.trainCardHand);
 
     return player;
   }

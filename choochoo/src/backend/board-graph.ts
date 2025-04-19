@@ -10,7 +10,6 @@ class BoardGraph {
   constructor() {
     this.destinations = this.#makeDestinations();
     this.routes = this.#makeRoutes();
-    console.log(this.routes);
   }
 
   #makeDestinations(): Destination[] {
