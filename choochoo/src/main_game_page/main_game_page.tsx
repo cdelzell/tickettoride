@@ -15,8 +15,13 @@ import DestinationCard from "../backend/destination-card";
 import train_cards from "./constants/train_cards";
 import destination_cards from "./constants/destination_cards";
 import cities from "./constants/cities";
-import routes from "./constants/routes";
+// import routes from "./constants/routes";
+import { Routes as routes } from "../backend/hardcoded-map";
 import { findGameByGameID } from "../firebase/FirebaseReadGameData";
+import { findUserByUsername } from "../firebase/FirebaseReadUser";
+import { set } from "firebase/database";
+import Player from "@/backend/player";
+import TrainRoute from "@/backend/train-route";
 
 export interface City {
   name: string;
@@ -26,13 +31,14 @@ export interface City {
 }
 
 export interface Route {
-  source: City;
-  target: City;
-  dashed?: boolean;
-  color?: string;
-  game_color: string;
-  trains: number;
-  claimer?: string | null;
+  destination1: string;
+  destination2: string;
+  dashed: boolean;
+  length: number;
+  gameColor: string;
+  hexColor: string;
+  claimer: string | null;
+  claimerProfilePic: string | null;
 }
 
 export interface DestinationCardInfo {
@@ -44,37 +50,16 @@ export interface DestinationCardInfo {
 
 export const background = "#d3d3d3";
 
-const test_players = [
-  {
-    username: "c-bear",
-    trainCount: 1700,
-    profilePic: "./src/assets/trains/percy_train.webp",
-  },
-  {
-    username: "t-dawg",
-    trainCount: 0,
-    profilePic: "./src/assets/trains/gordon_train.webp",
-  },
-  {
-    username: "ridster",
-    trainCount: 2,
-    profilePic: "./src/assets/trains/james_train.webp",
-  },
-];
-
-const main_player = {
-  username: "noah-rama",
-  trainCount: 2,
-  profilePic: "./src/assets/trains/thomas_train.jpg",
-};
-
-const users: User[] = [new User("Test")];
-
 const MainGamePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { players, lobbyCode, userProfile } = state || {};
   const { username, wins, total_score, profile_picture } = userProfile || {};
+  const profile_pic_formatted =
+    profile_picture?.split("/").pop() || "Default_pfp.jpg";
+  const [allPlayers, setAllPlayers] = useState<Player[]>([]);
+  const [playerIndex, setPlayerIndex] = useState(0);
+  const [displayPlayers, setDisplayPlayers] = useState<Player[]>([]);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -87,9 +72,9 @@ const MainGamePage = () => {
   >([]);
   const [action_box_status, setActionBoxStatus] = useState(0);
   const [draw_dest_active, setDrawDestActive] = useState(false);
-  const [gameRoutes, setGameRoutes] = useState<Route[]>(routes);
-  const [trains, setTrains] = useState(25);
-  const [hoveredRoute, setHoveredRoute] = useState<Route | null>(null);
+  const [gameRoutes, setGameRoutes] = useState<TrainRoute[]>(routes);
+  const [trains, setTrains] = useState(45);
+  const [hoveredRoute, setHoveredRoute] = useState<TrainRoute | null>(null);
   const [activeTrains, setActiveTrains] = useState(false);
   const [drawnDestCards, setDrawDestCard] = useState<DestinationCard[]>([]);
   const [drawClickCount, setDrawClickCount] = useState(0);
@@ -99,6 +84,7 @@ const MainGamePage = () => {
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   const [trainCards, setTrainCards] = useState(() =>
     train_cards.map((card) => ({
@@ -106,6 +92,13 @@ const MainGamePage = () => {
       count: 0,
     }))
   );
+
+  useEffect(() => {
+    if (gameRunner) {
+      const gamePlayers = gameRunner.getPlayers();
+      setAllPlayers(gamePlayers);
+    }
+  }, [gameRunner]);
 
   useEffect(() => {
     if (!lobbyCode) {
@@ -118,10 +111,14 @@ const MainGamePage = () => {
       setGameRunner(newRunner);
     });
 
-    return () => {
-      //tempRunner.stopListeningForUpdates?.();
-    };
+    return () => {};
   }, [lobbyCode]);
+
+  useEffect(() => {
+    if (gameRunner) {
+      setCurrentPlayer(gameRunner.getCurrentPlayer());
+    }
+  }, [gameRunner]);
 
   useEffect(() => {
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
@@ -140,6 +137,48 @@ const MainGamePage = () => {
       );
     }
   }, [gameRunner]);
+
+  useEffect(() => {
+    if (allPlayers && gameRunner) {
+      if (!allPlayers.length || !username) return;
+
+      // find your own player object
+      const self = allPlayers.find((p) => p.username === username);
+
+      if (self) {
+        setPlayerIndex(parseInt(self.id));
+        setTrains(self.trainAmount);
+        setTrainCards(
+          formatTrainHand(gameRunner?.getOtherPlayerTrainCards(self.username))
+        );
+      }
+    }
+  }, [allPlayers, username]);
+
+  useEffect(() => {
+    if (gameRunner) {
+      setGameRoutes(gameRunner.gameBoard.boardGraph.routes);
+    }
+  }, [gameRunner]);
+
+  useEffect(() => {
+    if (allPlayers) {
+      if (!allPlayers.length || !username) return;
+
+      // find your own player object
+      const withoutSelf = allPlayers.filter((p) => p.username !== username);
+      setDisplayPlayers(withoutSelf);
+    }
+  }, [allPlayers]);
+
+  const formatTrainHand = (hand: number[]) => {
+    const formattedHand = train_cards.map((card, i) => ({
+      ...card,
+      count: hand[i],
+    }));
+
+    return formattedHand;
+  };
 
   useEffect(() => {
     if (gameRunner) {
@@ -199,7 +238,7 @@ const MainGamePage = () => {
   };
 
   const updatePlayerHand = (cards: number[]) => {
-    const trains = train_cards.map((card, i) => ({
+    const updatedTrains = train_cards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
@@ -237,14 +276,14 @@ const MainGamePage = () => {
     setActiveTrains(action);
   };
 
-  const handleRouteClaim = (route: Route) => {
+  const handleRouteClaim = (route: TrainRoute) => {
     // find the route in game board graph using index instead of color
     const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
       (r) =>
-        (r.destination1 === route.source.name &&
-          r.destination2 === route.target.name) ||
-        (r.destination1 === route.target.name &&
-          r.destination2 === route.source.name)
+        (r.destination1 === route.destination1 &&
+          r.destination2 === route.destination2) ||
+        (r.destination1 === route.destination2 &&
+          r.destination2 === route.destination1)
     );
     if (routeIndex === -1) {
       console.error("Route not found in board graph:", route);
@@ -257,11 +296,12 @@ const MainGamePage = () => {
       playClickCount === 0
     ) {
       // ugame runner function to claim route
-      const claimed = gameRunner.claimRoute(routeIndex, profile_picture);
+      const claimed = gameRunner.claimRoute(routeIndex, profile_pic_formatted);
 
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
         setTrains(gameRunner.getMainPlayerTrainCount());
+        setGameOver(gameRunner.checkGameOverAfterRouteClaim());
 
         const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
         const updatedTrainCards = train_cards.map((card, i) => ({
@@ -271,16 +311,15 @@ const MainGamePage = () => {
         setTrainCards(updatedTrainCards);
 
         // UI
-        setGameRoutes((prevRoutes) =>
-          prevRoutes.map((r) =>
-            (r.source.name === route.source.name &&
-              r.target.name === route.target.name) ||
-            (r.source.name === route.target.name &&
-              r.target.name === route.source.name)
-              ? { ...r, claimer: username, claimerProfilePic: profile_picture }
-              : r
-          )
-        );
+        setGameRoutes((prevRoutes) => {
+          const updatedRoutes = [...prevRoutes];
+          const r = updatedRoutes[routeIndex];
+
+          r.claimer = username;
+          r.claimerProfilePic = profile_pic_formatted;
+
+          return updatedRoutes;
+        });
 
         return true;
       }
@@ -384,17 +423,21 @@ const MainGamePage = () => {
     transition: "all 0s ease-in-out",
   };
 
+  if (gameOver) {
+    return <div>Game over</div>;
+  }
+
   return (
     <main className="main_game_page">
-      <div className="player_cards">
-        {test_players.map((player, index) => (
+      <div className="player_cards_format">
+        {displayPlayers.map((player, index) => (
           <PlayerCard
             key={index}
             username={player.username}
-            trainCount={player.trainCount}
-            profilePic={player.profilePic.split("/").pop() || "Default_pfp.jpg"}
+            trainCount={player.trainAmount}
+            profilePic={"default"}
             main_player={false}
-            active={currentPlayer === index + 1}
+            active={currentPlayer === parseInt(player.id)}
           />
         ))}
       </div>
@@ -424,6 +467,7 @@ const MainGamePage = () => {
 
       <div className="player_actions">
         <ActionBox
+          active={currentPlayer === playerIndex}
           action={action_box_status}
           gamerunner={gameRunner}
           drawnDestCards={drawnDestCards}
@@ -467,13 +511,13 @@ const MainGamePage = () => {
           ))}
         </div>
 
-        <div className="main_player_card">
+        <div>
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profile_picture?.split("/").pop() || "Default_pfp.jpg"}
+            profilePic={profile_pic_formatted}
             main_player={true}
-            active={currentPlayer === 0}
+            active={currentPlayer === playerIndex}
           />
         </div>
       </div>
@@ -483,7 +527,10 @@ const MainGamePage = () => {
         height={height}
         routes={gameRoutes}
         cities={cities}
-        mainPlayer={main_player}
+        mainPlayer={{
+          username: username,
+          profilePic: profile_pic_formatted,
+        }}
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}
         onRouteClaim={handleRouteClaim}

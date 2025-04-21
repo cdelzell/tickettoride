@@ -16,7 +16,7 @@ class GameBoard {
     this.destinationCardDrawPile = this.#getStartDestinationCards();
     this.trainCardDiscardPile = [];
     this.faceUpTrainCards = this.#setStartFaceUpTrainCards();
-    this.boardGraph = new BoardGraph();
+    // this.boardGraph = new BoardGraph();
   }
 
   #shuffleTrainDeck() {

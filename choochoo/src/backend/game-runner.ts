@@ -116,7 +116,10 @@ class GameRunner {
   checkGameOverAfterRouteClaim() {
     if (this.players[this.currentPlayer].getTrainAmount() < 3) {
       this.gameOver = true;
+      return true;
     }
+
+    return false;
   }
 
   getDestinationCardPossibilities(): DestinationCard[] {
@@ -168,15 +171,44 @@ class GameRunner {
   //Return the a dictionary with keys of colors as strings and values of the number of that card the cahracter has
   //Called after card drawn or route claimed
   getMainPlayerTrainCards(): number[] {
-    let hand = this.players[this.currentPlayer].getTrainCardHand();
-    let handValues = Object.values(hand);
-    return handValues;
+    return this.getOtherPlayerTrainCards(
+      this.players[this.currentPlayer].getUsername()
+    );
+  }
+
+  getOtherPlayerTrainCards(username: string): number[] {
+    let player = this.players.find((p) => p.getUsername() === username);
+    if (player) {
+      let hand = player.getTrainCardHand();
+      const order = [
+        "red",
+        "yellow",
+        "black",
+        "green",
+        "purple",
+        "blue",
+        "brown",
+        "white",
+        "wild",
+      ];
+      const sortedList = order.map((color) => hand[color]);
+      let handValues = Object.values(sortedList);
+      console.log(sortedList);
+      return handValues;
+    }
+
+    return [];
   }
 
   //This gets the destination cards for the main player
   //Called after a player draws destination cards
   getPlayerDestinationCards(): DestinationCard[] {
     return this.players[this.currentPlayer].getDestinationCardHand();
+  }
+
+  //returns list of players
+  getPlayers() {
+    return this.players;
   }
 
   //Returns the number of trains another player (not the main player) has left
@@ -284,6 +316,7 @@ class GameRunner {
         const rawData = snapshot.val();
         const newRunner = GameRunner.fromJSON(rawData); // deserialize immediately
         callback(newRunner);
+        console.log(newRunner);
       }
     });
   }

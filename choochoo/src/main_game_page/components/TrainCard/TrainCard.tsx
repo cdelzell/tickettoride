@@ -14,9 +14,13 @@ function TrainCard({
   hover: Route | null;
 }) {
   let hoverClass = "";
-  if (hover != null && game_color !== hover.game_color && game_color !== "wild") {
+  if (
+    hover != null &&
+    game_color !== hover.gameColor &&
+    game_color !== "wild"
+  ) {
     hoverClass = "nonCurrentHover";
-  } else if (hover != null && game_color === hover.game_color) {
+  } else if (hover != null && game_color === hover.gameColor) {
     hoverClass = "currentHover";
   }
 
@@ -24,7 +28,11 @@ function TrainCard({
 
   return (
     <div className="card_with_count">
-      <img className={`train_card ${hoverClass}`} src={imgSrc} alt={game_color} />
+      <img
+        className={`train_card ${hoverClass}`}
+        src={imgSrc}
+        alt={game_color}
+      />
       <div className="circle">{count}</div>
     </div>
   );

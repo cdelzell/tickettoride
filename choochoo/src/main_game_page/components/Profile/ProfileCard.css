@@ -55,7 +55,7 @@
   align-items: center;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  box-shadow: 0 0.1vw 0.5vw rgb(255, 204, 0);
+  box-shadow: none;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -85,4 +85,12 @@
   text-overflow: ellipsis;
   font-size: 1vw;
   color: #555;
+}
+
+.main_player_card[data-active="true"] {
+  box-shadow: 0 0.5vw 1vw rgb(255, 204, 0);
+}
+
+.player_card[data-active="true"] {
+  box-shadow: 0 0.5vw 1vw rgb(255, 204, 0);
 }

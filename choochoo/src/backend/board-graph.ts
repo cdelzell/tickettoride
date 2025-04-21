@@ -45,20 +45,18 @@ class BoardGraph {
 
   toJSON() {
     return {
-      routeClaimers: this.routes.map((r) => r.getClaimer()),
+      // serialize each route via its own toJSON (we’ll expand it next)
+      routes: this.routes.map((r) => r.toJSON()),
     };
   }
 
   static fromJSON(data: any): BoardGraph {
-    const graph = Object.create(BoardGraph.prototype) as BoardGraph;
+    // 1) Always build your defaults first
+    const graph = new BoardGraph();
 
-    graph.destinations = Array.isArray(data?.destinations)
-      ? data.destinations
-      : [];
-
-    graph.routes = Array.isArray(data?.routes)
-      ? data.routes.map((r: any) => TrainRoute.fromJSON?.(r) ?? r)
-      : [];
+    if (Array.isArray(data.routes)) {
+      graph.routes = data.routes.map((r: any) => TrainRoute.fromJSON(r));
+    }
 
     return graph;
   }

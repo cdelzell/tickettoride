@@ -1,13 +1,13 @@
 // automateLobby.mjs
-import { chromium } from 'playwright';
+import { chromium } from "playwright";
 
-const BASE = process.env.BASE_URL || 'http://localhost:5173';
+const BASE = process.env.BASE_URL || "http://localhost:5173";
 
 const USERS = [
-  { username: 'test', password: 'test', isHost: true },
-  { username: 'test2', password: 'test2', isHost: false },
-  { username: 'test3', password: 'test3', isHost: false },
-  { username: 'C-bear', password: 'dora', isHost: false },
+  { username: "test", password: "test", isHost: true },
+  { username: "test2", password: "test2", isHost: false },
+  { username: "test3", password: "test3", isHost: false },
+  { username: "test4", password: "test4", isHost: false },
 ];
 
 (async () => {
@@ -30,7 +30,7 @@ const USERS = [
 
       console.log(`→ [${username}] navigating to ${BASE}/`);
       await page.goto(`${BASE}/`, {
-        waitUntil: 'domcontentloaded',
+        waitUntil: "domcontentloaded",
         timeout: 10000,
       });
       console.log(`  [${username}] landed on →`, page.url());
@@ -43,21 +43,21 @@ const USERS = [
       await page.click('button:has-text("Log in")');
 
       // Wait for redirect to profile
-      await page.waitForURL('**/profile', { timeout: 10000 });
+      await page.waitForURL("**/profile", { timeout: 10000 });
       console.log(`✅ [${username}] logged in`);
     }
 
     // 4) Host creates the lobby
     const hostPage = pages.find((_, i) => USERS[i].isHost);
-    console.log('→ Host clicking Make Game');
+    console.log("→ Host clicking Make Game");
     await hostPage.click('button:has-text("Make Game")');
 
-    const codeLocator = hostPage.locator('.lobby-code');
+    const codeLocator = hostPage.locator(".lobby-code");
     await codeLocator.waitFor({ timeout: 10000 });
     const lobbyCode = (await codeLocator.innerText())
-      .replace(/Lobby Code:\s*/, '')
+      .replace(/Lobby Code:\s*/, "")
       .trim();
-    console.log('🛠️  Lobby code is →', lobbyCode);
+    console.log("🛠️  Lobby code is →", lobbyCode);
 
     // 5) Other users join
     for (let i = 0; i < pages.length; i++) {
@@ -66,23 +66,23 @@ const USERS = [
       const user = USERS[i].username;
 
       console.log(`→ [${user}] navigating to Join Game`);
-      await page.goto(`${BASE}/profile`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`${BASE}/profile`, { waitUntil: "domcontentloaded" });
       await page.click('button:has-text("Join Game")');
-      await page.waitForURL('**/join_game', { timeout: 10000 });
+      await page.waitForURL("**/join_game", { timeout: 10000 });
 
       await page.fill('input[placeholder="Enter lobby code"]', lobbyCode);
       await page.click('button:has-text("Join Game")');
-      await page.waitForURL('**/lobby', { timeout: 10000 });
+      await page.waitForURL("**/lobby", { timeout: 10000 });
 
       console.log(`✅ [${user}] joined lobby`);
     }
 
-    console.log('\n🎉 Automation complete — browser windows remain open.');
+    console.log("\n🎉 Automation complete — browser windows remain open.");
     // Keep the process alive so you can interact
     await new Promise(() => {});
   } catch (err) {
-    console.error('🔥 Automation error:', err);
-    console.log('Browser windows remain open for inspection.');
+    console.error("🔥 Automation error:", err);
+    console.log("Browser windows remain open for inspection.");
     await new Promise(() => {});
   }
 })();
