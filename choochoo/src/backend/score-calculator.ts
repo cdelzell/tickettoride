@@ -1,7 +1,6 @@
 import BoardGraph from './board-graph';
 import Player from './player';
 import TrainRoute from './train-route';
-import DestinationCard from './destination-card';
 
 export function calculateGameScores(
   players: Player[],
@@ -19,7 +18,7 @@ export function calculateGameScores(
 function calculatePlayerScore(player: Player, boardGraph: BoardGraph): number {
   let score =
     getPlayerPointsFromDestinationCards(player, boardGraph) +
-    getPlayerPointsFromRouteValues(player.getId(), boardGraph);
+    getPlayerPointsFromRouteValues(player.getUsername(), boardGraph);
   return score;
 }
 
@@ -70,23 +69,23 @@ function getConnectedNetworks(routes: TrainRoute[]): Set<string>[] {
         //If it does, add it to the list of matching sets
         matchingSets.push(i);
       }
+    }
 
-      if (matchingSets.length === 0) {
-        //No networks matched, have to add a new network
-        networks.push(new Set<string>(destinations));
-      } else {
-        //At least one network matched. Add to that network and combine matching networks
-        //This handles the case that two networks become connected by this route
-        let newNetwork = new Set<string>(destinations);
-        for (const matchIndex of matchingSets.reverse()) {
-          //Adds each destination from the old set to the new set
-          for (const destination of networks[matchIndex]) {
-            newNetwork.add(destination);
-          }
-          networks.splice(matchIndex, 1);
+    if (matchingSets.length === 0) {
+      //No networks matched, have to add a new network
+      networks.push(new Set<string>(destinations));
+    } else {
+      //At least one network matched. Add to that network and combine matching networks
+      //This handles the case that two networks become connected by this route
+      let newNetwork = new Set<string>(destinations);
+      for (const matchIndex of matchingSets.reverse()) {
+        //Adds each destination from the old set to the new set
+        for (const destination of networks[matchIndex]) {
+          newNetwork.add(destination);
         }
-        networks.push(newNetwork);
+        networks.splice(matchIndex, 1);
       }
+      networks.push(newNetwork);
     }
   }
 
