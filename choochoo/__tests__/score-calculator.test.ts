@@ -20,7 +20,7 @@ class MockTrainRoute extends TrainRoute {
     color: string,
     claimer: string
   ) {
-    super(dest1, dest2, length, color, '#000000');
+    super(dest1, dest2, length, color, '#000000', false, null, null);
     this.claimer = claimer;
   }
 
