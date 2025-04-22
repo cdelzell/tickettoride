@@ -44,3 +44,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.game_over_popup {
+  width: 35vw;
+  height: 35vw;
+  position: absolute;
+  background-color: white;
+  opacity: 80%;
+  border-radius: 1vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  z-index: 100;
+}
