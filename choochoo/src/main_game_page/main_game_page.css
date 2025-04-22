@@ -47,9 +47,9 @@
 
 .game_over_popup {
   width: 35vw;
-  height: 35vw;
+  height: 40vw;
   position: absolute;
-  background-color: white;
+  background-color: rgb(243, 247, 248);
   opacity: 90%;
   border-radius: 1vw;
   display: flex;
@@ -70,7 +70,7 @@
 }
 
 .scores {
-  font-size: 2vw;
+  font-size: 2.6vw;
   font-weight: 1vw;
   margin-left: 1vw;
   margin-top: 1vw;
@@ -91,7 +91,7 @@
 .returnHome {
   width: 20vw;
   height: 4vw;
-  background-color: #d3d3d3;
+  background-color: #b8d5e8;
   position: absolute;
   bottom: 1vw;
 }
