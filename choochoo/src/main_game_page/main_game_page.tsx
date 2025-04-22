@@ -88,6 +88,7 @@ const MainGamePage = () => {
   const [gameOverStats, setGameOverStats] = useState(
     "Player 1: 5 points\nPlayer 2: 4 points"
   );
+  const [winner, setWinner] = useState("");
 
   const [trainCards, setTrainCards] = useState(() =>
     train_cards.map((card) => ({
@@ -160,14 +161,16 @@ const MainGamePage = () => {
 
   useEffect(() => {
     if (gameRunner && gameOver === true) {
-      const sorted = Object.entries(gameRunner.getEndGameInfo);
+      const { playerPoints, winner } = gameRunner.getEndGameInfo();
+      setWinner(winner);
+      const sorted = Object.entries(playerPoints);
       let infoString = "";
 
       for (const i in sorted) {
         infoString += `Player ${sorted[i][0]}: ${sorted[i][1]} trains\n`;
       }
 
-      setGameOverStats(infoString);
+      // setGameOverStats(infoString);
     }
   }, [gameOver]);
 
@@ -290,6 +293,10 @@ const MainGamePage = () => {
 
   const updateActionCardStatus = (action: boolean) => {
     setActiveTrains(action);
+  };
+
+  const handleEndGame = () => {
+    navigate("/profile", { state: { userProfile } });
   };
 
   const handleRouteClaim = (route: TrainRoute) => {
@@ -465,7 +472,18 @@ const MainGamePage = () => {
         destClickCount={destClickCount}
       />
 
-      {gameOver && <div className="game_over_popup">{gameOverStats}</div>}
+      {gameOver && (
+        <div className="game_over_popup">
+          <div className="final_score">Final Scores</div>
+          <div className="scores" style={{ whiteSpace: "pre-line" }}>
+            {gameOverStats}
+          </div>
+          <div className="winner">WINNER: {winner}</div>
+          <button className="returnHome" onClick={handleEndGame}>
+            Return to profile page
+          </button>
+        </div>
+      )}
 
       {turnComplete && (
         <button onClick={handleEndTurn} style={endTurnButtonStyle}>

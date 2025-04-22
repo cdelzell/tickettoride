@@ -1,19 +1,25 @@
-import BoardGraph from './board-graph';
-import Player from './player';
-import TrainRoute from './train-route';
-import DestinationCard from './destination-card';
+import BoardGraph from "./board-graph";
+import Player from "./player";
+import TrainRoute from "./train-route";
+import DestinationCard from "./destination-card";
 
 export function calculateGameScores(
   players: Player[],
   boardGraph: BoardGraph
-): { [key: string]: number } {
-  let playerPoints: { [key: string]: number } = {};
+): { playerPoints: Record<string, number>; winner: string } {
+  let playerPoints: Record<string, number> = {};
+  let winner = "";
+  let maxScore = -1;
   for (const player of players) {
     let score = calculatePlayerScore(player, boardGraph);
+    if (score > maxScore) {
+      winner = player.getUsername();
+      maxScore = score;
+    }
     playerPoints[player.getUsername()] = score;
   }
 
-  return playerPoints;
+  return { playerPoints, winner };
 }
 
 function calculatePlayerScore(player: Player, boardGraph: BoardGraph): number {

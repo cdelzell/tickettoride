@@ -50,11 +50,48 @@
   height: 35vw;
   position: absolute;
   background-color: white;
-  opacity: 80%;
+  opacity: 90%;
   border-radius: 1vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
+  align-items: center;
   z-index: 100;
+}
+
+.final_score {
+  font-size: 4vw;
+  font-weight: 3vw;
+  margin-left: 1vw;
+  margin-top: 0.5vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.scores {
+  font-size: 2vw;
+  font-weight: 1vw;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  position: absolute;
+  top: 6vw;
+  left: 0;
+}
+
+.winner {
+  font-size: 2vw;
+  font-weight: 2vw;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  position: absolute;
+  bottom: 7vw;
+}
+
+.returnHome {
+  width: 20vw;
+  height: 4vw;
+  background-color: #d3d3d3;
+  position: absolute;
+  bottom: 1vw;
 }
