@@ -26,6 +26,7 @@ const mockGameRunner = {
 
 describe("ActionBox Component", () => {
   const defaultProps = {
+    active: true,
     action: 0,
     gamerunner: mockGameRunner,
     drawnDestCards: [],
