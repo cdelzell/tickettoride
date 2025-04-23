@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import ActionBox from "../src/mainGamePage/components/PlayerActions/ActionBox";
 import GameRunner from "../src/backend/gameRunner";
 
-jest.mock("../src/main_game_page/components/DrawPile/DrawPile", () => {
+jest.mock("choochoo/src/mainGamePage/components/DrawPile/DrawPile.tsx", () => {
   return function MockedDrawTrains(props: any) {
     return (
       <div data-testid="draw-trains">
