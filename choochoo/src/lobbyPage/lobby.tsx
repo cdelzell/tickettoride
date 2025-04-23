@@ -12,14 +12,14 @@ import { useMediaQuery } from "@mui/material";
 import {
   type Lobby as LobbyType,
   type LobbyPlayer as Player,
-} from "../firebase/FirebaseInterfaces";
+} from "../firebase-temp/FirebaseInterfaces";
 import {
   createLobby,
   joinLobby,
   leaveLobby,
   onLobbyUpdate,
   startGame,
-} from "../firebase/FirebaseLobbyManagment";
+} from "../firebase-temp/FirebaseLobbyManagment";
 
 import "./lobby.css";
 import GameRunner from "../backend/gameRunner";
