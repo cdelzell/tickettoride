@@ -157,8 +157,6 @@ class Player {
     player.trainAmount = data.trainAmount ?? 45;
     player.scoredPoints = data.scoredPoints ?? 0;
 
-    console.log(player.trainCardHand);
-
     return player;
   }
 }
