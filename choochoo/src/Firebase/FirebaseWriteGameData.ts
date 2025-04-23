@@ -1,6 +1,6 @@
 import { ref, set, child } from "firebase/database";
 import { gameDataPath } from "./FirebaseCredentials";
-import GameRunner from "../backend/game-runner";
+import GameRunner from "../backend/gameRunner";
 
 /**
  * Function to write data to Firebase Database

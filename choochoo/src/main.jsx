@@ -2,18 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Sign_In from "/src/sign_in/sign_in.jsx";
-import Sign_Up from "/src/sign_up/sign_up.jsx";
-import Main_Game_Page from "/src/main_game_page/main_game_page.jsx";
+import Sign_In from "/src/signIn/signIn.jsx";
+import Sign_Up from "/src/signUp/signUp.jsx";
+import Main_Game_Page from "/src/mainGamePage/mainGamePage.jsx";
 import Profile from "/src/profile/profile.jsx";
-import Lobby from "/src/lobby_page/lobby.jsx"
-import JoinGame from "/src/join_game_page/join_game.jsx";
-import Edit_Profile from "/src/edit_profile/edit_profile.jsx";
+import Lobby from "/src/lobbyPage/lobby.jsx";
+import JoinGame from "/src/joinGamePage/joinGame.jsx";
+import Edit_Profile from "/src/editProfile/editProfile.jsx";
 import "./index.css";
-import GameRunner from "./backend/game-runner.js";
-
-const gameRunner = new GameRunner(["Billy", "Bob", "Joe"]);
-console.log("GameRunner Instance:", gameRunner);
+import GameRunner from "./backend/gameRunner.js";
 
 function App() {
   return (
@@ -34,9 +31,3 @@ function App() {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 export default App;
-
-// createRoot(document.getElementById("root")).render(
-//   <StrictMode>
-//     <App />
-//   </StrictMode>
-// );

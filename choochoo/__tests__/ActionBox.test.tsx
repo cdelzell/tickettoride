@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import ActionBox from "../src/main_game_page/components/PlayerActions/ActionBox";
-import GameRunner from "../src/backend/game-runner";
+import ActionBox from "../src/mainGamePage/components/PlayerActions/ActionBox";
+import GameRunner from "../src/backend/gameRunner";
 
 jest.mock("../src/main_game_page/components/DrawPile/DrawPile", () => {
   return function MockedDrawTrains(props: any) {
@@ -22,7 +22,7 @@ jest.mock("../src/main_game_page/components/DrawPile/DrawPile", () => {
 const mockGameRunner = {
   claimDestinationCards: jest.fn(),
   getPlayerDestinationCards: jest.fn().mockReturnValue([]),
-} as unknown as GameRunner
+} as unknown as GameRunner;
 
 describe("ActionBox Component", () => {
   const defaultProps = {

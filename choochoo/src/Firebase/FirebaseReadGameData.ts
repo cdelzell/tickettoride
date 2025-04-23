@@ -1,6 +1,6 @@
 import { child, query, orderByChild, equalTo, get } from "firebase/database";
 import { database, gameDataPath } from "./FirebaseCredentials";
-import GameRunner from "../backend/game-runner";
+import GameRunner from "../backend/gameRunner";
 type GameRunnerType = typeof GameRunner;
 
 export async function checkForChaneInTurn(params: any) {}

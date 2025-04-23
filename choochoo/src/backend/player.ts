@@ -1,6 +1,6 @@
-import TrainCard from "./train-card";
-import DestinationCard from "./destination-card"; // Importing the DestinationCard class
-import TrainRoute from "./train-route";
+import TrainCard from "./trainCard";
+import DestinationCard from "./destinationCard"; // Importing the DestinationCard class
+import TrainRoute from "./trainRoute";
 import User from "./user";
 
 class Player {

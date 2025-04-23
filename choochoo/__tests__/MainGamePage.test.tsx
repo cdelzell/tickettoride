@@ -1,14 +1,14 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import MainGamePage from "../src/main_game_page/main_game_page";
+import MainGamePage from "../src/mainGamePage/mainGamePage";
 import { useLocation, useNavigate } from "react-router-dom";
-import GameRunner from "../src/backend/game-runner";
+import GameRunner from "../src/backend/gameRunner";
 import Player from "../src/backend/player";
-import TrainRoute from "../src/backend/train-route";
-import DestinationCard from "../src/backend/destination-card";
+import TrainRoute from "../src/backend/trainRoute";
+import DestinationCard from "../src/backend/destinationCard";
 
-// react router dom routes for useLocation and useNavigate 
+// react router dom routes for useLocation and useNavigate
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
   useNavigate: jest.fn(),
@@ -50,7 +50,6 @@ interface ProfileCardProps {
   main_player?: boolean;
   active?: boolean;
 }
-
 
 interface FaceUpCardsProps {
   gamerunner?: any;
@@ -383,7 +382,7 @@ describe("MainGamePage Component", () => {
     expect(screen.getByTestId("profile-card-player2")).toBeInTheDocument();
     expect(screen.getByTestId("profile-card-testUser")).toBeInTheDocument();
 
-    // check if train cards are there 
+    // check if train cards are there
     expect(screen.getByTestId("face-up-cards")).toBeInTheDocument();
   });
 
@@ -404,16 +403,15 @@ describe("MainGamePage Component", () => {
   test("handles drawing train cards", async () => {
     render(<MainGamePage />);
 
-    // draw trains button 
+    // draw trains button
     const drawTrainsBtn = screen.getByTestId("update-status-1");
     fireEvent.click(drawTrainsBtn);
 
-    // draw cards button 
+    // draw cards button
     const drawCardBtn = screen.getByTestId("draw-pile-click");
     fireEvent.click(drawCardBtn);
 
     expect(mockGameRunnerInstance.drawTrainCardsFromDeck).toHaveBeenCalled();
-
   });
 
   test("handles claiming a route", () => {
