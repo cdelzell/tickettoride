@@ -84,10 +84,8 @@ const MainGamePage = () => {
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
-  const [gameOver, setGameOver] = useState(true);
-  const [gameOverStats, setGameOverStats] = useState(
-    "Player 1: 5 points\nPlayer 2: 4 points"
-  );
+  const [gameOver, setGameOver] = useState(false);
+  const [gameOverStats, setGameOverStats] = useState("");
   const [winner, setWinner] = useState("");
 
   const [trainCards, setTrainCards] = useState(() =>
@@ -170,7 +168,7 @@ const MainGamePage = () => {
         infoString += `Player ${sorted[i][0]}: ${sorted[i][1]} trains\n`;
       }
 
-      // setGameOverStats(infoString);
+      setGameOverStats(infoString);
     }
   }, [gameOver]);
 
