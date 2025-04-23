@@ -22,6 +22,7 @@ import { findUserByUsername } from "../firebase/FirebaseReadUser";
 import { set } from "firebase/database";
 import Player from "@/backend/player";
 import TrainRoute from "@/backend/trainRoute";
+import { destinationCardImages } from "@/image_imports";
 
 export interface City {
   name: string;
@@ -120,7 +121,7 @@ const MainGamePage = () => {
       setGameRunner(newRunner);
     });
 
-    return () => {};
+    return () => { };
   }, [lobbyCode]);
 
   /*
@@ -268,26 +269,45 @@ const MainGamePage = () => {
   /*
     Get the destination card possibilities correctly formatted with image tags.
   */
-  const getDestinationCardPossibilitiesFormatted = (
-    cards: DestinationCard[]
-  ) => {
-    const correctlyFormattedCards = [];
-
-    for (const destinationCard of cards) {
-      if (!destinationCard) continue;
-      const moreInfo = constDestinationCards.find(
-        (card) =>
-          card.destination1 === destinationCard.destination1 &&
-          card.destination2 === destinationCard.destination2
-      );
-
-      if (moreInfo) {
-        correctlyFormattedCards.push(moreInfo);
-      }
-    }
-
-    return correctlyFormattedCards;
-  };
+    const getDestinationCardPossibilitiesFormatted = (
+      cards: DestinationCard[]
+    ): DestinationCardInfo[] => {
+      console.log("🧪 Raw DestinationCard[] input:", cards);
+    
+      const result = cards
+        .map((destinationCard) => {
+          const moreInfo = constDestinationCards.find(
+            (card) =>
+              card.destination1 === destinationCard.destination1 &&
+              card.destination2 === destinationCard.destination2
+          );
+    
+          if (!moreInfo) {
+            console.warn("⚠️ No matching constDestinationCard found for:", destinationCard);
+            return null;
+          }
+    
+          if (typeof moreInfo.imagePath !== "string") {
+            console.error("❌ Invalid imagePath in moreInfo:", moreInfo);
+          }
+    
+          const formattedCard = {
+            destination1: moreInfo.destination1,
+            destination2: moreInfo.destination2,
+            points: moreInfo.points,
+            imagePath: moreInfo.imagePath, // ✅ Use directly
+          };
+    
+          console.log("✅ Successfully formatted card:", formattedCard);
+          return formattedCard;
+        })
+        .filter((c): c is DestinationCardInfo => c !== null);
+    
+      console.log("🎯 Final formatted DestinationCardInfo[]:", result);
+      return result;
+    };
+    
+    
 
   /*
     Update the train card count by the number given for the color given.

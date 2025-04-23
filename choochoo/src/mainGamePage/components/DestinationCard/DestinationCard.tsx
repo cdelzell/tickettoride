@@ -3,16 +3,61 @@ import "./DestinationCard.css";
 import { DestinationCardInfo } from "../../mainGamePage";
 import { leftArrow, rightArrow, destinationCardImages } from "@/image_imports";
 
+export function DestinationCard({
+  destination,
+  location,
+}: {
+  destination: string | undefined;
+  location: string;
+}) {
+  const className =
+    location === "draw"
+      ? "destination_card_draw"
+      : location === "test"
+      ? "test"
+      : "destination_card";
+
+  useEffect(() => {
+    console.log("📸 DestinationCard received props →", {
+      destination,
+      type: typeof destination,
+      location,
+    });
+
+    if (!destination) {
+      console.warn("⚠️ No image path provided to DestinationCard");
+    } else if (typeof destination !== "string") {
+      console.error("❌ Invalid type for imagePath:", destination);
+    }
+  }, [destination, location]);
+
+  return destination && typeof destination === "string" ? (
+    <img
+      className={className}
+      src={destination}
+      alt="Destination card"
+      onError={(e) => {
+        console.error("❌ Failed to load image:", destination);
+        (e.target as HTMLImageElement).style.display = "none";
+      }}
+    />
+  ) : (
+    <div className={className}>⚠️ No Image</div>
+  );
+}
+
+
 function DestinationCardsCarousel({
   destinations,
 }: {
   destinations: DestinationCardInfo[];
 }) {
   const [index, setIndex] = useState(0);
-  const [pile_empty, setPileEmpty] = useState(true);
+  const [pileEmpty, setPileEmpty] = useState(true);
 
   useEffect(() => {
     setPileEmpty(destinations.length === 0);
+    setIndex(0); // reset index when list changes
   }, [destinations]);
 
   const nextImage = () => {
@@ -28,11 +73,11 @@ function DestinationCardsCarousel({
   return (
     <div className="carousel_container">
       <div className="image_carousel">
-        {pile_empty ? (
+        {pileEmpty ? (
           <div className="empty_carousel">no destination cards</div>
         ) : (
           <DestinationCard
-            destination={destinations[index].image_path}
+            destination={destinations[index].imagePath}
             location="pile"
           />
         )}
@@ -48,26 +93,6 @@ function DestinationCardsCarousel({
       </div>
     </div>
   );
-}
-
-export function DestinationCard({
-  destination,
-  location,
-}: {
-  destination: string;
-  location: string;
-}) {
-  const className =
-    location === "draw"
-      ? "destination_card_draw"
-      : location === "test"
-      ? "test"
-      : "destination_card";
-
-  const imgSrc =
-    destinationCardImages[destination as keyof typeof destinationCardImages];
-
-  return <img className={className} src={imgSrc} alt={destination} />;
 }
 
 export default DestinationCardsCarousel;

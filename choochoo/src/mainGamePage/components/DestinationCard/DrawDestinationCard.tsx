@@ -65,7 +65,7 @@ function DrawDestinationCard({
         }}
       >
         <DestinationCard
-          destination={destinations[0].image_path}
+          destination={destinations[0].imagePath}
           location="draw"
         />
       </button>
@@ -76,7 +76,7 @@ function DrawDestinationCard({
         }}
       >
         <DestinationCard
-          destination={destinations[1].image_path}
+          destination={destinations[1].imagePath}
           location="draw"
         />
       </button>
@@ -87,7 +87,7 @@ function DrawDestinationCard({
         }}
       >
         <DestinationCard
-          destination={destinations[2].image_path}
+          destination={destinations[2].imagePath}
           location="draw"
         />
       </button>
