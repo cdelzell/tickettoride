@@ -95,6 +95,9 @@ const MainGamePage = () => {
     }))
   );
 
+  /*
+    Get the group of players for the game when the new gamerunner is passed in.
+  */
   useEffect(() => {
     if (gameRunner) {
       const gamePlayers = gameRunner.getPlayers();
@@ -102,6 +105,10 @@ const MainGamePage = () => {
     }
   }, [gameRunner]);
 
+  /*
+    Create a temporary gamerunner to listen to firebase so that a new gamerunner is uploaded everytime changes are pushed to firebase.
+    Set this new gamerunner to the UI whenever it is found.
+  */
   useEffect(() => {
     if (!lobbyCode) {
       console.warn("No lobby code yet. Waiting...");
@@ -116,12 +123,19 @@ const MainGamePage = () => {
     return () => {};
   }, [lobbyCode]);
 
+  /*
+    Get the current player from the gamerunner every time a new current player is seen.
+  */
   useEffect(() => {
     if (gameRunner) {
       setCurrentPlayer(gameRunner.getCurrentPlayer());
     }
   }, [gameRunner]);
 
+  /*
+    Monitor the clicks of the player.
+    If the player has played a route, drawn enough cards, or drawn and submitted destination cards, set the turn as complete.
+  */
   useEffect(() => {
     if (playClickCount > 0 || drawClickCount >= 2 || destClickCount > 0) {
       setTurnComplete(true);
@@ -130,6 +144,9 @@ const MainGamePage = () => {
     }
   }, [playClickCount, drawClickCount, destClickCount]);
 
+  /*
+    Every time a new gamerunner is found, get the new set of destination card possibilities.
+  */
   useEffect(() => {
     if (gameRunner) {
       setDestinationCardPoss(gameRunner.getDestinationCardPossibilities());
@@ -140,6 +157,9 @@ const MainGamePage = () => {
     }
   }, [gameRunner]);
 
+  /*
+    Set the screen train hand as the hand of the correct player (ie the player whose screen it is)
+  */
   useEffect(() => {
     if (allPlayers && gameRunner) {
       if (!allPlayers.length || !username) return;
@@ -157,9 +177,13 @@ const MainGamePage = () => {
     }
   }, [allPlayers, username]);
 
+  /*
+    If the game is over, shift the game to the popup stage and show end game results and information.
+  */
   useEffect(() => {
     if (gameRunner && gameOver === true) {
       const { playerPoints, winner } = gameRunner.getEndGameInfo();
+      setTurnComplete(true);
       setWinner(winner);
       const sorted = Object.entries(playerPoints);
       let infoString = "";
@@ -172,12 +196,18 @@ const MainGamePage = () => {
     }
   }, [gameOver]);
 
+  /*
+    Load all game routes for the given gamerunner. Populates the map.
+  */
   useEffect(() => {
     if (gameRunner) {
       setGameRoutes(gameRunner.gameBoard.boardGraph.routes);
     }
   }, [gameRunner]);
 
+  /*
+    Get the list of players to display on the top left of the screen (ie all non-main players).
+  */
   useEffect(() => {
     if (allPlayers) {
       if (!allPlayers.length || !username) return;
@@ -188,26 +218,23 @@ const MainGamePage = () => {
     }
   }, [allPlayers]);
 
-  const formatTrainHand = (hand: number[]) => {
-    const formattedHand = constTrainCards.map((card, i) => ({
-      ...card,
-      count: hand[i],
-    }));
+  // /*
 
-    return formattedHand;
-  };
+  // */
+  // useEffect(() => {
+  //   if (gameRunner) {
+  //     const trainCounts = gameRunner.getMainPlayerTrainCards();
+  //     const updatedTrainCards = constTrainCards.map((card, i) => ({
+  //       ...card,
+  //       count: trainCounts[i],
+  //     }));
+  //     setTrainCards(updatedTrainCards);
+  //   }
+  // }, [gameRunner]);
 
-  useEffect(() => {
-    if (gameRunner) {
-      const trainCounts = gameRunner.getMainPlayerTrainCards();
-      const updatedTrainCards = constTrainCards.map((card, i) => ({
-        ...card,
-        count: trainCounts[i],
-      }));
-      setTrainCards(updatedTrainCards);
-    }
-  }, [gameRunner]);
-
+  /*
+    Monitor the player drawing a card. Allows for popups to occur when a random card is clicked.
+  */
   useEffect(() => {
     const handleDrawCardEvent = () => {
       handleDrawPileClick();
@@ -219,21 +246,28 @@ const MainGamePage = () => {
     };
   }, [drawClickCount]);
 
+  /*
+    If there is no gamerunner present, set a loading screen.
+  */
   if (!gameRunner) {
     return <div>Loading game...</div>;
   }
 
-  const updateTrainCardCount = (color: string, amount: number) => {
-    setTrainCards((prevCards) =>
-      prevCards.map((card) =>
-        card.gameColor === color
-          ? { ...card, count: Math.max(0, card.count + amount) }
-          : card
-      )
-    );
+  /*
+    Format the trainhand to include both colors and counts.
+  */
+  const formatTrainHand = (hand: number[]) => {
+    const formattedHand = constTrainCards.map((card, i) => ({
+      ...card,
+      count: hand[i],
+    }));
+
+    return formattedHand;
   };
 
-  // use this to get cards from pile
+  /*
+    Get the destination card possibilities correctly formatted with image tags.
+  */
   const getDestinationCardPossibilitiesFormatted = (
     cards: DestinationCard[]
   ) => {
@@ -255,6 +289,22 @@ const MainGamePage = () => {
     return correctlyFormattedCards;
   };
 
+  /*
+    Update the train card count by the number given for the color given.
+  */
+  const updateTrainCardCount = (color: string, amount: number) => {
+    setTrainCards((prevCards) =>
+      prevCards.map((card) =>
+        card.gameColor === color
+          ? { ...card, count: Math.max(0, card.count + amount) }
+          : card
+      )
+    );
+  };
+
+  /*
+    Update the player hand with a new set of train cards.
+  */
   const updatePlayerHand = (cards: number[]) => {
     const updatedTrains = constTrainCards.map((card, i) => ({
       ...card,
@@ -264,40 +314,59 @@ const MainGamePage = () => {
     setTrainCards(updatedTrains);
   };
 
-  const drawRandomTrainCard = () => {
-    const random = Math.random();
-    let drawnColor;
-
-    if (random < 0.1) {
-      drawnColor = "wild";
-    } else {
-      const regularColors = constTrainCards
-        .map((card) => card.gameColor)
-        .filter((color) => color !== "wild");
-
-      const randomIndex = Math.floor(Math.random() * regularColors.length);
-      drawnColor = regularColors[randomIndex];
-    }
-
-    updateTrainCardCount(drawnColor, 1);
-    setDrawnCard(drawnColor);
-    setShowCardNotification(true);
-
-    setTimeout(() => {
+  /*
+    Set a new action box status.
+  */
+  const updateStatus = (newStatus: number) => {
+    setActionBoxStatus(newStatus);
+    if (newStatus === 1) {
+      setDrawnCard(null);
       setShowCardNotification(false);
-    }, 3000);
-
-    return drawnColor;
+      setDrawClickCount(0);
+    }
   };
 
-  const updateActionCardStatus = (action: boolean) => {
-    setActiveTrains(action);
-  };
+  // const drawRandomTrainCard = () => {
+  //   const random = Math.random();
+  //   let drawnColor;
 
+  //   if (random < 0.1) {
+  //     drawnColor = "wild";
+  //   } else {
+  //     const regularColors = constTrainCards
+  //       .map((card) => card.gameColor)
+  //       .filter((color) => color !== "wild");
+
+  //     const randomIndex = Math.floor(Math.random() * regularColors.length);
+  //     drawnColor = regularColors[randomIndex];
+  //   }
+
+  //   updateTrainCardCount(drawnColor, 1);
+  //   setDrawnCard(drawnColor);
+  //   setShowCardNotification(true);
+
+  //   setTimeout(() => {
+  //     setShowCardNotification(false);
+  //   }, 3000);
+
+  //   return drawnColor;
+  // };
+
+  // const updateActionCardStatus = (action: boolean) => {
+  //   setActiveTrains(action);
+  // };
+
+  /*
+    Send the user back to the profile page after a game ends.
+  */
   const handleEndGame = () => {
     navigate("/profile", { state: { userProfile } });
   };
 
+  /*
+    Provides all logic for handling a route claim.
+    Also checks if the game is over after a route is claimed.
+  */
   const handleRouteClaim = (route: TrainRoute) => {
     // find the route in game board graph using index instead of color
     const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
@@ -350,15 +419,10 @@ const MainGamePage = () => {
     return false;
   };
 
-  const updateStatus = (newStatus: number) => {
-    setActionBoxStatus(newStatus);
-    if (newStatus === 1) {
-      setDrawnCard(null);
-      setShowCardNotification(false);
-      setDrawClickCount(0);
-    }
-  };
-
+  /*
+    Gets a random train card from the backend and adds it to a player's hand.
+    Also shows popup with information about the card.
+  */
   const handleDrawPileClick = () => {
     if (
       actionBoxStatus === 1 &&
@@ -398,6 +462,10 @@ const MainGamePage = () => {
     }
   };
 
+  /*
+    Updates all fields for when a turn ends to prepare the gamerunner for the next player.
+    Writes the new gamerunner to firebase.
+  */
   const handleEndTurn = () => {
     setDrawClickCount(0);
     setPlayClickCount(0);
