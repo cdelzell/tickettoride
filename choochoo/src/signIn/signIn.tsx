@@ -9,7 +9,7 @@ import Button from "@mui/joy/Button";
 import Link from "@mui/joy/Link";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { handleLogIn } from "../firebase/FirebaseLogInManager";
+import { handleLogIn } from "../firebase-temp/FirebaseLogInManager";
 
 import "./signIn.css";
 
