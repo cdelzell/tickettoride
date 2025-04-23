@@ -214,6 +214,7 @@ const MainGamePage = () => {
 
       // find your own player object
       const withoutSelf = allPlayers.filter((p) => p.username !== username);
+
       setDisplayPlayers(withoutSelf);
     }
   }, [allPlayers]);
@@ -245,6 +246,10 @@ const MainGamePage = () => {
       window.removeEventListener("drawCard", handleDrawCardEvent);
     };
   }, [drawClickCount]);
+
+  useEffect(() => {
+    console.log(actionBoxStatus);
+  }, [actionBoxStatus]);
 
   /*
     If there is no gamerunner present, set a loading screen.
@@ -472,9 +477,11 @@ const MainGamePage = () => {
     setDestClickCount(0);
     setTurnComplete(false);
     setActionBoxStatus(0);
+    updateStatus(0);
     setActiveTrains(false);
     setShowCardNotification(false);
     setDrawDestActive(false);
+    console.log(actionBoxStatus);
     gameRunner.updateCurrentPlayer();
     setCurrentPlayer(gameRunner.getCurrentPlayer());
     gameRunner.sendToDatabase();
