@@ -308,11 +308,11 @@ function Lobby() {
           <Typography
             level="body-sm"
             sx={{
-              color: players.length < 2 ? "warning.500" : "success.500",
+              color: players.length < 4 ? "warning.500" : "success.500",
               fontWeight: "bold",
             }}
           >
-            {players.length < 2 ? "Need more players..." : "Ready to start!"}
+            {players.length < 4 ? "Need more players..." : "Ready to start!"}
           </Typography>
         </Typography>
 
