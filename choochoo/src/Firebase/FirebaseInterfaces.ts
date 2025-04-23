@@ -1,6 +1,6 @@
-import DestinationCard from "@/backend/destination-card";
-import GameBoard from "../backend/game-board";
-import TrainCard from "@/backend/train-card";
+import DestinationCard from "@/backend/destinationCard";
+import GameBoard from "../backend/gameBoard";
+import TrainCard from "@/backend/trainCard";
 
 export interface UserData {
   username: string; // String

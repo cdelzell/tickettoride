@@ -22,7 +22,7 @@ import {
 } from "../firebase/FirebaseLobbyManagment";
 
 import "./lobby.css";
-import GameRunner from "../backend/game-runner";
+import GameRunner from "../backend/gameRunner";
 
 // define userprofile interface
 interface UserProfile {

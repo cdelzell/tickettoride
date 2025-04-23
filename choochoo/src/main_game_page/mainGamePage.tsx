@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import monoMap from "../assets/mono_map.jpg";
-import "./main_game_page.css";
-import GameRunner from "../backend/game-runner";
+import "./mainGamePage.css";
+import GameRunner from "../backend/gameRunner";
 import User from "../backend/user";
 import PlayerCard from "./components/Profile/ProfileCard";
 import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
@@ -11,17 +11,17 @@ import ActionBox from "./components/PlayerActions/ActionBox";
 import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
 import { useLocation, useNavigate } from "react-router-dom";
-import DestinationCard from "../backend/destination-card";
-import train_cards from "./constants/train_cards";
-import destination_cards from "./constants/destination_cards";
+import DestinationCard from "../backend/destinationCard";
+import train_cards from "./constants/trainCards";
+import destination_cards from "./constants/destinationCards";
 import cities from "./constants/cities";
 // import routes from "./constants/routes";
-import { Routes as routes } from "../backend/hardcoded-map";
+import { Routes as routes } from "../backend/hardcodedMap";
 import { findGameByGameID } from "../firebase/FirebaseReadGameData";
 import { findUserByUsername } from "../firebase/FirebaseReadUser";
 import { set } from "firebase/database";
 import Player from "@/backend/player";
-import TrainRoute from "@/backend/train-route";
+import TrainRoute from "@/backend/trainRoute";
 
 export interface City {
   name: string;

@@ -1,4 +1,4 @@
-import TrainRoute from "./train-route";
+import TrainRoute from "./trainRoute";
 import Destination from "./destination";
 
 export const Cities: Destination[] = [

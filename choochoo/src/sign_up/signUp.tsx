@@ -12,7 +12,7 @@ import {
 } from "../firebase/FirebaseWriteUserData";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import "./sign_up.css";
+import "./signUp.css";
 
 function Render_Page() {
   return <Sign_Up />;

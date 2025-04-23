@@ -1,11 +1,11 @@
-import GameBoard from "./game-board";
+import GameBoard from "./gameBoard";
 import Player from "./player";
 import User from "./user";
-import TrainRoute from "./train-route";
-import DestinationCard from "./destination-card";
+import TrainRoute from "./trainRoute";
+import DestinationCard from "./destinationCard";
 import { writeGameToDatabase } from "../firebase/FirebaseWriteGameData";
 import { findGameByGameID } from "../firebase/FirebaseReadGameData";
-import calculateGameScores from "./score-calculator";
+import calculateGameScores from "./scoreCalculator";
 import { ref, onValue } from "firebase/database";
 import { database } from "../firebase/FirebaseCredentials";
 

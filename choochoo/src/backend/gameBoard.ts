@@ -1,6 +1,6 @@
-import TrainCard from "./train-card";
-import DestinationCard from "./destination-card";
-import BoardGraph from "./board-graph";
+import TrainCard from "./trainCard";
+import DestinationCard from "./destinationCard";
+import BoardGraph from "./boardGraph";
 
 class GameBoard {
   boardGraph: BoardGraph;

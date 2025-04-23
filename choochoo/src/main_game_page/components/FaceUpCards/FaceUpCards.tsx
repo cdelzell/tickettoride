@@ -1,4 +1,4 @@
-import GameRunner from "../../../backend/game-runner";
+import GameRunner from "../../../backend/gameRunner";
 import FaceUpCard from "./FaceUpCard";
 import "./FaceUpCards.css";
 

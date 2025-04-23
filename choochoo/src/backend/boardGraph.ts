@@ -1,7 +1,7 @@
 import Destination from "./destination";
-import TrainRoute from "./train-route";
-import { Routes } from "./hardcoded-map";
-import { Cities } from "./hardcoded-map";
+import TrainRoute from "./trainRoute";
+import { Routes } from "./hardcodedMap";
+import { Cities } from "./hardcodedMap";
 
 class BoardGraph {
   destinations: Destination[];

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import DrawTrains from "../DrawPile/DrawPile";
 import "./ActionBox.css";
-import GameRunner from "../../../backend/game-runner";
-import DestinationCard from "../../../backend/destination-card";
-import { DestinationCardInfo } from "../../main_game_page";
+import GameRunner from "../../../backend/gameRunner";
+import DestinationCard from "../../../backend/destinationCard";
+import { DestinationCardInfo } from "../../mainGamePage";
 import { leftArrow } from "@/image_imports";
 
 function ActionBox({

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./DestinationCard.css";
-import { DestinationCardInfo } from "../../main_game_page";
+import { DestinationCardInfo } from "../../mainGamePage";
 import { leftArrow, rightArrow, destinationCardImages } from "@/image_imports";
 
 function DestinationCardsCarousel({
@@ -20,7 +20,9 @@ function DestinationCardsCarousel({
   };
 
   const prevImage = () => {
-    setIndex((prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length);
+    setIndex(
+      (prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length
+    );
   };
 
   return (
@@ -29,7 +31,10 @@ function DestinationCardsCarousel({
         {pile_empty ? (
           <div className="empty_carousel">no destination cards</div>
         ) : (
-          <DestinationCard destination={destinations[index].image_path} location="pile" />
+          <DestinationCard
+            destination={destinations[index].image_path}
+            location="pile"
+          />
         )}
 
         <div className="button_container">
@@ -56,15 +61,13 @@ export function DestinationCard({
     location === "draw"
       ? "destination_card_draw"
       : location === "test"
-        ? "test"
-        : "destination_card";
+      ? "test"
+      : "destination_card";
 
-  const imgSrc = destinationCardImages[destination as keyof typeof destinationCardImages];
-
-
+  const imgSrc =
+    destinationCardImages[destination as keyof typeof destinationCardImages];
 
   return <img className={className} src={imgSrc} alt={destination} />;
 }
-
 
 export default DestinationCardsCarousel;

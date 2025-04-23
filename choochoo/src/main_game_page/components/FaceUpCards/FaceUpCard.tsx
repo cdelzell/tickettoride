@@ -1,5 +1,5 @@
 import "./FaceUpCards.css";
-import GameRunner from "../../../backend/game-runner";
+import GameRunner from "../../../backend/gameRunner";
 import { trainCardImages } from "@/image_imports";
 
 function FaceUpCard({

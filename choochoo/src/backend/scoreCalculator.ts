@@ -1,8 +1,7 @@
-import BoardGraph from "./board-graph";
+import BoardGraph from "./boardGraph";
 import Player from "./player";
-import TrainRoute from "./train-route";
-import DestinationCard from "./destination-card";
-
+import TrainRoute from "./trainRoute";
+import DestinationCard from "./destinationCard";
 
 export function calculateGameScores(
   players: Player[],

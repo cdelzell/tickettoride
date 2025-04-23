@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { DestinationCard } from "./DestinationCard";
 import "./DestinationCard.css";
-import { DestinationCardInfo } from "../../main_game_page";
-import BackendDestinationCard from "../../../backend/destination-card"; // Assuming this is the class import
+import { DestinationCardInfo } from "../../mainGamePage";
+import BackendDestinationCard from "../../../backend/destinationCard"; // Assuming this is the class import
 
 function DrawDestinationCard({
   destinations,
@@ -30,14 +30,16 @@ function DrawDestinationCard({
     // check if the card already exists in drawnDestCards
     const exists = drawnDestCards.some(
       (c) =>
-        c.getDestinationsAsArray().join(",") === card.getDestinationsAsArray().join(",")
+        c.getDestinationsAsArray().join(",") ===
+        card.getDestinationsAsArray().join(",")
     );
 
     if (exists) {
       setDrawDestCard(
         drawnDestCards.filter(
           (c) =>
-            c.getDestinationsAsArray().join(",") !== card.getDestinationsAsArray().join(",")
+            c.getDestinationsAsArray().join(",") !==
+            card.getDestinationsAsArray().join(",")
         )
       );
     } else {
