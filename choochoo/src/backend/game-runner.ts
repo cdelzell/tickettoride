@@ -193,7 +193,6 @@ class GameRunner {
       ];
       const sortedList = order.map((color) => hand[color]);
       let handValues = Object.values(sortedList);
-      console.log(sortedList);
       return handValues;
     }
 

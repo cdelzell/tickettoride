@@ -27,7 +27,9 @@ function Profile() {
   useEffect(() => {
     const stateUserKey = state?.userKey;
     const stateUserProfile = state?.userProfile;
-    const storedProfile = JSON.parse(sessionStorage.getItem("userProfile") || "{}");
+    const storedProfile = JSON.parse(
+      sessionStorage.getItem("userProfile") || "{}"
+    );
 
     if (stateUserProfile && stateUserKey) {
       setUserKey(stateUserKey);
@@ -44,9 +46,12 @@ function Profile() {
   const { username, wins, total_score, profile_picture } = userProfile;
 
   // Normalize profile picture to match known keys
-  const rawFileName = profile_picture?.split("/").pop()?.split(".")[0] || "default";
+  const rawFileName =
+    profile_picture?.split("/").pop()?.split(".")[0] || "default";
   const baseName = rawFileName.split("-")[0];
-  const resolvedProfilePic = profileImages[baseName as keyof typeof profileImages] ?? profileImages.default;
+  const resolvedProfilePic =
+    profileImages[baseName as keyof typeof profileImages] ??
+    profileImages.default;
 
   const handleNavGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
@@ -117,7 +122,7 @@ function Profile() {
                     : "clamp(19px, 4vw, 23px)",
                 }}
               >
-                Total wins: {wins}
+                Total wins: {wins === undefined ? 0 : wins}
               </p>
               <p
                 style={{
@@ -128,13 +133,17 @@ function Profile() {
                     : "clamp(19px, 4vw, 23px)",
                 }}
               >
-                All time points: {total_score}
+                All time points: {total_score === undefined ? 0 : total_score}
               </p>
             </div>
           </Grid2>
 
-          <Grid2 size={12}><span></span></Grid2>
-          <Grid2 size={12}><span></span></Grid2>
+          <Grid2 size={12}>
+            <span></span>
+          </Grid2>
+          <Grid2 size={12}>
+            <span></span>
+          </Grid2>
 
           <Grid2
             size={12}
@@ -142,10 +151,18 @@ function Profile() {
             justifyContent={"space-between"}
             marginX={"1vw"}
           >
-            <Button className="button" onClick={handleNavGame} sx={{ "&:hover": { color: "white" } }}>
+            <Button
+              className="button"
+              onClick={handleNavGame}
+              sx={{ "&:hover": { color: "white" } }}
+            >
               Make Game
             </Button>
-            <Button className="button" onClick={handleJoinGame} sx={{ "&:hover": { color: "white" } }}>
+            <Button
+              className="button"
+              onClick={handleJoinGame}
+              sx={{ "&:hover": { color: "white" } }}
+            >
               Join Game
             </Button>
             <Button

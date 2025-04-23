@@ -85,6 +85,8 @@ const MainGamePage = () => {
   const [drawnCard, setDrawnCard] = useState<string | null>(null);
   const [showCardNotification, setShowCardNotification] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [gameOverStats, setGameOverStats] = useState("");
+  const [winner, setWinner] = useState("");
 
   const [trainCards, setTrainCards] = useState(() =>
     train_cards.map((card) => ({
@@ -154,6 +156,21 @@ const MainGamePage = () => {
       }
     }
   }, [allPlayers, username]);
+
+  useEffect(() => {
+    if (gameRunner && gameOver === true) {
+      const { playerPoints, winner } = gameRunner.getEndGameInfo();
+      setWinner(winner);
+      const sorted = Object.entries(playerPoints);
+      let infoString = "";
+
+      for (const i in sorted) {
+        infoString += `Player ${sorted[i][0]}: ${sorted[i][1]} trains\n`;
+      }
+
+      setGameOverStats(infoString);
+    }
+  }, [gameOver]);
 
   useEffect(() => {
     if (gameRunner) {
@@ -274,6 +291,10 @@ const MainGamePage = () => {
 
   const updateActionCardStatus = (action: boolean) => {
     setActiveTrains(action);
+  };
+
+  const handleEndGame = () => {
+    navigate("/profile", { state: { userProfile } });
   };
 
   const handleRouteClaim = (route: TrainRoute) => {
@@ -423,10 +444,6 @@ const MainGamePage = () => {
     transition: "all 0s ease-in-out",
   };
 
-  if (gameOver) {
-    return <div>Game over</div>;
-  }
-
   return (
     <main className="main_game_page">
       <div className="player_cards_format">
@@ -452,6 +469,19 @@ const MainGamePage = () => {
         playClickCount={playClickCount}
         destClickCount={destClickCount}
       />
+
+      {gameOver && (
+        <div className="game_over_popup">
+          <div className="final_score">Final Scores</div>
+          <div className="scores" style={{ whiteSpace: "pre-line" }}>
+            {gameOverStats}
+          </div>
+          <div className="winner">WINNER: {winner}</div>
+          <button className="returnHome" onClick={handleEndGame}>
+            Return to profile page
+          </button>
+        </div>
+      )}
 
       {turnComplete && (
         <button onClick={handleEndTurn} style={endTurnButtonStyle}>
