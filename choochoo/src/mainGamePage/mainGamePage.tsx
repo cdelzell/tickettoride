@@ -524,7 +524,11 @@ const MainGamePage = () => {
       )}
 
       {turnComplete && (
-        <button className="end_turn_button" onClick={handleEndTurn}>
+        <button
+          className="end_turn_button"
+          style={endTurnButtonStyle}
+          onClick={handleEndTurn}
+        >
           End Turn
         </button>
       )}

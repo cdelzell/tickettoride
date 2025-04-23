@@ -111,19 +111,19 @@
 }
 
 .end_turn_button {
-  width: "12vw";
-  height: "3vw";
-  font-size: "1vw";
-  font-weight: "bold";
-  background-color: "#4CAF50";
-  color: "white";
-  border: "none";
-  border-radius: "1vw";
-  cursor: "pointer";
-  box-shadow: "0 2px 5px rgba(0,0,0,0.2)";
-  position: "absolute";
-  right: "1.5vw";
-  bottom: "13.9vw";
+  width: 12vw;
+  height: 3vw;
+  font-size: 1vw;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 1vw;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  right: 1.5vw;
+  bottom: 13.9vw;
   z-index: 1000;
-  transition: "all 0s ease-in-out";
+  transition: all 0s ease-in-out;
 }
