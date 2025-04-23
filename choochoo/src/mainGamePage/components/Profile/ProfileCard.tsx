@@ -5,13 +5,13 @@ function PlayerCard({
   username,
   trainCount,
   profilePic,
-  main_player,
+  mainPlayer,
   active,
 }: {
   username: string;
   trainCount: number;
   profilePic: string;
-  main_player: boolean;
+  mainPlayer: boolean;
   active: boolean;
 }) {
   // 🔧 Normalize input: extract filename and strip extension
@@ -22,7 +22,7 @@ function PlayerCard({
 
   return (
     <div
-      className={main_player ? "main_player_card" : "player_card"}
+      className={mainPlayer ? "main_player_card" : "player_card"}
       data-active={active}
     >
       <img

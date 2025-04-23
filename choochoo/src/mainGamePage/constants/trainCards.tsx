@@ -1,10 +1,20 @@
 import { trainCardImages } from "@/image_imports";
 
-const colors = ["red", "yellow", "black", "green", "purple", "blue", "brown", "white", "wild"];
+const colors = [
+  "red",
+  "yellow",
+  "black",
+  "green",
+  "purple",
+  "blue",
+  "brown",
+  "white",
+  "wild",
+];
 
-const train_cards = colors.map((color) => ({
+const trainCards = colors.map((color) => ({
   color: trainCardImages[color],
-  game_color: color,
+  gameColor: color,
 }));
 
-export default train_cards;
+export default trainCards;

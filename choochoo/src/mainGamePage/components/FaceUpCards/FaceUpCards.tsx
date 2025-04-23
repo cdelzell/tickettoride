@@ -4,7 +4,7 @@ import "./FaceUpCards.css";
 
 function FaceUpCards({
   gamerunner,
-  face_up_cards,
+  faceUpCards,
   updateTrains,
   active,
   drawClickCount,
@@ -13,7 +13,7 @@ function FaceUpCards({
   destClickCount,
 }: {
   gamerunner: GameRunner;
-  face_up_cards: string[];
+  faceUpCards: string[];
   updateTrains: (cards: number[]) => void;
   active: boolean;
   drawClickCount: number;
@@ -23,12 +23,12 @@ function FaceUpCards({
 }) {
   return (
     <div className="holder">
-      {face_up_cards.map((face_up_card, index) => (
+      {faceUpCards.map((faceUpCard, index) => (
         <FaceUpCard
-          key={`${face_up_card}-${index}`}
+          key={`${faceUpCard}-${index}`}
           index={index}
           gamerunner={gamerunner}
-          color={face_up_card}
+          color={faceUpCard}
           updateTrains={updateTrains}
           active={active}
           drawClickCount={drawClickCount}

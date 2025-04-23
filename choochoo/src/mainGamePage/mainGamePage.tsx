@@ -12,8 +12,8 @@ import TrainCard from "./components/TrainCard/TrainCard";
 import Map from "./components/Map";
 import { useLocation, useNavigate } from "react-router-dom";
 import DestinationCard from "../backend/destinationCard";
-import train_cards from "./constants/trainCards";
-import destination_cards from "./constants/destinationCards";
+import constTrainCards from "./constants/trainCards";
+import constDestinationCards from "./constants/destinationCards";
 import cities from "./constants/cities";
 // import routes from "./constants/routes";
 import { Routes as routes } from "../backend/hardcodedMap";
@@ -45,7 +45,7 @@ export interface DestinationCardInfo {
   destination1: string;
   destination2: string;
   points: number;
-  image_path: string;
+  imagePath: string;
 }
 
 export const background = "#d3d3d3";
@@ -54,9 +54,9 @@ const MainGamePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { players, lobbyCode, userProfile } = state || {};
-  const { username, wins, total_score, profile_picture } = userProfile || {};
-  const profile_pic_formatted =
-    profile_picture?.split("/").pop() || "Default_pfp.jpg";
+  const { username, wins, totalScore, profilePicture } = userProfile || {};
+  const profilePicFormatted =
+    profilePicture?.split("/").pop() || "Default_pfp.jpg";
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(0);
   const [displayPlayers, setDisplayPlayers] = useState<Player[]>([]);
@@ -70,8 +70,8 @@ const MainGamePage = () => {
   const [playerDestinationCards, setPlayerDestinationCards] = useState<
     DestinationCardInfo[]
   >([]);
-  const [action_box_status, setActionBoxStatus] = useState(0);
-  const [draw_dest_active, setDrawDestActive] = useState(false);
+  const [actionBoxStatus, setActionBoxStatus] = useState(0);
+  const [drawDestActive, setDrawDestActive] = useState(false);
   const [gameRoutes, setGameRoutes] = useState<TrainRoute[]>(routes);
   const [trains, setTrains] = useState(45);
   const [hoveredRoute, setHoveredRoute] = useState<TrainRoute | null>(null);
@@ -89,7 +89,7 @@ const MainGamePage = () => {
   const [winner, setWinner] = useState("");
 
   const [trainCards, setTrainCards] = useState(() =>
-    train_cards.map((card) => ({
+    constTrainCards.map((card) => ({
       ...card,
       count: 0,
     }))
@@ -189,7 +189,7 @@ const MainGamePage = () => {
   }, [allPlayers]);
 
   const formatTrainHand = (hand: number[]) => {
-    const formattedHand = train_cards.map((card, i) => ({
+    const formattedHand = constTrainCards.map((card, i) => ({
       ...card,
       count: hand[i],
     }));
@@ -199,10 +199,10 @@ const MainGamePage = () => {
 
   useEffect(() => {
     if (gameRunner) {
-      const train_counts = gameRunner.getMainPlayerTrainCards();
-      const updatedTrainCards = train_cards.map((card, i) => ({
+      const trainCounts = gameRunner.getMainPlayerTrainCards();
+      const updatedTrainCards = constTrainCards.map((card, i) => ({
         ...card,
-        count: train_counts[i],
+        count: trainCounts[i],
       }));
       setTrainCards(updatedTrainCards);
     }
@@ -226,36 +226,37 @@ const MainGamePage = () => {
   const updateTrainCardCount = (color: string, amount: number) => {
     setTrainCards((prevCards) =>
       prevCards.map((card) =>
-        card.game_color === color
+        card.gameColor === color
           ? { ...card, count: Math.max(0, card.count + amount) }
           : card
       )
     );
   };
+
   // use this to get cards from pile
   const getDestinationCardPossibilitiesFormatted = (
     cards: DestinationCard[]
   ) => {
-    const correctly_formatted_cards = [];
+    const correctlyFormattedCards = [];
 
-    for (const destination_card of cards) {
-      if (!destination_card) continue;
-      const moreInfo = destination_cards.find(
+    for (const destinationCard of cards) {
+      if (!destinationCard) continue;
+      const moreInfo = constDestinationCards.find(
         (card) =>
-          card.destination1 === destination_card.destination1 &&
-          card.destination2 === destination_card.destination2
+          card.destination1 === destinationCard.destination1 &&
+          card.destination2 === destinationCard.destination2
       );
 
       if (moreInfo) {
-        correctly_formatted_cards.push(moreInfo);
+        correctlyFormattedCards.push(moreInfo);
       }
     }
 
-    return correctly_formatted_cards;
+    return correctlyFormattedCards;
   };
 
   const updatePlayerHand = (cards: number[]) => {
-    const updatedTrains = train_cards.map((card, i) => ({
+    const updatedTrains = constTrainCards.map((card, i) => ({
       ...card,
       count: cards[i],
     }));
@@ -270,8 +271,8 @@ const MainGamePage = () => {
     if (random < 0.1) {
       drawnColor = "wild";
     } else {
-      const regularColors = train_cards
-        .map((card) => card.game_color)
+      const regularColors = constTrainCards
+        .map((card) => card.gameColor)
         .filter((color) => color !== "wild");
 
       const randomIndex = Math.floor(Math.random() * regularColors.length);
@@ -311,13 +312,13 @@ const MainGamePage = () => {
       return false;
     }
     if (
-      action_box_status === 2 &&
+      actionBoxStatus === 2 &&
       drawClickCount === 0 &&
       destClickCount === 0 &&
       playClickCount === 0
     ) {
       // ugame runner function to claim route
-      const claimed = gameRunner.claimRoute(routeIndex, profile_pic_formatted);
+      const claimed = gameRunner.claimRoute(routeIndex, profilePicFormatted);
 
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
@@ -325,7 +326,7 @@ const MainGamePage = () => {
         setGameOver(gameRunner.checkGameOverAfterRouteClaim());
 
         const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
-        const updatedTrainCards = train_cards.map((card, i) => ({
+        const updatedTrainCards = constTrainCards.map((card, i) => ({
           ...card,
           count: updatedTrainCounts[i],
         }));
@@ -337,7 +338,7 @@ const MainGamePage = () => {
           const r = updatedRoutes[routeIndex];
 
           r.claimer = username;
-          r.claimerProfilePic = profile_pic_formatted;
+          r.claimerProfilePic = profilePicFormatted;
 
           return updatedRoutes;
         });
@@ -360,7 +361,7 @@ const MainGamePage = () => {
 
   const handleDrawPileClick = () => {
     if (
-      action_box_status === 1 &&
+      actionBoxStatus === 1 &&
       drawClickCount < 2 &&
       playClickCount === 0 &&
       destClickCount === 0
@@ -372,13 +373,13 @@ const MainGamePage = () => {
       let drawnCardColor = null;
       for (let i = 0; i < trainCards.length; i++) {
         if (updatedTrainCounts[i] > trainCards[i].count) {
-          drawnCardColor = train_cards[i].game_color;
+          drawnCardColor = constTrainCards[i].gameColor;
           break;
         }
       }
 
       // new train cards udpated
-      const updatedTrainCards = train_cards.map((card, i) => ({
+      const updatedTrainCards = constTrainCards.map((card, i) => ({
         ...card,
         count: updatedTrainCounts[i],
       }));
@@ -453,7 +454,7 @@ const MainGamePage = () => {
             username={player.username}
             trainCount={player.trainAmount}
             profilePic={"default"}
-            main_player={false}
+            mainPlayer={false}
             active={currentPlayer === parseInt(player.id)}
           />
         ))}
@@ -461,7 +462,7 @@ const MainGamePage = () => {
 
       <FaceUpCards
         gamerunner={gameRunner}
-        face_up_cards={gameRunner.gameBoard.getFaceupTrainCardsAsList()}
+        faceUpCards={gameRunner.gameBoard.getFaceupTrainCardsAsList()}
         updateTrains={updatePlayerHand}
         active={activeTrains}
         drawClickCount={drawClickCount}
@@ -498,11 +499,11 @@ const MainGamePage = () => {
       <div className="player_actions">
         <ActionBox
           active={currentPlayer === playerIndex}
-          action={action_box_status}
+          action={actionBoxStatus}
           gamerunner={gameRunner}
           drawnDestCards={drawnDestCards}
           updateStatus={updateStatus}
-          drawDestActive={draw_dest_active}
+          drawDestActive={drawDestActive}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
           updateFaceUp={setActiveTrains}
@@ -519,7 +520,7 @@ const MainGamePage = () => {
 
         <DestinationCardsCarousel destinations={playerDestinationCards} />
 
-        {draw_dest_active && (
+        {drawDestActive && (
           <DrawDestinationCard
             destinations={getDestinationCardPossibilitiesFormatted(
               destinationCardPoss
@@ -530,12 +531,12 @@ const MainGamePage = () => {
         )}
 
         <div className="train_cards">
-          {trainCards.map((train_card, index) => (
+          {trainCards.map((train, index) => (
             <TrainCard
               key={index}
-              color={train_card.color}
-              game_color={train_card.game_color}
-              count={train_card.count}
+              color={train.color}
+              gameColor={train.gameColor}
+              count={train.count}
               hover={hoveredRoute}
             />
           ))}
@@ -545,8 +546,8 @@ const MainGamePage = () => {
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profile_pic_formatted}
-            main_player={true}
+            profilePic={profilePicFormatted}
+            mainPlayer={true}
             active={currentPlayer === playerIndex}
           />
         </div>
@@ -559,7 +560,7 @@ const MainGamePage = () => {
         cities={cities}
         mainPlayer={{
           username: username,
-          profilePic: profile_pic_formatted,
+          profilePic: profilePicFormatted,
         }}
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}

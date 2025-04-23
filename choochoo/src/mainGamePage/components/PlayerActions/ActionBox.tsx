@@ -47,7 +47,7 @@ function ActionBox({
     destination1: string;
     destination2: string;
     points: number;
-    image_path: string;
+    imagePath: string;
   }[];
 }) {
   const [goBack, setGoBack] = useState(false);
@@ -174,7 +174,7 @@ function Submit({
     destination1: string;
     destination2: string;
     points: number;
-    image_path: string;
+    imagePath: string;
   }[];
 }) {
   const handleClick = () => {

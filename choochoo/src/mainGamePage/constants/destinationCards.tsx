@@ -2,7 +2,7 @@ export interface DestinationCardInfo {
   destination1: string;
   destination2: string;
   points: number;
-  image_path: string;
+  imagePath: string;
 }
 
 const destination_cards = [
@@ -10,139 +10,139 @@ const destination_cards = [
     destination1: "Albuquerque",
     destination2: "Miami",
     points: 11,
-    image_path: "alb_miami",
+    imagePath: "alb_miami",
   },
   {
     destination1: "Albuquerque",
     destination2: "Tyville",
     points: 9,
-    image_path: "alb_tyville",
+    imagePath: "alb_tyville",
   },
   {
     destination1: "Chicago",
     destination2: "Miami",
     points: 7,
-    image_path: "chicago_miami",
+    imagePath: "chicago_miami",
   },
   {
     destination1: "Chicago",
     destination2: "Phoenix",
     points: 11,
-    image_path: "chicago_phoenix",
+    imagePath: "chicago_phoenix",
   },
   {
     destination1: "Clara City",
     destination2: "Houston",
     points: 9,
-    image_path: "clara_houston",
+    imagePath: "clara_houston",
   },
   {
     destination1: "Clara City",
     destination2: "Los Angeles",
     points: 9,
-    image_path: "clara_la",
+    imagePath: "clara_la",
   },
   {
     destination1: "Clara City",
     destination2: "New York",
     points: 10,
-    image_path: "clara_ny",
+    imagePath: "clara_ny",
   },
   {
     destination1: "Denver",
     destination2: "Palo Noah",
     points: 9,
-    image_path: "denver_palo",
+    imagePath: "denver_palo",
   },
   {
     destination1: "Albuquerque",
     destination2: "Phoenix",
     points: 9,
-    image_path: "firestone_phoenix",
+    imagePath: "firestone_phoenix",
   },
   {
     destination1: "Firestone Rouge",
     destination2: "Phoenix",
     points: 8,
-    image_path: "firestone_phoenix",
+    imagePath: "firestone_phoenix",
   },
   {
     destination1: "Firestone Rouge",
     destination2: "Riddhi Rapids",
     points: 9,
-    image_path: "firestone_riddhi",
+    imagePath: "firestone_riddhi",
   },
   {
     destination1: "Miami",
     destination2: "Riddhi Rapids",
     points: 18,
-    image_path: "miami_riddhi",
+    imagePath: "miami_riddhi",
   },
   {
     destination1: "New York",
     destination2: "Houston",
     points: 12,
-    image_path: "ny_houston",
+    imagePath: "ny_houston",
   },
   {
     destination1: "New York",
     destination2: "Oklahoma City",
     points: 11,
-    image_path: "ny_oklahoma",
+    imagePath: "ny_oklahoma",
   },
   {
     destination1: "New York",
     destination2: "Tyville",
     points: 14,
-    image_path: "ny_tyville",
+    imagePath: "ny_tyville",
   },
   {
     destination1: "Palo Noah",
     destination2: "Los Angeles",
     points: 16,
-    image_path: "palo_la",
+    imagePath: "palo_la",
   },
   {
     destination1: "Palo Noah",
     destination2: "Phoenix",
     points: 12,
-    image_path: "palo_phoenix",
+    imagePath: "palo_phoenix",
   },
   {
     destination1: "Seattle",
     destination2: "Albuquerque",
     points: 10,
-    image_path: "seattle_alb",
+    imagePath: "seattle_alb",
   },
   {
     destination1: "Seattle",
     destination2: "Houston",
     points: 15,
-    image_path: "seattle_houston",
+    imagePath: "seattle_houston",
   },
   {
     destination1: "Tyville",
     destination2: "Palo Noah",
     points: 11,
-    image_path: "tyville_palo",
+    imagePath: "tyville_palo",
   },
   {
     destination1: "Tyville",
     destination2: "Phoenix",
     points: 7,
-    image_path: "tyville_phoenix",
+    imagePath: "tyville_phoenix",
   },
   {
     destination1: "Tyville",
     destination2: "Washington",
     points: 13,
-    image_path: "tyville_wash",
+    imagePath: "tyville_wash",
   },
   {
     destination1: "Washington",
     destination2: "Denver",
     points: 10,
-    image_path: "wash_denver",
+    imagePath: "wash_denver",
   },
 ];
 
