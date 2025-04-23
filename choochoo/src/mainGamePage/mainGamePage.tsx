@@ -118,6 +118,8 @@ const MainGamePage = () => {
     const tempRunner = new GameRunner([], lobbyCode);
     tempRunner.startListeningForUpdates((newRunner) => {
       setGameRunner(newRunner);
+      console.log(newRunner.getCurrentPlayer());
+      setCurrentPlayer(newRunner.getCurrentPlayer());
     });
 
     return () => {};
@@ -248,8 +250,8 @@ const MainGamePage = () => {
   }, [drawClickCount]);
 
   useEffect(() => {
-    console.log(actionBoxStatus);
-  }, [actionBoxStatus]);
+    console.log(gameRunner);
+  }, [gameRunner]);
 
   /*
     If there is no gamerunner present, set a loading screen.
@@ -477,7 +479,6 @@ const MainGamePage = () => {
     setDestClickCount(0);
     setTurnComplete(false);
     setActionBoxStatus(0);
-    updateStatus(0);
     setActiveTrains(false);
     setShowCardNotification(false);
     setDrawDestActive(false);
