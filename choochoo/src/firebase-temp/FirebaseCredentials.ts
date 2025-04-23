@@ -1,16 +1,17 @@
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, push, DatabaseReference } from 'firebase/database';
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref } from "firebase/database";
+import type { DatabaseReference } from "firebase/database";
 
-// Firebase Credentials, do not post or share, Ty likes not owing google money
+// Firebase Credentials, linked to local .env file
 export const firebaseConfig = {
-  apiKey: "AIzaSyCno9yVTIHQUzvciQs5tnjvWSnX-JewSYQ",
-  authDomain: "the-conductors.firebaseapp.com",
-  databaseURL: "https://the-conductors-default-rtdb.firebaseio.com",
-  projectId: "the-conductors",
-  storageBucket: "the-conductors.firebasestorage.app",
-  messagingSenderId: "552591104221",
-  appId: "1:552591104221:web:12d6209a67fbb26caf2334",
-  measurementId: "G-VZ49VGKG0X"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_DATABASE_URL,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
 export const app = initializeApp(firebaseConfig);

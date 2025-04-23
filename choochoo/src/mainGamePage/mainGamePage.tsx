@@ -17,8 +17,8 @@ import constDestinationCards from "./constants/destinationCards";
 import cities from "./constants/cities";
 // import routes from "./constants/routes";
 import { Routes as routes } from "../backend/hardcodedMap";
-import { findGameByGameID } from "../firebase-temp/FirebaseReadGameData";
-import { findUserByUsername } from "../firebase-temp/FirebaseReadUser";
+import { findGameByGameID } from "../firebase/FirebaseReadGameData";
+import { findUserByUsername } from "../firebase/FirebaseReadUser";
 import { set } from "firebase/database";
 import Player from "@/backend/player";
 import TrainRoute from "@/backend/trainRoute";
@@ -524,7 +524,11 @@ const MainGamePage = () => {
       )}
 
       {turnComplete && (
-        <button className="end_turn_button" onClick={handleEndTurn}>
+        <button
+          className="end_turn_button"
+          style={endTurnButtonStyle}
+          onClick={handleEndTurn}
+        >
           End Turn
         </button>
       )}
