@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1745439426804" clover="3.2.0">
-  <project timestamp="1745439426804" name="All files">
+<coverage generated="1745439941195" clover="3.2.0">
+  <project timestamp="1745439941195" name="All files">
     <metrics statements="387" coveredstatements="340" conditionals="127" coveredconditionals="98" methods="68" coveredmethods="49" elements="582" coveredelements="487" complexity="0" loc="387" ncloc="387" packages="6" files="10" classes="10"/>
     <package name="src">
       <metrics statements="102" coveredstatements="102" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -348,8 +348,8 @@
         <line num="483" count="31" type="stmt"/>
         <line num="487" count="31" type="stmt"/>
         <line num="491" count="19" type="stmt"/>
-        <line num="574" count="279" type="stmt"/>
-        <line num="612" count="1" type="stmt"/>
+        <line num="578" count="279" type="stmt"/>
+        <line num="616" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.mainGamePage.components.PlayerActions">

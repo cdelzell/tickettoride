@@ -3,11 +3,11 @@ import Player from "./player";
 import User from "./user";
 import TrainRoute from "./trainRoute";
 import DestinationCard from "./destinationCard";
-import { writeGameToDatabase } from "../firebase-temp/FirebaseWriteGameData";
-import { findGameByGameID } from "../firebase-temp/FirebaseReadGameData";
+import { writeGameToDatabase } from "../firebase/FirebaseWriteGameData";
+import { findGameByGameID } from "../firebase/FirebaseReadGameData";
 import calculateGameScores from "./scoreCalculator";
 import { ref, onValue } from "firebase/database";
-import { database } from "../firebase-temp/FirebaseCredentials";
+import { database } from "../firebase/FirebaseCredentials";
 
 const START_TRAIN_CARD_NUM = 4;
 

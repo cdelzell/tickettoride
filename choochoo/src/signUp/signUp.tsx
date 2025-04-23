@@ -9,7 +9,7 @@ import { useTheme, useMediaQuery } from "@mui/material";
 import {
   doesUserExist,
   writeUserToDatabase,
-} from "../firebase-temp/FirebaseWriteUserData";
+} from "../firebase/FirebaseWriteUserData";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./signUp.css";

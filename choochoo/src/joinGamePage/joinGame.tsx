@@ -14,7 +14,7 @@ import { useMediaQuery } from "@mui/material";
 import {
   checkLobbyExists,
   joinLobby,
-} from "../firebase-temp/FirebaseLobbyManagment";
+} from "../firebase/FirebaseLobbyManagment";
 import "./joinGame.css";
 
 interface UserProfile {
