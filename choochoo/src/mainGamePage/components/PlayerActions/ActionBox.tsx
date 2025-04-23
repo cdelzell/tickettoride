@@ -56,8 +56,10 @@ function ActionBox({
   useEffect(() => {
     if (destClickCount > 0 || drawClickCount === 2 || playClickCount > 0) {
       setActionActive(false);
+    } else if (active && action === 0) {
+      setActionActive(true);
     }
-  });
+  }, [destClickCount, drawClickCount, playClickCount, active, action]);
 
   useEffect(() => {
     if (action === 0) {
