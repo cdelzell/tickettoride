@@ -155,7 +155,7 @@ function Lobby() {
   // start the game if there are enough players - rn this is 2, will change to 4 when we get closer ot the end
   const handleStartGame = async () => {
     try {
-      if (players.length >= 2) {
+      if (players.length == 4) {
         setGameStarting(true);
         await startGame(lobbyCode);
       } else {
