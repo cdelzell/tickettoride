@@ -481,36 +481,7 @@ const MainGamePage = () => {
   };
 
   const endTurnButtonStyle: React.CSSProperties = {
-    width: "12vw",
-    height: "3vw",
-    fontSize: "1vw",
-    fontWeight: "bold",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "1vw",
-    cursor: "pointer",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
-    position: "absolute",
-    right: "1.5vw",
-    bottom: "13.9vw",
-    zIndex: 1000,
     display: turnComplete ? "block" : "none",
-    transition: "all 0s ease-in-out",
-  };
-
-  const drawnCardNotificationStyle: React.CSSProperties = {
-    padding: "0.1vw 1vw",
-    position: "absolute",
-    bottom: "12.56vw",
-    left: "50%",
-    transform: "translateX(-50%)",
-    backgroundColor: "rgba(255, 54, 148, 0.7)",
-    color: "white",
-    borderRadius: "0.5vw",
-    fontSize: "1.1vw",
-    zIndex: 1000,
-    transition: "all 0s ease-in-out",
   };
 
   return (
@@ -546,20 +517,20 @@ const MainGamePage = () => {
             {gameOverStats}
           </div>
           <div className="winner">WINNER: {winner}</div>
-          <button className="returnHome" onClick={handleEndGame}>
+          <button className="return_home" onClick={handleEndGame}>
             Return to profile page
           </button>
         </div>
       )}
 
       {turnComplete && (
-        <button onClick={handleEndTurn} style={endTurnButtonStyle}>
+        <button className="end_turn_button" onClick={handleEndTurn}>
           End Turn
         </button>
       )}
 
       {showCardNotification && drawnCard && (
-        <div style={drawnCardNotificationStyle}>
+        <div className="drawn_card_notification">
           You drew a {drawnCard} train card!
         </div>
       )}
