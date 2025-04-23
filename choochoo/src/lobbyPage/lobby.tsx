@@ -159,7 +159,7 @@ function Lobby() {
         setGameStarting(true);
         await startGame(lobbyCode);
       } else {
-        setError("Need at least 2 players to start the game");
+        setError("Need at least 4 players to start the game");
       }
     } catch (err) {
       console.error("Failed to start game:", err);
