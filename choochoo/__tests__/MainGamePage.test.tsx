@@ -8,7 +8,7 @@ import Player from "../src/backend/player";
 import TrainRoute from "../src/backend/train-route";
 import DestinationCard from "../src/backend/destination-card";
 
-// react router dom routes for useLocation and useNavigate 
+// react router dom routes for useLocation and useNavigate
 jest.mock("react-router-dom", () => ({
   useLocation: jest.fn(),
   useNavigate: jest.fn(),
@@ -50,7 +50,6 @@ interface ProfileCardProps {
   main_player?: boolean;
   active?: boolean;
 }
-
 
 interface FaceUpCardsProps {
   gamerunner?: any;
@@ -369,7 +368,7 @@ describe("MainGamePage Component", () => {
   });
 
   // test 1: renders the main game page with all components
-  test("renders the main game page with all components", () => {
+  test("renders the main game page with main components (action, destination cards, game map)", () => {
     render(<MainGamePage />);
 
     // check if main components are on the main game page
@@ -383,7 +382,7 @@ describe("MainGamePage Component", () => {
     expect(screen.getByTestId("profile-card-player2")).toBeInTheDocument();
     expect(screen.getByTestId("profile-card-testUser")).toBeInTheDocument();
 
-    // check if train cards are there 
+    // check if train cards are there
     expect(screen.getByTestId("face-up-cards")).toBeInTheDocument();
   });
 
@@ -404,16 +403,15 @@ describe("MainGamePage Component", () => {
   test("handles drawing train cards", async () => {
     render(<MainGamePage />);
 
-    // draw trains button 
+    // draw trains button
     const drawTrainsBtn = screen.getByTestId("update-status-1");
     fireEvent.click(drawTrainsBtn);
 
-    // draw cards button 
+    // draw cards button
     const drawCardBtn = screen.getByTestId("draw-pile-click");
     fireEvent.click(drawCardBtn);
 
     expect(mockGameRunnerInstance.drawTrainCardsFromDeck).toHaveBeenCalled();
-
   });
 
   test("handles claiming a route", () => {
