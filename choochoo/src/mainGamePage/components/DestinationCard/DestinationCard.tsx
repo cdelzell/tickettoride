@@ -14,8 +14,8 @@ export function DestinationCard({
     location === "draw"
       ? "destination_card_draw"
       : location === "test"
-      ? "test"
-      : "destination_card";
+        ? "test"
+        : "destination_card";
 
   useEffect(() => {
     console.log("📸 DestinationCard received props →", {
@@ -53,31 +53,33 @@ function DestinationCardsCarousel({
   destinations: DestinationCardInfo[];
 }) {
   const [index, setIndex] = useState(0);
-  const [pileEmpty, setPileEmpty] = useState(true);
 
   useEffect(() => {
-    setPileEmpty(destinations.length === 0);
-    setIndex(0); // reset index when list changes
+    setIndex(0); // reset to first card when list updates
   }, [destinations]);
 
   const nextImage = () => {
-    setIndex((prevIndex) => (prevIndex + 1) % destinations.length);
+    if (destinations.length > 0) {
+      setIndex((prevIndex) => (prevIndex + 1) % destinations.length);
+    }
   };
 
   const prevImage = () => {
-    setIndex(
-      (prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length
-    );
+    if (destinations.length > 0) {
+      setIndex((prevIndex) => (prevIndex - 1 + destinations.length) % destinations.length);
+    }
   };
+
+  const card = destinations[index];
 
   return (
     <div className="carousel_container">
       <div className="image_carousel">
-        {pileEmpty ? (
+        {!card ? (
           <div className="empty_carousel">no destination cards</div>
         ) : (
           <DestinationCard
-            destination={destinations[index].imagePath}
+            destination={card.imagePath}
             location="pile"
           />
         )}
