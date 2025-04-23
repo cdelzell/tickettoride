@@ -15,7 +15,7 @@ import {
   checkLobbyExists,
   joinLobby,
 } from "../firebase/FirebaseLobbyManagment";
-import "./join_game.css";
+import "./joinGame.css";
 
 interface UserProfile {
   username: string;

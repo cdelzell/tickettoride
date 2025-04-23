@@ -16,7 +16,7 @@ import {
 } from "../firebase/FirebaseWriteUserData";
 
 import { useTheme, useMediaQuery } from "@mui/material";
-import "./edit_profile.css";
+import "./editProfile.css";
 
 import { profileImages as PROFILE_IMAGES } from "@/image_imports";
 
