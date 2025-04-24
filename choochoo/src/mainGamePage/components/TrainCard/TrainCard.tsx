@@ -1,6 +1,6 @@
 import { Route } from "../Map";
 import "./TrainCard.css";
-import { trainCardImages } from "@/image_imports";
+import { trainCardImages } from "@/imageImports";
 
 function TrainCard({
   color, // still passed, but unused

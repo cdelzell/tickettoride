@@ -7,7 +7,7 @@ import { Grid2 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./profile.css";
-import { profileImages } from "@/image_imports";
+import { profileImages } from "@/imageImports";
 
 function App() {
   return <Profile />;
@@ -168,7 +168,9 @@ function Profile() {
             <Button
               className="button"
               onClick={() => {
-                navigate("/edit_profile", { state: { userKey, userProfile } });
+                navigate("/edit_profile", {
+                  state: { userKey, userProfile },
+                });
               }}
               sx={{ "&:hover": { color: "white" } }}
             >

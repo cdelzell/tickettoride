@@ -22,7 +22,7 @@ import { findUserByUsername } from "../firebase/FirebaseReadUser";
 import { set } from "firebase/database";
 import Player from "@/backend/player";
 import TrainRoute from "@/backend/trainRoute";
-import { destinationCardImages } from "@/image_imports";
+import { destinationCardImages } from "@/imageImports";
 
 export interface City {
   name: string;

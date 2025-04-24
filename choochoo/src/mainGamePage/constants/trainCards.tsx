@@ -1,4 +1,4 @@
-import { trainCardImages } from "@/image_imports";
+import { trainCardImages } from "@/imageImports";
 
 const colors = [
   "red",

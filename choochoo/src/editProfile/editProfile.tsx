@@ -18,7 +18,7 @@ import {
 import { useTheme, useMediaQuery } from "@mui/material";
 import "./editProfile.css";
 
-import { profileImages as PROFILE_IMAGES } from "@/image_imports";
+import { profileImages as PROFILE_IMAGES } from "@/imageImports";
 
 function Render_Page() {
   return <EditProfile />;

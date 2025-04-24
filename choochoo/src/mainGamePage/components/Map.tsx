@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { monoMap } from "@/image_imports";
-import { profileImages } from "@/image_imports";
+import { monoMap } from "@/imageImports";
+import { profileImages } from "@/imageImports";
 import TrainRoute from "@/backend/trainRoute";
 
 export type NetworkProps = {

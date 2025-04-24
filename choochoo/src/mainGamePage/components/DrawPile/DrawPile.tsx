@@ -1,5 +1,5 @@
 import "./DrawPile.css";
-import { drawPile } from "@/image_imports";
+import { drawPile } from "@/imageImports";
 
 function DrawTrains({
   updateTrains,
@@ -54,7 +54,9 @@ function DrawPile({
       <button
         className="draw_pile"
         onClick={handleDrawPileClick}
-        disabled={drawClickCount >= 2 || playClickCount > 0 || destClickCount > 0}
+        disabled={
+          drawClickCount >= 2 || playClickCount > 0 || destClickCount > 0
+        }
       >
         <img src={drawPile} alt="draw pile" />
       </button>

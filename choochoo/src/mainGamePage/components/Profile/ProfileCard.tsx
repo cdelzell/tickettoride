@@ -1,5 +1,5 @@
 import "./ProfileCard.css";
-import { profileImages } from "@/image_imports";
+import { profileImages } from "@/imageImports";
 
 function PlayerCard({
   username,
