@@ -14,11 +14,7 @@ function PlayerCard({
   mainPlayer: boolean;
   active: boolean;
 }) {
-  // 🔧 Normalize input: extract filename and strip extension
-  const raw = profilePic.split("/").pop() || "default";
-  const key = raw.split(".")[0].toLowerCase(); // e.g., "george.jpg" => "george"
-
-  const imgSrc = profileImages[key] ?? profileImages["default"];
+  const imgSrc = profileImages[profilePic] ?? profileImages["default"];
 
   return (
     <div

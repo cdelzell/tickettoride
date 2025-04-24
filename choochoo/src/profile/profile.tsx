@@ -23,7 +23,7 @@ function Profile() {
   const [userKey, setUserKey] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
 
-  // ✅ On mount, grab user data from state or sessionStorage
+  // On mount, grab user data from state or sessionStorage
   useEffect(() => {
     const stateUserKey = state?.userKey;
     const stateUserProfile = state?.userProfile;
@@ -43,24 +43,22 @@ function Profile() {
   // Early return if profile isn't loaded yet
   if (!userProfile) return null;
 
-  const { username, wins, total_score, profile_picture } = userProfile;
-
-  // Normalize profile picture to match known keys
-  const rawFileName =
-    profile_picture?.split("/").pop()?.split(".")[0] || "default";
-  const baseName = rawFileName.split("-")[0];
+  const { username, wins, total_score, profilePicture } = userProfile;
   const resolvedProfilePic =
-    profileImages[baseName as keyof typeof profileImages] ??
+    profileImages[profilePicture as keyof typeof profileImages] ??
     profileImages.default;
+
+  const updatedUserProfile = { ...userProfile, resolvedProfilePic };
+  console.log(updatedUserProfile);
 
   const handleNavGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
-    navigate("/lobby", { state: { userProfile } });
+    navigate("/lobby", { state: { updatedUserProfile } });
   };
 
   const handleJoinGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
-    navigate("/join_game", { state: { userProfile } });
+    navigate("/join_game", { state: { updatedUserProfile } });
   };
 
   return (

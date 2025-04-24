@@ -22,7 +22,7 @@ import { findUserByUsername } from "../firebase/FirebaseReadUser";
 import { set } from "firebase/database";
 import Player from "@/backend/player";
 import TrainRoute from "@/backend/trainRoute";
-import { destinationCardImages } from "@/imageImports";
+import { profileImages, destinationCardImages } from "@/imageImports";
 
 export interface City {
   name: string;
@@ -56,6 +56,8 @@ const MainGamePage = () => {
   const { state } = useLocation();
   const { players, lobbyCode, userProfile } = state || {};
   const { username, wins, totalScore, profilePicture } = userProfile || {};
+  console.log(profilePicture);
+  console.log(userProfile);
   const profilePicFormatted =
     profilePicture?.split("/").pop() || "Default_pfp.jpg";
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
@@ -216,6 +218,11 @@ const MainGamePage = () => {
       // find your own player object
       const withoutSelf = allPlayers.filter((p) => p.username !== username);
       setDisplayPlayers(withoutSelf);
+
+      // for(const i in displayPlayers){
+      //   const p = await findUserByUsername(displayPlayers[i].getUsername(), false)
+      //   const imgPath =
+      // }
     }
   }, [allPlayers]);
 
@@ -408,7 +415,7 @@ const MainGamePage = () => {
       playClickCount === 0
     ) {
       // game runner function to claim route
-      const claimed = gameRunner.claimRoute(routeIndex, profilePicFormatted);
+      const claimed = gameRunner.claimRoute(routeIndex, profilePicture);
 
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
@@ -428,7 +435,7 @@ const MainGamePage = () => {
           const r = updatedRoutes[routeIndex];
 
           r.claimer = username;
-          r.claimerProfilePic = profilePicFormatted;
+          r.claimerProfilePic = profilePicture;
 
           return updatedRoutes;
         });
@@ -513,7 +520,10 @@ const MainGamePage = () => {
             key={index}
             username={player.username}
             trainCount={player.trainAmount}
-            profilePic={"default"}
+            profilePic={
+              profileImages[profilePicture as keyof typeof profileImages] ??
+              profileImages.default
+            }
             mainPlayer={false}
             active={currentPlayer === parseInt(player.id)}
           />
@@ -610,7 +620,7 @@ const MainGamePage = () => {
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profilePicFormatted}
+            profilePic={profilePicture}
             mainPlayer={true}
             active={currentPlayer === playerIndex}
           />
@@ -624,7 +634,7 @@ const MainGamePage = () => {
         cities={cities}
         mainPlayer={{
           username: username,
-          profilePic: profilePicFormatted,
+          profilePic: profilePicture,
         }}
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}

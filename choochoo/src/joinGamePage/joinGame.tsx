@@ -37,6 +37,7 @@ function JoinGame() {
 
   useEffect(() => {
     const userProfile = location?.state?.userProfile as UserProfile | undefined;
+    console.log(userProfile);
     if (userProfile?.username) {
       setUsername(userProfile.username);
     }

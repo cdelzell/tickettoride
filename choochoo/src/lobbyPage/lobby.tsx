@@ -46,6 +46,8 @@ function Lobby() {
     return fromState || (fromStorage ? JSON.parse(fromStorage) : null);
   });
 
+  console.log("lobby: " + userProfile);
+
   const username = userProfile?.username;
 
   // define state variables
