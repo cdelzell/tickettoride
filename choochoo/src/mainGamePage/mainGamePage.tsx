@@ -151,10 +151,10 @@ const MainGamePage = () => {
   useEffect(() => {
     if (gameRunner) {
       setDestinationCardPoss(gameRunner.getDestinationCardPossibilities());
-      const cards = gameRunner.getPlayerDestinationCards();
-      setPlayerDestinationCards(
-        getDestinationCardPossibilitiesFormatted(cards)
-      );
+      // const cards = gameRunner.getPlayerDestinationCards();
+      // setPlayerDestinationCards(
+      //   getDestinationCardPossibilitiesFormatted(cards)
+      // );
     }
   }, [gameRunner]);
 
