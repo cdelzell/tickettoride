@@ -22,7 +22,7 @@ import { findUserByUsername } from "../firebase/FirebaseReadUser";
 import { set } from "firebase/database";
 import Player from "@/backend/player";
 import TrainRoute from "@/backend/trainRoute";
-import { destinationCardImages } from "@/imageImports";
+import { profileImages, destinationCardImages } from "@/imageImports";
 
 export interface City {
   name: string;
@@ -49,18 +49,23 @@ export interface DestinationCardInfo {
   imagePath: string;
 }
 
+export interface DisplayPlayer {
+  id: string;
+  username: string;
+  trainCount: number;
+  profilePic: string;
+}
+
 export const background = "#d3d3d3";
 
 const MainGamePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { players, lobbyCode, userProfile } = state || {};
-  const { username, wins, totalScore, profilePicture } = userProfile || {};
-  const profilePicFormatted =
-    profilePicture?.split("/").pop() || "Default_pfp.jpg";
+  const { username, wins, totalScore, resolvedProfilePic } = userProfile || {};
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(0);
-  const [displayPlayers, setDisplayPlayers] = useState<Player[]>([]);
+  const [displayPlayers, setDisplayPlayers] = useState<DisplayPlayer[]>([]);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -210,28 +215,49 @@ const MainGamePage = () => {
     Get the list of players to display on the top left of the screen (ie all non-main players).
   */
   useEffect(() => {
-    if (allPlayers) {
-      if (!allPlayers.length || !username) return;
+    if (!allPlayers?.length || !username) return;
 
-      // find your own player object
-      const withoutSelf = allPlayers.filter((p) => p.username !== username);
-      setDisplayPlayers(withoutSelf);
-    }
-  }, [allPlayers]);
+    const withoutSelf = allPlayers.filter((p) => p.username !== username);
+    const formatted = withoutSelf.map((p) => ({
+      id: p.getId(),
+      username: p.getUsername(),
+      trainCount: p.getTrainAmount(),
+      profilePic: "",
+    }));
 
-  // /*
+    // 2) async load + enrich, then one setState
+    (async () => {
+      const enriched = await Promise.all(
+        formatted.map(async (player) => {
+          const p = await findUserByUsername(player.username, false);
 
-  // */
-  // useEffect(() => {
-  //   if (gameRunner) {
-  //     const trainCounts = gameRunner.getMainPlayerTrainCards();
-  //     const updatedTrainCards = constTrainCards.map((card, i) => ({
-  //       ...card,
-  //       count: trainCounts[i],
-  //     }));
-  //     setTrainCards(updatedTrainCards);
-  //   }
-  // }, [gameRunner]);
+          if (p) {
+            const userData =
+              (p as Record<string, any>)[player.username] ??
+              Object.values(p as Record<string, any>)[0];
+            // extract & normalize the asset key
+            const picKey = userData.profile_picture as string;
+            const resolvedProfilePic =
+              profileImages[picKey as keyof typeof profileImages] ??
+              profileImages.default;
+
+            // return a new displayPlayer with the real profilePic
+            return {
+              ...player,
+              profilePic: resolvedProfilePic,
+            };
+          }
+
+          // if lookup failed, just return the original placeholder
+          return player;
+        })
+      );
+
+      if (enriched != null) {
+        setDisplayPlayers(enriched);
+      }
+    })();
+  }, [allPlayers, username]);
 
   /*
     Monitor the player drawing a card. Allows for popups to occur when a random card is clicked.
@@ -272,8 +298,6 @@ const MainGamePage = () => {
   const getDestinationCardPossibilitiesFormatted = (
     cards: DestinationCard[]
   ): DestinationCardInfo[] => {
-    console.log("🧪 Raw DestinationCard[] input:", cards);
-
     const result = cards
       .map((destinationCard) => {
         const moreInfo = constDestinationCards.find(
@@ -301,12 +325,10 @@ const MainGamePage = () => {
           imagePath: moreInfo.imagePath, // ✅ Use directly
         };
 
-        console.log("✅ Successfully formatted card:", formattedCard);
         return formattedCard;
       })
       .filter((c): c is DestinationCardInfo => c !== null);
 
-    console.log("🎯 Final formatted DestinationCardInfo[]:", result);
     return result;
   };
 
@@ -408,7 +430,7 @@ const MainGamePage = () => {
       playClickCount === 0
     ) {
       // game runner function to claim route
-      const claimed = gameRunner.claimRoute(routeIndex, profilePicFormatted);
+      const claimed = gameRunner.claimRoute(routeIndex, resolvedProfilePic);
 
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
@@ -428,7 +450,7 @@ const MainGamePage = () => {
           const r = updatedRoutes[routeIndex];
 
           r.claimer = username;
-          r.claimerProfilePic = profilePicFormatted;
+          r.claimerProfilePic = resolvedProfilePic;
 
           return updatedRoutes;
         });
@@ -512,8 +534,8 @@ const MainGamePage = () => {
           <PlayerCard
             key={index}
             username={player.username}
-            trainCount={player.trainAmount}
-            profilePic={"default"}
+            trainCount={player.trainCount}
+            profilePic={player.profilePic}
             mainPlayer={false}
             active={currentPlayer === parseInt(player.id)}
           />
@@ -610,7 +632,7 @@ const MainGamePage = () => {
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profilePicFormatted}
+            profilePic={resolvedProfilePic}
             mainPlayer={true}
             active={currentPlayer === playerIndex}
           />
@@ -624,7 +646,7 @@ const MainGamePage = () => {
         cities={cities}
         mainPlayer={{
           username: username,
-          profilePic: profilePicFormatted,
+          profilePic: resolvedProfilePic,
         }}
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}

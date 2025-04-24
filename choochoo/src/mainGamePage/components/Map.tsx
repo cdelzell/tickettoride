@@ -224,7 +224,11 @@ function USMap({
                   y={textPos.y - 15}
                   width={30}
                   height={30}
-                  href={imgSrc}
+                  href={
+                    route.claimerProfilePic
+                      ? route.claimerProfilePic
+                      : profileImages["default"]
+                  }
                   preserveAspectRatio="xMidYMid meet"
                   className="route-claimer-image"
                   clipPath={`url(#circle-clip-${index})`}

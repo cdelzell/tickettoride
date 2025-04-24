@@ -1,5 +1,6 @@
 import { ref, query, orderByChild, equalTo, get } from "firebase/database";
 import { userDataPath, gameDataPath } from "./FirebaseCredentials";
+import { UserData } from "./FirebaseInterfaces";
 
 /**
  * Function to search for users in the Firebase database with a specified username
@@ -9,9 +10,9 @@ import { userDataPath, gameDataPath } from "./FirebaseCredentials";
 export async function findUserByUsername(
   username: string,
   print: boolean
-): Promise<Object | null> {
+): Promise<UserData | null> {
   try {
-    const userData = await findUserByField("username", username);
+    const userData = (await findUserByField("username", username)) as UserData;
 
     if (userData) {
       if (print) {

@@ -14,12 +14,6 @@ function PlayerCard({
   mainPlayer: boolean;
   active: boolean;
 }) {
-  // 🔧 Normalize input: extract filename and strip extension
-  const raw = profilePic.split("/").pop() || "default";
-  const key = raw.split(".")[0].toLowerCase(); // e.g., "george.jpg" => "george"
-
-  const imgSrc = profileImages[key] ?? profileImages["default"];
-
   return (
     <div
       className={mainPlayer ? "main_player_card" : "player_card"}
@@ -27,7 +21,7 @@ function PlayerCard({
     >
       <img
         className="profile_pic"
-        src={imgSrc}
+        src={profilePic}
         alt={`Profile of ${username}`}
       />
       <div className="player_info">
