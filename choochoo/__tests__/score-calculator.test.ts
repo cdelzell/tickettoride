@@ -56,9 +56,8 @@ describe('calculateGameScores with real point mapping', () => {
       new MockTrainRoute('A', 'B', 4, 'Red', 'Alice'),
       new MockTrainRoute('B', 'C', 4, 'Red', 'Alice'),
     ]);
-    // 4→7 points each: 7 + 7 + 10 = 24
     const scores = calculateGameScores([player], board);
-    expect(scores['Alice']).toBe(24);
+    expect(scores.playerPoints['Alice']).toBe(24);
   });
 
   test('uncompleted destination subtracts points using real mapping', () => {
@@ -68,9 +67,8 @@ describe('calculateGameScores with real point mapping', () => {
     const board = new MockBoardGraph([
       new MockTrainRoute('X', 'Z', 3, 'Red', 'Bob'),
     ]);
-    // 3→4 points; 4 - 7 = -3
     const scores = calculateGameScores([player], board);
-    expect(scores['Bob']).toBe(-3);
+    expect(scores.playerPoints['Bob']).toBe(-3);
   });
 
   test('multiple players with mixed completion and real mapping', () => {
@@ -82,11 +80,10 @@ describe('calculateGameScores with real point mapping', () => {
       new MockTrainRoute('A', 'B', 3, 'Red', 'Alice'),
       new MockTrainRoute('X', 'Z', 2, 'Red', 'Bob'),
     ]);
-    // Alice: 3→4 + 5 = 9
-    // Bob:   2→2 - 7 = -5
     const scores = calculateGameScores([alice, bob], board);
-    expect(scores['Alice']).toBe(9);
-    expect(scores['Bob']).toBe(-5);
+    expect(scores.playerPoints['Alice']).toBe(9);
+    expect(scores.playerPoints['Bob']).toBe(-5);
+    expect(scores.winner).toBe('Alice');
   });
 
   test('completing a destination card A–C that crosses A–B–C', () => {
@@ -97,9 +94,8 @@ describe('calculateGameScores with real point mapping', () => {
       new MockTrainRoute('A', 'B', 3, 'Blue', 'Player1'),
       new MockTrainRoute('B', 'C', 3, 'Blue', 'Player1'),
     ]);
-    // 3→4 points each: 4 + 4 + 10 = 18
     const scores = calculateGameScores([player], board);
-    expect(scores['Player1']).toBe(18);
+    expect(scores.playerPoints['Player1']).toBe(18);
   });
 
   test('claims destination cards in two separate clusters', () => {
@@ -108,18 +104,13 @@ describe('calculateGameScores with real point mapping', () => {
       new MockDestinationCard('P', 'R', 6),
     ]);
     const board = new MockBoardGraph([
-      // Cluster 1: X–Y–Z
       new MockTrainRoute('X', 'Y', 2, 'Green', 'Player2'),
       new MockTrainRoute('Y', 'Z', 2, 'Green', 'Player2'),
-      // Cluster 2: P–Q–R
       new MockTrainRoute('P', 'Q', 3, 'Yellow', 'Player2'),
       new MockTrainRoute('Q', 'R', 3, 'Yellow', 'Player2'),
     ]);
-    // Routes: 2→2 + 2→2 + 3→4 + 3→4 = 12
-    // Cards: 8 + 6 = 14
-    // Total: 12 + 14 = 26
     const scores = calculateGameScores([player], board);
-    expect(scores['Player2']).toBe(26);
+    expect(scores.playerPoints['Player2']).toBe(26);
   });
 
   test('cross-cluster destination card not claimed when clusters separated', () => {
@@ -129,17 +120,12 @@ describe('calculateGameScores with real point mapping', () => {
       new MockDestinationCard('Z', 'P', 12),
     ]);
     const board = new MockBoardGraph([
-      // Cluster 1: X–Y–Z
       new MockTrainRoute('X', 'Y', 2, 'Green', 'Player3'),
       new MockTrainRoute('Y', 'Z', 2, 'Green', 'Player3'),
-      // Cluster 2: P–Q–R
       new MockTrainRoute('P', 'Q', 3, 'Yellow', 'Player3'),
       new MockTrainRoute('Q', 'R', 3, 'Yellow', 'Player3'),
     ]);
-    // Routes: 2→2 + 2→2 + 3→4 + 3→4 = 12
-    // Cards: +8 +6 -12 = +2
-    // Total: 12 + 2 = 14
     const scores = calculateGameScores([player], board);
-    expect(scores['Player3']).toBe(14);
+    expect(scores.playerPoints['Player3']).toBe(14);
   });
 });

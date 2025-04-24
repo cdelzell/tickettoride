@@ -1,12 +1,15 @@
 // __tests__/game-runner.test.ts
-import GameRunner from '../src/backend/game-runner';
-import TrainCard from '../src/backend/train-card';
-import TrainRoute from '../src/backend/train-route';
-import DestinationCard from '../src/backend/destination-card';
+import GameRunner from '../src/backend/gameRunner';
+import TrainCard from '../src/backend/trainCard';
+import TrainRoute from '../src/backend/trainRoute';
+import DestinationCard from '../src/backend/destinationCard';
 import Player from '../src/backend/player';
 
+// Mock FirebaseCredentials to avoid import.meta parsing error
+jest.mock('../src/firebase/FirebaseCredentials', () => ({ database: {} }));
+
 // Mock GameBoard for isolation
-jest.mock('../src/backend/game-board', () => ({
+jest.mock('../src/backend/gameBoard', () => ({
   __esModule: true,
   default: class {
     drawSingleTrainCard = jest.fn();
@@ -23,7 +26,7 @@ jest.mock('../src/backend/game-board', () => ({
       return { bg: true };
     }
     static fromJSON(data: any) {
-      return new (require('../src/backend/game-board').default)();
+      return new this();
     }
   },
 }));

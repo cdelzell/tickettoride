@@ -1,8 +1,8 @@
 // __tests__/player.test.ts
 import Player from '../src/backend/player';
-import TrainCard from '../src/backend/train-card';
-import TrainRoute from '../src/backend/train-route';
-import DestinationCard from '../src/backend/destination-card';
+import TrainCard from '../src/backend/trainCard';
+import TrainRoute from '../src/backend/trainRoute';
+import DestinationCard from '../src/backend/destinationCard';
 
 class MockTrainRoute extends TrainRoute {
   constructor(

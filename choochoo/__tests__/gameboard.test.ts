@@ -1,8 +1,8 @@
 // __tests__/gameboard.test.ts
-import GameBoard from '../src/backend/game-board';
-import TrainCard from '../src/backend/train-card';
-import DestinationCard from '../src/backend/destination-card';
-import BoardGraph from '../src/backend/board-graph';
+import GameBoard from '../src/backend/gameBoard';
+import TrainCard from '../src/backend/trainCard';
+import DestinationCard from '../src/backend/destinationCard';
+import BoardGraph from '../src/backend/boardGraph';
 
 describe('GameBoard (with subclass mocks)', () => {
   // Subclass mocks for full type compatibility
