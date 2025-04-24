@@ -70,6 +70,7 @@ class Player {
         this.trainCardHand['wild'] -= 1;
         usedTrainCardColors.push('wild');
       }
+      this.trainAmount -= 1;
     }
     this.trainAmount -= route.getLength();
     return usedTrainCardColors;

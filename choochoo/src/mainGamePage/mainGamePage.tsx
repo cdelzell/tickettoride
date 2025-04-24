@@ -407,7 +407,7 @@ const MainGamePage = () => {
       destClickCount === 0 &&
       playClickCount === 0
     ) {
-      // ugame runner function to claim route
+      // game runner function to claim route
       const claimed = gameRunner.claimRoute(routeIndex, profilePicFormatted);
 
       if (claimed) {
