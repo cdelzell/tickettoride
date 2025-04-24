@@ -187,20 +187,22 @@ const MainGamePage = () => {
     If the game is over, shift the game to the popup stage and show end game results and information.
   */
   useEffect(() => {
-    if (gameRunner && gameOver === true) {
+    if (gameRunner && gameRunner.gameOver === true) {
+      setGameOver(true);
+      setTurnComplete(false);
       const { playerPoints, winner } = gameRunner.getEndGameInfo();
-      setTurnComplete(true);
+      // setTurnComplete(true);
       setWinner(winner);
       const sorted = Object.entries(playerPoints);
       let infoString = "";
 
       for (const i in sorted) {
-        infoString += `Player ${sorted[i][0]}: ${sorted[i][1]} trains\n`;
+        infoString += `Player ${sorted[i][0]}: ${sorted[i][1]} points\n`;
       }
 
       setGameOverStats(infoString);
     }
-  }, [gameOver]);
+  }, [gameRunner]);
 
   /*
     Load all game routes for the given gamerunner. Populates the map.
@@ -584,7 +586,7 @@ const MainGamePage = () => {
 
       <div className="player_actions">
         <ActionBox
-          active={currentPlayer === playerIndex}
+          active={gameOver === false && currentPlayer === playerIndex}
           action={actionBoxStatus}
           gamerunner={gameRunner}
           drawnDestCards={drawnDestCards}
