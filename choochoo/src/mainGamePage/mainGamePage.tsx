@@ -49,6 +49,13 @@ export interface DestinationCardInfo {
   imagePath: string;
 }
 
+export interface DisplayPlayer {
+  id: string;
+  username: string;
+  trainCount: number;
+  profilePic: string;
+}
+
 export const background = "#d3d3d3";
 
 const MainGamePage = () => {
@@ -56,12 +63,9 @@ const MainGamePage = () => {
   const { state } = useLocation();
   const { players, lobbyCode, userProfile } = state || {};
   const { username, wins, totalScore, resolvedProfilePic } = userProfile || {};
-  console.log(resolvedProfilePic);
-  const profilePicFormatted =
-    resolvedProfilePic?.split("/").pop() || "Default_pfp.jpg";
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(0);
-  const [displayPlayers, setDisplayPlayers] = useState<Player[]>([]);
+  const [displayPlayers, setDisplayPlayers] = useState<DisplayPlayer[]>([]);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -211,33 +215,49 @@ const MainGamePage = () => {
     Get the list of players to display on the top left of the screen (ie all non-main players).
   */
   useEffect(() => {
-    if (allPlayers) {
-      if (!allPlayers.length || !username) return;
+    if (!allPlayers?.length || !username) return;
 
-      // find your own player object
-      const withoutSelf = allPlayers.filter((p) => p.username !== username);
-      setDisplayPlayers(withoutSelf);
+    const withoutSelf = allPlayers.filter((p) => p.username !== username);
+    const formatted = withoutSelf.map((p) => ({
+      id: p.getId(),
+      username: p.getUsername(),
+      trainCount: p.getTrainAmount(),
+      profilePic: "",
+    }));
 
-      // for(const i in displayPlayers){
-      //   const p = await findUserByUsername(displayPlayers[i].getUsername(), false)
-      //   const imgPath =
-      // }
-    }
-  }, [allPlayers]);
+    // 2) async load + enrich, then one setState
+    (async () => {
+      const enriched = await Promise.all(
+        formatted.map(async (player) => {
+          const p = await findUserByUsername(player.username, false);
 
-  // /*
+          if (p) {
+            const userData =
+              (p as Record<string, any>)[player.username] ??
+              Object.values(p as Record<string, any>)[0];
+            // extract & normalize the asset key
+            const picKey = userData.profile_picture as string;
+            const resolvedProfilePic =
+              profileImages[picKey as keyof typeof profileImages] ??
+              profileImages.default;
 
-  // */
-  // useEffect(() => {
-  //   if (gameRunner) {
-  //     const trainCounts = gameRunner.getMainPlayerTrainCards();
-  //     const updatedTrainCards = constTrainCards.map((card, i) => ({
-  //       ...card,
-  //       count: trainCounts[i],
-  //     }));
-  //     setTrainCards(updatedTrainCards);
-  //   }
-  // }, [gameRunner]);
+            // return a new displayPlayer with the real profilePic
+            return {
+              ...player,
+              profilePic: resolvedProfilePic,
+            };
+          }
+
+          // if lookup failed, just return the original placeholder
+          return player;
+        })
+      );
+
+      if (enriched != null) {
+        setDisplayPlayers(enriched);
+      }
+    })();
+  }, [allPlayers, username]);
 
   /*
     Monitor the player drawing a card. Allows for popups to occur when a random card is clicked.
@@ -278,8 +298,6 @@ const MainGamePage = () => {
   const getDestinationCardPossibilitiesFormatted = (
     cards: DestinationCard[]
   ): DestinationCardInfo[] => {
-    console.log("🧪 Raw DestinationCard[] input:", cards);
-
     const result = cards
       .map((destinationCard) => {
         const moreInfo = constDestinationCards.find(
@@ -307,12 +325,10 @@ const MainGamePage = () => {
           imagePath: moreInfo.imagePath, // ✅ Use directly
         };
 
-        console.log("✅ Successfully formatted card:", formattedCard);
         return formattedCard;
       })
       .filter((c): c is DestinationCardInfo => c !== null);
 
-    console.log("🎯 Final formatted DestinationCardInfo[]:", result);
     return result;
   };
 
@@ -518,11 +534,8 @@ const MainGamePage = () => {
           <PlayerCard
             key={index}
             username={player.username}
-            trainCount={player.trainAmount}
-            profilePic={
-              profileImages[resolvedProfilePic as keyof typeof profileImages] ??
-              profileImages.default
-            }
+            trainCount={player.trainCount}
+            profilePic={player.profilePic}
             mainPlayer={false}
             active={currentPlayer === parseInt(player.id)}
           />

@@ -14,8 +14,6 @@ function PlayerCard({
   mainPlayer: boolean;
   active: boolean;
 }) {
-  const imgSrc = profileImages[profilePic] ?? profileImages["default"];
-
   return (
     <div
       className={mainPlayer ? "main_player_card" : "player_card"}
@@ -23,7 +21,7 @@ function PlayerCard({
     >
       <img
         className="profile_pic"
-        src={imgSrc}
+        src={profilePic}
         alt={`Profile of ${username}`}
       />
       <div className="player_info">
