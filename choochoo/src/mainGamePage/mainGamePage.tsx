@@ -405,6 +405,7 @@ const MainGamePage = () => {
     Send the user back to the profile page after a game ends.
   */
   const handleEndGame = () => {
+    sessionStorage.setItem("lobbyCode", "");
     navigate("/profile", { state: { userProfile } });
   };
 
@@ -522,6 +523,9 @@ const MainGamePage = () => {
     setDrawDestActive(false);
     gameRunner.updateCurrentPlayer();
     setCurrentPlayer(gameRunner.getCurrentPlayer());
+
+    gameRunner.gameOver = true;
+
     gameRunner.sendToDatabase();
   };
 
