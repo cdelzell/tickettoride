@@ -1,0 +1,129 @@
+.main_game_page {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d3d3d3;
+  color: #555;
+}
+
+.player_cards_format {
+  position: absolute;
+  top: 1vw;
+  left: 2vw;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5vw;
+}
+
+.player_actions {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+  align-items: center;
+}
+
+.train_cards {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5vw;
+}
+
+.main_player_card {
+  width: 15vw;
+  height: 10vw;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game_over_popup {
+  width: 35vw;
+  height: 40vw;
+  position: absolute;
+  background-color: rgb(243, 247, 248);
+  opacity: 90%;
+  border-radius: 1vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.final_score {
+  font-size: 4vw;
+  font-weight: 3vw;
+  margin-left: 1vw;
+  margin-top: 0.5vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.scores {
+  font-size: 2.6vw;
+  font-weight: 1vw;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  position: absolute;
+  top: 6vw;
+  left: 0;
+}
+
+.winner {
+  font-size: 2vw;
+  font-weight: 2vw;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  position: absolute;
+  bottom: 7vw;
+}
+
+.return_home {
+  width: 20vw;
+  height: 4vw;
+  background-color: #b8d5e8;
+  position: absolute;
+  bottom: 1vw;
+}
+
+.drawn_card_notification {
+  padding: 0.1vw 1vw;
+  position: absolute;
+  bottom: 12.56vw;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 54, 148, 0.7);
+  color: white;
+  border-radius: 0.5vw;
+  font-size: 1.1vw;
+  z-index: 1000;
+  transition: all 0s ease-in-out;
+}
+
+.end_turn_button {
+  width: 12vw;
+  height: 3vw;
+  font-size: 1vw;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 1vw;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  right: 1.5vw;
+  bottom: 13.9vw;
+  z-index: 1000;
+  transition: all 0s ease-in-out;
+}

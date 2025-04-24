@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import ActionBox from "../src/main_game_page/components/PlayerActions/ActionBox";
-import GameRunner from "../src/backend/game-runner";
+import ActionBox from "../src/mainGamePage/components/PlayerActions/ActionBox";
+import GameRunner from "../src/backend/gameRunner";
 
-jest.mock("../src/main_game_page/components/DrawPile/DrawPile", () => {
+jest.mock("choochoo/src/mainGamePage/components/DrawPile/DrawPile.tsx", () => {
   return function MockedDrawTrains(props: any) {
     return (
       <div data-testid="draw-trains">
@@ -22,10 +22,11 @@ jest.mock("../src/main_game_page/components/DrawPile/DrawPile", () => {
 const mockGameRunner = {
   claimDestinationCards: jest.fn(),
   getPlayerDestinationCards: jest.fn().mockReturnValue([]),
-} as unknown as GameRunner
+} as unknown as GameRunner;
 
 describe("ActionBox Component", () => {
   const defaultProps = {
+    active: true,
     action: 0,
     gamerunner: mockGameRunner,
     drawnDestCards: [],

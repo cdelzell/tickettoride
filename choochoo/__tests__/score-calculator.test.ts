@@ -1,9 +1,9 @@
 // __tests__/score-calculator.test.ts
-import { calculateGameScores } from '../src/backend/score-calculator';
+import { calculateGameScores } from '../src/backend/scoreCalculator';
 import Player from '../src/backend/player';
-import BoardGraph from '../src/backend/board-graph';
-import TrainRoute from '../src/backend/train-route';
-import DestinationCard from '../src/backend/destination-card';
+import BoardGraph from '../src/backend/boardGraph';
+import TrainRoute from '../src/backend/trainRoute';
+import DestinationCard from '../src/backend/destinationCard';
 
 class MockPlayer extends Player {
   constructor(username: string, cards: DestinationCard[]) {

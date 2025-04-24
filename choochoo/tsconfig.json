@@ -17,5 +17,5 @@
       "@/*": ["*"]
     }
   },
-  "include": ["src/**/*", "babel.config.cjs"]
+  "include": ["src/**/*", "babel.config.cjs", "vite-env.d.ts"]
 }
