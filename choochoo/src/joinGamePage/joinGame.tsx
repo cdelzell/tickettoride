@@ -31,17 +31,27 @@ function JoinGame() {
   const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
+  const { state } = useLocation();
   const location = useLocation();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const [userProfile, setUserProfile] = useState<any>(null);
+
   useEffect(() => {
-    const userProfile = location?.state?.userProfile as UserProfile | undefined;
-    console.log(userProfile);
-    if (userProfile?.username) {
-      setUsername(userProfile.username);
+    const stateUserProfile = state?.userProfile;
+    const storedProfile = JSON.parse(
+      sessionStorage.getItem("userProfile") || "{}"
+    );
+
+    if (stateUserProfile) {
+      setUserProfile(stateUserProfile);
+      setUsername(stateUserProfile.username);
+      sessionStorage.setItem("userProfile", JSON.stringify(stateUserProfile));
+    } else if (storedProfile) {
+      setUserProfile(storedProfile);
     }
-  }, [location]);
+  }, [state]);
 
   const handleJoin = async () => {
     if (!code) {
@@ -69,7 +79,6 @@ function JoinGame() {
       await joinLobby(code, username);
       sessionStorage.setItem("lobbyCode", code);
 
-      const userProfile: UserProfile = { username };
       sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
 
       // nav to the lobby as a joining player

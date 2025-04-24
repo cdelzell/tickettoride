@@ -53,12 +53,12 @@ function Profile() {
 
   const handleNavGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
-    navigate("/lobby", { state: { updatedUserProfile } });
+    navigate("/lobby", { state: { userProfile } });
   };
 
   const handleJoinGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
-    navigate("/join_game", { state: { updatedUserProfile } });
+    navigate("/join_game", { state: { userProfile } });
   };
 
   return (

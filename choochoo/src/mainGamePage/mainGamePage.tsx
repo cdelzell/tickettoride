@@ -55,11 +55,10 @@ const MainGamePage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { players, lobbyCode, userProfile } = state || {};
-  const { username, wins, totalScore, profilePicture } = userProfile || {};
-  console.log(profilePicture);
-  console.log(userProfile);
+  const { username, wins, totalScore, resolvedProfilePic } = userProfile || {};
+  console.log(resolvedProfilePic);
   const profilePicFormatted =
-    profilePicture?.split("/").pop() || "Default_pfp.jpg";
+    resolvedProfilePic?.split("/").pop() || "Default_pfp.jpg";
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [playerIndex, setPlayerIndex] = useState(0);
   const [displayPlayers, setDisplayPlayers] = useState<Player[]>([]);
@@ -415,7 +414,7 @@ const MainGamePage = () => {
       playClickCount === 0
     ) {
       // game runner function to claim route
-      const claimed = gameRunner.claimRoute(routeIndex, profilePicture);
+      const claimed = gameRunner.claimRoute(routeIndex, resolvedProfilePic);
 
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
@@ -435,7 +434,7 @@ const MainGamePage = () => {
           const r = updatedRoutes[routeIndex];
 
           r.claimer = username;
-          r.claimerProfilePic = profilePicture;
+          r.claimerProfilePic = resolvedProfilePic;
 
           return updatedRoutes;
         });
@@ -521,7 +520,7 @@ const MainGamePage = () => {
             username={player.username}
             trainCount={player.trainAmount}
             profilePic={
-              profileImages[profilePicture as keyof typeof profileImages] ??
+              profileImages[resolvedProfilePic as keyof typeof profileImages] ??
               profileImages.default
             }
             mainPlayer={false}
@@ -620,7 +619,7 @@ const MainGamePage = () => {
           <PlayerCard
             username={username}
             trainCount={trains}
-            profilePic={profilePicture}
+            profilePic={resolvedProfilePic}
             mainPlayer={true}
             active={currentPlayer === playerIndex}
           />
@@ -634,7 +633,7 @@ const MainGamePage = () => {
         cities={cities}
         mainPlayer={{
           username: username,
-          profilePic: profilePicture,
+          profilePic: resolvedProfilePic,
         }}
         hoveredRoute={hoveredRoute}
         setHoveredRoute={setHoveredRoute}
