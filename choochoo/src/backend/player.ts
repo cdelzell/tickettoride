@@ -1,13 +1,11 @@
-import TrainCard from "./train-card";
-import DestinationCard from "./destination-card"; // Importing the DestinationCard class
-import TrainRoute from "./train-route";
-import User from "./user";
+import TrainCard from './train-card';
+import DestinationCard from './destination-card'; // Importing the DestinationCard class
+import TrainRoute from './train-route';
+import User from './user';
 
 class Player {
   destinationCardHand: DestinationCard[];
   id: string;
-
-  scoredPoints: number;
   trainAmount: number;
   trainCardHand: Record<string, number>;
   username: string;
@@ -17,7 +15,6 @@ class Player {
     this.trainCardHand = this.setStarterTrainCards(trainCards);
     this.destinationCardHand = []; // Initializing as empty array
     this.trainAmount = 45;
-    this.scoredPoints = 0;
   }
 
   // Adding DestinationCards to the player's hand (creating instances)
@@ -40,17 +37,11 @@ class Player {
     this.trainCardHand[color] += 1;
   }
 
-  addMultipleTrainCardsToHand(trainCards: TrainCard[]): void {
-    for (let i = 0; i < trainCards.length; i++) {
-      this.addTrainCardToHand(trainCards[i]);
-    }
-  }
-
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
-      this.trainCardHand[route.getGameColor()] + this.trainCardHand["wild"] >=
+      this.trainCardHand[route.getGameColor()] + this.trainCardHand['wild'] >=
         route.getLength() &&
-      route.claimer == null
+      route.getClaimer() === null
     ) {
       return true;
     }
@@ -59,7 +50,7 @@ class Player {
 
   claimRoute(route: TrainRoute): string[] {
     if (!(route instanceof TrainRoute)) {
-      console.error("Invalid route passed to claimRoute:", route);
+      console.error('Invalid route passed to claimRoute:', route);
       return [];
     }
     let usedTrainCardColors = [];
@@ -69,11 +60,11 @@ class Player {
         this.trainCardHand[routeColor] -= 1;
         usedTrainCardColors.push(routeColor);
       } else {
-        this.trainCardHand["wild"] -= 1;
-        usedTrainCardColors.push("wild");
+        this.trainCardHand['wild'] -= 1;
+        usedTrainCardColors.push('wild');
       }
     }
-    this.scoredPoints += route.getPointValue();
+    this.trainAmount -= route.getLength();
     return usedTrainCardColors;
   }
 
@@ -131,15 +122,14 @@ class Player {
         (card) => card.toJSON?.() ?? card
       ),
       trainAmount: this.trainAmount,
-      scoredPoints: this.scoredPoints,
     };
   }
 
   static fromJSON(data: any): Player {
     const player = Object.create(Player.prototype) as Player;
 
-    player.id = data.id ?? "";
-    player.username = data.username ?? "Unknown";
+    player.id = data.id ?? '';
+    player.username = data.username ?? 'Unknown';
     player.trainCardHand = data.trainCardHand ?? {
       red: 0,
       yellow: 0,
@@ -155,7 +145,6 @@ class Player {
       (card: any) => DestinationCard.fromJSON?.(card) ?? card
     );
     player.trainAmount = data.trainAmount ?? 45;
-    player.scoredPoints = data.scoredPoints ?? 0;
 
     console.log(player.trainCardHand);
 

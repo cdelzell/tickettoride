@@ -1,13 +1,13 @@
-import GameBoard from "./game-board";
-import Player from "./player";
-import User from "./user";
-import TrainRoute from "./train-route";
-import DestinationCard from "./destination-card";
-import { writeGameToDatabase } from "../firebase/FirebaseWriteGameData";
-import { findGameByGameID } from "../firebase/FirebaseReadGameData";
-import calculateGameScores from "./score-calculator";
-import { ref, onValue } from "firebase/database";
-import { database } from "../firebase/FirebaseCredentials";
+import GameBoard from './game-board';
+import Player from './player';
+import User from './user';
+import TrainRoute from './train-route';
+import DestinationCard from './destination-card';
+import { writeGameToDatabase } from '../firebase/FirebaseWriteGameData';
+import { findGameByGameID } from '../firebase/FirebaseReadGameData';
+import calculateGameScores from './score-calculator';
+import { ref, onValue } from 'firebase/database';
+import { database } from '../firebase/FirebaseCredentials';
 
 const START_TRAIN_CARD_NUM = 4;
 
@@ -38,50 +38,6 @@ class GameRunner {
     this.destinationCardsToDraw = [];
   }
 
-  //PLAN PLAN PLAN
-  //Functions to handle player action:
-  //draw_train_card_from_deck ✓
-  //      Called when deck is clicked (users have already selected draw card)
-  //draw_faceup_card(index) ✓
-  //      Called when a faceup card is clicked (users have already selected draw card)
-  //claim_route(route) ✓
-  //      Called when route claimed (users have already selected claim route)
-  //get_destination_card_possibilities ✓
-  //      Called when users select claiming a route
-  //claim_destination_cards(list of indexes) ✓
-  //      Called when users select destination cards to take (always after get_destination_card_possibilities)
-  //update_current_player ✓
-  //      Called when player's turn ends and it moves to the next one
-  //
-  //
-  //
-  //Functions to get info for the frontend
-  //get_player_train_count ✓
-  //      Called after route claim
-  //get_player_train_cards ✓
-  //      Called after card drawn, route claim
-  //      Return numeric array of cards in order
-  //get_player_destination_cards ✓
-  //      Called after destination card claim (or maybe every time they cycle through a destination card?)
-  //get_other_players_train_count(player) ✓
-  //      Called after other player's turn is finished (during board retrieval update)
-  //get_faceup_train_cards ✓
-  //      Called after card drawn, other player's turn is finished
-  //get_map ✓
-  //      Called after route claimed, other player's turn finished
-  //get_current_player ✓
-  //      Get current player index, called after any player's turn ends
-  //
-  //I'll tell you what you need to tell gamerunner when things happen
-  //Format for the getter functions
-  //
-  //
-  //Handling game over:
-  //I'm not sure how to do this right now. Maybe when a route is claimed, game over checks are run and a boolean is flipped?
-  //Then the frontend checks, or is told, that the game finished and displays winners.
-  //Not sure how to make it work with the server though. Maybe the gameover thing also calls a turn finished thing, which contacts the server.
-  //Then when the server sends the file to all other players, the first thing that's checked is that boolean. If it's flipped, then they also display game over and contact the server to add stats.
-
   //Called when deck is clicked
   drawTrainCardsFromDeck() {
     let card = this.gameBoard.drawSingleTrainCard();
@@ -100,7 +56,7 @@ class GameRunner {
     let player = this.players[this.currentPlayer];
     let routeObj = this.gameBoard.getRouteByIndex(route);
     if (!routeObj || !(routeObj instanceof TrainRoute)) {
-      console.error("Invalid route index:", route);
+      console.error('Invalid route index:', route);
       return false;
     }
     if (player.checkIfCanClaimRoute(routeObj)) {
@@ -118,7 +74,6 @@ class GameRunner {
       this.gameOver = true;
       return true;
     }
-
     return false;
   }
 
@@ -181,15 +136,15 @@ class GameRunner {
     if (player) {
       let hand = player.getTrainCardHand();
       const order = [
-        "red",
-        "yellow",
-        "black",
-        "green",
-        "purple",
-        "blue",
-        "brown",
-        "white",
-        "wild",
+        'red',
+        'yellow',
+        'black',
+        'green',
+        'purple',
+        'blue',
+        'brown',
+        'white',
+        'wild',
       ];
       const sortedList = order.map((color) => hand[color]);
       let handValues = Object.values(sortedList);
@@ -256,10 +211,6 @@ class GameRunner {
   //--Every player's destination cards
   //--Every player's trains left
   //--The index of the current player
-  //
-  //It's important to note that the frontend will only need to handle route claimer updates, current player updates, other player's trains left updates, and game over updates when it is not their turn
-  //Any updates to the UI that happen on their turn should be handled already by button events, which is nice.
-  //This is just to update the gamerunner object
 
   toJSON() {
     return {
