@@ -46,8 +46,6 @@ function Lobby() {
     return fromState || (fromStorage ? JSON.parse(fromStorage) : null);
   });
 
-  console.log("lobby: " + userProfile);
-
   const username = userProfile?.username;
 
   // define state variables
@@ -66,6 +64,9 @@ function Lobby() {
     const host = players.find((player) => player.isHost);
     return host ? host.username : null;
   }
+
+  console.log(lobbyCode);
+  console.log(sessionStorage);
 
   // create or join a lobby
   useEffect(() => {

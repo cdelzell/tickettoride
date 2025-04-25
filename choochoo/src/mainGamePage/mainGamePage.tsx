@@ -23,6 +23,7 @@ import { set } from "firebase/database";
 import Player from "@/backend/player";
 import TrainRoute from "@/backend/trainRoute";
 import { profileImages, destinationCardImages } from "@/imageImports";
+import { updateUserProperty } from "@/firebase/FirebaseWriteUserData";
 
 export interface City {
   name: string;
@@ -191,7 +192,35 @@ const MainGamePage = () => {
       setGameOver(true);
       setTurnComplete(false);
       const { playerPoints, winner } = gameRunner.getEndGameInfo();
-      // setTurnComplete(true);
+
+      (async () => {
+        for (const i in playerPoints) {
+          const player = await findUserByUsername(i, false);
+          if (player != null && i == winner) {
+            updateUserProperty(
+              player.userKey,
+              "wins",
+              player.userData.wins + 1
+            );
+          }
+          if (player != null && i != winner) {
+            updateUserProperty(
+              player.userKey,
+              "losses",
+              player.userData.losses + 1
+            );
+          }
+          if (player != null) {
+            let newUserData = await updateUserProperty(
+              player.userKey,
+              "total_score",
+              player.userData.total_score + playerPoints[i]
+            );
+            console.log(newUserData);
+          }
+        }
+      })();
+
       setWinner(winner);
       const sorted = Object.entries(playerPoints);
       let infoString = "";
@@ -227,16 +256,15 @@ const MainGamePage = () => {
       profilePic: "",
     }));
 
-    // 2) async load + enrich, then one setState
+    // async load + enrich, then one setState
     (async () => {
       const enriched = await Promise.all(
         formatted.map(async (player) => {
           const p = await findUserByUsername(player.username, false);
 
           if (p) {
-            const userData =
-              (p as Record<string, any>)[player.username] ??
-              Object.values(p as Record<string, any>)[0];
+            const userData = p.userData;
+
             // extract & normalize the asset key
             const picKey = userData.profile_picture as string;
             const resolvedProfilePic =
@@ -405,6 +433,7 @@ const MainGamePage = () => {
     Send the user back to the profile page after a game ends.
   */
   const handleEndGame = () => {
+    sessionStorage.setItem("lobbyCode", "");
     navigate("/profile", { state: { userProfile } });
   };
 
@@ -522,6 +551,7 @@ const MainGamePage = () => {
     setDrawDestActive(false);
     gameRunner.updateCurrentPlayer();
     setCurrentPlayer(gameRunner.getCurrentPlayer());
+
     gameRunner.sendToDatabase();
   };
 
