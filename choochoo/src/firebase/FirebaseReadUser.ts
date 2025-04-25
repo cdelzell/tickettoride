@@ -10,15 +10,27 @@ import { UserData } from "./FirebaseInterfaces";
 export async function findUserByUsername(
   username: string,
   print: boolean
-): Promise<UserData | null> {
+): Promise<{ userKey: string; userData: UserData } | null> {
   try {
-    const userData = (await findUserByField("username", username)) as UserData;
+    const userQuery = query(
+      userDataPath,
+      orderByChild("username"),
+      equalTo(username)
+    );
+    let userData = null;
+    let userKey = "";
+    const snapshot = await get(userQuery);
+    if (snapshot.exists()) {
+      const userEntry = snapshot.val();
+      userKey = Object.keys(userEntry)[0];
+      userData = Object.values(userEntry)[0] as UserData;
+    }
 
     if (userData) {
       if (print) {
         printUserQueryResults(userData); // Print the user data if print is true
       }
-      return userData; // Return the resolved data (user data) if found
+      return { userKey, userData }; // Return the resolved data (user data) if found
     } else {
       console.log(`No user found with username: ${username}`);
       return null; // Return null if no user data is found
