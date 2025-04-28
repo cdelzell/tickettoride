@@ -63,6 +63,11 @@ describe('GameRunner Unit Tests', () => {
 
   test('claimRoute succeeds when claimable', () => {
     const route = new TrainRoute('A', 'B', 3, 'red', '#fff', false, null, null);
+    //For gameover check
+    const r1 = new TrainRoute('X', 'Y', 2, 'red', '#000', false, '0', null);
+    const r2 = new TrainRoute('A', 'B', 3, 'blue', '#000', false, '0', null);
+    runner['gameBoard'].boardGraph = { routes: [r1, r2] } as any;
+    //Continue
     mockBoard.getRouteByIndex.mockReturnValue(route);
     const result = runner.claimRoute(0, 'picUrl');
     const player = runner['players'][runner['currentPlayer']];
@@ -108,6 +113,33 @@ describe('GameRunner Unit Tests', () => {
     expect(res).toBe(true);
     expect(runner['players'][0].getTrainAmount()).toBe(2);
     expect(runner['gameOver']).toBe(true);
+  });
+
+  test('checkGameOverAfterRouteClaim returns false when some routes are still unclaimed', () => {
+    // Ensure train count is high enough to skip the <3 check
+    runner['players'][0].trainAmount = 10;
+    // Route 1 is claimed, Route 2 is unclaimed
+    const r1 = new TrainRoute('X', 'Y', 2, 'red', '#000', false, '0', null);
+    const r2 = new TrainRoute('A', 'B', 3, 'blue', '#000', false, null, null);
+    runner['gameBoard'].boardGraph = { routes: [r1, r2] } as any;
+    runner['gameOver'] = false;
+
+    const result = runner.checkGameOverAfterRouteClaim();
+    expect(result).toBe(false);
+    expect(runner.gameOver).toBe(false);
+  });
+
+  test('checkGameOverAfterRouteClaim returns true and sets gameOver when all routes are claimed', () => {
+    runner['players'][0].trainAmount = 10;
+    // Both routes claimed by player '0'
+    const r1 = new TrainRoute('X', 'Y', 2, 'red', '#000', false, '0', null);
+    const r2 = new TrainRoute('A', 'B', 3, 'blue', '#000', false, '0', null);
+    runner['gameBoard'].boardGraph = { routes: [r1, r2] } as any;
+    runner['gameOver'] = false;
+
+    const result = runner.checkGameOverAfterRouteClaim();
+    expect(result).toBe(true);
+    expect(runner.gameOver).toBe(true);
   });
 
   test('getDestinationCardPossibilities draws and stores', () => {

@@ -1,7 +1,7 @@
-import TrainCard from './trainCard';
-import DestinationCard from './destinationCard'; // Importing the DestinationCard class
-import TrainRoute from './trainRoute';
-import User from './user';
+import TrainCard from "./trainCard";
+import DestinationCard from "./destinationCard"; // Importing the DestinationCard class
+import TrainRoute from "./trainRoute";
+import User from "./user";
 
 class Player {
   destinationCardHand: DestinationCard[];
@@ -15,7 +15,7 @@ class Player {
     this.username = user;
     this.trainCardHand = this.setStarterTrainCards(trainCards);
     this.destinationCardHand = []; // Initializing as empty array
-    this.trainAmount = 45;
+    this.trainAmount = 32;
   }
 
   // Adding DestinationCards to the player's hand (creating instances)
@@ -46,7 +46,7 @@ class Player {
 
   checkIfCanClaimRoute(route: TrainRoute): boolean {
     if (
-      this.trainCardHand[route.getGameColor()] + this.trainCardHand['wild'] >=
+      this.trainCardHand[route.getGameColor()] + this.trainCardHand["wild"] >=
         route.getLength() &&
       route.claimer == null
     ) {
@@ -57,7 +57,7 @@ class Player {
 
   claimRoute(route: TrainRoute): string[] {
     if (!(route instanceof TrainRoute)) {
-      console.error('Invalid route passed to claimRoute:', route);
+      console.error("Invalid route passed to claimRoute:", route);
       return [];
     }
     let usedTrainCardColors = [];
@@ -67,10 +67,9 @@ class Player {
         this.trainCardHand[routeColor] -= 1;
         usedTrainCardColors.push(routeColor);
       } else {
-        this.trainCardHand['wild'] -= 1;
-        usedTrainCardColors.push('wild');
+        this.trainCardHand["wild"] -= 1;
+        usedTrainCardColors.push("wild");
       }
-      this.trainAmount -= 1;
     }
     this.trainAmount -= route.getLength();
     return usedTrainCardColors;
@@ -136,8 +135,8 @@ class Player {
   static fromJSON(data: any): Player {
     const player = Object.create(Player.prototype) as Player;
 
-    player.id = data.id ?? '';
-    player.username = data.username ?? 'Unknown';
+    player.id = data.id ?? "";
+    player.username = data.username ?? "Unknown";
     player.trainCardHand = data.trainCardHand ?? {
       red: 0,
       yellow: 0,
