@@ -114,12 +114,22 @@ class GameRunner {
   }
 
   checkGameOverAfterRouteClaim() {
+    //Check if the current player has ended the game through train consumption
     if (this.players[this.currentPlayer].getTrainAmount() < 3) {
       this.gameOver = true;
       return true;
     }
 
-    return false;
+    //Check if any route is unclaimed
+    for (const route of this.gameBoard.boardGraph.routes) {
+      if (route.claimer === null) {
+        return false;
+      }
+    }
+
+    //There are no routes left to claim
+    this.gameOver = true;
+    return true;
   }
 
   getDestinationCardPossibilities(): DestinationCard[] {

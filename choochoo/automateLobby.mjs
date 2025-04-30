@@ -4,7 +4,7 @@ import { chromium } from "playwright";
 const BASE = process.env.BASE_URL || "http://localhost:5173";
 
 const USERS = [
-  { username: "test", password: "test", isHost: true },
+  { username: "test1", password: "test1", isHost: true },
   { username: "test2", password: "test2", isHost: false },
   { username: "test3", password: "test3", isHost: false },
   { username: "test4", password: "test4", isHost: false },
@@ -16,7 +16,6 @@ const USERS = [
     // 1) Launch browser (with DevTools open so you can see errors)
     browser = await chromium.launch({
       headless: false,
-      devtools: true,
     });
 
     // 2) Create 4 isolated contexts & pages
