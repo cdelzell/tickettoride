@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/backend/trainRoute.ts</title>
+    <title>Code coverage report for src/backend/scoreCalculator.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/backend</a> trainRoute.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/backend</a> scoreCalculator.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.16% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/24</span>
+                <span class='fraction'>48/48</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/9</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.72% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/11</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.16% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/24</span>
+                <span class='fraction'>47/47</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -169,218 +169,242 @@
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
 <a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-yes">111x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">//Relates length of a route to its point value
-//Key = length, value = point value
-const point_vals = new Map&lt;number, number&gt;([
-  [1, 1],
-  [2, 2],
-  [3, 4],
-  [4, 7],
-  [5, 10],
-  [6, 15],
-]);
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import BoardGraph from "./boardGraph";
+import Player from "./player";
+import TrainRoute from "./trainRoute";
+import DestinationCard from "./destinationCard";
 &nbsp;
-class TrainRoute {
-  destination1: string;
-  destination2: string;
-  length: number;
-  gameColor: string;
-  hexColor: string;
-  dashed: boolean;
-  claimer: string | null;
-  claimerProfilePic: string | null;
-&nbsp;
-  constructor(
-    destination1: string,
-    destination2: string,
-    length: number,
-    gameColor: string,
-    hexColor: string,
-    dashed: boolean,
-    claimer: string | null,
-    claimerProfilePic: string | null
-  ) {
-    this.destination1 = destination1;
-    this.destination2 = destination2;
-    this.length = length;
-    this.gameColor = gameColor;
-    this.hexColor = hexColor;
-    this.dashed = dashed;
-    this.claimer = claimer ?? null;
-    this.claimerProfilePic = claimerProfilePic ?? null;
+export function calculateGameScores(
+  players: Player[],
+  boardGraph: BoardGraph
+): { playerPoints: Record&lt;string, number&gt;; winner: string } {
+  let playerPoints: Record&lt;string, number&gt; = {};
+  let winner = "";
+  let maxScore = -1;
+  for (const player of players) {
+    let score = calculatePlayerScore(player, boardGraph);
+    if (score &gt; maxScore) {
+      winner = player.getUsername();
+      maxScore = score;
+    }
+    playerPoints[player.getUsername()] = score;
   }
 &nbsp;
-  getLength() {
-    return this.length;
-  }
+  return { playerPoints, winner };
+}
 &nbsp;
-  getGameColor() {
-    return this.gameColor;
-  }
+function calculatePlayerScore(player: Player, boardGraph: BoardGraph): number {
+  let score =
+    getPlayerPointsFromDestinationCards(player, boardGraph) +
+    getPlayerPointsFromRouteValues(player.getUsername(), boardGraph);
+  return score;
+}
 &nbsp;
-<span class="fstat-no" title="function not covered" >  getHexColor(</span>) {
-<span class="cstat-no" title="statement not covered" >    return this.hexColor;</span>
+function getPlayerPointsFromRouteValues(
+  claimer: string,
+  boardGraph: BoardGraph
+): number {
+  let score = 0;
+  for (const route of boardGraph.getRoutesForPlayer(claimer)) {
+    score += route.getPointValue();
   }
+  return score;
+}
 &nbsp;
-  claimRoute(playerId: string, profilePic?: string) {
-    this.claimer = playerId;
-    if (profilePic) {
-      this.claimerProfilePic = profilePic;
+function getPlayerPointsFromDestinationCards(
+  player: Player,
+  boardGraph: BoardGraph
+): number {
+  let score: number = 0;
+&nbsp;
+  const routes = boardGraph.getRoutesForPlayer(player.getUsername());
+  const networks = getConnectedNetworks(routes); //An array of sets of destinations that they've touched, put into sets based on how they're linked
+  for (const card of player.getDestinationCardHandAsCards()) {
+    const destinations = card.getDestinationsAsArray();
+    if (isDestinationCardInNetworks(destinations, networks)) {
+      score += card.getPointValue();
+    } else {
+      score -= card.getPointValue(); //OPTIONAL, MAY WANT TO REMOVE. Takes away points if they don't meet the card, leading to big negatives
+    }
+  }
+  return score;
+}
+&nbsp;
+function getConnectedNetworks(routes: TrainRoute[]): Set&lt;string&gt;[] {
+  let networks: Set&lt;string&gt;[] = [];
+&nbsp;
+  //Make networks containing all routes
+  for (const route of routes) {
+    const destinations = route.getDestinations();
+    let matchingSets: number[] = [];
+&nbsp;
+    //Check each network to see if it contains either of the destinations in the route
+    for (let i = 0; i &lt; networks.length; i++) {
+      if (
+        networks[i].has(destinations[0]) ||
+        networks[i].has(destinations[1])
+      ) {
+        //If it does, add it to the list of matching sets
+        matchingSets.push(i);
+      }
+    }
+&nbsp;
+    if (matchingSets.length === 0) {
+      //No networks matched, have to add a new network
+      networks.push(new Set&lt;string&gt;(destinations));
+    } else {
+      //At least one network matched. Add to that network and combine matching networks
+      //This handles the case that two networks become connected by this route
+      let newNetwork = new Set&lt;string&gt;(destinations);
+      for (const matchIndex of matchingSets.reverse()) {
+        //Adds each destination from the old set to the new set
+        for (const destination of networks[matchIndex]) {
+          newNetwork.add(destination);
+        }
+        networks.splice(matchIndex, 1);
+      }
+      networks.push(newNetwork);
     }
   }
 &nbsp;
-  getPointValue(): number {
-    return point_vals.get(this.length) ?? <span class="branch-1 cbranch-no" title="branch not covered" >0;</span>
-  }
-&nbsp;
-  getDestinations(): string[] {
-    return [this.destination1, this.destination2];
-  }
-&nbsp;
-  getClaimer(): string | null {
-    return this.claimer;
-  }
-&nbsp;
-<span class="fstat-no" title="function not covered" >  toJSON(</span>) {
-<span class="cstat-no" title="statement not covered" >    return {</span>
-      destination1: this.destination1,
-      destination2: this.destination2,
-      length: this.length,
-      gameColor: this.gameColor,
-      hexColor: this.hexColor,
-      dashed: this.dashed,
-      claimer: this.claimer,
-      claimerProfilePic: this.claimerProfilePic,
-    };
-  }
-&nbsp;
-<span class="fstat-no" title="function not covered" >  static </span>fromJSON(data: any): TrainRoute {
-    const route = <span class="cstat-no" title="statement not covered" >new TrainRoute(</span>
-      data.destination1,
-      data.destination2,
-      data.length,
-      data.gameColor,
-      data.hexColor,
-      data.dashed,
-      data.claimer,
-      data.claimerProfilePic
-    );
-<span class="cstat-no" title="statement not covered" >    route.claimer = data.claimer ?? null;</span>
-<span class="cstat-no" title="statement not covered" >    return route;</span>
-  }
-&nbsp;
-  getClaimerProfilePic(): string | null {
-    return this.claimerProfilePic;
-  }
+  return networks;
 }
 &nbsp;
-export default TrainRoute;
+function isDestinationCardInNetworks(
+  destinations: string[],
+  networks: Set&lt;string&gt;[]
+): boolean {
+  for (const network of networks) {
+    if (network.has(destinations[0]) &amp;&amp; network.has(destinations[1])) {
+      return true;
+    }
+  }
+  return false;
+}
+&nbsp;
+export default calculateGameScores;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

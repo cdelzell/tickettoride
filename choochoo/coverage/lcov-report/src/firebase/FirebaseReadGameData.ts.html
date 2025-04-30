@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/backend/player.ts</title>
+    <title>Code coverage report for src/firebase/FirebaseReadGameData.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/backend</a> player.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/firebase</a> FirebaseReadGameData.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.33% </span>
+                <span class="strong">11.9% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>50/53</span>
+                <span class='fraction'>5/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/20</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.11% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>16/17</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.07% </span>
+                <span class="strong">11.9% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/51</span>
+                <span class='fraction'>5/42</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -184,49 +184,69 @@
 <a name='L119'></a><a href='#L119'>119</a>
 <a name='L120'></a><a href='#L120'>120</a>
 <a name='L121'></a><a href='#L121'>121</a>
-<a name='L122'></a><a href='#L122'>122</a>
-<a name='L123'></a><a href='#L123'>123</a>
-<a name='L124'></a><a href='#L124'>124</a>
-<a name='L125'></a><a href='#L125'>125</a>
-<a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a>
-<a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a>
-<a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a>
-<a name='L144'></a><a href='#L144'>144</a>
-<a name='L145'></a><a href='#L145'>145</a>
-<a name='L146'></a><a href='#L146'>146</a>
-<a name='L147'></a><a href='#L147'>147</a>
-<a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a>
-<a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a>
-<a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<a name='L122'></a><a href='#L122'>122</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -237,11 +257,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -249,19 +264,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,281 +283,149 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-yes">91x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">35x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import TrainCard from './trainCard';
-import DestinationCard from './destinationCard'; // Importing the DestinationCard class
-import TrainRoute from './trainRoute';
-import User from './user';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { child, query, orderByChild, equalTo, get } from "firebase/database";
+import { database, gameDataPath } from "./FirebaseCredentials";
+import GameRunner from "../backend/gameRunner";
+type GameRunnerType = typeof GameRunner;
 &nbsp;
-class Player {
-  destinationCardHand: DestinationCard[];
-  id: string;
+export async function <span class="fstat-no" title="function not covered" >checkForChaneInTurn(</span>params: any) {}
 &nbsp;
-  trainAmount: number;
-  trainCardHand: Record&lt;string, number&gt;;
-  username: string;
-  constructor(id: string, user: string, trainCards: TrainCard[]) {
-    this.id = id;
-    this.username = user;
-    this.trainCardHand = this.setStarterTrainCards(trainCards);
-    this.destinationCardHand = []; // Initializing as empty array
-    this.trainAmount = 45;
-  }
+/**
+ * Function to retrieve the turn number of a game in the Firebase database with a specified gameID
+ * @param {string} gameID - The game ID of the game that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+export async function <span class="fstat-no" title="function not covered" >findTurnByGameID(</span>
+  game_ID: number,
+  print: boolean
+): Promise&lt;number | null&gt; {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const gameData = <span class="cstat-no" title="statement not covered" >await findGameByField("game_ID", game_ID);</span>
 &nbsp;
-  // Adding DestinationCards to the player's hand (creating instances)
-  addDestinationCardToHand(destinationCardInfo: {
-    destination1: string;
-    destination2: string;
-    pointValue: number;
-  }): void {
-    // Create a new DestinationCard instance
-    const newDestinationCard = new DestinationCard(
-      destinationCardInfo.destination1,
-      destinationCardInfo.destination2,
-      destinationCardInfo.pointValue
-    );
-    this.destinationCardHand.push(newDestinationCard);
-  }
+<span class="cstat-no" title="statement not covered" >    if (gameData) {</span>
+      // @ts-ignore: Ignore the error on this line
+      const turn = <span class="cstat-no" title="statement not covered" >gameData.currentPlayer;</span> // Extract the 'turn' field
 &nbsp;
-  addTrainCardToHand(trainCard: TrainCard): void {
-    const color = trainCard.getColor().toLowerCase();
-    this.trainCardHand[color] += 1;
-  }
-&nbsp;
-<span class="fstat-no" title="function not covered" >  addMultipleTrainCardsToHand(</span>trainCards: TrainCard[]): void {
-<span class="cstat-no" title="statement not covered" >    for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; trainCards.length; i++) {</span>
-<span class="cstat-no" title="statement not covered" >      this.addTrainCardToHand(trainCards[i]);</span>
-    }
-  }
-&nbsp;
-  checkIfCanClaimRoute(route: TrainRoute): boolean {
-    if (
-      this.trainCardHand[route.getGameColor()] + this.trainCardHand['wild'] &gt;=
-        route.getLength() &amp;&amp;
-      route.claimer == null
-    ) {
-      return true;
-    }
-    return false;
-  }
-&nbsp;
-  claimRoute(route: TrainRoute): string[] {
-    if (!(route instanceof TrainRoute)) {
-      console.error('Invalid route passed to claimRoute:', route);
-      return [];
-    }
-    let usedTrainCardColors = [];
-    for (let i = 0; i &lt; route.getLength(); i++) {
-      let routeColor = route.getGameColor();
-      if (this.trainCardHand[routeColor] &gt; 0) {
-        this.trainCardHand[routeColor] -= 1;
-        usedTrainCardColors.push(routeColor);
-      } else {
-        this.trainCardHand['wild'] -= 1;
-        usedTrainCardColors.push('wild');
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (print) {</span>
+<span class="cstat-no" title="statement not covered" >        console.log(`Current Turn: ${turn}`); </span>// Print the turn if print is true
       }
-      this.trainAmount -= 1;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return turn; </span>// Return only the turn field
+    } else {
+<span class="cstat-no" title="statement not covered" >      console.log(`No game found with game ID: ${game_ID}`);</span>
+<span class="cstat-no" title="statement not covered" >      return null; </span>// Return null if no game data is found
     }
-    this.trainAmount -= route.getLength();
-    return usedTrainCardColors;
-  }
-&nbsp;
-  private setStarterTrainCards(
-    trainCards: TrainCard[]
-  ): Record&lt;string, number&gt; {
-    let hand: Record&lt;string, number&gt; = {
-      red: 0,
-      yellow: 0,
-      black: 0,
-      green: 0,
-      purple: 0,
-      blue: 0,
-      brown: 0,
-      white: 0,
-      wild: 0,
-    };
-&nbsp;
-    for (let card of trainCards) {
-      hand[card.getColor()] += 1;
-    }
-    return hand;
-  }
-&nbsp;
-  getId(): string {
-    return this.id;
-  }
-&nbsp;
-  getTrainAmount(): number {
-    return this.trainAmount;
-  }
-&nbsp;
-  getTrainCardHand(): Record&lt;string, number&gt; {
-    return this.trainCardHand;
-  }
-&nbsp;
-  getUsername(): string {
-    return this.username;
-  }
-&nbsp;
-  getDestinationCardHand(): DestinationCard[] {
-    return this.destinationCardHand;
-  }
-&nbsp;
-  getDestinationCardHandAsCards(): DestinationCard[] {
-    return this.destinationCardHand;
-  }
-&nbsp;
-  toJSON() {
-    return {
-      id: this.id,
-      username: this.username,
-      trainCardHand: this.trainCardHand,
-      destinationCardHand: this.destinationCardHand.map(
-        (card) =&gt; card.toJSON?.() ?? <span class="branch-1 cbranch-no" title="branch not covered" >card</span>
-      ),
-      trainAmount: this.trainAmount,
-    };
-  }
-&nbsp;
-  static fromJSON(data: any): Player {
-    const player = Object.create(Player.prototype) as Player;
-&nbsp;
-    player.id = data.id ?? <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
-    player.username = data.username ?? <span class="branch-1 cbranch-no" title="branch not covered" >'Unknown';</span>
-    player.trainCardHand = data.trainCardHand ?? <span class="branch-1 cbranch-no" title="branch not covered" >{</span>
-      red: 0,
-      yellow: 0,
-      black: 0,
-      green: 0,
-      purple: 0,
-      blue: 0,
-      brown: 0,
-      white: 0,
-      wild: 0,
-    };
-    player.destinationCardHand = (data.destinationCardHand ?? <span class="branch-1 cbranch-no" title="branch not covered" >[])</span>.map(
-      (card: any) =&gt; DestinationCard.fromJSON?.(card) ?? <span class="branch-1 cbranch-no" title="branch not covered" >card</span>
-    );
-    player.trainAmount = data.trainAmount ?? <span class="branch-1 cbranch-no" title="branch not covered" >45;</span>
-&nbsp;
-    return player;
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    console.error("Error handling game data:", error);</span>
+<span class="cstat-no" title="statement not covered" >    return null; </span>// Return null on error
   }
 }
 &nbsp;
-export default Player;
+/**
+ * Function to search for games in the Firebase database with a specified gameID
+ * @param {string} gameID - The game ID of the game that you are looking for
+ * @param {boolean} print - Variable to determine if the program should print the data received to the console (true prints, false does not)
+ */
+export async function <span class="fstat-no" title="function not covered" >findGameByGameID(</span>
+  gameID: number,
+  print: boolean
+): Promise&lt;Object | null&gt; {
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const gameRef = <span class="cstat-no" title="statement not covered" >child(gameDataPath, `${gameID}`);</span>
+    const gameData = <span class="cstat-no" title="statement not covered" >await get(gameRef);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (gameData) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (print) {</span>
+<span class="cstat-no" title="statement not covered" >        printGameQueryResults("gamedata" + gameData); </span>// Print the game data if print is true
+      }
+<span class="cstat-no" title="statement not covered" >      return gameData; </span>// Return the resolved data (game data) if found
+    } else {
+<span class="cstat-no" title="statement not covered" >      console.log(`No game found with game ID: ${gameID}`);</span>
+<span class="cstat-no" title="statement not covered" >      return null; </span>// Return null if no game data is found
+    }
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    console.error("Error handling game data:", error);</span>
+<span class="cstat-no" title="statement not covered" >    return null; </span>// Return null on error
+  }
+}
+&nbsp;
+/**
+ * Function to search for a game in the Firebase database by a specific field and value.
+ * It queries the "game" database and looks for entries where the specified field matches the given value.
+ * The function returns the game data if found, otherwise returns null.
+ *
+ * @param {string} field - The field name in the game data to search by (e.g., "gameID", "player1ID", "playerhand").
+ * @param {string|number|boolean} value - The value that the specified field should match. This can be a string (e.g., "john_doe"),
+ *                                        a number (e.g., 5), or a boolean (e.g., true/false), depending on the field.
+ * @returns {Object|null} The user data matching the given field and value, or null if no matching user is found.
+ */
+function <span class="fstat-no" title="function not covered" >findGameByField(</span>
+  field: string,
+  value: string | number | boolean
+): Promise&lt;Object | null&gt; {
+  const gameQuery = <span class="cstat-no" title="statement not covered" >query(gameDataPath, orderByChild(field), equalTo(value));</span>
+&nbsp;
+  // Perform the query and return the result
+<span class="cstat-no" title="statement not covered" >  return get(gameQuery) // This returns a Promise.</span>
+    .then(<span class="fstat-no" title="function not covered" >(s</span>napshot) =&gt; {
+<span class="cstat-no" title="statement not covered" >      if (snapshot.exists()) {</span>
+<span class="cstat-no" title="statement not covered" >        return snapshot.val(); </span>// Return the game data from the snapshot if found
+      } else {
+<span class="cstat-no" title="statement not covered" >        console.log(`No game found with ${field}:`, value);</span>
+<span class="cstat-no" title="statement not covered" >        return null; </span>// Return null if no data is found
+      }
+    })
+    .catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {
+<span class="cstat-no" title="statement not covered" >      console.error("Error retrieving data:", error);</span>
+<span class="cstat-no" title="statement not covered" >      return null; </span>// Return null on error
+    });
+}
+&nbsp;
+/**
+ * Function to print the details of a given object (typically user data) to the console in a readable format.
+ * It recursively traverses the object, printing each key-value pair in a hierarchical structure.
+ * This is useful for inspecting deeply nested data or objects with multiple properties.
+ *
+ * @param {Object} obj - The object containing data to be printed (e.g., user data retrieved from Firebase).
+ * @param {string} [indent=''] - The indentation string used to format the printed output. It is used to represent the depth of the nested properties for better readability.
+ * It starts as an empty string and is added to as the recursion goes deeper.
+ */
+function <span class="fstat-no" title="function not covered" >printGameQueryResults(</span>obj: any, indent: string = <span class="branch-0 cbranch-no" title="branch not covered" >"")</span>: void {
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof obj === "object" &amp;&amp; obj !== null) {</span>
+<span class="cstat-no" title="statement not covered" >    for (let key in obj) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (obj.hasOwnProperty(key)) {</span>
+<span class="cstat-no" title="statement not covered" >        if (typeof obj[key] === "object" &amp;&amp; obj[key] !== null) {</span>
+<span class="cstat-no" title="statement not covered" >          console.log(`${indent}${key}:`);</span>
+<span class="cstat-no" title="statement not covered" >          printGameQueryResults(obj[key], indent + "  ");</span>
+        } else {
+<span class="cstat-no" title="statement not covered" >          console.log(`${indent}${key}: ${obj[key]}`);</span>
+        }
+      }
+    }
+  }
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
