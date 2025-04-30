@@ -48,6 +48,7 @@ function DrawPile({
   destClickCount: number;
   handleDrawPileClick: () => void;
 }) {
+  console.log(drawClickCount);
   return (
     <div>
       <p>Cards drawn: {drawClickCount}/2</p>

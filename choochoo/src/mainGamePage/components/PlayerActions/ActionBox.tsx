@@ -54,7 +54,7 @@ function ActionBox({
   const [actionActive, setActionActive] = useState(true);
 
   useEffect(() => {
-    if (destClickCount > 0 || drawClickCount === 2 || playClickCount > 0) {
+    if (destClickCount > 0 || drawClickCount >= 2 || playClickCount > 0) {
       setActionActive(false);
     } else if (active && action === 0) {
       setActionActive(true);
