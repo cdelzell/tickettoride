@@ -395,7 +395,6 @@ const MainGamePage = () => {
     if (newStatus === 1) {
       setDrawnCard(null);
       setShowCardNotification(false);
-      setDrawClickCount(0);
     }
   };
 
@@ -532,7 +531,7 @@ const MainGamePage = () => {
         }, 3000);
       }
 
-      setDrawClickCount((prevCount) => prevCount + 1);
+      setDrawClickCount(drawClickCount + 1);
     }
   };
 
