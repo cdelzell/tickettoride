@@ -17,7 +17,7 @@ class GameRunner {
   gameBoard: GameBoard;
   currentPlayer: number;
   gameOver: boolean;
-  destinationCardsToDraw: (DestinationCard | null)[];
+  destinationCardsToDraw: DestinationCard[];
   unsubscribe?: () => void;
 
   constructor(users: string[], lobbyCode: number) {
@@ -132,7 +132,7 @@ class GameRunner {
     return true;
   }
 
-  getDestinationCardPossibilities(): (DestinationCard | null)[] {
+  getDestinationCardPossibilities(): DestinationCard[] {
     this.destinationCardsToDraw = this.gameBoard.drawDestinationCards(3);
     return this.destinationCardsToDraw;
   }
