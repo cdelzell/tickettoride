@@ -46,23 +46,24 @@ class GameBoard {
     return returnPile;
   }
 
-  drawDestinationCards(numCards: number): DestinationCard[] {
-    let returnPile: DestinationCard[] = [];
-    if (this.destinationCardDrawPile.length === 0) {
-      return returnPile;
-    }
+  drawDestinationCards(numCards: number): (DestinationCard | null)[] {
+    let returnPile: (DestinationCard | null)[] | null = [];
     for (let i = 0; i < numCards; i++) {
       const card = this.destinationCardDrawPile.shift();
       if (card) {
         returnPile.push(card);
+      } else {
+        returnPile.push(null);
       }
     }
     return returnPile;
   }
 
-  addBackDestinationCards(cards: DestinationCard[]) {
-    for (let i = 0; i < cards.length; i++) {
-      this.destinationCardDrawPile.push(cards[i]);
+  addBackDestinationCards(cards: (DestinationCard | null)[]) {
+    for (const card of cards) {
+      if (card != null) {
+        this.destinationCardDrawPile.push(card);
+      }
     }
   }
 
