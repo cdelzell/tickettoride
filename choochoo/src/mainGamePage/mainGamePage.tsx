@@ -337,10 +337,7 @@ const MainGamePage = () => {
         );
 
         if (!moreInfo) {
-          console.warn(
-            "⚠️ No matching constDestinationCard found for:",
-            destinationCard
-          );
+          console.warn();
           return null;
         }
 
@@ -352,7 +349,7 @@ const MainGamePage = () => {
           destination1: moreInfo.destination1,
           destination2: moreInfo.destination2,
           points: moreInfo.points,
-          imagePath: moreInfo.imagePath, // ✅ Use directly
+          imagePath: moreInfo.imagePath,
         };
 
         return formattedCard;

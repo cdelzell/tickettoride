@@ -56,41 +56,51 @@ function DrawDestinationCard({
     }
   };
 
+  console.log(destinations);
+
   return (
     <div className="draw_destination">
-      <button
-        onClick={() => handleClick("0")}
-        style={{
-          outline: clicked1 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
-        }}
-      >
-        <DestinationCard
-          destination={destinations[0].imagePath}
-          location="draw"
-        />
-      </button>
-      <button
-        onClick={() => handleClick("1")}
-        style={{
-          outline: clicked2 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
-        }}
-      >
-        <DestinationCard
-          destination={destinations[1].imagePath}
-          location="draw"
-        />
-      </button>
-      <button
-        onClick={() => handleClick("2")}
-        style={{
-          outline: clicked3 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
-        }}
-      >
-        <DestinationCard
-          destination={destinations[2].imagePath}
-          location="draw"
-        />
-      </button>
+      {(destinations.length == 1 ||
+        destinations.length == 2 ||
+        destinations.length == 3) && (
+        <button
+          onClick={() => handleClick("0")}
+          style={{
+            outline: clicked1 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
+          }}
+        >
+          <DestinationCard
+            destination={destinations[0].imagePath}
+            location="draw"
+          />
+        </button>
+      )}
+      {(destinations.length == 2 || destinations.length == 3) && (
+        <button
+          onClick={() => handleClick("1")}
+          style={{
+            outline: clicked2 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
+          }}
+        >
+          <DestinationCard
+            destination={destinations[1].imagePath}
+            location="draw"
+          />
+        </button>
+      )}
+      {destinations.length == 3 && (
+        <button
+          onClick={() => handleClick("2")}
+          style={{
+            outline: clicked3 ? ".2vw solid rgb(106, 172, 176)" : "transparent",
+          }}
+        >
+          <DestinationCard
+            destination={destinations[2].imagePath}
+            location="draw"
+          />
+        </button>
+      )}
     </div>
   );
 }
