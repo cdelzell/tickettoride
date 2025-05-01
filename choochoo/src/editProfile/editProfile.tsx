@@ -44,7 +44,8 @@ function EditProfile() {
 
   const handleImageChange = (imageUrl: string) => {
     const fileName = imageUrl.split("/").pop()?.split(".")[0] || "default";
-    const cleanKey = fileName.split("_")[0];
+    const key = fileName.split("_")[0];
+    const cleanKey = key.split("_")[0];
     console.log(cleanKey);
     setSelectedImageKey(cleanKey);
   };
