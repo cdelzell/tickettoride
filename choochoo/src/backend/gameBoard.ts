@@ -48,9 +48,6 @@ class GameBoard {
 
   drawDestinationCards(numCards: number): DestinationCard[] {
     let returnPile: DestinationCard[] = [];
-    if (this.destinationCardDrawPile.length === 0) {
-      return returnPile;
-    }
     for (let i = 0; i < numCards; i++) {
       const card = this.destinationCardDrawPile.shift();
       if (card) {
@@ -133,8 +130,8 @@ class GameBoard {
 
   //Generates all destination cards we want
   //TODO
-  getStartDestinationCards() {
-    return [
+  getStartDestinationCards(): DestinationCard[] {
+    let startPile: DestinationCard[] = [
       new DestinationCard("Albuquerque", "Miami", 11),
       new DestinationCard("Albuquerque", "Tyville", 9),
       new DestinationCard("Chicago", "Miami", 7),
@@ -158,6 +155,14 @@ class GameBoard {
       new DestinationCard("Tyville", "Washington", 13),
       new DestinationCard("Washington", "Denver", 10),
     ];
+    //Shuffle function
+    for (let i = startPile.length - 1; i > 0; i--) {
+      // pick a random index from 0 to i
+      const j = Math.floor(Math.random() * (i + 1));
+      // swap elements i and j
+      [startPile[i], startPile[j]] = [startPile[j], startPile[i]];
+    }
+    return startPile;
   }
 
   //Sets the first face-up cards visible to players
