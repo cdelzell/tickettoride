@@ -49,7 +49,6 @@ function Profile() {
     profileImages.default;
 
   const updatedUserProfile = { ...userProfile, resolvedProfilePic };
-  console.log(updatedUserProfile);
 
   const handleNavGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));

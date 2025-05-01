@@ -51,7 +51,7 @@ function Login() {
 
         sessionStorage.setItem("userProfile", JSON.stringify(cleanedUserData));
         navigate("/profile", {
-          state: { userKey, userProfile: cleanedUserData },
+          state: { userKey: userKey, userProfile: cleanedUserData },
         });
       }
     } catch (err) {
