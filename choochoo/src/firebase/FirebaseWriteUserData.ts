@@ -298,7 +298,7 @@ export async function updateUserProperty(
  * @param {Object} data - The data to be written to the users in the database.
  * @throws {Error} - Throws an error if there is an issue while updating or retrieving an entry from the database.
  */
-export function writeUserToDatabase(data: UserDataFormat): void {
+export function writeUserToDatabase(data: UserDataFormat): string {
   push(userDataPath, data)
     .then((newUserRef) => {
       const userKey = newUserRef.key;
@@ -308,10 +308,13 @@ export function writeUserToDatabase(data: UserDataFormat): void {
     .catch((error: unknown) => {
       if (error instanceof Error) {
         console.error(`Error writing data to ${userDataPath}:`, error.message);
+        return null;
       } else {
         console.error(`Unknown error writing data to ${userDataPath}:`, error);
+        return null;
       }
     });
+  return "";
 }
 
 // Function to check if a user with a given username or email already exists

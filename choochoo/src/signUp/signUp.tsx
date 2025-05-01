@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./signUp.css";
+import { findUserByUsername } from "@/firebase/FirebaseReadUser";
 
 function Render_Page() {
   return <Sign_Up />;
@@ -56,9 +57,12 @@ function Sign_Up() {
         active_game_id: null,
       };
 
-      const userKey = await writeUserToDatabase(user);
+      writeUserToDatabase(user);
+      const results = await findUserByUsername(user.username, true);
+      const { userKey, userData } = results || {};
+
       sessionStorage.setItem("userProfile", JSON.stringify(user));
-      navigate("/profile", { state: { userKey, userProfile: user } });
+      navigate("/profile", { state: { userKey: userKey, userProfile: user } });
     } catch (err) {
       setError("Error: Something went wrong. Try again soon!");
     }

@@ -35,17 +35,17 @@ import tyvillePhoenix from "@/assets/Destination_Cards/tyville_phoenix.png";
 import tyvilleWash from "@/assets/Destination_Cards/tyville_wash.png";
 import washDenver from "@/assets/Destination_Cards/wash_denver.png";
 // Profile pictures
-import arthur from "@/assets/Profile_Images/arthur.jpg";
-import buddy from "@/assets/Profile_Images/buddy.webp";
-import clifford from "@/assets/Profile_Images/clifford.jpg";
+import arthur from "@/assets/Profile_Images/arthur_img.jpg";
+import buddy from "@/assets/Profile_Images/buddy_img.webp";
+import clifford from "@/assets/Profile_Images/clifford_img.jpg";
 import defaultPfp from "@/assets/Profile_Images/Default_pfp.jpg";
-import dw from "@/assets/Profile_Images/dw.webp";
+import dw from "@/assets/Profile_Images/dw_img.webp";
 import emilyTrain from "@/assets/Profile_Images/emily_train.webp";
-import george from "@/assets/Profile_Images/george.jpg";
+import george from "@/assets/Profile_Images/george_img.jpg";
 import gordonTrain from "@/assets/Profile_Images/gordon_train.webp";
 import henryTrain from "@/assets/Profile_Images/henry_train.webp";
 import jamesTrain from "@/assets/Profile_Images/james_train.webp";
-import shiny from "@/assets/Profile_Images/shiny.webp";
+import shinyAnimal from "@/assets/Profile_Images/shiny_animal.webp";
 import thomasTrain from "@/assets/Profile_Images/thomas_train.jpg";
 // Other
 import destinationBlue from "@/assets/destination_blue.jpg";
@@ -54,17 +54,17 @@ import drawPile from "@/assets/draw_pile.jpg";
 import monoMap from "@/assets/mono_map.jpg";
 
 export const profileImages: Record<string, string> = {
-  // arthur,
-  // buddy,
-  // clifford,
+  arthur,
+  buddy,
+  clifford,
   default: defaultPfp,
-  // dw,
+  dw,
   emily: emilyTrain,
-  // george,
+  george,
   gordon: gordonTrain,
   henry: henryTrain,
   james: jamesTrain,
-  // shiny,
+  shiny: shinyAnimal,
   thomas: thomasTrain,
 };
 
@@ -161,7 +161,7 @@ export {
   gordonTrain,
   henryTrain,
   jamesTrain,
-  shiny,
+  shinyAnimal,
   thomasTrain,
 
   // Other
