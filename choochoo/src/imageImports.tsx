@@ -54,17 +54,17 @@ import drawPile from "@/assets/draw_pile.jpg";
 import monoMap from "@/assets/mono_map.jpg";
 
 export const profileImages: Record<string, string> = {
-  arthur,
-  buddy,
-  clifford,
+  // arthur,
+  // buddy,
+  // clifford,
   default: defaultPfp,
-  dw,
+  // dw,
   emily: emilyTrain,
-  george,
+  // george,
   gordon: gordonTrain,
   henry: henryTrain,
   james: jamesTrain,
-  shiny,
+  // shiny,
   thomas: thomasTrain,
 };
 

@@ -50,6 +50,8 @@ function EditProfile() {
     setSelectedImageKey(cleanKey);
   };
 
+  console.log("here");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -132,16 +134,22 @@ function EditProfile() {
             <Avatar
               src={PROFILE_IMAGES[selectedImageKey] || PROFILE_IMAGES.default}
               alt="Profile Picture"
-              sx={{ width: 100, height: 100, margin: "auto", mb: 2 }}
+              sx={{
+                width: 100,
+                height: 100,
+                margin: "auto",
+                mb: "2vw",
+                mt: "2vw",
+              }}
             />
             <div
               className="image-grid"
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
+                gridTemplateColumns: "repeat(5, 1fr)",
                 gap: ".5vw",
                 width: "100%",
-                marginBottom: "1vw",
+                marginBottom: "2vw",
                 justifyItems: "center",
                 alignItems: "center",
               }}
@@ -174,7 +182,7 @@ function EditProfile() {
           </FormControl>
 
           <FormControl>
-            <FormLabel>New Password</FormLabel>
+            <FormLabel sx={{ mt: "1vw" }}>New Password</FormLabel>
             <Input
               placeholder="Confirm password"
               value={password}
@@ -191,7 +199,7 @@ function EditProfile() {
           <Button
             type="submit"
             sx={{
-              mt: 1,
+              mt: "2vw",
               "&:hover": {
                 color: "white",
               },
