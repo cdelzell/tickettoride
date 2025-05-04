@@ -416,7 +416,6 @@ const MainGamePage = () => {
       if (claimed) {
         setPlayClickCount(playClickCount + 1);
         setTrains(gameRunner.getMainPlayerTrainCount());
-        setGameOver(gameRunner.checkGameOverAfterRouteClaim());
 
         const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
         const updatedTrainCards = constTrainCards.map((card, i) => ({

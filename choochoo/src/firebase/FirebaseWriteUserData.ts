@@ -18,6 +18,7 @@ export async function setUsername(
   print: boolean
 ): Promise<Object | null> {
   try {
+    console.log("here!");
     const userData = await updateUserProperty(objectId, "username", username);
 
     if (userData) {

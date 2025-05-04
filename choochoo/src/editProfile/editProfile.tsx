@@ -46,17 +46,18 @@ function EditProfile() {
     const fileName = imageUrl.split("/").pop()?.split(".")[0] || "default";
     const key = fileName.split("_")[0];
     const cleanKey = key.split("_")[0];
-    console.log(cleanKey);
     setSelectedImageKey(cleanKey);
   };
-
-  console.log("here");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      if (username !== "" && (await doesUserExist(username, ""))) {
+      console.log(username);
+      console.log(!(await doesUserExist(username, "")));
+      if (username !== "" && !(await doesUserExist(username, ""))) {
+        console.log(username);
+        console.log(!(await doesUserExist(username, "")));
         await setUsername(userKey, username, true);
       }
       if (password !== "") {
