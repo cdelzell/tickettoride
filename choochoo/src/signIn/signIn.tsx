@@ -60,8 +60,6 @@ function Login() {
     }
   };
 
-  const isFormValid = username.trim() !== "" && password.trim() !== ""; // Check if both inputs are filled
-
   return (
     <main className="loginPage">
       <CssBaseline />

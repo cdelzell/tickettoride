@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import monoMap from "../assets/mono_map.jpg";
 import "./mainGamePage.css";
 import GameRunner from "../backend/gameRunner";
-import User from "../backend/user";
 import PlayerCard from "./components/Profile/ProfileCard";
 import FaceUpCards from "./components/FaceUpCards/FaceUpCards";
 import DestinationCardsCarousel from "./components/DestinationCard/DestinationCard";
@@ -15,14 +13,11 @@ import DestinationCard from "../backend/destinationCard";
 import constTrainCards from "./constants/trainCards";
 import constDestinationCards from "./constants/destinationCards";
 import cities from "./constants/cities";
-// import routes from "./constants/routes";
 import { Routes as routes } from "../backend/hardcodedMap";
-import { findGameByGameID } from "../firebase/FirebaseReadGameData";
 import { findUserByUsername } from "../firebase/FirebaseReadUser";
-import { set } from "firebase/database";
 import Player from "@/backend/player";
 import TrainRoute from "@/backend/trainRoute";
-import { profileImages, destinationCardImages } from "@/imageImports";
+import { profileImages } from "@/imageImports";
 import { updateUserProperty } from "@/firebase/FirebaseWriteUserData";
 
 export interface City {
@@ -157,10 +152,6 @@ const MainGamePage = () => {
   useEffect(() => {
     if (gameRunner) {
       setDestinationCardPoss(gameRunner.getDestinationCardPossibilities());
-      // const cards = gameRunner.getPlayerDestinationCards();
-      // setPlayerDestinationCards(
-      //   getDestinationCardPossibilitiesFormatted(cards)
-      // );
     }
   }, [gameRunner]);
 
@@ -216,7 +207,6 @@ const MainGamePage = () => {
               "total_score",
               player.userData.total_score + playerPoints[i]
             );
-            console.log(newUserData);
           }
         }
       })();
@@ -256,7 +246,6 @@ const MainGamePage = () => {
       profilePic: "",
     }));
 
-    // async load + enrich, then one setState
     (async () => {
       const enriched = await Promise.all(
         formatted.map(async (player) => {
@@ -265,20 +254,17 @@ const MainGamePage = () => {
           if (p) {
             const userData = p.userData;
 
-            // extract & normalize the asset key
             const picKey = userData.profile_picture as string;
             const resolvedProfilePic =
               profileImages[picKey as keyof typeof profileImages] ??
               profileImages.default;
 
-            // return a new displayPlayer with the real profilePic
             return {
               ...player,
               profilePic: resolvedProfilePic,
             };
           }
 
-          // if lookup failed, just return the original placeholder
           return player;
         })
       );
@@ -342,7 +328,7 @@ const MainGamePage = () => {
         }
 
         if (typeof moreInfo.imagePath !== "string") {
-          console.error("❌ Invalid imagePath in moreInfo:", moreInfo);
+          console.error(" Invalid imagePath in moreInfo:", moreInfo);
         }
 
         const formattedCard = {
@@ -395,36 +381,6 @@ const MainGamePage = () => {
     }
   };
 
-  // const drawRandomTrainCard = () => {
-  //   const random = Math.random();
-  //   let drawnColor;
-
-  //   if (random < 0.1) {
-  //     drawnColor = "wild";
-  //   } else {
-  //     const regularColors = constTrainCards
-  //       .map((card) => card.gameColor)
-  //       .filter((color) => color !== "wild");
-
-  //     const randomIndex = Math.floor(Math.random() * regularColors.length);
-  //     drawnColor = regularColors[randomIndex];
-  //   }
-
-  //   updateTrainCardCount(drawnColor, 1);
-  //   setDrawnCard(drawnColor);
-  //   setShowCardNotification(true);
-
-  //   setTimeout(() => {
-  //     setShowCardNotification(false);
-  //   }, 3000);
-
-  //   return drawnColor;
-  // };
-
-  // const updateActionCardStatus = (action: boolean) => {
-  //   setActiveTrains(action);
-  // };
-
   /*
     Send the user back to the profile page after a game ends.
   */
@@ -438,7 +394,6 @@ const MainGamePage = () => {
     Also checks if the game is over after a route is claimed.
   */
   const handleRouteClaim = (route: TrainRoute) => {
-    // find the route in game board graph using index instead of color
     const routeIndex = gameRunner.gameBoard.boardGraph.routes.findIndex(
       (r) =>
         (r.destination1 === route.destination1 &&
@@ -456,7 +411,6 @@ const MainGamePage = () => {
       destClickCount === 0 &&
       playClickCount === 0
     ) {
-      // game runner function to claim route
       const claimed = gameRunner.claimRoute(routeIndex, resolvedProfilePic);
 
       if (claimed) {
@@ -471,7 +425,6 @@ const MainGamePage = () => {
         }));
         setTrainCards(updatedTrainCards);
 
-        // UI
         setGameRoutes((prevRoutes) => {
           const updatedRoutes = [...prevRoutes];
           const r = updatedRoutes[routeIndex];
@@ -503,7 +456,6 @@ const MainGamePage = () => {
       gameRunner.drawTrainCardsFromDeck();
       const updatedTrainCounts = gameRunner.getMainPlayerTrainCards();
 
-      // find which card was drawn by comparing previous counts to new counts
       let drawnCardColor = null;
       for (let i = 0; i < trainCards.length; i++) {
         if (updatedTrainCounts[i] > trainCards[i].count) {
@@ -512,7 +464,6 @@ const MainGamePage = () => {
         }
       }
 
-      // new train cards udpated
       const updatedTrainCards = constTrainCards.map((card, i) => ({
         ...card,
         count: updatedTrainCounts[i],
@@ -617,14 +568,12 @@ const MainGamePage = () => {
           gamerunner={gameRunner}
           drawnDestCards={drawnDestCards}
           updateStatus={updateStatus}
-          drawDestActive={drawDestActive}
           updateDrawDest={setDrawDestActive}
           updateTrains={updateTrainCardCount}
           updateFaceUp={setActiveTrains}
           drawClickCount={drawClickCount}
           setDrawClickCount={setDrawClickCount}
           playClickCount={playClickCount}
-          setPlayClickCount={setPlayClickCount}
           destClickCount={destClickCount}
           setDestClickCount={setDestClickCount}
           handleDrawPileClick={handleDrawPileClick}

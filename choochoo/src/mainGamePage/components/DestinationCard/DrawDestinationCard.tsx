@@ -2,8 +2,11 @@ import { useState } from "react";
 import { DestinationCard } from "./DestinationCard";
 import "./DestinationCard.css";
 import { DestinationCardInfo } from "../../mainGamePage";
-import BackendDestinationCard from "../../../backend/destinationCard"; // Assuming this is the class import
+import BackendDestinationCard from "../../../backend/destinationCard";
 
+/*
+  Handles all logic for selecting the destination cards that a player wants to keep.
+*/
 function DrawDestinationCard({
   destinations,
   drawnDestCards,
@@ -27,13 +30,15 @@ function DrawDestinationCard({
       selected.points
     );
 
-    // check if the card already exists in drawnDestCards
+    // check if the card has been clicked
     const exists = drawnDestCards.some(
       (c) =>
         c.getDestinationsAsArray().join(",") ===
         card.getDestinationsAsArray().join(",")
     );
 
+    //if it is currently in the array of clicked cards, remove it from the array
+    //if it isn't, add it to the array
     if (exists) {
       setDrawDestCard(
         drawnDestCards.filter(
@@ -46,7 +51,7 @@ function DrawDestinationCard({
       setDrawDestCard([...drawnDestCards, card]);
     }
 
-    // Toggle the corresponding clicked state
+    // outline the corresponding destination card
     if (id === "0") {
       setClicked1((prev) => !prev);
     } else if (id === "1") {
@@ -55,8 +60,6 @@ function DrawDestinationCard({
       setClicked3((prev) => !prev);
     }
   };
-
-  console.log(destinations);
 
   return (
     <div className="draw_destination">

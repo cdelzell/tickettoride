@@ -12,14 +12,12 @@ function ActionBox({
   gamerunner,
   drawnDestCards,
   updateStatus,
-  drawDestActive,
   updateDrawDest,
   updateTrains,
   updateFaceUp,
   drawClickCount,
   setDrawClickCount,
   playClickCount,
-  setPlayClickCount,
   destClickCount,
   setDestClickCount,
   handleDrawPileClick,
@@ -31,14 +29,12 @@ function ActionBox({
   gamerunner: GameRunner;
   drawnDestCards: DestinationCard[];
   updateStatus: (newStatus: number) => void;
-  drawDestActive: boolean;
   updateDrawDest: (newStatus: boolean) => void;
   updateTrains: (color: string, amount: number) => void;
   updateFaceUp: (active: boolean) => void;
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
-  setPlayClickCount: (num: number) => void;
   destClickCount: number;
   setDestClickCount: (num: number) => void;
   handleDrawPileClick: () => void;
