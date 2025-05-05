@@ -152,12 +152,14 @@ class GameRunner {
             selectedCard.destination2 === drawCard.destination2
         )
     );
-
     // Add any unchosen cards back to game board
     this.gameBoard.addBackDestinationCards(this.destinationCardsToDraw);
 
     // Clear temporary draw pile
     this.destinationCardsToDraw = [];
+  }
+  moveDestinationCardsBackToDraw() {
+    this.gameBoard.addBackDestinationCards(this.destinationCardsToDraw);
   }
 
   //Updates the current player once a turn ends
@@ -168,6 +170,7 @@ class GameRunner {
     } else {
       this.currentPlayer += 1;
     }
+    this.moveDestinationCardsBackToDraw();
   }
 
   //HERE IS ALL GETTER FUNCTIONS FOR FRONTEND STUFF
