@@ -11,15 +11,32 @@ import { database } from "../firebase/FirebaseCredentials";
 
 const START_TRAIN_CARD_NUM = 4;
 
+/**
+ * GameRunner Class
+ * This class manages the core game logic and state for a Ticket to Ride game.
+ * It handles player turns, card management, route claiming, and game state synchronization.
+ */
 class GameRunner {
+  /** Unique identifier for the game instance */
   gameID: number;
+  /** Array of players participating in the game */
   players: Player[];
+  /** The game board containing routes and cards */
   gameBoard: GameBoard;
+  /** Index of the current player in the players array */
   currentPlayer: number;
+  /** Flag indicating if the game has ended */
   gameOver: boolean;
+  /** Array of destination cards available for drawing */
   destinationCardsToDraw: DestinationCard[];
+  /** Function to unsubscribe from real-time updates */
   unsubscribe?: () => void;
 
+  /**
+   * Creates a new GameRunner instance
+   * @param users - Array of usernames for players
+   * @param lobbyCode - Unique identifier for the game lobby
+   */
   constructor(users: string[], lobbyCode: number) {
     this.gameID = lobbyCode;
     this.gameBoard = new GameBoard();
@@ -82,7 +99,10 @@ class GameRunner {
   //Not sure how to make it work with the server though. Maybe the gameover thing also calls a turn finished thing, which contacts the server.
   //Then when the server sends the file to all other players, the first thing that's checked is that boolean. If it's flipped, then they also display game over and contact the server to add stats.
 
-  //Called when deck is clicked
+  /**
+   * Draws a train card from the deck for the current player
+   * Called when the deck is clicked and player has selected to draw a card
+   */
   drawTrainCardsFromDeck() {
     let card = this.gameBoard.drawSingleTrainCard();
     this.players[this.currentPlayer].addTrainCardToHand(card);
@@ -175,8 +195,11 @@ class GameRunner {
 
   //HERE IS ALL GETTER FUNCTIONS FOR FRONTEND STUFF
 
-  //Returns the number of trains the main player has left
-  //Called only after a route claim
+  /**
+   * Returns the number of trains remaining for the main player
+   * Called after a route claim to update the UI
+   * @returns Number of trains remaining
+   */
   getMainPlayerTrainCount(): number {
     return this.players[this.currentPlayer].getTrainAmount();
   }
@@ -218,21 +241,28 @@ class GameRunner {
     return this.players[this.currentPlayer].getDestinationCardHand();
   }
 
-  //returns list of players
+  /**
+   * Returns the list of all players in the game
+   * @returns Array of Player objects
+   */
   getPlayers() {
     return this.players;
   }
 
-  //Returns the number of trains another player (not the main player) has left
-  //Needs the username of a player as a string
-  //Called after another player's turn ends
+  /**
+   * Gets the number of trains remaining for a specific player
+   * @param username - Username of the player to check
+   * @returns Number of trains remaining for the specified player
+   */
   getOtherPlayersTrainCount(username: string) {
     let player = this.players.find((p) => p.getUsername() === username);
     return player?.getTrainAmount();
   }
 
-  //Gets a list of 5 strings representing color names for each of the faceup cards in slots 1-5
-  //Called after card drawn, other player's turn is finished
+  /**
+   * Gets the current face-up train cards
+   * @returns Array of color names for the face-up cards
+   */
   getFaceupTrainCards(): string[] {
     return this.gameBoard.getFaceupTrainCardsAsList();
   }
@@ -243,14 +273,18 @@ class GameRunner {
     return this.currentPlayer;
   }
 
-  //TODO Return in the format they want.
-  //Called after route claimed or other player's turn finished
-  //Should return who has claims to which routes. Need to index routes?
+  /**
+   * Gets the current state of the game map
+   * @returns Object containing route claim information
+   */
   getMap() {
     return;
   }
 
-  //TODO: Set return value and finish this
+  /**
+   * Calculates and returns end game information including scores
+   * @returns Object containing final scores and game statistics
+   */
   getEndGameInfo() {
     return calculateGameScores(this.players, this.gameBoard.boardGraph);
   }
@@ -273,6 +307,10 @@ class GameRunner {
   //Any updates to the UI that happen on their turn should be handled already by button events, which is nice.
   //This is just to update the gamerunner object
 
+  /**
+   * Converts the game state to a JSON object for storage
+   * @returns JSON representation of the game state
+   */
   toJSON() {
     return {
       gameID: this.gameID,
@@ -286,6 +324,11 @@ class GameRunner {
     };
   }
 
+  /**
+   * Creates a GameRunner instance from JSON data
+   * @param data - JSON data representing a game state
+   * @returns New GameRunner instance
+   */
   static fromJSON(data: any): GameRunner {
     const runner = Object.create(GameRunner.prototype) as GameRunner;
 
@@ -308,18 +351,28 @@ class GameRunner {
     return runner;
   }
 
-  //I imagine this to be called after the player who owns this instance of gamerunner ends their turn. It will package everything up and send it to the database to update its version of the game
+  /**
+   * Sends the current game state to the database
+   * Called after a player ends their turn
+   */
   sendToDatabase() {
     const json = this.toJSON();
     writeGameToDatabase(json, this.gameID);
   }
 
-  //This needs to happen after any other player's turn ends. The database needs to send all above information, and this gamerunner needs to update it.
-  //The frontend also needs to become aware of the above mentioned things somehow.
+  /**
+   * Updates the game state from the database
+   * @param game_ID - ID of the game to update from
+   * @returns Promise resolving to the updated game state
+   */
   async updateFromDatabase(game_ID: number) {
     return findGameByGameID(game_ID, true);
   }
 
+  /**
+   * Starts listening for real-time updates from the database
+   * @param callback - Function to call when updates are received
+   */
   startListeningForUpdates(callback: (newGameRunner: GameRunner) => void) {
     const gameRef = ref(database, `activeGames/${this.gameID}`); //  correct path
 

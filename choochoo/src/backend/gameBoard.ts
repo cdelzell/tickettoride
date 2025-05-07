@@ -2,7 +2,13 @@ import TrainCard from "./trainCard";
 import DestinationCard from "./destinationCard";
 import BoardGraph from "./boardGraph";
 
+/**
+ * GameBoard Class
+ * Manages the game board state including routes, train cards, and destination cards.
+ * Handles card drawing, discarding, and face-up card management.
+ */
 class GameBoard {
+  /** The graph representation of the game board containing all routes */
   boardGraph: BoardGraph;
   trainCardDrawPile: TrainCard[];
   destinationCardDrawPile: DestinationCard[];
@@ -171,6 +177,10 @@ class GameBoard {
     return this.drawTrainCards(FACE_UP_NUM);
   }
 
+  /**
+   * Converts the game board state to a JSON object for storage
+   * @returns JSON representation of the game board state
+   */
   toJSON() {
     return {
       boardGraph: this.boardGraph.toJSON?.() ?? this.boardGraph,
@@ -185,6 +195,11 @@ class GameBoard {
     };
   }
 
+  /**
+   * Creates a GameBoard instance from JSON data
+   * @param data - JSON data representing a game board state
+   * @returns New GameBoard instance
+   */
   static fromJSON(data: any): GameBoard {
     const board = Object.create(GameBoard.prototype) as GameBoard;
 

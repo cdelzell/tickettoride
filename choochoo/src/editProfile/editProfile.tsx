@@ -1,3 +1,12 @@
+/**
+ * EditProfile Component
+ * This component allows users to modify their profile information including:
+ * - Username
+ * - Password
+ * - Profile picture
+ * It handles form submission and updates the user's data in Firebase.
+ */
+
 import { useState } from "react";
 import Sheet from "@mui/joy/Sheet";
 import CssBaseline from "@mui/joy/CssBaseline";
@@ -20,28 +29,41 @@ import "./editProfile.css";
 
 import { profileImages as PROFILE_IMAGES } from "@/imageImports";
 
+/**
+ * Wrapper component for the EditProfile page
+ */
 function Render_Page() {
   return <EditProfile />;
 }
 
+/**
+ * Main EditProfile component that handles profile modifications
+ */
 function EditProfile() {
+  // Navigation and responsive design hooks
   const navigate = useNavigate();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  // State management for form inputs and error handling
   const [error, setError] = useState("");
   const { state } = useLocation();
   const { userKey, userProfile } = state || {};
   const { player_username, wins, total_score, profile_picture } =
     userProfile || {};
 
+  // Form state management
   const [username, setUsernameState] = useState("");
   const [password, setPasswordState] = useState("");
   const [selectedImageKey, setSelectedImageKey] = useState(
     profile_picture || "default"
   );
 
+  /**
+   * Handles profile picture selection
+   * @param imageUrl - URL of the selected profile picture
+   */
   const handleImageChange = (imageUrl: string) => {
     const fileName = imageUrl.split("/").pop()?.split(".")[0] || "default";
     const key = fileName.split("_")[0];
@@ -49,25 +71,30 @@ function EditProfile() {
     setSelectedImageKey(cleanKey);
   };
 
+  /**
+   * Handles form submission and profile updates
+   * @param e - Form event object
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      console.log(username);
-      console.log(!(await doesUserExist(username, "")));
+      // Update username if provided and not already taken
       if (username !== "" && !(await doesUserExist(username, ""))) {
-        console.log(username);
-        console.log(!(await doesUserExist(username, "")));
         await setUsername(userKey, username, true);
       }
+
+      // Update password if provided
       if (password !== "") {
         await setPassword(userKey, password, true);
       }
 
+      // Update profile picture if changed
       if (selectedImageKey !== profile_picture) {
         await setProfilePicture(userKey, selectedImageKey, true);
       }
 
+      // Prepare updated user profile data
       const updatedUserProfile = {
         ...userProfile,
         username: username.trim() !== "" ? username : userProfile.username,
@@ -76,7 +103,10 @@ function EditProfile() {
         profile_picture: selectedImageKey,
       };
 
+      // Update session storage with new profile data
       sessionStorage.setItem("userProfile", JSON.stringify(updatedUserProfile));
+      
+      // Navigate back to profile page with updated data
       navigate("/profile", {
         state: { userKey, userProfile: updatedUserProfile },
       });
@@ -87,6 +117,7 @@ function EditProfile() {
     }
   };
 
+  // Filter out default image from available profile pictures
   const predefinedImagesProfile = Object.entries(PROFILE_IMAGES).filter(
     ([key]) => key !== "default"
   );
@@ -94,6 +125,7 @@ function EditProfile() {
   return (
     <main className="loginPage">
       <CssBaseline />
+      {/* Main edit profile form container */}
       <Sheet
         sx={{
           width: isSmallScreen ? "60%" : isMediumScreen ? "60%" : 500,
@@ -111,6 +143,7 @@ function EditProfile() {
         }}
         variant="outlined"
       >
+        {/* Header section */}
         <div>
           <Typography level="h1" component="h1">
             <b>Hello!</b>
@@ -122,7 +155,9 @@ function EditProfile() {
           </Typography>
         </div>
 
+        {/* Profile edit form */}
         <form onSubmit={handleSubmit}>
+          {/* Profile picture selection section */}
           <div
             style={{
               textAlign: "center",
@@ -132,6 +167,7 @@ function EditProfile() {
               alignItems: "center",
             }}
           >
+            {/* Current profile picture display */}
             <Avatar
               src={PROFILE_IMAGES[selectedImageKey] || PROFILE_IMAGES.default}
               alt="Profile Picture"
@@ -143,6 +179,7 @@ function EditProfile() {
                 mt: "2vw",
               }}
             />
+            {/* Profile picture selection grid */}
             <div
               className="image-grid"
               style={{
@@ -173,6 +210,7 @@ function EditProfile() {
             </div>
           </div>
 
+          {/* Username input field */}
           <FormControl>
             <FormLabel>New Username</FormLabel>
             <Input
@@ -182,6 +220,7 @@ function EditProfile() {
             />
           </FormControl>
 
+          {/* Password input field */}
           <FormControl>
             <FormLabel sx={{ mt: "1vw" }}>New Password</FormLabel>
             <Input
@@ -191,12 +230,14 @@ function EditProfile() {
             />
           </FormControl>
 
+          {/* Error message display */}
           {error && (
             <Typography sx={{ color: "red", fontSize: "sm" }}>
               {error}
             </Typography>
           )}
 
+          {/* Submit button */}
           <Button
             type="submit"
             sx={{
