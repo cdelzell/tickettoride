@@ -3,6 +3,7 @@
 A modern web application built with React, TypeScript, and Firebase.
 
 ## 🚂 Authors
+
 🚂 [Riddhi Munjewar](https://github.com/rmunjewar)
 🚂 [Clara Delzell](https://github.com/cdelzell)
 🚂 [Noah Janke](https://github.com/njanke42)
@@ -61,8 +62,6 @@ npm start
 # or
 yarn start
 ```
-
-The application will be available at `http://localhost:3000`
 
 ## 🧪 Testing
 
