@@ -596,7 +596,6 @@ const MainGamePage = () => {
           {trainCards.map((train, index) => (
             <TrainCard
               key={index}
-              color={train.color}
               gameColor={train.gameColor}
               count={train.count}
               hover={hoveredRoute}

@@ -2,6 +2,10 @@ import "./FaceUpCards.css";
 import GameRunner from "../../../backend/gameRunner";
 import { trainCardImages } from "@/imageImports";
 
+/*
+  Base component of a face-up card (the cards that are face-up for every player in the game)
+  Handles when a player draws a card, properly enables/disables drawing face-up cards
+*/
 function FaceUpCard({
   index,
   gamerunner,

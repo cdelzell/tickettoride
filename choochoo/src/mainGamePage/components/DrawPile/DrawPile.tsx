@@ -1,15 +1,17 @@
 import "./DrawPile.css";
 import { drawPile } from "@/imageImports";
 
+/*
+  Sets the action box display for when a player is drawing cards
+  Provides instructions and renders the draw pile component
+*/
 function DrawTrains({
-  updateTrains,
   drawClickCount,
   setDrawClickCount,
   playClickCount,
   destClickCount,
   handleDrawPileClick,
 }: {
-  updateTrains: (color: string, amount: number) => void;
   drawClickCount: number;
   setDrawClickCount: (num: number) => void;
   playClickCount: number;
@@ -26,7 +28,6 @@ function DrawTrains({
       </div>
       <DrawPile
         drawClickCount={drawClickCount}
-        setDrawClickCount={setDrawClickCount}
         playClickCount={playClickCount}
         destClickCount={destClickCount}
         handleDrawPileClick={handleDrawPileClick}
@@ -35,20 +36,22 @@ function DrawTrains({
   );
 }
 
+/*
+  Creates the actual draw pile component button
+  When clicked gives a user a random train card
+  Disabled when the player has taken another action or drawn 2 cards already
+*/
 function DrawPile({
   drawClickCount,
-  setDrawClickCount,
   playClickCount,
   destClickCount,
   handleDrawPileClick,
 }: {
   drawClickCount: number;
-  setDrawClickCount: (num: number) => void;
   playClickCount: number;
   destClickCount: number;
   handleDrawPileClick: () => void;
 }) {
-  console.log(drawClickCount);
   return (
     <div>
       <p>Cards drawn: {drawClickCount}/2</p>

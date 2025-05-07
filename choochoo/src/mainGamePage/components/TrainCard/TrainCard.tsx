@@ -2,13 +2,14 @@ import { Route } from "../Map";
 import "./TrainCard.css";
 import { trainCardImages } from "@/imageImports";
 
+/*
+  Creates the base train card component used throughout the game page
+*/
 function TrainCard({
-  color, // still passed, but unused
   count,
   gameColor,
   hover,
 }: {
-  color: string;
   count: number;
   gameColor: string;
   hover: Route | null;

@@ -2,6 +2,9 @@ import GameRunner from "../../../backend/gameRunner";
 import FaceUpCard from "./FaceUpCard";
 import "./FaceUpCards.css";
 
+/*
+  Component to hold all face-up cards and render each card
+*/
 function FaceUpCards({
   gamerunner,
   faceUpCards,

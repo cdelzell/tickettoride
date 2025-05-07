@@ -6,6 +6,18 @@ import DestinationCard from "../../../backend/destinationCard";
 import { DestinationCardInfo } from "../../mainGamePage";
 import { leftArrow } from "@/imageImports";
 
+/*
+  Creates the action box and renders the correct display depending on the action and state of the user.
+
+  5 possible states:
+    * not the player's turn
+    * player wants to draw cards
+    * player wants to claim a route
+    * player wants to draw destination cards
+    * player's turn is over, but they have not clicked "end turn"
+  
+  Also correctly handles when a player has played out their turn, properly disables/enables player's action box 
+*/
 function ActionBox({
   active,
   action,
@@ -99,7 +111,6 @@ function ActionBox({
         <HomeBox updateStatus={updateStatus} />
       ) : action === 1 && actionActive === true ? (
         <DrawTrains
-          updateTrains={updateTrains}
           drawClickCount={drawClickCount}
           setDrawClickCount={setDrawClickCount}
           playClickCount={playClickCount}
@@ -127,6 +138,9 @@ function ActionBox({
   );
 }
 
+/*
+  Display for action box when it is a player's turn and they get to choose what they would like to do
+*/
 function HomeBox({
   updateStatus,
 }: {
@@ -141,6 +155,9 @@ function HomeBox({
   );
 }
 
+/*
+  Display for a player when they would like to claim a route
+*/
 function PlayTrains() {
   return (
     <div className="claim_route">
@@ -149,6 +166,9 @@ function PlayTrains() {
   );
 }
 
+/*
+  Display for a player when they would like to claim destination cards
+*/
 function Submit({
   gamerunner,
   drawnDestCards,
@@ -194,6 +214,9 @@ function Submit({
   );
 }
 
+/*
+  Display for when a player's turn is over, but they have not clicked the "end turn" button yet
+*/
 function TurnOver() {
   return (
     <div className="claim_route">

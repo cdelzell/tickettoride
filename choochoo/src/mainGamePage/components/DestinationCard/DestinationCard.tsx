@@ -3,6 +3,9 @@ import "./DestinationCard.css";
 import { DestinationCardInfo } from "../../mainGamePage";
 import { leftArrow, rightArrow, destinationCardImages } from "@/imageImports";
 
+/*
+  Base component of a destination card
+*/
 export function DestinationCard({
   destination,
   location,
@@ -17,35 +20,23 @@ export function DestinationCard({
       ? "test"
       : "destination_card";
 
-  useEffect(() => {
-    console.log("📸 DestinationCard received props →", {
-      destination,
-      type: typeof destination,
-      location,
-    });
-
-    if (!destination) {
-      console.warn("⚠️ No image path provided to DestinationCard");
-    } else if (typeof destination !== "string") {
-      console.error("❌ Invalid type for imagePath:", destination);
-    }
-  }, [destination, location]);
-
   return destination && typeof destination === "string" ? (
     <img
       className={className}
       src={destination}
       alt="Destination card"
       onError={(e) => {
-        console.error("❌ Failed to load image:", destination);
         (e.target as HTMLImageElement).style.display = "none";
       }}
     />
   ) : (
-    <div className={className}>⚠️ No Image</div>
+    <div>No Image</div>
   );
 }
 
+/*
+  Provides logic for the carousel component of Destination cards that allows players to look through all their destination cards.
+*/
 function DestinationCardsCarousel({
   destinations,
 }: {

@@ -1,6 +1,11 @@
 import "./ProfileCard.css";
 import { profileImages } from "@/imageImports";
 
+/*
+  Creates the player card component used for the main player at the bottom right corner and the other players at the top left corner
+
+  Contains a boolean for main player that changes the css classes depending on if the player is the main player or not
+*/
 function PlayerCard({
   username,
   trainCount,
