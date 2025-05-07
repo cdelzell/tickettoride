@@ -1,3 +1,12 @@
+/**
+ * Lobby Component
+ * This component manages the game lobby functionality, including:
+ * - Creating and joining lobbies
+ * - Managing player list
+ * - Starting games
+ * - Handling lobby state updates
+ */
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/joy/Button";
@@ -24,7 +33,9 @@ import {
 import "./lobby.css";
 import GameRunner from "../backend/gameRunner";
 
-// define userprofile interface
+/**
+ * Interface for user profile data
+ */
 interface UserProfile {
   username: string;
   wins?: number;
@@ -33,13 +44,13 @@ interface UserProfile {
 }
 
 function Lobby() {
-  // navigation and routing hooks
+  // Navigation and routing hooks
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
   const isJoining = state?.isJoining;
 
-  // initialize user profile from navigation state or session storage
+  // Initialize user profile from navigation state or session storage
   const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
     const fromState = location?.state?.userProfile;
     const fromStorage = sessionStorage.getItem("userProfile");
@@ -48,7 +59,7 @@ function Lobby() {
 
   const username = userProfile?.username;
 
-  // define state variables
+  // State management for lobby functionality
   const [players, setPlayers] = useState<Player[]>([]);
   const [lobby, setLobby] = useState<LobbyType | null>(null);
   const [lobbyCode, setLobbyCode] = useState<string>("");
@@ -57,18 +68,23 @@ function Lobby() {
   const [gameStarting, setGameStarting] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
 
+  // Responsive design hooks
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+  /**
+   * Helper function to get the host's username from the player list
+   * @param players - Array of players in the lobby
+   * @returns The host's username or null if not found
+   */
   function getHostUsername(players: Player[]): string | null {
     const host = players.find((player) => player.isHost);
     return host ? host.username : null;
   }
 
-  console.log(lobbyCode);
-  console.log(sessionStorage);
-
-  // create or join a lobby
+  /**
+   * Effect hook to initialize lobby (create or join)
+   */
   useEffect(() => {
     const initializeLobby = async () => {
       try {
@@ -76,7 +92,7 @@ function Lobby() {
 
         let code = sessionStorage.getItem("lobbyCode");
 
-        // create new lobby if not joining, else join existing one
+        // Create new lobby if not joining, else join existing one
         if (!code && !isJoining && username) {
           code = await createLobby(username);
           sessionStorage.setItem("lobbyCode", code);
@@ -107,7 +123,9 @@ function Lobby() {
     }
   }, [isJoining, username]);
 
-  // listen for lobby updates and sync player list as thye come in
+  /**
+   * Effect hook to listen for lobby updates and handle game start
+   */
   useEffect(() => {
     if (!lobbyCode) return;
 
@@ -118,7 +136,7 @@ function Lobby() {
         setPlayers(Object.values(updatedLobby.players));
       }
 
-      // navigate to game page when lobby status changes to started
+      // Navigate to game page when lobby status changes to started
       if (updatedLobby.status === "started") {
         setGameStarting(true);
 
@@ -128,16 +146,13 @@ function Lobby() {
         );
         const isHost = getHostUsername(updatedPlayers) === username;
 
+        // Initialize game if user is the host
         if (isHost) {
-          console.log("gamerunner");
           const gamerunner = new GameRunner(
             player_usernames,
             parseInt(lobbyCode)
           );
-          console.log(gamerunner);
-
           gamerunner.sendToDatabase();
-          console.log(gamerunner);
         }
 
         navigate("/main_game_page", {
@@ -155,7 +170,9 @@ function Lobby() {
     };
   }, [lobbyCode, username, navigate, userProfile]);
 
-  // start the game if there are enough players - rn this is 2, will change to 4 when we get closer ot the end
+  /**
+   * Handles starting the game if there are enough players
+   */
   const handleStartGame = async () => {
     try {
       if (players.length == 4) {
@@ -171,7 +188,9 @@ function Lobby() {
     }
   };
 
-  // leave the current lobby and navigate to profile
+  /**
+   * Handles leaving the current lobby
+   */
   const handleLeave = async () => {
     try {
       if (username && lobbyCode) {
@@ -186,7 +205,9 @@ function Lobby() {
     }
   };
 
-  // Handle copying the lobby code to clipboard
+  /**
+   * Handles copying the lobby code to clipboard
+   */
   const handleCopyCode = () => {
     if (lobbyCode) {
       navigator.clipboard
@@ -202,7 +223,7 @@ function Lobby() {
     }
   };
 
-  // show loading screen while lobby initializes
+  // Loading screen while lobby initializes
   if (isLoading) {
     return (
       <div className="lobby-container">
@@ -216,7 +237,7 @@ function Lobby() {
     );
   }
 
-  // show loading screen while game is starting if needed
+  // Loading screen while game is starting
   if (gameStarting) {
     return (
       <div className="lobby-container">
@@ -233,7 +254,7 @@ function Lobby() {
     );
   }
 
-  // show error screen if something went wrong
+  // Error screen
   if (error) {
     return (
       <div className="lobby-container">
@@ -248,125 +269,75 @@ function Lobby() {
             onClick={() => navigate("/profile", { state: { userProfile } })}
             sx={{ mt: 2 }}
           >
-            Back to Profile
+            Return to Profile
           </Button>
         </Box>
       </div>
     );
   }
 
-  // main lobby ui
+  // Main lobby UI
   return (
     <div className="lobby-container">
-      <Box
-        sx={{
-          width: isSmallScreen ? "100vw" : 700,
-          backgroundColor: "white",
-          maxWidth: 600,
-          mx: "auto",
-          my: 4,
-          py: 4,
-          px: 4,
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-          borderRadius: "16px",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <CssBaseline />
-        <Typography
-          level="h2"
-          sx={{ textAlign: "center", color: "black", mb: 2 }}
-        >
+      <CssBaseline />
+      <Box sx={{ maxWidth: 600, mx: "auto", p: 2 }}>
+        {/* Lobby header */}
+        <Typography level="h2" sx={{ mb: 2 }}>
           Game Lobby
         </Typography>
 
-        <div className="lobby-code-container">
-          <h2 className="lobby-code">Lobby Code: {lobbyCode}</h2>
-          <Button
-            onClick={handleCopyCode}
-            className="copy-button"
-            variant={copySuccess ? "soft" : "solid"}
-            color={copySuccess ? "success" : "primary"}
-          >
-            {copySuccess ? "Copied!" : "Copy Code"}
-          </Button>
-        </div>
+        {/* Lobby code section */}
+        <Box sx={{ mb: 3 }}>
+          <Typography level="h4">Lobby Code</Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Typography level="body-lg">{lobbyCode}</Typography>
+            <Button
+              size="sm"
+              variant="outlined"
+              onClick={handleCopyCode}
+              disabled={copySuccess}
+            >
+              {copySuccess ? "Copied!" : "Copy"}
+            </Button>
+          </Box>
+        </Box>
 
-        <Typography level="body-md" sx={{ mb: 2 }}>
-          Share this code with your friend to join!
-        </Typography>
-
-        <Typography
-          level="title-md"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            mb: 1,
-          }}
-        >
-          Players ({players.length}/4)
-          <Typography
-            level="body-sm"
-            sx={{
-              color: players.length < 4 ? "warning.500" : "success.500",
-              fontWeight: "bold",
-            }}
-          >
-            {players.length < 4 ? "Need more players..." : "Ready to start!"}
-          </Typography>
-        </Typography>
-
-        <ul className="player-list">
-          {players.map((player, index) => (
-            <li
-              key={index}
-              style={{ display: "flex", justifyContent: "space-between" }}
+        {/* Player list */}
+        <Box sx={{ mb: 3 }}>
+          <Typography level="h4">Players ({players.length}/4)</Typography>
+          {players.map((player) => (
+            <Box
+              key={player.username}
+              sx={{
+                p: 1,
+                mb: 1,
+                borderRadius: 1,
+                bgcolor: "background.level1",
+              }}
             >
               <Typography>
                 {player.username}
-                {player.username === username && " (You)"}
+                {player.isHost && " (Host)"}
               </Typography>
-              {player.isHost && <span className="player-host-badge">Host</span>}
-            </li>
+            </Box>
           ))}
-          {players.length === 0 && (
-            <li>
-              <Typography
-                level="body-sm"
-                sx={{ fontStyle: "italic", color: "neutral.500" }}
-              >
-                Waiting for players to join...
-              </Typography>
-            </li>
-          )}
-        </ul>
+        </Box>
 
-        <div className="button-container">
-          {players.some((p) => p.username === username && p.isHost) && (
+        {/* Action buttons */}
+        <Box sx={{ display: "flex", gap: 2 }}>
+          {getHostUsername(players) === username && (
             <Button
+              color="primary"
               onClick={handleStartGame}
-              className="start-button"
-              disabled={players.length < 2 || gameStarting}
-              color="success"
-              variant="solid"
+              disabled={players.length < 4}
             >
-              {gameStarting ? "Starting..." : "Start Game"}
+              Start Game
             </Button>
           )}
-
-          <Button
-            onClick={handleLeave}
-            className="leave-button"
-            color="danger"
-            variant="soft"
-            disabled={gameStarting}
-          >
+          <Button color="neutral" onClick={handleLeave}>
             Leave Lobby
           </Button>
-        </div>
+        </Box>
       </Box>
     </div>
   );
