@@ -1,8 +1,13 @@
 import BoardGraph from "./boardGraph";
 import Player from "./player";
 import TrainRoute from "./trainRoute";
-import DestinationCard from "./destinationCard";
 
+/**
+ * Calculates final scores for all players based on routes claimed and destination card completed
+ * @param players Array of Players
+ * @param boardGraph Completed boardGraph of routes and destinations
+ * @returns A record of player usernames to their final score
+ */
 export function calculateGameScores(
   players: Player[],
   boardGraph: BoardGraph
@@ -22,6 +27,10 @@ export function calculateGameScores(
   return { playerPoints, winner };
 }
 
+/**
+ * Calculates score of individiual player
+ * @returns number final score value
+ */
 function calculatePlayerScore(player: Player, boardGraph: BoardGraph): number {
   let score =
     getPlayerPointsFromDestinationCards(player, boardGraph) +
@@ -29,6 +38,12 @@ function calculatePlayerScore(player: Player, boardGraph: BoardGraph): number {
   return score;
 }
 
+/**
+ * Calculates the total score from claimed routes for a player
+ * @param claimer The player who claimed routes
+ * @param boardGraph The graph to pull routes from
+ * @returns score as number
+ */
 function getPlayerPointsFromRouteValues(
   claimer: string,
   boardGraph: BoardGraph
@@ -39,7 +54,13 @@ function getPlayerPointsFromRouteValues(
   }
   return score;
 }
-
+/**
+ * Calculates total score from completed destination cards
+ * Subtracts incomplete destination cards from score
+ * @param player Player object, contains destination cards to check
+ * @param boardGraph Contains routes and destinations to check connections
+ * @returns score as a positive or negative number
+ */
 function getPlayerPointsFromDestinationCards(
   player: Player,
   boardGraph: BoardGraph
@@ -53,12 +74,19 @@ function getPlayerPointsFromDestinationCards(
     if (isDestinationCardInNetworks(destinations, networks)) {
       score += card.getPointValue();
     } else {
-      score -= card.getPointValue(); //OPTIONAL, MAY WANT TO REMOVE. Takes away points if they don't meet the card, leading to big negatives
+      score -= card.getPointValue(); //Takes away points if they don't meet the card, leading to big negatives
     }
   }
   return score;
 }
 
+/**
+ * Given routes, determines all destinations connected by those routes
+ * Handles cases with several unconnected networks
+ * Used for easy checking of destination card completeness
+ * @param routes Array of routes to check connections
+ * @returns An array of destination name sets, where all destinations in a set are somehow connected to each other
+ */
 function getConnectedNetworks(routes: TrainRoute[]): Set<string>[] {
   let networks: Set<string>[] = [];
 
@@ -99,6 +127,13 @@ function getConnectedNetworks(routes: TrainRoute[]): Set<string>[] {
   return networks;
 }
 
+/**
+ * Checks if a destination card is completed by any network of destinations
+ * i.e. if both destinations from the card are in the network
+ * @param destinations the two destinations from the card
+ * @param networks The networks of destinations as a an array of sets of names
+ * @returns boolean, true if complete
+ */
 function isDestinationCardInNetworks(
   destinations: string[],
   networks: Set<string>[]

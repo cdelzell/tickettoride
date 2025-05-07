@@ -3,6 +3,10 @@ import TrainRoute from "./trainRoute";
 import { Routes } from "./hardcodedMap";
 import { Cities } from "./hardcodedMap";
 
+/**
+ * BoardGraph Class
+ * Controls the graph of destinations and routes on the game board
+ */
 class BoardGraph {
   destinations: Destination[];
   routes: TrainRoute[];
@@ -16,7 +20,7 @@ class BoardGraph {
     this.routes = this.#makeRoutes();
   }
   /**
-   * Creates the destinations for the board
+   * Creates the destinations for the board from hardcoded objects
    * @returns Array of Destination objects
    */
   #makeDestinations(): Destination[] {
@@ -24,7 +28,7 @@ class BoardGraph {
   }
 
   /**
-   * Creates the routes for the board
+   * Creates the routes for the board from hardcoded objects
    * @returns Array of TrainRoute objects
    */
   #makeRoutes(): TrainRoute[] {
@@ -35,7 +39,7 @@ class BoardGraph {
    * Gets the routes claimed by a specific player
    * @param name - Name of the player
    * @returns Array of TrainRoute objects claimed by the player
-   */   
+   */
   getRoutesForPlayer(name: string): TrainRoute[] {
     const claimedRoutes = this.routes.filter((r) => r.claimer === name);
     return claimedRoutes;
@@ -45,7 +49,7 @@ class BoardGraph {
    * Gets a route by its index
    * @param index - Index of the route
    * @returns TrainRoute object at the specified index
-   */ 
+   */
   getRouteByIndex(index: number): TrainRoute {
     return this.routes[index];
   }
@@ -70,13 +74,16 @@ class BoardGraph {
 
   toJSON() {
     return {
-      // serialize each route via its own toJSON (we’ll expand it next)
       routes: this.routes.map((r) => r.toJSON()),
     };
   }
 
+  /**
+   * Unpacks a stored boardGraph object
+   * @param data
+   * @returns
+   */
   static fromJSON(data: any): BoardGraph {
-    // 1) Always build your defaults first
     const graph = new BoardGraph();
 
     if (Array.isArray(data.routes)) {

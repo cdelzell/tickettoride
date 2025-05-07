@@ -1,3 +1,9 @@
+/**
+ * DestinationCard class
+ * This class holds all the information for a destination card
+ * It details the two destinations a player must connect and how many
+ * points are gained or lost at the end of the game.
+ */
 class DestinationCard {
   destination1: string;
   destination2: string;
@@ -9,6 +15,9 @@ class DestinationCard {
     this.pointValue = pointValue;
   }
 
+  /*
+    Returns the two destinations on this card as an array for completion purposes
+  */
   getDestinationsAsArray(): string[] {
     return [this.destination1, this.destination2];
   }

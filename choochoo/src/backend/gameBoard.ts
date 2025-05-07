@@ -2,6 +2,9 @@ import TrainCard from "./trainCard";
 import DestinationCard from "./destinationCard";
 import BoardGraph from "./boardGraph";
 
+/* How many face up cards should be present to be choosen from*/
+const FACE_UP_NUM = 5;
+
 /**
  * GameBoard Class
  * Manages the game board state including routes, train cards, and destination cards.
@@ -24,6 +27,9 @@ class GameBoard {
     this.faceUpTrainCards = this.setStartFaceUpTrainCards();
   }
 
+  /*
+    Shuffles using the random function from the Math library to ensure random order
+  */
   shuffleTrainDeck() {
     for (let i = this.trainCardDrawPile.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -34,10 +40,17 @@ class GameBoard {
     }
   }
 
+  /*
+    Pulls only a single TrainCard from the top of the draw pile
+  */
   drawSingleTrainCard(): TrainCard {
     return this.drawTrainCards(1)[0];
   }
 
+  /*
+    Draws and returns a given number of TrainCards.
+    Cards are removed from the draw pile and thus the gameboard
+  */
   drawTrainCards(numCards: number): TrainCard[] {
     let returnPile: TrainCard[] = [];
     for (let i = 0; i < numCards; i++) {
@@ -52,6 +65,10 @@ class GameBoard {
     return returnPile;
   }
 
+  /*
+    Draws and returns a given number of DestinationCards
+    Cards are removed from the draw pile and thus the gameboard
+  */
   drawDestinationCards(numCards: number): DestinationCard[] {
     let returnPile: DestinationCard[] = [];
     for (let i = 0; i < numCards; i++) {
@@ -63,19 +80,31 @@ class GameBoard {
     return returnPile;
   }
 
+  /*
+    Adds back destination cards that have been removed from the gameboard but not selected
+  */
   addBackDestinationCards(cards: DestinationCard[]) {
     for (let i = 0; i < cards.length; i++) {
       this.destinationCardDrawPile.push(cards[i]);
     }
   }
 
+  /*
+    Given an index, draws the faceup card from the list and replaces it.
+  */
   takeFaceUpTrainCard(index: number) {
+    if (index > 4) {
+      console.error("Invalid faceup index:", index);
+      return;
+    }
     let trainCardTaken = this.faceUpTrainCards[index];
-    this.faceUpTrainCards[index] = this.drawSingleTrainCard();
+    this.faceUpTrainCards[index] = this.drawSingleTrainCard(); //Replaces the taken train card
     return trainCardTaken;
   }
 
-  //For frontend
+  /*
+    Returns the faceup careds formatted for the frontend
+  */
   getFaceupTrainCardsAsList() {
     let returnList: string[] = [];
     for (const card of this.faceUpTrainCards) {
@@ -84,11 +113,16 @@ class GameBoard {
     return returnList;
   }
 
+  /*
+    Given a route's index, return that route from the graph
+  */
   getRouteByIndex(index: number) {
     return this.boardGraph.getRouteByIndex(index);
   }
 
-  //Reshuffles the discard pile into the draw pile, while empytying the discard pile
+  /*
+    Reshuffles the discard pile into the draw pile, while empytying the discard pile.
+  */
   shuffleDiscardIntoDraw() {
     console.log("reached");
     this.trainCardDrawPile = this.trainCardDrawPile.concat(
@@ -98,16 +132,21 @@ class GameBoard {
     this.shuffleTrainDeck();
   }
 
+  /*
+    Called when a player claims a route. Takes the used colors and
+    adds them to the discard pile as new train cards
+  */
   addDiscardsFromUsedTrainCards(usedTrainCardColors: string[]) {
     for (let i = 0; i < usedTrainCardColors.length; i++) {
       this.trainCardDiscardPile.push(new TrainCard(usedTrainCardColors[i]));
     }
   }
 
-  //ALL BELOW HERE ARE CONSTRUCTOR FUNCTIONS
-
-  //Generates train cards according to rule distribution
-  //Returns shuffled list
+  /*
+    Generates the TrainCards in the starter draw pile at a set distribution
+    Called during construction
+    Returns shuffled list
+  */
   getStartTrainCards() {
     //In order from manual
     let colors = [
@@ -134,8 +173,11 @@ class GameBoard {
     this.shuffleTrainDeck();
   }
 
-  //Generates all destination cards we want
-  //TODO
+  /*
+    Generates all hardcoded DestinationCards and returns them
+    Called during construction
+    Returns a shuffled list
+  */
   getStartDestinationCards(): DestinationCard[] {
     let startPile: DestinationCard[] = [
       new DestinationCard("Albuquerque", "Miami", 11),
@@ -171,9 +213,10 @@ class GameBoard {
     return startPile;
   }
 
-  //Sets the first face-up cards visible to players
+  /*
+    Constructor function to set the initial faceup cards
+  */
   setStartFaceUpTrainCards() {
-    const FACE_UP_NUM = 5; //From rulebook
     return this.drawTrainCards(FACE_UP_NUM);
   }
 

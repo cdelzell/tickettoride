@@ -9,15 +9,19 @@ const point_vals = new Map<number, number>([
   [6, 15],
 ]);
 
+/**
+ * TrainRoute class
+ * This class holds the information for a single train route connecting two destinations
+ */
 class TrainRoute {
   destination1: string;
   destination2: string;
-  length: number;
-  gameColor: string;
-  hexColor: string;
-  dashed: boolean;
+  length: number; //Number of trains required to claim
+  gameColor: string; //For backend, used for train card comparison
+  hexColor: string; //For frontend display
+  dashed: boolean; //For frontend display, faalse (solid) if claimed
   claimer: string | null;
-  claimerProfilePic: string | null;
+  claimerProfilePic: string | null; //Used for frontend display
 
   constructor(
     destination1: string,
@@ -51,6 +55,9 @@ class TrainRoute {
     return this.hexColor;
   }
 
+  /*
+    Given a player, claims the route and updates necessary
+  */
   claimRoute(playerId: string, profilePic?: string) {
     this.claimer = playerId;
     if (profilePic) {
@@ -58,6 +65,10 @@ class TrainRoute {
     }
   }
 
+  /*
+    Gets the point value of the route based on the length
+    These are usually different numbers
+  */
   getPointValue(): number {
     return point_vals.get(this.length) ?? 0;
   }

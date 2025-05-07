@@ -1,6 +1,10 @@
 import TrainRoute from "./trainRoute";
 import Destination from "./destination";
 
+/**
+ * Hardcoded destinations for the whole map
+ * Order is important for establishing routes!
+ */
 export const Cities: Destination[] = [
   new Destination("New York", 504, 153), // 0
   new Destination("Chicago", 382, 150), // 1
@@ -20,6 +24,10 @@ export const Cities: Destination[] = [
   new Destination("Albuquerque", 220, 232), // 15
 ];
 
+/**
+ * Hardcoded routes for the whole map (0-28)
+ * Order is important for the rest of the code!
+ */
 export const Routes: TrainRoute[] = [
   new TrainRoute(
     Cities[0].getName(),

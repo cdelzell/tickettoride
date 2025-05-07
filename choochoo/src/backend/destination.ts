@@ -1,4 +1,5 @@
 /**
+ * DesinationCard class
  * Represents a destination on the game board
  * Contains information about the destination name, coordinates, and methods for accessing it
  */
@@ -9,7 +10,7 @@ class Destination {
   x: number;
   /** The y-coordinate of the destination */
   y: number;
-  
+
   constructor(name: string, x: number, y: number) {
     this.name = name;
     this.x = x;
