@@ -3,10 +3,10 @@
 A modern web application built with React, TypeScript, and Firebase.
 
 ## 🚂 Authors
-👩‍✈️- [Riddhi Munjewar](https://github.com/rmunjewar)
-👩‍✈️- [Clara Delzell](https://github.com/cdelzell)
-🧑‍✈️- [Noah Janke](https://github.com/njanke42)
-🧑‍✈️- [Ty Lovgren](https://github.com/ShockWav3456)
+🚂 [Riddhi Munjewar](https://github.com/rmunjewar)
+🚂 [Clara Delzell](https://github.com/cdelzell)
+🚂 [Noah Janke](https://github.com/njanke42)
+🚂 [Ty Lovgren](https://github.com/ShockWav3456)
 
 ## 🚀 Features
 
