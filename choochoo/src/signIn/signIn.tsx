@@ -1,3 +1,9 @@
+/**
+ * SignIn Component
+ * This component handles user authentication and login functionality.
+ * It provides a form for users to enter their credentials and manages the login process.
+ */
+
 import { useTheme, useMediaQuery } from "@mui/material";
 import Sheet from "@mui/joy/Sheet";
 import CssBaseline from "@mui/joy/CssBaseline";
@@ -14,21 +20,27 @@ import { handleLogIn } from "../firebase/FirebaseLogInManager";
 import "./signIn.css";
 
 function Login() {
+  // State management for form inputs and error handling
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // To store the error message
+  const [error, setError] = useState(""); // Stores error messages for display
 
+  // Responsive design hooks
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const navigate = useNavigate(); // Hook to handle navigation
+  const navigate = useNavigate(); // Hook for programmatic navigation
 
+  /**
+   * Handles form submission and user authentication
+   * @param e - Form event object
+   */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      // Assuming handleLogIn returns a promise
+      // Attempt to log in user with provided credentials
       const result = await handleLogIn(username, password);
 
       if (result === null) {
@@ -39,23 +51,28 @@ function Login() {
       const [isSuccessful, userKey, userData] = result;
 
       if (isSuccessful && userData) {
+        // Process and normalize profile picture data
         const rawPic =
           userData.profile_picture?.split("/").pop()?.split(".")[0] ||
           "default";
         const normalizedPic = rawPic.split("-")[0];
 
+        // Clean and prepare user data for storage
         const cleanedUserData = {
           ...userData,
           profile_picture: normalizedPic,
         };
 
+        // Store user data in session storage
         sessionStorage.setItem("userProfile", JSON.stringify(cleanedUserData));
+        
+        // Navigate to profile page with user data
         navigate("/profile", {
           state: { userKey: userKey, userProfile: cleanedUserData },
         });
       }
     } catch (err) {
-      // Catch any unexpected errors (e.g., network issues)
+      // Handle authentication errors
       setError("Error: Username or password incorrect");
     }
   };
@@ -63,6 +80,7 @@ function Login() {
   return (
     <main className="loginPage">
       <CssBaseline />
+      {/* Main login form container */}
       <Sheet
         sx={{
           width: isSmallScreen ? "60%" : isMediumScreen ? "60%" : 500,
@@ -80,13 +98,17 @@ function Login() {
         }}
         variant="outlined"
       >
+        {/* Header section */}
         <div>
           <Typography level="h1" component="h1">
             <b>Welcome!</b>
           </Typography>
           <Typography level="body-md">Sign in to continue.</Typography>
         </div>
+
+        {/* Login form */}
         <form onSubmit={handleSubmit}>
+          {/* Username input field */}
           <FormControl>
             <FormLabel>Username</FormLabel>
             <Input
@@ -94,9 +116,11 @@ function Login() {
               type="text"
               placeholder="thomasthetrain"
               value={username}
-              onChange={(e) => setUsername(e.target.value)} // Update state when input changes
+              onChange={(e) => setUsername(e.target.value)}
             />
           </FormControl>
+
+          {/* Password input field */}
           <FormControl>
             <FormLabel
               sx={{
@@ -110,17 +134,20 @@ function Login() {
               type="password"
               placeholder="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // Update state when input changes
+              onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
+
+          {/* Error message display */}
           {error && (
             <Typography sx={{ color: "red", fontSize: "sm" }}>
               {error}
             </Typography>
           )}
+
+          {/* Submit button */}
           <Button
             type="submit"
-            // disabled={!isFormValid} // Disable button if form is invalid
             sx={{
               mt: 3.5,
             }}
@@ -128,6 +155,8 @@ function Login() {
             Log in
           </Button>
         </form>
+
+        {/* Sign up link */}
         <Typography
           endDecorator={<Link href="/sign_up">Sign up</Link>}
           sx={{ fontSize: "sm", alignSelf: "center" }}
