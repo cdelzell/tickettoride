@@ -1,3 +1,12 @@
+/**
+ * Profile Component
+ * This component displays the user's profile information and provides navigation to:
+ * - Create a new game
+ * - Join an existing game
+ * - Edit profile information
+ * It handles user data persistence and profile picture display.
+ */
+
 import { Avatar } from "@mui/material";
 import Box from "@mui/joy/Box";
 import CssBaseline from "@mui/joy/CssBaseline";
@@ -9,21 +18,33 @@ import { useEffect, useState } from "react";
 import "./profile.css";
 import { profileImages } from "@/imageImports";
 
+/**
+ * Wrapper component for the Profile page
+ */
 function App() {
   return <Profile />;
 }
 
+/**
+ * Main Profile component that displays user information and navigation options
+ */
 function Profile() {
+  // Responsive design hooks
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  
+  // Navigation and state management
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  // User data state management
   const [userKey, setUserKey] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<any>(null);
 
-  // On mount, grab user data from state or sessionStorage
+  /**
+   * Effect hook to initialize user data from state or session storage
+   */
   useEffect(() => {
     const stateUserKey = state?.userKey;
     const stateUserProfile = state?.userProfile;
@@ -43,6 +64,7 @@ function Profile() {
   // Early return if profile isn't loaded yet
   if (!userProfile) return null;
 
+  // Extract user data from profile
   const { username, wins, total_score, profile_picture } = userProfile;
   const resolvedProfilePic =
     profileImages[profile_picture as keyof typeof profileImages] ??
@@ -50,11 +72,17 @@ function Profile() {
 
   const updatedUserProfile = { ...userProfile, resolvedProfilePic };
 
+  /**
+   * Handles navigation to create a new game
+   */
   const handleNavGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
     navigate("/lobby", { state: { userProfile: updatedUserProfile } });
   };
 
+  /**
+   * Handles navigation to join an existing game
+   */
   const handleJoinGame = () => {
     sessionStorage.setItem("userProfile", JSON.stringify(userProfile));
     navigate("/join_game", { state: { userProfile: updatedUserProfile } });
@@ -63,6 +91,7 @@ function Profile() {
   return (
     <main className="background_set_up">
       <CssBaseline />
+      {/* Main profile container */}
       <Box
         sx={{
           width: isSmallScreen ? "40vw" : isMediumScreen ? "55vw" : 500,
@@ -83,6 +112,7 @@ function Profile() {
         }}
       >
         <Grid2 container spacing={2} rowSpacing={"3vw"}>
+          {/* Profile picture section */}
           <Grid2 size={5}>
             <Avatar
               alt={username || "User Profile"}
@@ -94,8 +124,11 @@ function Profile() {
               }}
             />
           </Grid2>
+
+          {/* User information section */}
           <Grid2 size={7}>
             <div className="profile_name">
+              {/* Username display */}
               <h3
                 style={{
                   fontSize: isSmallScreen
@@ -110,6 +143,7 @@ function Profile() {
               >
                 {username}
               </h3>
+              {/* Wins display */}
               <p
                 style={{
                   fontSize: isSmallScreen
@@ -121,6 +155,7 @@ function Profile() {
               >
                 Total wins: {wins === undefined ? 0 : wins}
               </p>
+              {/* Total score display */}
               <p
                 style={{
                   fontSize: isSmallScreen
@@ -135,6 +170,7 @@ function Profile() {
             </div>
           </Grid2>
 
+          {/* Spacer grid items */}
           <Grid2 size={12}>
             <span></span>
           </Grid2>
@@ -142,12 +178,14 @@ function Profile() {
             <span></span>
           </Grid2>
 
+          {/* Action buttons section */}
           <Grid2
             size={12}
             display={"flex"}
             justifyContent={"space-between"}
             marginX={"1vw"}
           >
+            {/* Create game button */}
             <Button
               className="button"
               onClick={handleNavGame}
@@ -155,6 +193,7 @@ function Profile() {
             >
               Make Game
             </Button>
+            {/* Join game button */}
             <Button
               className="button"
               onClick={handleJoinGame}
@@ -162,6 +201,7 @@ function Profile() {
             >
               Join Game
             </Button>
+            {/* Edit profile button */}
             <Button
               className="button"
               onClick={() => {
