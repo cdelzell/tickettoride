@@ -346,7 +346,7 @@ class GameRunner {
         const rawData = snapshot.val();
         const newRunner = GameRunner.fromJSON(rawData); // deserialize immediately
         callback(newRunner);
-        console.log(newRunner);
+        //console.log(newRunner); //For debug purposes to see the gamerunner
       }
     });
   }

@@ -124,7 +124,6 @@ class GameBoard {
     Reshuffles the discard pile into the draw pile, while empytying the discard pile.
   */
   shuffleDiscardIntoDraw() {
-    console.log("reached");
     this.trainCardDrawPile = this.trainCardDrawPile.concat(
       this.trainCardDiscardPile
     ); //Instantiates new draw pile, which may be a problem??
