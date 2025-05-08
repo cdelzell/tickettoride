@@ -17,7 +17,7 @@ choochoo/
 ├── __tests__/
 ├── .firebase/    # hosting information
 ├── coverage/     # testing coverage reports/information
-├── dist/
+├── dist/      # for deployment (stretch goal)
 ├── favicon/
 ├── node_modules/
 ├── src/
