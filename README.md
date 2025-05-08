@@ -2,21 +2,52 @@
 
 A modern web application built with React, TypeScript, and Firebase.
 
-## 🚂 Authors
+## Authors
 
 🚂 [Riddhi Munjewar](https://github.com/rmunjewar)
 🚂 [Clara Delzell](https://github.com/cdelzell)
 🚂 [Noah Janke](https://github.com/njanke42)
 🚂 [Ty Lovgren](https://github.com/ShockWav3456)
 
-## 🚀 Features
+## Code Structure
+
+```
+choochoo/
+├── __mocks__/
+├── __tests__/
+├── .firebase/    # hosting information
+├── coverage/     # testing coverage reports/information
+├── dist/
+├── favicon/
+├── node_modules/
+├── src/
+│   ├── assets/      # images for our site
+│   ├── backend/     # contains all logic for the game
+│   ├── editProfile/
+│   ├── firebase/    # contains firebase read/write methods
+│   ├── joinGamePage/
+│   ├── lobbyPage/
+│   ├── mainGamePage/
+│   ├── profile/
+│   ├── signIn/
+│   ├── signUp/
+│   ├── types/
+│   ├── imageImports.tsx      # imported images for hosting
+│   ├── index.css
+│   ├── main.jsx
+│   └── vite-env.d.ts
+├── README.md     # this read.me!
+├── config, json, and other miscellaneous files
+```
+
+## Features
 
 - Modern React with TypeScript
 - Firebase integration
 - Real-time updates
 - Responsive design
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -24,7 +55,7 @@ Before you begin, ensure you have the following installed:
 - npm or yarn
 - Git
 
-## 🛠️ Installation
+## Installation
 
 1. Clone the repository:
 
@@ -53,7 +84,7 @@ REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 REACT_APP_FIREBASE_APP_ID=your_app_id
 ```
 
-## 🏃‍♂️ Running the Application
+## Running the Application
 
 To start the development server:
 
@@ -63,7 +94,7 @@ npm start
 yarn start
 ```
 
-## 🧪 Testing
+## Testing
 
 To run tests:
 
