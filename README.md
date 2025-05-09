@@ -62,26 +62,25 @@ Before you begin, ensure you have the following installed:
 ```bash
 git clone https://github.com/yourusername/tickettoride.git
 cd tickettoride
+cd choochoo
 ```
 
 2. Install dependencies:
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
 3. Set up environment variables:
    Create a `.env` file in the root directory and add your Firebase configuration:
 
 ```env
-REACT_APP_FIREBASE_API_KEY=your_api_key
-REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
-REACT_APP_FIREBASE_PROJECT_ID=your_project_id
-REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-REACT_APP_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
 ```
 
 ## Running the Application
@@ -89,9 +88,7 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 To start the development server:
 
 ```bash
-npm start
-# or
-yarn start
+npm run dev
 ```
 
 ## Testing
@@ -100,6 +97,4 @@ To run tests:
 
 ```bash
 npm test
-# or
-yarn test
 ```
