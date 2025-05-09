@@ -65,14 +65,14 @@ cd tickettoride
 cd choochoo
 ```
 
-2. Install dependencies:
+2. Install dependencies (in both the ticketToRide directory and the choochoo directory):
 
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
-   Create a `.env` file in the root directory and add your Firebase configuration:
+   Create a `.env` file in the choochoo directory and add your Firebase configuration:
 
 ```env
 VITE_FIREBASE_API_KEY=your_api_key
